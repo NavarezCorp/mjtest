@@ -1,6 +1,6 @@
 const elixir = require('laravel-elixir');
 
-require('laravel-elixir-vue');
+//require('laravel-elixir-vue');
 
 /*
  |--------------------------------------------------------------------------
@@ -29,18 +29,18 @@ elixir(mix => {
     ])
     .styles(
         [
-            paths.jqueryui + 'themes/base',
-            paths.orgchart + 'dist/css',
+            //paths.jqueryui + 'themes/base',
+            paths.orgchart + 'dist/css'
         ]
     )
-    .webpack('vue.js')
+    //.webpack('vue.js')
     .scripts(
         [
             paths.jquery + 'dist/jquery.min.js',
-            paths.jqueryui + 'ui',
+            //paths.jqueryui + 'ui',
             paths.bootstrap + 'assets/javascripts/bootstrap.min.js',
-            paths.typeahead + 'dist/typeahead.jquery.min.js',
-            paths.orgchart + '/dist/js/jquery.orgchart.js',
+            //paths.typeahead + 'dist/typeahead.jquery.min.js',
+            paths.orgchart + 'dist/js/jquery.orgchart.js'
         ],
         'public/js/vendor.js'
     )
