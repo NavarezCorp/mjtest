@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use App\Ibo;
+use DB;
 
 class GenealogyController extends Controller
 {
@@ -48,7 +49,20 @@ class GenealogyController extends Controller
      */
     public function show($id)
     {
-        //
+        // 1st & 2nd level
+        $data = $this->get_genealogy($id);
+        
+        // 3rd level
+        $data['children'][0]['children'] = $this->get_children($data['children'][0]['name']);
+        $data['children'][1]['children'] = $this->get_children($data['children'][1]['name']);
+        
+        // 4th level
+        $data['children'][0]['children'][0]['children'] = $this->get_children($data['children'][0]['children'][0]['name']);
+        $data['children'][0]['children'][1]['children'] = $this->get_children($data['children'][0]['children'][1]['name']);
+        $data['children'][1]['children'][0]['children'] = $this->get_children($data['children'][1]['children'][0]['name']);
+        $data['children'][1]['children'][1]['children'] = $this->get_children($data['children'][1]['children'][1]['name']);
+        
+        return $data;
     }
 
     /**
@@ -83,5 +97,53 @@ class GenealogyController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function get_genealogy($id){
+        $data = null;
+        $children = null;
+        
+        $res_parent = DB::table('ibos')
+            ->select('id', 'firstname', 'middlename', 'lastname')
+            ->where('id', $id)
+            ->first();
+        
+        $res_children = DB::table('ibos')
+            ->select('id', 'firstname', 'middlename', 'lastname')
+            ->where('sponsor_id', $res_parent->id)
+            ->get();
+        
+        foreach($res_children as $value){
+            $children[] = [
+                'name'=>$value->id,
+                'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+            ];
+        }
+        
+        $data = [
+            'name'=>$res_parent->id,
+            'title'=>$res_parent->firstname . ' ' . $res_parent->middlename . ' ' . $res_parent->lastname,
+            'children'=>$children
+        ];
+        
+        return $data;
+    }
+    
+    public function get_children($id){
+        $data = null;
+        
+        $res_children = DB::table('ibos')
+            ->select('id', 'firstname', 'middlename', 'lastname')
+            ->where('sponsor_id', $id)
+            ->get();
+        
+        foreach($res_children as $value){
+            $data[] = [
+                'name'=>$value->id,
+                'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+            ];
+        }
+        
+        return $data;
     }
 }

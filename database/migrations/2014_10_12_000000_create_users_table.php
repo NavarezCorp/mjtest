@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('role')->nullable();
+            $table->integer('ibo_id')->nullable()->index();
             $table->rememberToken();
             $table->timestamps();
         });

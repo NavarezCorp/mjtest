@@ -78,7 +78,8 @@
                                     </li>
                                     <li>
                                         <a href="{{ url('/ibo') }}">IBO</a>
-                                        <a href="{{ url('/genealogy') }}">Genealogy</a>
+                                        <a class="genealogy_link" id="{{ Auth::user()->ibo_id }}}" href="{{ url('/genealogy') }}">Genealogy</a>
+                                        <a href="{{ url('/user/' . Auth::user()->id . '/edit') }}">Profile</a>
                                     </li>
                                     @if (Auth::user()->role == 'admin')
                                         <li><a href="{{ url('/commission') }}">Commission</a></li>

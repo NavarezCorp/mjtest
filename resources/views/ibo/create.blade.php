@@ -96,7 +96,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                
+                                <!--
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-4">
                                         <div class="checkbox" style="float:left; margin-right:30px;">
@@ -111,6 +111,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                -->
                                 <hr>
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-4">

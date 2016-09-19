@@ -5766,5 +5766,8 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+.orgchart {
+  background-image: none; }
+
 
 /*# sourceMappingURL=app.css.map */

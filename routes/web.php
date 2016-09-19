@@ -28,4 +28,7 @@ Route::resource('product', 'ProductController');
 Route::resource('productpurchase', 'ProductPurchaseController');
 Route::resource('rankinglion', 'RankingLionController');
 Route::resource('rebate', 'RebateController');
+Route::resource('user', 'UserController');
+
+Route::get('genealogy/get_genealogy', 'GenealogyController@get_genealogy');
 Route::resource('genealogy', 'GenealogyController');
