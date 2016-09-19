@@ -29,7 +29,7 @@ elixir(mix => {
     ])
     .styles(
         [
-            //paths.jqueryui + 'themes/base',
+            paths.jqueryui + 'themes/base/*.css',
             paths.orgchart + 'dist/css'
         ]
     )
@@ -37,9 +37,9 @@ elixir(mix => {
     .scripts(
         [
             paths.jquery + 'dist/jquery.min.js',
-            //paths.jqueryui + 'ui',
+            //paths.jqueryui + 'ui/*.js',
             paths.bootstrap + 'assets/javascripts/bootstrap.min.js',
-            //paths.typeahead + 'dist/typeahead.jquery.min.js',
+            paths.typeahead + 'dist/typeahead.jquery.min.js',
             paths.orgchart + 'dist/js/jquery.orgchart.js'
         ],
         'public/js/vendor.js'
