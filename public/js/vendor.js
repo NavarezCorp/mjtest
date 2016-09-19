@@ -3,2083 +3,6 @@
 r.isFunction(d)||(g=!0),j&&(g?(b.call(a,d),b=null):(j=b,b=function(a,b,c){return j.call(r(a),c)})),b))for(;h<i;h++)b(a[h],c,g?d:d.call(a[h],h,b(a[h],c)));return e?a:j?b.call(a):i?b(a[0],c):f},T=function(a){return 1===a.nodeType||9===a.nodeType||!+a.nodeType};function U(){this.expando=r.expando+U.uid++}U.uid=1,U.prototype={cache:function(a){var b=a[this.expando];return b||(b={},T(a)&&(a.nodeType?a[this.expando]=b:Object.defineProperty(a,this.expando,{value:b,configurable:!0}))),b},set:function(a,b,c){var d,e=this.cache(a);if("string"==typeof b)e[r.camelCase(b)]=c;else for(d in b)e[r.camelCase(d)]=b[d];return e},get:function(a,b){return void 0===b?this.cache(a):a[this.expando]&&a[this.expando][r.camelCase(b)]},access:function(a,b,c){return void 0===b||b&&"string"==typeof b&&void 0===c?this.get(a,b):(this.set(a,b,c),void 0!==c?c:b)},remove:function(a,b){var c,d=a[this.expando];if(void 0!==d){if(void 0!==b){r.isArray(b)?b=b.map(r.camelCase):(b=r.camelCase(b),b=b in d?[b]:b.match(K)||[]),c=b.length;while(c--)delete d[b[c]]}(void 0===b||r.isEmptyObject(d))&&(a.nodeType?a[this.expando]=void 0:delete a[this.expando])}},hasData:function(a){var b=a[this.expando];return void 0!==b&&!r.isEmptyObject(b)}};var V=new U,W=new U,X=/^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,Y=/[A-Z]/g;function Z(a,b,c){var d;if(void 0===c&&1===a.nodeType)if(d="data-"+b.replace(Y,"-$&").toLowerCase(),c=a.getAttribute(d),"string"==typeof c){try{c="true"===c||"false"!==c&&("null"===c?null:+c+""===c?+c:X.test(c)?JSON.parse(c):c)}catch(e){}W.set(a,b,c)}else c=void 0;return c}r.extend({hasData:function(a){return W.hasData(a)||V.hasData(a)},data:function(a,b,c){return W.access(a,b,c)},removeData:function(a,b){W.remove(a,b)},_data:function(a,b,c){return V.access(a,b,c)},_removeData:function(a,b){V.remove(a,b)}}),r.fn.extend({data:function(a,b){var c,d,e,f=this[0],g=f&&f.attributes;if(void 0===a){if(this.length&&(e=W.get(f),1===f.nodeType&&!V.get(f,"hasDataAttrs"))){c=g.length;while(c--)g[c]&&(d=g[c].name,0===d.indexOf("data-")&&(d=r.camelCase(d.slice(5)),Z(f,d,e[d])));V.set(f,"hasDataAttrs",!0)}return e}return"object"==typeof a?this.each(function(){W.set(this,a)}):S(this,function(b){var c;if(f&&void 0===b){if(c=W.get(f,a),void 0!==c)return c;if(c=Z(f,a),void 0!==c)return c}else this.each(function(){W.set(this,a,b)})},null,b,arguments.length>1,null,!0)},removeData:function(a){return this.each(function(){W.remove(this,a)})}}),r.extend({queue:function(a,b,c){var d;if(a)return b=(b||"fx")+"queue",d=V.get(a,b),c&&(!d||r.isArray(c)?d=V.access(a,b,r.makeArray(c)):d.push(c)),d||[]},dequeue:function(a,b){b=b||"fx";var c=r.queue(a,b),d=c.length,e=c.shift(),f=r._queueHooks(a,b),g=function(){r.dequeue(a,b)};"inprogress"===e&&(e=c.shift(),d--),e&&("fx"===b&&c.unshift("inprogress"),delete f.stop,e.call(a,g,f)),!d&&f&&f.empty.fire()},_queueHooks:function(a,b){var c=b+"queueHooks";return V.get(a,c)||V.access(a,c,{empty:r.Callbacks("once memory").add(function(){V.remove(a,[b+"queue",c])})})}}),r.fn.extend({queue:function(a,b){var c=2;return"string"!=typeof a&&(b=a,a="fx",c--),arguments.length<c?r.queue(this[0],a):void 0===b?this:this.each(function(){var c=r.queue(this,a,b);r._queueHooks(this,a),"fx"===a&&"inprogress"!==c[0]&&r.dequeue(this,a)})},dequeue:function(a){return this.each(function(){r.dequeue(this,a)})},clearQueue:function(a){return this.queue(a||"fx",[])},promise:function(a,b){var c,d=1,e=r.Deferred(),f=this,g=this.length,h=function(){--d||e.resolveWith(f,[f])};"string"!=typeof a&&(b=a,a=void 0),a=a||"fx";while(g--)c=V.get(f[g],a+"queueHooks"),c&&c.empty&&(d++,c.empty.add(h));return h(),e.promise(b)}});var $=/[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source,_=new RegExp("^(?:([+-])=|)("+$+")([a-z%]*)$","i"),aa=["Top","Right","Bottom","Left"],ba=function(a,b){return a=b||a,"none"===a.style.display||""===a.style.display&&r.contains(a.ownerDocument,a)&&"none"===r.css(a,"display")},ca=function(a,b,c,d){var e,f,g={};for(f in b)g[f]=a.style[f],a.style[f]=b[f];e=c.apply(a,d||[]);for(f in b)a.style[f]=g[f];return e};function da(a,b,c,d){var e,f=1,g=20,h=d?function(){return d.cur()}:function(){return r.css(a,b,"")},i=h(),j=c&&c[3]||(r.cssNumber[b]?"":"px"),k=(r.cssNumber[b]||"px"!==j&&+i)&&_.exec(r.css(a,b));if(k&&k[3]!==j){j=j||k[3],c=c||[],k=+i||1;do f=f||".5",k/=f,r.style(a,b,k+j);while(f!==(f=h()/i)&&1!==f&&--g)}return c&&(k=+k||+i||0,e=c[1]?k+(c[1]+1)*c[2]:+c[2],d&&(d.unit=j,d.start=k,d.end=e)),e}var ea={};function fa(a){var b,c=a.ownerDocument,d=a.nodeName,e=ea[d];return e?e:(b=c.body.appendChild(c.createElement(d)),e=r.css(b,"display"),b.parentNode.removeChild(b),"none"===e&&(e="block"),ea[d]=e,e)}function ga(a,b){for(var c,d,e=[],f=0,g=a.length;f<g;f++)d=a[f],d.style&&(c=d.style.display,b?("none"===c&&(e[f]=V.get(d,"display")||null,e[f]||(d.style.display="")),""===d.style.display&&ba(d)&&(e[f]=fa(d))):"none"!==c&&(e[f]="none",V.set(d,"display",c)));for(f=0;f<g;f++)null!=e[f]&&(a[f].style.display=e[f]);return a}r.fn.extend({show:function(){return ga(this,!0)},hide:function(){return ga(this)},toggle:function(a){return"boolean"==typeof a?a?this.show():this.hide():this.each(function(){ba(this)?r(this).show():r(this).hide()})}});var ha=/^(?:checkbox|radio)$/i,ia=/<([a-z][^\/\0>\x20\t\r\n\f]+)/i,ja=/^$|\/(?:java|ecma)script/i,ka={option:[1,"<select multiple='multiple'>","</select>"],thead:[1,"<table>","</table>"],col:[2,"<table><colgroup>","</colgroup></table>"],tr:[2,"<table><tbody>","</tbody></table>"],td:[3,"<table><tbody><tr>","</tr></tbody></table>"],_default:[0,"",""]};ka.optgroup=ka.option,ka.tbody=ka.tfoot=ka.colgroup=ka.caption=ka.thead,ka.th=ka.td;function la(a,b){var c="undefined"!=typeof a.getElementsByTagName?a.getElementsByTagName(b||"*"):"undefined"!=typeof a.querySelectorAll?a.querySelectorAll(b||"*"):[];return void 0===b||b&&r.nodeName(a,b)?r.merge([a],c):c}function ma(a,b){for(var c=0,d=a.length;c<d;c++)V.set(a[c],"globalEval",!b||V.get(b[c],"globalEval"))}var na=/<|&#?\w+;/;function oa(a,b,c,d,e){for(var f,g,h,i,j,k,l=b.createDocumentFragment(),m=[],n=0,o=a.length;n<o;n++)if(f=a[n],f||0===f)if("object"===r.type(f))r.merge(m,f.nodeType?[f]:f);else if(na.test(f)){g=g||l.appendChild(b.createElement("div")),h=(ia.exec(f)||["",""])[1].toLowerCase(),i=ka[h]||ka._default,g.innerHTML=i[1]+r.htmlPrefilter(f)+i[2],k=i[0];while(k--)g=g.lastChild;r.merge(m,g.childNodes),g=l.firstChild,g.textContent=""}else m.push(b.createTextNode(f));l.textContent="",n=0;while(f=m[n++])if(d&&r.inArray(f,d)>-1)e&&e.push(f);else if(j=r.contains(f.ownerDocument,f),g=la(l.appendChild(f),"script"),j&&ma(g),c){k=0;while(f=g[k++])ja.test(f.type||"")&&c.push(f)}return l}!function(){var a=d.createDocumentFragment(),b=a.appendChild(d.createElement("div")),c=d.createElement("input");c.setAttribute("type","radio"),c.setAttribute("checked","checked"),c.setAttribute("name","t"),b.appendChild(c),o.checkClone=b.cloneNode(!0).cloneNode(!0).lastChild.checked,b.innerHTML="<textarea>x</textarea>",o.noCloneChecked=!!b.cloneNode(!0).lastChild.defaultValue}();var pa=d.documentElement,qa=/^key/,ra=/^(?:mouse|pointer|contextmenu|drag|drop)|click/,sa=/^([^.]*)(?:\.(.+)|)/;function ta(){return!0}function ua(){return!1}function va(){try{return d.activeElement}catch(a){}}function wa(a,b,c,d,e,f){var g,h;if("object"==typeof b){"string"!=typeof c&&(d=d||c,c=void 0);for(h in b)wa(a,h,c,d,b[h],f);return a}if(null==d&&null==e?(e=c,d=c=void 0):null==e&&("string"==typeof c?(e=d,d=void 0):(e=d,d=c,c=void 0)),e===!1)e=ua;else if(!e)return a;return 1===f&&(g=e,e=function(a){return r().off(a),g.apply(this,arguments)},e.guid=g.guid||(g.guid=r.guid++)),a.each(function(){r.event.add(this,b,e,d,c)})}r.event={global:{},add:function(a,b,c,d,e){var f,g,h,i,j,k,l,m,n,o,p,q=V.get(a);if(q){c.handler&&(f=c,c=f.handler,e=f.selector),e&&r.find.matchesSelector(pa,e),c.guid||(c.guid=r.guid++),(i=q.events)||(i=q.events={}),(g=q.handle)||(g=q.handle=function(b){return"undefined"!=typeof r&&r.event.triggered!==b.type?r.event.dispatch.apply(a,arguments):void 0}),b=(b||"").match(K)||[""],j=b.length;while(j--)h=sa.exec(b[j])||[],n=p=h[1],o=(h[2]||"").split(".").sort(),n&&(l=r.event.special[n]||{},n=(e?l.delegateType:l.bindType)||n,l=r.event.special[n]||{},k=r.extend({type:n,origType:p,data:d,handler:c,guid:c.guid,selector:e,needsContext:e&&r.expr.match.needsContext.test(e),namespace:o.join(".")},f),(m=i[n])||(m=i[n]=[],m.delegateCount=0,l.setup&&l.setup.call(a,d,o,g)!==!1||a.addEventListener&&a.addEventListener(n,g)),l.add&&(l.add.call(a,k),k.handler.guid||(k.handler.guid=c.guid)),e?m.splice(m.delegateCount++,0,k):m.push(k),r.event.global[n]=!0)}},remove:function(a,b,c,d,e){var f,g,h,i,j,k,l,m,n,o,p,q=V.hasData(a)&&V.get(a);if(q&&(i=q.events)){b=(b||"").match(K)||[""],j=b.length;while(j--)if(h=sa.exec(b[j])||[],n=p=h[1],o=(h[2]||"").split(".").sort(),n){l=r.event.special[n]||{},n=(d?l.delegateType:l.bindType)||n,m=i[n]||[],h=h[2]&&new RegExp("(^|\\.)"+o.join("\\.(?:.*\\.|)")+"(\\.|$)"),g=f=m.length;while(f--)k=m[f],!e&&p!==k.origType||c&&c.guid!==k.guid||h&&!h.test(k.namespace)||d&&d!==k.selector&&("**"!==d||!k.selector)||(m.splice(f,1),k.selector&&m.delegateCount--,l.remove&&l.remove.call(a,k));g&&!m.length&&(l.teardown&&l.teardown.call(a,o,q.handle)!==!1||r.removeEvent(a,n,q.handle),delete i[n])}else for(n in i)r.event.remove(a,n+b[j],c,d,!0);r.isEmptyObject(i)&&V.remove(a,"handle events")}},dispatch:function(a){var b=r.event.fix(a),c,d,e,f,g,h,i=new Array(arguments.length),j=(V.get(this,"events")||{})[b.type]||[],k=r.event.special[b.type]||{};for(i[0]=b,c=1;c<arguments.length;c++)i[c]=arguments[c];if(b.delegateTarget=this,!k.preDispatch||k.preDispatch.call(this,b)!==!1){h=r.event.handlers.call(this,b,j),c=0;while((f=h[c++])&&!b.isPropagationStopped()){b.currentTarget=f.elem,d=0;while((g=f.handlers[d++])&&!b.isImmediatePropagationStopped())b.rnamespace&&!b.rnamespace.test(g.namespace)||(b.handleObj=g,b.data=g.data,e=((r.event.special[g.origType]||{}).handle||g.handler).apply(f.elem,i),void 0!==e&&(b.result=e)===!1&&(b.preventDefault(),b.stopPropagation()))}return k.postDispatch&&k.postDispatch.call(this,b),b.result}},handlers:function(a,b){var c,d,e,f,g=[],h=b.delegateCount,i=a.target;if(h&&i.nodeType&&("click"!==a.type||isNaN(a.button)||a.button<1))for(;i!==this;i=i.parentNode||this)if(1===i.nodeType&&(i.disabled!==!0||"click"!==a.type)){for(d=[],c=0;c<h;c++)f=b[c],e=f.selector+" ",void 0===d[e]&&(d[e]=f.needsContext?r(e,this).index(i)>-1:r.find(e,this,null,[i]).length),d[e]&&d.push(f);d.length&&g.push({elem:i,handlers:d})}return h<b.length&&g.push({elem:this,handlers:b.slice(h)}),g},addProp:function(a,b){Object.defineProperty(r.Event.prototype,a,{enumerable:!0,configurable:!0,get:r.isFunction(b)?function(){if(this.originalEvent)return b(this.originalEvent)}:function(){if(this.originalEvent)return this.originalEvent[a]},set:function(b){Object.defineProperty(this,a,{enumerable:!0,configurable:!0,writable:!0,value:b})}})},fix:function(a){return a[r.expando]?a:new r.Event(a)},special:{load:{noBubble:!0},focus:{trigger:function(){if(this!==va()&&this.focus)return this.focus(),!1},delegateType:"focusin"},blur:{trigger:function(){if(this===va()&&this.blur)return this.blur(),!1},delegateType:"focusout"},click:{trigger:function(){if("checkbox"===this.type&&this.click&&r.nodeName(this,"input"))return this.click(),!1},_default:function(a){return r.nodeName(a.target,"a")}},beforeunload:{postDispatch:function(a){void 0!==a.result&&a.originalEvent&&(a.originalEvent.returnValue=a.result)}}}},r.removeEvent=function(a,b,c){a.removeEventListener&&a.removeEventListener(b,c)},r.Event=function(a,b){return this instanceof r.Event?(a&&a.type?(this.originalEvent=a,this.type=a.type,this.isDefaultPrevented=a.defaultPrevented||void 0===a.defaultPrevented&&a.returnValue===!1?ta:ua,this.target=a.target&&3===a.target.nodeType?a.target.parentNode:a.target,this.currentTarget=a.currentTarget,this.relatedTarget=a.relatedTarget):this.type=a,b&&r.extend(this,b),this.timeStamp=a&&a.timeStamp||r.now(),void(this[r.expando]=!0)):new r.Event(a,b)},r.Event.prototype={constructor:r.Event,isDefaultPrevented:ua,isPropagationStopped:ua,isImmediatePropagationStopped:ua,isSimulated:!1,preventDefault:function(){var a=this.originalEvent;this.isDefaultPrevented=ta,a&&!this.isSimulated&&a.preventDefault()},stopPropagation:function(){var a=this.originalEvent;this.isPropagationStopped=ta,a&&!this.isSimulated&&a.stopPropagation()},stopImmediatePropagation:function(){var a=this.originalEvent;this.isImmediatePropagationStopped=ta,a&&!this.isSimulated&&a.stopImmediatePropagation(),this.stopPropagation()}},r.each({altKey:!0,bubbles:!0,cancelable:!0,changedTouches:!0,ctrlKey:!0,detail:!0,eventPhase:!0,metaKey:!0,pageX:!0,pageY:!0,shiftKey:!0,view:!0,"char":!0,charCode:!0,key:!0,keyCode:!0,button:!0,buttons:!0,clientX:!0,clientY:!0,offsetX:!0,offsetY:!0,pointerId:!0,pointerType:!0,screenX:!0,screenY:!0,targetTouches:!0,toElement:!0,touches:!0,which:function(a){var b=a.button;return null==a.which&&qa.test(a.type)?null!=a.charCode?a.charCode:a.keyCode:!a.which&&void 0!==b&&ra.test(a.type)?1&b?1:2&b?3:4&b?2:0:a.which}},r.event.addProp),r.each({mouseenter:"mouseover",mouseleave:"mouseout",pointerenter:"pointerover",pointerleave:"pointerout"},function(a,b){r.event.special[a]={delegateType:b,bindType:b,handle:function(a){var c,d=this,e=a.relatedTarget,f=a.handleObj;return e&&(e===d||r.contains(d,e))||(a.type=f.origType,c=f.handler.apply(this,arguments),a.type=b),c}}}),r.fn.extend({on:function(a,b,c,d){return wa(this,a,b,c,d)},one:function(a,b,c,d){return wa(this,a,b,c,d,1)},off:function(a,b,c){var d,e;if(a&&a.preventDefault&&a.handleObj)return d=a.handleObj,r(a.delegateTarget).off(d.namespace?d.origType+"."+d.namespace:d.origType,d.selector,d.handler),this;if("object"==typeof a){for(e in a)this.off(e,b,a[e]);return this}return b!==!1&&"function"!=typeof b||(c=b,b=void 0),c===!1&&(c=ua),this.each(function(){r.event.remove(this,a,c,b)})}});var xa=/<(?!area|br|col|embed|hr|img|input|link|meta|param)(([a-z][^\/\0>\x20\t\r\n\f]*)[^>]*)\/>/gi,ya=/<script|<style|<link/i,za=/checked\s*(?:[^=]|=\s*.checked.)/i,Aa=/^true\/(.*)/,Ba=/^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g;function Ca(a,b){return r.nodeName(a,"table")&&r.nodeName(11!==b.nodeType?b:b.firstChild,"tr")?a.getElementsByTagName("tbody")[0]||a:a}function Da(a){return a.type=(null!==a.getAttribute("type"))+"/"+a.type,a}function Ea(a){var b=Aa.exec(a.type);return b?a.type=b[1]:a.removeAttribute("type"),a}function Fa(a,b){var c,d,e,f,g,h,i,j;if(1===b.nodeType){if(V.hasData(a)&&(f=V.access(a),g=V.set(b,f),j=f.events)){delete g.handle,g.events={};for(e in j)for(c=0,d=j[e].length;c<d;c++)r.event.add(b,e,j[e][c])}W.hasData(a)&&(h=W.access(a),i=r.extend({},h),W.set(b,i))}}function Ga(a,b){var c=b.nodeName.toLowerCase();"input"===c&&ha.test(a.type)?b.checked=a.checked:"input"!==c&&"textarea"!==c||(b.defaultValue=a.defaultValue)}function Ha(a,b,c,d){b=g.apply([],b);var e,f,h,i,j,k,l=0,m=a.length,n=m-1,q=b[0],s=r.isFunction(q);if(s||m>1&&"string"==typeof q&&!o.checkClone&&za.test(q))return a.each(function(e){var f=a.eq(e);s&&(b[0]=q.call(this,e,f.html())),Ha(f,b,c,d)});if(m&&(e=oa(b,a[0].ownerDocument,!1,a,d),f=e.firstChild,1===e.childNodes.length&&(e=f),f||d)){for(h=r.map(la(e,"script"),Da),i=h.length;l<m;l++)j=e,l!==n&&(j=r.clone(j,!0,!0),i&&r.merge(h,la(j,"script"))),c.call(a[l],j,l);if(i)for(k=h[h.length-1].ownerDocument,r.map(h,Ea),l=0;l<i;l++)j=h[l],ja.test(j.type||"")&&!V.access(j,"globalEval")&&r.contains(k,j)&&(j.src?r._evalUrl&&r._evalUrl(j.src):p(j.textContent.replace(Ba,""),k))}return a}function Ia(a,b,c){for(var d,e=b?r.filter(b,a):a,f=0;null!=(d=e[f]);f++)c||1!==d.nodeType||r.cleanData(la(d)),d.parentNode&&(c&&r.contains(d.ownerDocument,d)&&ma(la(d,"script")),d.parentNode.removeChild(d));return a}r.extend({htmlPrefilter:function(a){return a.replace(xa,"<$1></$2>")},clone:function(a,b,c){var d,e,f,g,h=a.cloneNode(!0),i=r.contains(a.ownerDocument,a);if(!(o.noCloneChecked||1!==a.nodeType&&11!==a.nodeType||r.isXMLDoc(a)))for(g=la(h),f=la(a),d=0,e=f.length;d<e;d++)Ga(f[d],g[d]);if(b)if(c)for(f=f||la(a),g=g||la(h),d=0,e=f.length;d<e;d++)Fa(f[d],g[d]);else Fa(a,h);return g=la(h,"script"),g.length>0&&ma(g,!i&&la(a,"script")),h},cleanData:function(a){for(var b,c,d,e=r.event.special,f=0;void 0!==(c=a[f]);f++)if(T(c)){if(b=c[V.expando]){if(b.events)for(d in b.events)e[d]?r.event.remove(c,d):r.removeEvent(c,d,b.handle);c[V.expando]=void 0}c[W.expando]&&(c[W.expando]=void 0)}}}),r.fn.extend({detach:function(a){return Ia(this,a,!0)},remove:function(a){return Ia(this,a)},text:function(a){return S(this,function(a){return void 0===a?r.text(this):this.empty().each(function(){1!==this.nodeType&&11!==this.nodeType&&9!==this.nodeType||(this.textContent=a)})},null,a,arguments.length)},append:function(){return Ha(this,arguments,function(a){if(1===this.nodeType||11===this.nodeType||9===this.nodeType){var b=Ca(this,a);b.appendChild(a)}})},prepend:function(){return Ha(this,arguments,function(a){if(1===this.nodeType||11===this.nodeType||9===this.nodeType){var b=Ca(this,a);b.insertBefore(a,b.firstChild)}})},before:function(){return Ha(this,arguments,function(a){this.parentNode&&this.parentNode.insertBefore(a,this)})},after:function(){return Ha(this,arguments,function(a){this.parentNode&&this.parentNode.insertBefore(a,this.nextSibling)})},empty:function(){for(var a,b=0;null!=(a=this[b]);b++)1===a.nodeType&&(r.cleanData(la(a,!1)),a.textContent="");return this},clone:function(a,b){return a=null!=a&&a,b=null==b?a:b,this.map(function(){return r.clone(this,a,b)})},html:function(a){return S(this,function(a){var b=this[0]||{},c=0,d=this.length;if(void 0===a&&1===b.nodeType)return b.innerHTML;if("string"==typeof a&&!ya.test(a)&&!ka[(ia.exec(a)||["",""])[1].toLowerCase()]){a=r.htmlPrefilter(a);try{for(;c<d;c++)b=this[c]||{},1===b.nodeType&&(r.cleanData(la(b,!1)),b.innerHTML=a);b=0}catch(e){}}b&&this.empty().append(a)},null,a,arguments.length)},replaceWith:function(){var a=[];return Ha(this,arguments,function(b){var c=this.parentNode;r.inArray(this,a)<0&&(r.cleanData(la(this)),c&&c.replaceChild(b,this))},a)}}),r.each({appendTo:"append",prependTo:"prepend",insertBefore:"before",insertAfter:"after",replaceAll:"replaceWith"},function(a,b){r.fn[a]=function(a){for(var c,d=[],e=r(a),f=e.length-1,g=0;g<=f;g++)c=g===f?this:this.clone(!0),r(e[g])[b](c),h.apply(d,c.get());return this.pushStack(d)}});var Ja=/^margin/,Ka=new RegExp("^("+$+")(?!px)[a-z%]+$","i"),La=function(b){var c=b.ownerDocument.defaultView;return c&&c.opener||(c=a),c.getComputedStyle(b)};!function(){function b(){if(i){i.style.cssText="box-sizing:border-box;position:relative;display:block;margin:auto;border:1px;padding:1px;top:1%;width:50%",i.innerHTML="",pa.appendChild(h);var b=a.getComputedStyle(i);c="1%"!==b.top,g="2px"===b.marginLeft,e="4px"===b.width,i.style.marginRight="50%",f="4px"===b.marginRight,pa.removeChild(h),i=null}}var c,e,f,g,h=d.createElement("div"),i=d.createElement("div");i.style&&(i.style.backgroundClip="content-box",i.cloneNode(!0).style.backgroundClip="",o.clearCloneStyle="content-box"===i.style.backgroundClip,h.style.cssText="border:0;width:8px;height:0;top:0;left:-9999px;padding:0;margin-top:1px;position:absolute",h.appendChild(i),r.extend(o,{pixelPosition:function(){return b(),c},boxSizingReliable:function(){return b(),e},pixelMarginRight:function(){return b(),f},reliableMarginLeft:function(){return b(),g}}))}();function Ma(a,b,c){var d,e,f,g,h=a.style;return c=c||La(a),c&&(g=c.getPropertyValue(b)||c[b],""!==g||r.contains(a.ownerDocument,a)||(g=r.style(a,b)),!o.pixelMarginRight()&&Ka.test(g)&&Ja.test(b)&&(d=h.width,e=h.minWidth,f=h.maxWidth,h.minWidth=h.maxWidth=h.width=g,g=c.width,h.width=d,h.minWidth=e,h.maxWidth=f)),void 0!==g?g+"":g}function Na(a,b){return{get:function(){return a()?void delete this.get:(this.get=b).apply(this,arguments)}}}var Oa=/^(none|table(?!-c[ea]).+)/,Pa={position:"absolute",visibility:"hidden",display:"block"},Qa={letterSpacing:"0",fontWeight:"400"},Ra=["Webkit","Moz","ms"],Sa=d.createElement("div").style;function Ta(a){if(a in Sa)return a;var b=a[0].toUpperCase()+a.slice(1),c=Ra.length;while(c--)if(a=Ra[c]+b,a in Sa)return a}function Ua(a,b,c){var d=_.exec(b);return d?Math.max(0,d[2]-(c||0))+(d[3]||"px"):b}function Va(a,b,c,d,e){for(var f=c===(d?"border":"content")?4:"width"===b?1:0,g=0;f<4;f+=2)"margin"===c&&(g+=r.css(a,c+aa[f],!0,e)),d?("content"===c&&(g-=r.css(a,"padding"+aa[f],!0,e)),"margin"!==c&&(g-=r.css(a,"border"+aa[f]+"Width",!0,e))):(g+=r.css(a,"padding"+aa[f],!0,e),"padding"!==c&&(g+=r.css(a,"border"+aa[f]+"Width",!0,e)));return g}function Wa(a,b,c){var d,e=!0,f=La(a),g="border-box"===r.css(a,"boxSizing",!1,f);if(a.getClientRects().length&&(d=a.getBoundingClientRect()[b]),d<=0||null==d){if(d=Ma(a,b,f),(d<0||null==d)&&(d=a.style[b]),Ka.test(d))return d;e=g&&(o.boxSizingReliable()||d===a.style[b]),d=parseFloat(d)||0}return d+Va(a,b,c||(g?"border":"content"),e,f)+"px"}r.extend({cssHooks:{opacity:{get:function(a,b){if(b){var c=Ma(a,"opacity");return""===c?"1":c}}}},cssNumber:{animationIterationCount:!0,columnCount:!0,fillOpacity:!0,flexGrow:!0,flexShrink:!0,fontWeight:!0,lineHeight:!0,opacity:!0,order:!0,orphans:!0,widows:!0,zIndex:!0,zoom:!0},cssProps:{"float":"cssFloat"},style:function(a,b,c,d){if(a&&3!==a.nodeType&&8!==a.nodeType&&a.style){var e,f,g,h=r.camelCase(b),i=a.style;return b=r.cssProps[h]||(r.cssProps[h]=Ta(h)||h),g=r.cssHooks[b]||r.cssHooks[h],void 0===c?g&&"get"in g&&void 0!==(e=g.get(a,!1,d))?e:i[b]:(f=typeof c,"string"===f&&(e=_.exec(c))&&e[1]&&(c=da(a,b,e),f="number"),null!=c&&c===c&&("number"===f&&(c+=e&&e[3]||(r.cssNumber[h]?"":"px")),o.clearCloneStyle||""!==c||0!==b.indexOf("background")||(i[b]="inherit"),g&&"set"in g&&void 0===(c=g.set(a,c,d))||(i[b]=c)),void 0)}},css:function(a,b,c,d){var e,f,g,h=r.camelCase(b);return b=r.cssProps[h]||(r.cssProps[h]=Ta(h)||h),g=r.cssHooks[b]||r.cssHooks[h],g&&"get"in g&&(e=g.get(a,!0,c)),void 0===e&&(e=Ma(a,b,d)),"normal"===e&&b in Qa&&(e=Qa[b]),""===c||c?(f=parseFloat(e),c===!0||isFinite(f)?f||0:e):e}}),r.each(["height","width"],function(a,b){r.cssHooks[b]={get:function(a,c,d){if(c)return!Oa.test(r.css(a,"display"))||a.getClientRects().length&&a.getBoundingClientRect().width?Wa(a,b,d):ca(a,Pa,function(){return Wa(a,b,d)})},set:function(a,c,d){var e,f=d&&La(a),g=d&&Va(a,b,d,"border-box"===r.css(a,"boxSizing",!1,f),f);return g&&(e=_.exec(c))&&"px"!==(e[3]||"px")&&(a.style[b]=c,c=r.css(a,b)),Ua(a,c,g)}}}),r.cssHooks.marginLeft=Na(o.reliableMarginLeft,function(a,b){if(b)return(parseFloat(Ma(a,"marginLeft"))||a.getBoundingClientRect().left-ca(a,{marginLeft:0},function(){return a.getBoundingClientRect().left}))+"px"}),r.each({margin:"",padding:"",border:"Width"},function(a,b){r.cssHooks[a+b]={expand:function(c){for(var d=0,e={},f="string"==typeof c?c.split(" "):[c];d<4;d++)e[a+aa[d]+b]=f[d]||f[d-2]||f[0];return e}},Ja.test(a)||(r.cssHooks[a+b].set=Ua)}),r.fn.extend({css:function(a,b){return S(this,function(a,b,c){var d,e,f={},g=0;if(r.isArray(b)){for(d=La(a),e=b.length;g<e;g++)f[b[g]]=r.css(a,b[g],!1,d);return f}return void 0!==c?r.style(a,b,c):r.css(a,b)},a,b,arguments.length>1)}});function Xa(a,b,c,d,e){return new Xa.prototype.init(a,b,c,d,e)}r.Tween=Xa,Xa.prototype={constructor:Xa,init:function(a,b,c,d,e,f){this.elem=a,this.prop=c,this.easing=e||r.easing._default,this.options=b,this.start=this.now=this.cur(),this.end=d,this.unit=f||(r.cssNumber[c]?"":"px")},cur:function(){var a=Xa.propHooks[this.prop];return a&&a.get?a.get(this):Xa.propHooks._default.get(this)},run:function(a){var b,c=Xa.propHooks[this.prop];return this.options.duration?this.pos=b=r.easing[this.easing](a,this.options.duration*a,0,1,this.options.duration):this.pos=b=a,this.now=(this.end-this.start)*b+this.start,this.options.step&&this.options.step.call(this.elem,this.now,this),c&&c.set?c.set(this):Xa.propHooks._default.set(this),this}},Xa.prototype.init.prototype=Xa.prototype,Xa.propHooks={_default:{get:function(a){var b;return 1!==a.elem.nodeType||null!=a.elem[a.prop]&&null==a.elem.style[a.prop]?a.elem[a.prop]:(b=r.css(a.elem,a.prop,""),b&&"auto"!==b?b:0)},set:function(a){r.fx.step[a.prop]?r.fx.step[a.prop](a):1!==a.elem.nodeType||null==a.elem.style[r.cssProps[a.prop]]&&!r.cssHooks[a.prop]?a.elem[a.prop]=a.now:r.style(a.elem,a.prop,a.now+a.unit)}}},Xa.propHooks.scrollTop=Xa.propHooks.scrollLeft={set:function(a){a.elem.nodeType&&a.elem.parentNode&&(a.elem[a.prop]=a.now)}},r.easing={linear:function(a){return a},swing:function(a){return.5-Math.cos(a*Math.PI)/2},_default:"swing"},r.fx=Xa.prototype.init,r.fx.step={};var Ya,Za,$a=/^(?:toggle|show|hide)$/,_a=/queueHooks$/;function ab(){Za&&(a.requestAnimationFrame(ab),r.fx.tick())}function bb(){return a.setTimeout(function(){Ya=void 0}),Ya=r.now()}function cb(a,b){var c,d=0,e={height:a};for(b=b?1:0;d<4;d+=2-b)c=aa[d],e["margin"+c]=e["padding"+c]=a;return b&&(e.opacity=e.width=a),e}function db(a,b,c){for(var d,e=(gb.tweeners[b]||[]).concat(gb.tweeners["*"]),f=0,g=e.length;f<g;f++)if(d=e[f].call(c,b,a))return d}function eb(a,b,c){var d,e,f,g,h,i,j,k,l="width"in b||"height"in b,m=this,n={},o=a.style,p=a.nodeType&&ba(a),q=V.get(a,"fxshow");c.queue||(g=r._queueHooks(a,"fx"),null==g.unqueued&&(g.unqueued=0,h=g.empty.fire,g.empty.fire=function(){g.unqueued||h()}),g.unqueued++,m.always(function(){m.always(function(){g.unqueued--,r.queue(a,"fx").length||g.empty.fire()})}));for(d in b)if(e=b[d],$a.test(e)){if(delete b[d],f=f||"toggle"===e,e===(p?"hide":"show")){if("show"!==e||!q||void 0===q[d])continue;p=!0}n[d]=q&&q[d]||r.style(a,d)}if(i=!r.isEmptyObject(b),i||!r.isEmptyObject(n)){l&&1===a.nodeType&&(c.overflow=[o.overflow,o.overflowX,o.overflowY],j=q&&q.display,null==j&&(j=V.get(a,"display")),k=r.css(a,"display"),"none"===k&&(j?k=j:(ga([a],!0),j=a.style.display||j,k=r.css(a,"display"),ga([a]))),("inline"===k||"inline-block"===k&&null!=j)&&"none"===r.css(a,"float")&&(i||(m.done(function(){o.display=j}),null==j&&(k=o.display,j="none"===k?"":k)),o.display="inline-block")),c.overflow&&(o.overflow="hidden",m.always(function(){o.overflow=c.overflow[0],o.overflowX=c.overflow[1],o.overflowY=c.overflow[2]})),i=!1;for(d in n)i||(q?"hidden"in q&&(p=q.hidden):q=V.access(a,"fxshow",{display:j}),f&&(q.hidden=!p),p&&ga([a],!0),m.done(function(){p||ga([a]),V.remove(a,"fxshow");for(d in n)r.style(a,d,n[d])})),i=db(p?q[d]:0,d,m),d in q||(q[d]=i.start,p&&(i.end=i.start,i.start=0))}}function fb(a,b){var c,d,e,f,g;for(c in a)if(d=r.camelCase(c),e=b[d],f=a[c],r.isArray(f)&&(e=f[1],f=a[c]=f[0]),c!==d&&(a[d]=f,delete a[c]),g=r.cssHooks[d],g&&"expand"in g){f=g.expand(f),delete a[d];for(c in f)c in a||(a[c]=f[c],b[c]=e)}else b[d]=e}function gb(a,b,c){var d,e,f=0,g=gb.prefilters.length,h=r.Deferred().always(function(){delete i.elem}),i=function(){if(e)return!1;for(var b=Ya||bb(),c=Math.max(0,j.startTime+j.duration-b),d=c/j.duration||0,f=1-d,g=0,i=j.tweens.length;g<i;g++)j.tweens[g].run(f);return h.notifyWith(a,[j,f,c]),f<1&&i?c:(h.resolveWith(a,[j]),!1)},j=h.promise({elem:a,props:r.extend({},b),opts:r.extend(!0,{specialEasing:{},easing:r.easing._default},c),originalProperties:b,originalOptions:c,startTime:Ya||bb(),duration:c.duration,tweens:[],createTween:function(b,c){var d=r.Tween(a,j.opts,b,c,j.opts.specialEasing[b]||j.opts.easing);return j.tweens.push(d),d},stop:function(b){var c=0,d=b?j.tweens.length:0;if(e)return this;for(e=!0;c<d;c++)j.tweens[c].run(1);return b?(h.notifyWith(a,[j,1,0]),h.resolveWith(a,[j,b])):h.rejectWith(a,[j,b]),this}}),k=j.props;for(fb(k,j.opts.specialEasing);f<g;f++)if(d=gb.prefilters[f].call(j,a,k,j.opts))return r.isFunction(d.stop)&&(r._queueHooks(j.elem,j.opts.queue).stop=r.proxy(d.stop,d)),d;return r.map(k,db,j),r.isFunction(j.opts.start)&&j.opts.start.call(a,j),r.fx.timer(r.extend(i,{elem:a,anim:j,queue:j.opts.queue})),j.progress(j.opts.progress).done(j.opts.done,j.opts.complete).fail(j.opts.fail).always(j.opts.always)}r.Animation=r.extend(gb,{tweeners:{"*":[function(a,b){var c=this.createTween(a,b);return da(c.elem,a,_.exec(b),c),c}]},tweener:function(a,b){r.isFunction(a)?(b=a,a=["*"]):a=a.match(K);for(var c,d=0,e=a.length;d<e;d++)c=a[d],gb.tweeners[c]=gb.tweeners[c]||[],gb.tweeners[c].unshift(b)},prefilters:[eb],prefilter:function(a,b){b?gb.prefilters.unshift(a):gb.prefilters.push(a)}}),r.speed=function(a,b,c){var e=a&&"object"==typeof a?r.extend({},a):{complete:c||!c&&b||r.isFunction(a)&&a,duration:a,easing:c&&b||b&&!r.isFunction(b)&&b};return r.fx.off||d.hidden?e.duration=0:e.duration="number"==typeof e.duration?e.duration:e.duration in r.fx.speeds?r.fx.speeds[e.duration]:r.fx.speeds._default,null!=e.queue&&e.queue!==!0||(e.queue="fx"),e.old=e.complete,e.complete=function(){r.isFunction(e.old)&&e.old.call(this),e.queue&&r.dequeue(this,e.queue)},e},r.fn.extend({fadeTo:function(a,b,c,d){return this.filter(ba).css("opacity",0).show().end().animate({opacity:b},a,c,d)},animate:function(a,b,c,d){var e=r.isEmptyObject(a),f=r.speed(b,c,d),g=function(){var b=gb(this,r.extend({},a),f);(e||V.get(this,"finish"))&&b.stop(!0)};return g.finish=g,e||f.queue===!1?this.each(g):this.queue(f.queue,g)},stop:function(a,b,c){var d=function(a){var b=a.stop;delete a.stop,b(c)};return"string"!=typeof a&&(c=b,b=a,a=void 0),b&&a!==!1&&this.queue(a||"fx",[]),this.each(function(){var b=!0,e=null!=a&&a+"queueHooks",f=r.timers,g=V.get(this);if(e)g[e]&&g[e].stop&&d(g[e]);else for(e in g)g[e]&&g[e].stop&&_a.test(e)&&d(g[e]);for(e=f.length;e--;)f[e].elem!==this||null!=a&&f[e].queue!==a||(f[e].anim.stop(c),b=!1,f.splice(e,1));!b&&c||r.dequeue(this,a)})},finish:function(a){return a!==!1&&(a=a||"fx"),this.each(function(){var b,c=V.get(this),d=c[a+"queue"],e=c[a+"queueHooks"],f=r.timers,g=d?d.length:0;for(c.finish=!0,r.queue(this,a,[]),e&&e.stop&&e.stop.call(this,!0),b=f.length;b--;)f[b].elem===this&&f[b].queue===a&&(f[b].anim.stop(!0),f.splice(b,1));for(b=0;b<g;b++)d[b]&&d[b].finish&&d[b].finish.call(this);delete c.finish})}}),r.each(["toggle","show","hide"],function(a,b){var c=r.fn[b];r.fn[b]=function(a,d,e){return null==a||"boolean"==typeof a?c.apply(this,arguments):this.animate(cb(b,!0),a,d,e)}}),r.each({slideDown:cb("show"),slideUp:cb("hide"),slideToggle:cb("toggle"),fadeIn:{opacity:"show"},fadeOut:{opacity:"hide"},fadeToggle:{opacity:"toggle"}},function(a,b){r.fn[a]=function(a,c,d){return this.animate(b,a,c,d)}}),r.timers=[],r.fx.tick=function(){var a,b=0,c=r.timers;for(Ya=r.now();b<c.length;b++)a=c[b],a()||c[b]!==a||c.splice(b--,1);c.length||r.fx.stop(),Ya=void 0},r.fx.timer=function(a){r.timers.push(a),a()?r.fx.start():r.timers.pop()},r.fx.interval=13,r.fx.start=function(){Za||(Za=a.requestAnimationFrame?a.requestAnimationFrame(ab):a.setInterval(r.fx.tick,r.fx.interval))},r.fx.stop=function(){a.cancelAnimationFrame?a.cancelAnimationFrame(Za):a.clearInterval(Za),Za=null},r.fx.speeds={slow:600,fast:200,_default:400},r.fn.delay=function(b,c){return b=r.fx?r.fx.speeds[b]||b:b,c=c||"fx",this.queue(c,function(c,d){var e=a.setTimeout(c,b);d.stop=function(){a.clearTimeout(e)}})},function(){var a=d.createElement("input"),b=d.createElement("select"),c=b.appendChild(d.createElement("option"));a.type="checkbox",o.checkOn=""!==a.value,o.optSelected=c.selected,a=d.createElement("input"),a.value="t",a.type="radio",o.radioValue="t"===a.value}();var hb,ib=r.expr.attrHandle;r.fn.extend({attr:function(a,b){return S(this,r.attr,a,b,arguments.length>1)},removeAttr:function(a){return this.each(function(){r.removeAttr(this,a)})}}),r.extend({attr:function(a,b,c){var d,e,f=a.nodeType;if(3!==f&&8!==f&&2!==f)return"undefined"==typeof a.getAttribute?r.prop(a,b,c):(1===f&&r.isXMLDoc(a)||(e=r.attrHooks[b.toLowerCase()]||(r.expr.match.bool.test(b)?hb:void 0)),void 0!==c?null===c?void r.removeAttr(a,b):e&&"set"in e&&void 0!==(d=e.set(a,c,b))?d:(a.setAttribute(b,c+""),c):e&&"get"in e&&null!==(d=e.get(a,b))?d:(d=r.find.attr(a,b),null==d?void 0:d))},attrHooks:{type:{set:function(a,b){if(!o.radioValue&&"radio"===b&&r.nodeName(a,"input")){var c=a.value;return a.setAttribute("type",b),c&&(a.value=c),b}}}},removeAttr:function(a,b){var c,d=0,e=b&&b.match(K);
 if(e&&1===a.nodeType)while(c=e[d++])a.removeAttribute(c)}}),hb={set:function(a,b,c){return b===!1?r.removeAttr(a,c):a.setAttribute(c,c),c}},r.each(r.expr.match.bool.source.match(/\w+/g),function(a,b){var c=ib[b]||r.find.attr;ib[b]=function(a,b,d){var e,f,g=b.toLowerCase();return d||(f=ib[g],ib[g]=e,e=null!=c(a,b,d)?g:null,ib[g]=f),e}});var jb=/^(?:input|select|textarea|button)$/i,kb=/^(?:a|area)$/i;r.fn.extend({prop:function(a,b){return S(this,r.prop,a,b,arguments.length>1)},removeProp:function(a){return this.each(function(){delete this[r.propFix[a]||a]})}}),r.extend({prop:function(a,b,c){var d,e,f=a.nodeType;if(3!==f&&8!==f&&2!==f)return 1===f&&r.isXMLDoc(a)||(b=r.propFix[b]||b,e=r.propHooks[b]),void 0!==c?e&&"set"in e&&void 0!==(d=e.set(a,c,b))?d:a[b]=c:e&&"get"in e&&null!==(d=e.get(a,b))?d:a[b]},propHooks:{tabIndex:{get:function(a){var b=r.find.attr(a,"tabindex");return b?parseInt(b,10):jb.test(a.nodeName)||kb.test(a.nodeName)&&a.href?0:-1}}},propFix:{"for":"htmlFor","class":"className"}}),o.optSelected||(r.propHooks.selected={get:function(a){var b=a.parentNode;return b&&b.parentNode&&b.parentNode.selectedIndex,null},set:function(a){var b=a.parentNode;b&&(b.selectedIndex,b.parentNode&&b.parentNode.selectedIndex)}}),r.each(["tabIndex","readOnly","maxLength","cellSpacing","cellPadding","rowSpan","colSpan","useMap","frameBorder","contentEditable"],function(){r.propFix[this.toLowerCase()]=this});var lb=/[\t\r\n\f]/g;function mb(a){return a.getAttribute&&a.getAttribute("class")||""}r.fn.extend({addClass:function(a){var b,c,d,e,f,g,h,i=0;if(r.isFunction(a))return this.each(function(b){r(this).addClass(a.call(this,b,mb(this)))});if("string"==typeof a&&a){b=a.match(K)||[];while(c=this[i++])if(e=mb(c),d=1===c.nodeType&&(" "+e+" ").replace(lb," ")){g=0;while(f=b[g++])d.indexOf(" "+f+" ")<0&&(d+=f+" ");h=r.trim(d),e!==h&&c.setAttribute("class",h)}}return this},removeClass:function(a){var b,c,d,e,f,g,h,i=0;if(r.isFunction(a))return this.each(function(b){r(this).removeClass(a.call(this,b,mb(this)))});if(!arguments.length)return this.attr("class","");if("string"==typeof a&&a){b=a.match(K)||[];while(c=this[i++])if(e=mb(c),d=1===c.nodeType&&(" "+e+" ").replace(lb," ")){g=0;while(f=b[g++])while(d.indexOf(" "+f+" ")>-1)d=d.replace(" "+f+" "," ");h=r.trim(d),e!==h&&c.setAttribute("class",h)}}return this},toggleClass:function(a,b){var c=typeof a;return"boolean"==typeof b&&"string"===c?b?this.addClass(a):this.removeClass(a):r.isFunction(a)?this.each(function(c){r(this).toggleClass(a.call(this,c,mb(this),b),b)}):this.each(function(){var b,d,e,f;if("string"===c){d=0,e=r(this),f=a.match(K)||[];while(b=f[d++])e.hasClass(b)?e.removeClass(b):e.addClass(b)}else void 0!==a&&"boolean"!==c||(b=mb(this),b&&V.set(this,"__className__",b),this.setAttribute&&this.setAttribute("class",b||a===!1?"":V.get(this,"__className__")||""))})},hasClass:function(a){var b,c,d=0;b=" "+a+" ";while(c=this[d++])if(1===c.nodeType&&(" "+mb(c)+" ").replace(lb," ").indexOf(b)>-1)return!0;return!1}});var nb=/\r/g,ob=/[\x20\t\r\n\f]+/g;r.fn.extend({val:function(a){var b,c,d,e=this[0];{if(arguments.length)return d=r.isFunction(a),this.each(function(c){var e;1===this.nodeType&&(e=d?a.call(this,c,r(this).val()):a,null==e?e="":"number"==typeof e?e+="":r.isArray(e)&&(e=r.map(e,function(a){return null==a?"":a+""})),b=r.valHooks[this.type]||r.valHooks[this.nodeName.toLowerCase()],b&&"set"in b&&void 0!==b.set(this,e,"value")||(this.value=e))});if(e)return b=r.valHooks[e.type]||r.valHooks[e.nodeName.toLowerCase()],b&&"get"in b&&void 0!==(c=b.get(e,"value"))?c:(c=e.value,"string"==typeof c?c.replace(nb,""):null==c?"":c)}}}),r.extend({valHooks:{option:{get:function(a){var b=r.find.attr(a,"value");return null!=b?b:r.trim(r.text(a)).replace(ob," ")}},select:{get:function(a){for(var b,c,d=a.options,e=a.selectedIndex,f="select-one"===a.type,g=f?null:[],h=f?e+1:d.length,i=e<0?h:f?e:0;i<h;i++)if(c=d[i],(c.selected||i===e)&&!c.disabled&&(!c.parentNode.disabled||!r.nodeName(c.parentNode,"optgroup"))){if(b=r(c).val(),f)return b;g.push(b)}return g},set:function(a,b){var c,d,e=a.options,f=r.makeArray(b),g=e.length;while(g--)d=e[g],(d.selected=r.inArray(r.valHooks.option.get(d),f)>-1)&&(c=!0);return c||(a.selectedIndex=-1),f}}}}),r.each(["radio","checkbox"],function(){r.valHooks[this]={set:function(a,b){if(r.isArray(b))return a.checked=r.inArray(r(a).val(),b)>-1}},o.checkOn||(r.valHooks[this].get=function(a){return null===a.getAttribute("value")?"on":a.value})});var pb=/^(?:focusinfocus|focusoutblur)$/;r.extend(r.event,{trigger:function(b,c,e,f){var g,h,i,j,k,m,n,o=[e||d],p=l.call(b,"type")?b.type:b,q=l.call(b,"namespace")?b.namespace.split("."):[];if(h=i=e=e||d,3!==e.nodeType&&8!==e.nodeType&&!pb.test(p+r.event.triggered)&&(p.indexOf(".")>-1&&(q=p.split("."),p=q.shift(),q.sort()),k=p.indexOf(":")<0&&"on"+p,b=b[r.expando]?b:new r.Event(p,"object"==typeof b&&b),b.isTrigger=f?2:3,b.namespace=q.join("."),b.rnamespace=b.namespace?new RegExp("(^|\\.)"+q.join("\\.(?:.*\\.|)")+"(\\.|$)"):null,b.result=void 0,b.target||(b.target=e),c=null==c?[b]:r.makeArray(c,[b]),n=r.event.special[p]||{},f||!n.trigger||n.trigger.apply(e,c)!==!1)){if(!f&&!n.noBubble&&!r.isWindow(e)){for(j=n.delegateType||p,pb.test(j+p)||(h=h.parentNode);h;h=h.parentNode)o.push(h),i=h;i===(e.ownerDocument||d)&&o.push(i.defaultView||i.parentWindow||a)}g=0;while((h=o[g++])&&!b.isPropagationStopped())b.type=g>1?j:n.bindType||p,m=(V.get(h,"events")||{})[b.type]&&V.get(h,"handle"),m&&m.apply(h,c),m=k&&h[k],m&&m.apply&&T(h)&&(b.result=m.apply(h,c),b.result===!1&&b.preventDefault());return b.type=p,f||b.isDefaultPrevented()||n._default&&n._default.apply(o.pop(),c)!==!1||!T(e)||k&&r.isFunction(e[p])&&!r.isWindow(e)&&(i=e[k],i&&(e[k]=null),r.event.triggered=p,e[p](),r.event.triggered=void 0,i&&(e[k]=i)),b.result}},simulate:function(a,b,c){var d=r.extend(new r.Event,c,{type:a,isSimulated:!0});r.event.trigger(d,null,b)}}),r.fn.extend({trigger:function(a,b){return this.each(function(){r.event.trigger(a,b,this)})},triggerHandler:function(a,b){var c=this[0];if(c)return r.event.trigger(a,b,c,!0)}}),r.each("blur focus focusin focusout resize scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup contextmenu".split(" "),function(a,b){r.fn[b]=function(a,c){return arguments.length>0?this.on(b,null,a,c):this.trigger(b)}}),r.fn.extend({hover:function(a,b){return this.mouseenter(a).mouseleave(b||a)}}),o.focusin="onfocusin"in a,o.focusin||r.each({focus:"focusin",blur:"focusout"},function(a,b){var c=function(a){r.event.simulate(b,a.target,r.event.fix(a))};r.event.special[b]={setup:function(){var d=this.ownerDocument||this,e=V.access(d,b);e||d.addEventListener(a,c,!0),V.access(d,b,(e||0)+1)},teardown:function(){var d=this.ownerDocument||this,e=V.access(d,b)-1;e?V.access(d,b,e):(d.removeEventListener(a,c,!0),V.remove(d,b))}}});var qb=a.location,rb=r.now(),sb=/\?/;r.parseXML=function(b){var c;if(!b||"string"!=typeof b)return null;try{c=(new a.DOMParser).parseFromString(b,"text/xml")}catch(d){c=void 0}return c&&!c.getElementsByTagName("parsererror").length||r.error("Invalid XML: "+b),c};var tb=/\[\]$/,ub=/\r?\n/g,vb=/^(?:submit|button|image|reset|file)$/i,wb=/^(?:input|select|textarea|keygen)/i;function xb(a,b,c,d){var e;if(r.isArray(b))r.each(b,function(b,e){c||tb.test(a)?d(a,e):xb(a+"["+("object"==typeof e&&null!=e?b:"")+"]",e,c,d)});else if(c||"object"!==r.type(b))d(a,b);else for(e in b)xb(a+"["+e+"]",b[e],c,d)}r.param=function(a,b){var c,d=[],e=function(a,b){var c=r.isFunction(b)?b():b;d[d.length]=encodeURIComponent(a)+"="+encodeURIComponent(null==c?"":c)};if(r.isArray(a)||a.jquery&&!r.isPlainObject(a))r.each(a,function(){e(this.name,this.value)});else for(c in a)xb(c,a[c],b,e);return d.join("&")},r.fn.extend({serialize:function(){return r.param(this.serializeArray())},serializeArray:function(){return this.map(function(){var a=r.prop(this,"elements");return a?r.makeArray(a):this}).filter(function(){var a=this.type;return this.name&&!r(this).is(":disabled")&&wb.test(this.nodeName)&&!vb.test(a)&&(this.checked||!ha.test(a))}).map(function(a,b){var c=r(this).val();return null==c?null:r.isArray(c)?r.map(c,function(a){return{name:b.name,value:a.replace(ub,"\r\n")}}):{name:b.name,value:c.replace(ub,"\r\n")}}).get()}});var yb=/%20/g,zb=/#.*$/,Ab=/([?&])_=[^&]*/,Bb=/^(.*?):[ \t]*([^\r\n]*)$/gm,Cb=/^(?:about|app|app-storage|.+-extension|file|res|widget):$/,Db=/^(?:GET|HEAD)$/,Eb=/^\/\//,Fb={},Gb={},Hb="*/".concat("*"),Ib=d.createElement("a");Ib.href=qb.href;function Jb(a){return function(b,c){"string"!=typeof b&&(c=b,b="*");var d,e=0,f=b.toLowerCase().match(K)||[];if(r.isFunction(c))while(d=f[e++])"+"===d[0]?(d=d.slice(1)||"*",(a[d]=a[d]||[]).unshift(c)):(a[d]=a[d]||[]).push(c)}}function Kb(a,b,c,d){var e={},f=a===Gb;function g(h){var i;return e[h]=!0,r.each(a[h]||[],function(a,h){var j=h(b,c,d);return"string"!=typeof j||f||e[j]?f?!(i=j):void 0:(b.dataTypes.unshift(j),g(j),!1)}),i}return g(b.dataTypes[0])||!e["*"]&&g("*")}function Lb(a,b){var c,d,e=r.ajaxSettings.flatOptions||{};for(c in b)void 0!==b[c]&&((e[c]?a:d||(d={}))[c]=b[c]);return d&&r.extend(!0,a,d),a}function Mb(a,b,c){var d,e,f,g,h=a.contents,i=a.dataTypes;while("*"===i[0])i.shift(),void 0===d&&(d=a.mimeType||b.getResponseHeader("Content-Type"));if(d)for(e in h)if(h[e]&&h[e].test(d)){i.unshift(e);break}if(i[0]in c)f=i[0];else{for(e in c){if(!i[0]||a.converters[e+" "+i[0]]){f=e;break}g||(g=e)}f=f||g}if(f)return f!==i[0]&&i.unshift(f),c[f]}function Nb(a,b,c,d){var e,f,g,h,i,j={},k=a.dataTypes.slice();if(k[1])for(g in a.converters)j[g.toLowerCase()]=a.converters[g];f=k.shift();while(f)if(a.responseFields[f]&&(c[a.responseFields[f]]=b),!i&&d&&a.dataFilter&&(b=a.dataFilter(b,a.dataType)),i=f,f=k.shift())if("*"===f)f=i;else if("*"!==i&&i!==f){if(g=j[i+" "+f]||j["* "+f],!g)for(e in j)if(h=e.split(" "),h[1]===f&&(g=j[i+" "+h[0]]||j["* "+h[0]])){g===!0?g=j[e]:j[e]!==!0&&(f=h[0],k.unshift(h[1]));break}if(g!==!0)if(g&&a["throws"])b=g(b);else try{b=g(b)}catch(l){return{state:"parsererror",error:g?l:"No conversion from "+i+" to "+f}}}return{state:"success",data:b}}r.extend({active:0,lastModified:{},etag:{},ajaxSettings:{url:qb.href,type:"GET",isLocal:Cb.test(qb.protocol),global:!0,processData:!0,async:!0,contentType:"application/x-www-form-urlencoded; charset=UTF-8",accepts:{"*":Hb,text:"text/plain",html:"text/html",xml:"application/xml, text/xml",json:"application/json, text/javascript"},contents:{xml:/\bxml\b/,html:/\bhtml/,json:/\bjson\b/},responseFields:{xml:"responseXML",text:"responseText",json:"responseJSON"},converters:{"* text":String,"text html":!0,"text json":JSON.parse,"text xml":r.parseXML},flatOptions:{url:!0,context:!0}},ajaxSetup:function(a,b){return b?Lb(Lb(a,r.ajaxSettings),b):Lb(r.ajaxSettings,a)},ajaxPrefilter:Jb(Fb),ajaxTransport:Jb(Gb),ajax:function(b,c){"object"==typeof b&&(c=b,b=void 0),c=c||{};var e,f,g,h,i,j,k,l,m,n,o=r.ajaxSetup({},c),p=o.context||o,q=o.context&&(p.nodeType||p.jquery)?r(p):r.event,s=r.Deferred(),t=r.Callbacks("once memory"),u=o.statusCode||{},v={},w={},x="canceled",y={readyState:0,getResponseHeader:function(a){var b;if(k){if(!h){h={};while(b=Bb.exec(g))h[b[1].toLowerCase()]=b[2]}b=h[a.toLowerCase()]}return null==b?null:b},getAllResponseHeaders:function(){return k?g:null},setRequestHeader:function(a,b){return null==k&&(a=w[a.toLowerCase()]=w[a.toLowerCase()]||a,v[a]=b),this},overrideMimeType:function(a){return null==k&&(o.mimeType=a),this},statusCode:function(a){var b;if(a)if(k)y.always(a[y.status]);else for(b in a)u[b]=[u[b],a[b]];return this},abort:function(a){var b=a||x;return e&&e.abort(b),A(0,b),this}};if(s.promise(y),o.url=((b||o.url||qb.href)+"").replace(Eb,qb.protocol+"//"),o.type=c.method||c.type||o.method||o.type,o.dataTypes=(o.dataType||"*").toLowerCase().match(K)||[""],null==o.crossDomain){j=d.createElement("a");try{j.href=o.url,j.href=j.href,o.crossDomain=Ib.protocol+"//"+Ib.host!=j.protocol+"//"+j.host}catch(z){o.crossDomain=!0}}if(o.data&&o.processData&&"string"!=typeof o.data&&(o.data=r.param(o.data,o.traditional)),Kb(Fb,o,c,y),k)return y;l=r.event&&o.global,l&&0===r.active++&&r.event.trigger("ajaxStart"),o.type=o.type.toUpperCase(),o.hasContent=!Db.test(o.type),f=o.url.replace(zb,""),o.hasContent?o.data&&o.processData&&0===(o.contentType||"").indexOf("application/x-www-form-urlencoded")&&(o.data=o.data.replace(yb,"+")):(n=o.url.slice(f.length),o.data&&(f+=(sb.test(f)?"&":"?")+o.data,delete o.data),o.cache===!1&&(f=f.replace(Ab,""),n=(sb.test(f)?"&":"?")+"_="+rb++ +n),o.url=f+n),o.ifModified&&(r.lastModified[f]&&y.setRequestHeader("If-Modified-Since",r.lastModified[f]),r.etag[f]&&y.setRequestHeader("If-None-Match",r.etag[f])),(o.data&&o.hasContent&&o.contentType!==!1||c.contentType)&&y.setRequestHeader("Content-Type",o.contentType),y.setRequestHeader("Accept",o.dataTypes[0]&&o.accepts[o.dataTypes[0]]?o.accepts[o.dataTypes[0]]+("*"!==o.dataTypes[0]?", "+Hb+"; q=0.01":""):o.accepts["*"]);for(m in o.headers)y.setRequestHeader(m,o.headers[m]);if(o.beforeSend&&(o.beforeSend.call(p,y,o)===!1||k))return y.abort();if(x="abort",t.add(o.complete),y.done(o.success),y.fail(o.error),e=Kb(Gb,o,c,y)){if(y.readyState=1,l&&q.trigger("ajaxSend",[y,o]),k)return y;o.async&&o.timeout>0&&(i=a.setTimeout(function(){y.abort("timeout")},o.timeout));try{k=!1,e.send(v,A)}catch(z){if(k)throw z;A(-1,z)}}else A(-1,"No Transport");function A(b,c,d,h){var j,m,n,v,w,x=c;k||(k=!0,i&&a.clearTimeout(i),e=void 0,g=h||"",y.readyState=b>0?4:0,j=b>=200&&b<300||304===b,d&&(v=Mb(o,y,d)),v=Nb(o,v,y,j),j?(o.ifModified&&(w=y.getResponseHeader("Last-Modified"),w&&(r.lastModified[f]=w),w=y.getResponseHeader("etag"),w&&(r.etag[f]=w)),204===b||"HEAD"===o.type?x="nocontent":304===b?x="notmodified":(x=v.state,m=v.data,n=v.error,j=!n)):(n=x,!b&&x||(x="error",b<0&&(b=0))),y.status=b,y.statusText=(c||x)+"",j?s.resolveWith(p,[m,x,y]):s.rejectWith(p,[y,x,n]),y.statusCode(u),u=void 0,l&&q.trigger(j?"ajaxSuccess":"ajaxError",[y,o,j?m:n]),t.fireWith(p,[y,x]),l&&(q.trigger("ajaxComplete",[y,o]),--r.active||r.event.trigger("ajaxStop")))}return y},getJSON:function(a,b,c){return r.get(a,b,c,"json")},getScript:function(a,b){return r.get(a,void 0,b,"script")}}),r.each(["get","post"],function(a,b){r[b]=function(a,c,d,e){return r.isFunction(c)&&(e=e||d,d=c,c=void 0),r.ajax(r.extend({url:a,type:b,dataType:e,data:c,success:d},r.isPlainObject(a)&&a))}}),r._evalUrl=function(a){return r.ajax({url:a,type:"GET",dataType:"script",cache:!0,async:!1,global:!1,"throws":!0})},r.fn.extend({wrapAll:function(a){var b;return this[0]&&(r.isFunction(a)&&(a=a.call(this[0])),b=r(a,this[0].ownerDocument).eq(0).clone(!0),this[0].parentNode&&b.insertBefore(this[0]),b.map(function(){var a=this;while(a.firstElementChild)a=a.firstElementChild;return a}).append(this)),this},wrapInner:function(a){return r.isFunction(a)?this.each(function(b){r(this).wrapInner(a.call(this,b))}):this.each(function(){var b=r(this),c=b.contents();c.length?c.wrapAll(a):b.append(a)})},wrap:function(a){var b=r.isFunction(a);return this.each(function(c){r(this).wrapAll(b?a.call(this,c):a)})},unwrap:function(a){return this.parent(a).not("body").each(function(){r(this).replaceWith(this.childNodes)}),this}}),r.expr.pseudos.hidden=function(a){return!r.expr.pseudos.visible(a)},r.expr.pseudos.visible=function(a){return!!(a.offsetWidth||a.offsetHeight||a.getClientRects().length)},r.ajaxSettings.xhr=function(){try{return new a.XMLHttpRequest}catch(b){}};var Ob={0:200,1223:204},Pb=r.ajaxSettings.xhr();o.cors=!!Pb&&"withCredentials"in Pb,o.ajax=Pb=!!Pb,r.ajaxTransport(function(b){var c,d;if(o.cors||Pb&&!b.crossDomain)return{send:function(e,f){var g,h=b.xhr();if(h.open(b.type,b.url,b.async,b.username,b.password),b.xhrFields)for(g in b.xhrFields)h[g]=b.xhrFields[g];b.mimeType&&h.overrideMimeType&&h.overrideMimeType(b.mimeType),b.crossDomain||e["X-Requested-With"]||(e["X-Requested-With"]="XMLHttpRequest");for(g in e)h.setRequestHeader(g,e[g]);c=function(a){return function(){c&&(c=d=h.onload=h.onerror=h.onabort=h.onreadystatechange=null,"abort"===a?h.abort():"error"===a?"number"!=typeof h.status?f(0,"error"):f(h.status,h.statusText):f(Ob[h.status]||h.status,h.statusText,"text"!==(h.responseType||"text")||"string"!=typeof h.responseText?{binary:h.response}:{text:h.responseText},h.getAllResponseHeaders()))}},h.onload=c(),d=h.onerror=c("error"),void 0!==h.onabort?h.onabort=d:h.onreadystatechange=function(){4===h.readyState&&a.setTimeout(function(){c&&d()})},c=c("abort");try{h.send(b.hasContent&&b.data||null)}catch(i){if(c)throw i}},abort:function(){c&&c()}}}),r.ajaxPrefilter(function(a){a.crossDomain&&(a.contents.script=!1)}),r.ajaxSetup({accepts:{script:"text/javascript, application/javascript, application/ecmascript, application/x-ecmascript"},contents:{script:/\b(?:java|ecma)script\b/},converters:{"text script":function(a){return r.globalEval(a),a}}}),r.ajaxPrefilter("script",function(a){void 0===a.cache&&(a.cache=!1),a.crossDomain&&(a.type="GET")}),r.ajaxTransport("script",function(a){if(a.crossDomain){var b,c;return{send:function(e,f){b=r("<script>").prop({charset:a.scriptCharset,src:a.url}).on("load error",c=function(a){b.remove(),c=null,a&&f("error"===a.type?404:200,a.type)}),d.head.appendChild(b[0])},abort:function(){c&&c()}}}});var Qb=[],Rb=/(=)\?(?=&|$)|\?\?/;r.ajaxSetup({jsonp:"callback",jsonpCallback:function(){var a=Qb.pop()||r.expando+"_"+rb++;return this[a]=!0,a}}),r.ajaxPrefilter("json jsonp",function(b,c,d){var e,f,g,h=b.jsonp!==!1&&(Rb.test(b.url)?"url":"string"==typeof b.data&&0===(b.contentType||"").indexOf("application/x-www-form-urlencoded")&&Rb.test(b.data)&&"data");if(h||"jsonp"===b.dataTypes[0])return e=b.jsonpCallback=r.isFunction(b.jsonpCallback)?b.jsonpCallback():b.jsonpCallback,h?b[h]=b[h].replace(Rb,"$1"+e):b.jsonp!==!1&&(b.url+=(sb.test(b.url)?"&":"?")+b.jsonp+"="+e),b.converters["script json"]=function(){return g||r.error(e+" was not called"),g[0]},b.dataTypes[0]="json",f=a[e],a[e]=function(){g=arguments},d.always(function(){void 0===f?r(a).removeProp(e):a[e]=f,b[e]&&(b.jsonpCallback=c.jsonpCallback,Qb.push(e)),g&&r.isFunction(f)&&f(g[0]),g=f=void 0}),"script"}),o.createHTMLDocument=function(){var a=d.implementation.createHTMLDocument("").body;return a.innerHTML="<form></form><form></form>",2===a.childNodes.length}(),r.parseHTML=function(a,b,c){if("string"!=typeof a)return[];"boolean"==typeof b&&(c=b,b=!1);var e,f,g;return b||(o.createHTMLDocument?(b=d.implementation.createHTMLDocument(""),e=b.createElement("base"),e.href=d.location.href,b.head.appendChild(e)):b=d),f=B.exec(a),g=!c&&[],f?[b.createElement(f[1])]:(f=oa([a],b,g),g&&g.length&&r(g).remove(),r.merge([],f.childNodes))},r.fn.load=function(a,b,c){var d,e,f,g=this,h=a.indexOf(" ");return h>-1&&(d=r.trim(a.slice(h)),a=a.slice(0,h)),r.isFunction(b)?(c=b,b=void 0):b&&"object"==typeof b&&(e="POST"),g.length>0&&r.ajax({url:a,type:e||"GET",dataType:"html",data:b}).done(function(a){f=arguments,g.html(d?r("<div>").append(r.parseHTML(a)).find(d):a)}).always(c&&function(a,b){g.each(function(){c.apply(this,f||[a.responseText,b,a])})}),this},r.each(["ajaxStart","ajaxStop","ajaxComplete","ajaxError","ajaxSuccess","ajaxSend"],function(a,b){r.fn[b]=function(a){return this.on(b,a)}}),r.expr.pseudos.animated=function(a){return r.grep(r.timers,function(b){return a===b.elem}).length};function Sb(a){return r.isWindow(a)?a:9===a.nodeType&&a.defaultView}r.offset={setOffset:function(a,b,c){var d,e,f,g,h,i,j,k=r.css(a,"position"),l=r(a),m={};"static"===k&&(a.style.position="relative"),h=l.offset(),f=r.css(a,"top"),i=r.css(a,"left"),j=("absolute"===k||"fixed"===k)&&(f+i).indexOf("auto")>-1,j?(d=l.position(),g=d.top,e=d.left):(g=parseFloat(f)||0,e=parseFloat(i)||0),r.isFunction(b)&&(b=b.call(a,c,r.extend({},h))),null!=b.top&&(m.top=b.top-h.top+g),null!=b.left&&(m.left=b.left-h.left+e),"using"in b?b.using.call(a,m):l.css(m)}},r.fn.extend({offset:function(a){if(arguments.length)return void 0===a?this:this.each(function(b){r.offset.setOffset(this,a,b)});var b,c,d,e,f=this[0];if(f)return f.getClientRects().length?(d=f.getBoundingClientRect(),d.width||d.height?(e=f.ownerDocument,c=Sb(e),b=e.documentElement,{top:d.top+c.pageYOffset-b.clientTop,left:d.left+c.pageXOffset-b.clientLeft}):d):{top:0,left:0}},position:function(){if(this[0]){var a,b,c=this[0],d={top:0,left:0};return"fixed"===r.css(c,"position")?b=c.getBoundingClientRect():(a=this.offsetParent(),b=this.offset(),r.nodeName(a[0],"html")||(d=a.offset()),d={top:d.top+r.css(a[0],"borderTopWidth",!0),left:d.left+r.css(a[0],"borderLeftWidth",!0)}),{top:b.top-d.top-r.css(c,"marginTop",!0),left:b.left-d.left-r.css(c,"marginLeft",!0)}}},offsetParent:function(){return this.map(function(){var a=this.offsetParent;while(a&&"static"===r.css(a,"position"))a=a.offsetParent;return a||pa})}}),r.each({scrollLeft:"pageXOffset",scrollTop:"pageYOffset"},function(a,b){var c="pageYOffset"===b;r.fn[a]=function(d){return S(this,function(a,d,e){var f=Sb(a);return void 0===e?f?f[b]:a[d]:void(f?f.scrollTo(c?f.pageXOffset:e,c?e:f.pageYOffset):a[d]=e)},a,d,arguments.length)}}),r.each(["top","left"],function(a,b){r.cssHooks[b]=Na(o.pixelPosition,function(a,c){if(c)return c=Ma(a,b),Ka.test(c)?r(a).position()[b]+"px":c})}),r.each({Height:"height",Width:"width"},function(a,b){r.each({padding:"inner"+a,content:b,"":"outer"+a},function(c,d){r.fn[d]=function(e,f){var g=arguments.length&&(c||"boolean"!=typeof e),h=c||(e===!0||f===!0?"margin":"border");return S(this,function(b,c,e){var f;return r.isWindow(b)?0===d.indexOf("outer")?b["inner"+a]:b.document.documentElement["client"+a]:9===b.nodeType?(f=b.documentElement,Math.max(b.body["scroll"+a],f["scroll"+a],b.body["offset"+a],f["offset"+a],f["client"+a])):void 0===e?r.css(b,c,h):r.style(b,c,e,h)},b,g?e:void 0,g)}})}),r.fn.extend({bind:function(a,b,c){return this.on(a,null,b,c)},unbind:function(a,b){return this.off(a,null,b)},delegate:function(a,b,c,d){return this.on(b,a,c,d)},undelegate:function(a,b,c){return 1===arguments.length?this.off(a,"**"):this.off(b,a||"**",c)}}),r.parseJSON=JSON.parse,"function"==typeof define&&define.amd&&define("jquery",[],function(){return r});var Tb=a.jQuery,Ub=a.$;return r.noConflict=function(b){return a.$===r&&(a.$=Ub),b&&a.jQuery===r&&(a.jQuery=Tb),r},b||(a.jQuery=a.$=r),r});
 
-/** vim: et:ts=4:sw=4:sts=4
- * @license RequireJS 2.1.14 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.
- * Available via the MIT or new BSD license.
- * see: http://github.com/jrburke/requirejs for details
- */
-//Not using strict: uneven strict support in browsers, #392, and causes
-//problems with requirejs.exec()/transpiler plugins that may not be strict.
-/*jslint regexp: true, nomen: true, sloppy: true */
-/*global window, navigator, document, importScripts, setTimeout, opera */
-
-var requirejs, require, define;
-(function (global) {
-    var req, s, head, baseElement, dataMain, src,
-        interactiveScript, currentlyAddingScript, mainScript, subPath,
-        version = '2.1.14',
-        commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg,
-        cjsRequireRegExp = /[^.]\s*require\s*\(\s*["']([^'"\s]+)["']\s*\)/g,
-        jsSuffixRegExp = /\.js$/,
-        currDirRegExp = /^\.\//,
-        op = Object.prototype,
-        ostring = op.toString,
-        hasOwn = op.hasOwnProperty,
-        ap = Array.prototype,
-        apsp = ap.splice,
-        isBrowser = !!(typeof window !== 'undefined' && typeof navigator !== 'undefined' && window.document),
-        isWebWorker = !isBrowser && typeof importScripts !== 'undefined',
-        //PS3 indicates loaded and complete, but need to wait for complete
-        //specifically. Sequence is 'loading', 'loaded', execution,
-        // then 'complete'. The UA check is unfortunate, but not sure how
-        //to feature test w/o causing perf issues.
-        readyRegExp = isBrowser && navigator.platform === 'PLAYSTATION 3' ?
-                      /^complete$/ : /^(complete|loaded)$/,
-        defContextName = '_',
-        //Oh the tragedy, detecting opera. See the usage of isOpera for reason.
-        isOpera = typeof opera !== 'undefined' && opera.toString() === '[object Opera]',
-        contexts = {},
-        cfg = {},
-        globalDefQueue = [],
-        useInteractive = false;
-
-    function isFunction(it) {
-        return ostring.call(it) === '[object Function]';
-    }
-
-    function isArray(it) {
-        return ostring.call(it) === '[object Array]';
-    }
-
-    /**
-     * Helper function for iterating over an array. If the func returns
-     * a true value, it will break out of the loop.
-     */
-    function each(ary, func) {
-        if (ary) {
-            var i;
-            for (i = 0; i < ary.length; i += 1) {
-                if (ary[i] && func(ary[i], i, ary)) {
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Helper function for iterating over an array backwards. If the func
-     * returns a true value, it will break out of the loop.
-     */
-    function eachReverse(ary, func) {
-        if (ary) {
-            var i;
-            for (i = ary.length - 1; i > -1; i -= 1) {
-                if (ary[i] && func(ary[i], i, ary)) {
-                    break;
-                }
-            }
-        }
-    }
-
-    function hasProp(obj, prop) {
-        return hasOwn.call(obj, prop);
-    }
-
-    function getOwn(obj, prop) {
-        return hasProp(obj, prop) && obj[prop];
-    }
-
-    /**
-     * Cycles over properties in an object and calls a function for each
-     * property value. If the function returns a truthy value, then the
-     * iteration is stopped.
-     */
-    function eachProp(obj, func) {
-        var prop;
-        for (prop in obj) {
-            if (hasProp(obj, prop)) {
-                if (func(obj[prop], prop)) {
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Simple function to mix in properties from source into target,
-     * but only if target does not already have a property of the same name.
-     */
-    function mixin(target, source, force, deepStringMixin) {
-        if (source) {
-            eachProp(source, function (value, prop) {
-                if (force || !hasProp(target, prop)) {
-                    if (deepStringMixin && typeof value === 'object' && value &&
-                        !isArray(value) && !isFunction(value) &&
-                        !(value instanceof RegExp)) {
-
-                        if (!target[prop]) {
-                            target[prop] = {};
-                        }
-                        mixin(target[prop], value, force, deepStringMixin);
-                    } else {
-                        target[prop] = value;
-                    }
-                }
-            });
-        }
-        return target;
-    }
-
-    //Similar to Function.prototype.bind, but the 'this' object is specified
-    //first, since it is easier to read/figure out what 'this' will be.
-    function bind(obj, fn) {
-        return function () {
-            return fn.apply(obj, arguments);
-        };
-    }
-
-    function scripts() {
-        return document.getElementsByTagName('script');
-    }
-
-    function defaultOnError(err) {
-        throw err;
-    }
-
-    //Allow getting a global that is expressed in
-    //dot notation, like 'a.b.c'.
-    function getGlobal(value) {
-        if (!value) {
-            return value;
-        }
-        var g = global;
-        each(value.split('.'), function (part) {
-            g = g[part];
-        });
-        return g;
-    }
-
-    /**
-     * Constructs an error with a pointer to an URL with more information.
-     * @param {String} id the error ID that maps to an ID on a web page.
-     * @param {String} message human readable error.
-     * @param {Error} [err] the original error, if there is one.
-     *
-     * @returns {Error}
-     */
-    function makeError(id, msg, err, requireModules) {
-        var e = new Error(msg + '\nhttp://requirejs.org/docs/errors.html#' + id);
-        e.requireType = id;
-        e.requireModules = requireModules;
-        if (err) {
-            e.originalError = err;
-        }
-        return e;
-    }
-
-    if (typeof define !== 'undefined') {
-        //If a define is already in play via another AMD loader,
-        //do not overwrite.
-        return;
-    }
-
-    if (typeof requirejs !== 'undefined') {
-        if (isFunction(requirejs)) {
-            //Do not overwrite an existing requirejs instance.
-            return;
-        }
-        cfg = requirejs;
-        requirejs = undefined;
-    }
-
-    //Allow for a require config object
-    if (typeof require !== 'undefined' && !isFunction(require)) {
-        //assume it is a config object.
-        cfg = require;
-        require = undefined;
-    }
-
-    function newContext(contextName) {
-        var inCheckLoaded, Module, context, handlers,
-            checkLoadedTimeoutId,
-            config = {
-                //Defaults. Do not set a default for map
-                //config to speed up normalize(), which
-                //will run faster if there is no default.
-                waitSeconds: 7,
-                baseUrl: './',
-                paths: {},
-                bundles: {},
-                pkgs: {},
-                shim: {},
-                config: {}
-            },
-            registry = {},
-            //registry of just enabled modules, to speed
-            //cycle breaking code when lots of modules
-            //are registered, but not activated.
-            enabledRegistry = {},
-            undefEvents = {},
-            defQueue = [],
-            defined = {},
-            urlFetched = {},
-            bundlesMap = {},
-            requireCounter = 1,
-            unnormalizedCounter = 1;
-
-        /**
-         * Trims the . and .. from an array of path segments.
-         * It will keep a leading path segment if a .. will become
-         * the first path segment, to help with module name lookups,
-         * which act like paths, but can be remapped. But the end result,
-         * all paths that use this function should look normalized.
-         * NOTE: this method MODIFIES the input array.
-         * @param {Array} ary the array of path segments.
-         */
-        function trimDots(ary) {
-            var i, part;
-            for (i = 0; i < ary.length; i++) {
-                part = ary[i];
-                if (part === '.') {
-                    ary.splice(i, 1);
-                    i -= 1;
-                } else if (part === '..') {
-                    // If at the start, or previous value is still ..,
-                    // keep them so that when converted to a path it may
-                    // still work when converted to a path, even though
-                    // as an ID it is less than ideal. In larger point
-                    // releases, may be better to just kick out an error.
-                    if (i === 0 || (i == 1 && ary[2] === '..') || ary[i - 1] === '..') {
-                        continue;
-                    } else if (i > 0) {
-                        ary.splice(i - 1, 2);
-                        i -= 2;
-                    }
-                }
-            }
-        }
-
-        /**
-         * Given a relative module name, like ./something, normalize it to
-         * a real name that can be mapped to a path.
-         * @param {String} name the relative name
-         * @param {String} baseName a real name that the name arg is relative
-         * to.
-         * @param {Boolean} applyMap apply the map config to the value. Should
-         * only be done if this normalization is for a dependency ID.
-         * @returns {String} normalized name
-         */
-        function normalize(name, baseName, applyMap) {
-            var pkgMain, mapValue, nameParts, i, j, nameSegment, lastIndex,
-                foundMap, foundI, foundStarMap, starI, normalizedBaseParts,
-                baseParts = (baseName && baseName.split('/')),
-                map = config.map,
-                starMap = map && map['*'];
-
-            //Adjust any relative paths.
-            if (name) {
-                name = name.split('/');
-                lastIndex = name.length - 1;
-
-                // If wanting node ID compatibility, strip .js from end
-                // of IDs. Have to do this here, and not in nameToUrl
-                // because node allows either .js or non .js to map
-                // to same file.
-                if (config.nodeIdCompat && jsSuffixRegExp.test(name[lastIndex])) {
-                    name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
-                }
-
-                // Starts with a '.' so need the baseName
-                if (name[0].charAt(0) === '.' && baseParts) {
-                    //Convert baseName to array, and lop off the last part,
-                    //so that . matches that 'directory' and not name of the baseName's
-                    //module. For instance, baseName of 'one/two/three', maps to
-                    //'one/two/three.js', but we want the directory, 'one/two' for
-                    //this normalization.
-                    normalizedBaseParts = baseParts.slice(0, baseParts.length - 1);
-                    name = normalizedBaseParts.concat(name);
-                }
-
-                trimDots(name);
-                name = name.join('/');
-            }
-
-            //Apply map config if available.
-            if (applyMap && map && (baseParts || starMap)) {
-                nameParts = name.split('/');
-
-                outerLoop: for (i = nameParts.length; i > 0; i -= 1) {
-                    nameSegment = nameParts.slice(0, i).join('/');
-
-                    if (baseParts) {
-                        //Find the longest baseName segment match in the config.
-                        //So, do joins on the biggest to smallest lengths of baseParts.
-                        for (j = baseParts.length; j > 0; j -= 1) {
-                            mapValue = getOwn(map, baseParts.slice(0, j).join('/'));
-
-                            //baseName segment has config, find if it has one for
-                            //this name.
-                            if (mapValue) {
-                                mapValue = getOwn(mapValue, nameSegment);
-                                if (mapValue) {
-                                    //Match, update name to the new value.
-                                    foundMap = mapValue;
-                                    foundI = i;
-                                    break outerLoop;
-                                }
-                            }
-                        }
-                    }
-
-                    //Check for a star map match, but just hold on to it,
-                    //if there is a shorter segment match later in a matching
-                    //config, then favor over this star map.
-                    if (!foundStarMap && starMap && getOwn(starMap, nameSegment)) {
-                        foundStarMap = getOwn(starMap, nameSegment);
-                        starI = i;
-                    }
-                }
-
-                if (!foundMap && foundStarMap) {
-                    foundMap = foundStarMap;
-                    foundI = starI;
-                }
-
-                if (foundMap) {
-                    nameParts.splice(0, foundI, foundMap);
-                    name = nameParts.join('/');
-                }
-            }
-
-            // If the name points to a package's name, use
-            // the package main instead.
-            pkgMain = getOwn(config.pkgs, name);
-
-            return pkgMain ? pkgMain : name;
-        }
-
-        function removeScript(name) {
-            if (isBrowser) {
-                each(scripts(), function (scriptNode) {
-                    if (scriptNode.getAttribute('data-requiremodule') === name &&
-                            scriptNode.getAttribute('data-requirecontext') === context.contextName) {
-                        scriptNode.parentNode.removeChild(scriptNode);
-                        return true;
-                    }
-                });
-            }
-        }
-
-        function hasPathFallback(id) {
-            var pathConfig = getOwn(config.paths, id);
-            if (pathConfig && isArray(pathConfig) && pathConfig.length > 1) {
-                //Pop off the first array value, since it failed, and
-                //retry
-                pathConfig.shift();
-                context.require.undef(id);
-
-                //Custom require that does not do map translation, since
-                //ID is "absolute", already mapped/resolved.
-                context.makeRequire(null, {
-                    skipMap: true
-                })([id]);
-
-                return true;
-            }
-        }
-
-        //Turns a plugin!resource to [plugin, resource]
-        //with the plugin being undefined if the name
-        //did not have a plugin prefix.
-        function splitPrefix(name) {
-            var prefix,
-                index = name ? name.indexOf('!') : -1;
-            if (index > -1) {
-                prefix = name.substring(0, index);
-                name = name.substring(index + 1, name.length);
-            }
-            return [prefix, name];
-        }
-
-        /**
-         * Creates a module mapping that includes plugin prefix, module
-         * name, and path. If parentModuleMap is provided it will
-         * also normalize the name via require.normalize()
-         *
-         * @param {String} name the module name
-         * @param {String} [parentModuleMap] parent module map
-         * for the module name, used to resolve relative names.
-         * @param {Boolean} isNormalized: is the ID already normalized.
-         * This is true if this call is done for a define() module ID.
-         * @param {Boolean} applyMap: apply the map config to the ID.
-         * Should only be true if this map is for a dependency.
-         *
-         * @returns {Object}
-         */
-        function makeModuleMap(name, parentModuleMap, isNormalized, applyMap) {
-            var url, pluginModule, suffix, nameParts,
-                prefix = null,
-                parentName = parentModuleMap ? parentModuleMap.name : null,
-                originalName = name,
-                isDefine = true,
-                normalizedName = '';
-
-            //If no name, then it means it is a require call, generate an
-            //internal name.
-            if (!name) {
-                isDefine = false;
-                name = '_@r' + (requireCounter += 1);
-            }
-
-            nameParts = splitPrefix(name);
-            prefix = nameParts[0];
-            name = nameParts[1];
-
-            if (prefix) {
-                prefix = normalize(prefix, parentName, applyMap);
-                pluginModule = getOwn(defined, prefix);
-            }
-
-            //Account for relative paths if there is a base name.
-            if (name) {
-                if (prefix) {
-                    if (pluginModule && pluginModule.normalize) {
-                        //Plugin is loaded, use its normalize method.
-                        normalizedName = pluginModule.normalize(name, function (name) {
-                            return normalize(name, parentName, applyMap);
-                        });
-                    } else {
-                        // If nested plugin references, then do not try to
-                        // normalize, as it will not normalize correctly. This
-                        // places a restriction on resourceIds, and the longer
-                        // term solution is not to normalize until plugins are
-                        // loaded and all normalizations to allow for async
-                        // loading of a loader plugin. But for now, fixes the
-                        // common uses. Details in #1131
-                        normalizedName = name.indexOf('!') === -1 ?
-                                         normalize(name, parentName, applyMap) :
-                                         name;
-                    }
-                } else {
-                    //A regular module.
-                    normalizedName = normalize(name, parentName, applyMap);
-
-                    //Normalized name may be a plugin ID due to map config
-                    //application in normalize. The map config values must
-                    //already be normalized, so do not need to redo that part.
-                    nameParts = splitPrefix(normalizedName);
-                    prefix = nameParts[0];
-                    normalizedName = nameParts[1];
-                    isNormalized = true;
-
-                    url = context.nameToUrl(normalizedName);
-                }
-            }
-
-            //If the id is a plugin id that cannot be determined if it needs
-            //normalization, stamp it with a unique ID so two matching relative
-            //ids that may conflict can be separate.
-            suffix = prefix && !pluginModule && !isNormalized ?
-                     '_unnormalized' + (unnormalizedCounter += 1) :
-                     '';
-
-            return {
-                prefix: prefix,
-                name: normalizedName,
-                parentMap: parentModuleMap,
-                unnormalized: !!suffix,
-                url: url,
-                originalName: originalName,
-                isDefine: isDefine,
-                id: (prefix ?
-                        prefix + '!' + normalizedName :
-                        normalizedName) + suffix
-            };
-        }
-
-        function getModule(depMap) {
-            var id = depMap.id,
-                mod = getOwn(registry, id);
-
-            if (!mod) {
-                mod = registry[id] = new context.Module(depMap);
-            }
-
-            return mod;
-        }
-
-        function on(depMap, name, fn) {
-            var id = depMap.id,
-                mod = getOwn(registry, id);
-
-            if (hasProp(defined, id) &&
-                    (!mod || mod.defineEmitComplete)) {
-                if (name === 'defined') {
-                    fn(defined[id]);
-                }
-            } else {
-                mod = getModule(depMap);
-                if (mod.error && name === 'error') {
-                    fn(mod.error);
-                } else {
-                    mod.on(name, fn);
-                }
-            }
-        }
-
-        function onError(err, errback) {
-            var ids = err.requireModules,
-                notified = false;
-
-            if (errback) {
-                errback(err);
-            } else {
-                each(ids, function (id) {
-                    var mod = getOwn(registry, id);
-                    if (mod) {
-                        //Set error on module, so it skips timeout checks.
-                        mod.error = err;
-                        if (mod.events.error) {
-                            notified = true;
-                            mod.emit('error', err);
-                        }
-                    }
-                });
-
-                if (!notified) {
-                    req.onError(err);
-                }
-            }
-        }
-
-        /**
-         * Internal method to transfer globalQueue items to this context's
-         * defQueue.
-         */
-        function takeGlobalQueue() {
-            //Push all the globalDefQueue items into the context's defQueue
-            if (globalDefQueue.length) {
-                //Array splice in the values since the context code has a
-                //local var ref to defQueue, so cannot just reassign the one
-                //on context.
-                apsp.apply(defQueue,
-                           [defQueue.length, 0].concat(globalDefQueue));
-                globalDefQueue = [];
-            }
-        }
-
-        handlers = {
-            'require': function (mod) {
-                if (mod.require) {
-                    return mod.require;
-                } else {
-                    return (mod.require = context.makeRequire(mod.map));
-                }
-            },
-            'exports': function (mod) {
-                mod.usingExports = true;
-                if (mod.map.isDefine) {
-                    if (mod.exports) {
-                        return (defined[mod.map.id] = mod.exports);
-                    } else {
-                        return (mod.exports = defined[mod.map.id] = {});
-                    }
-                }
-            },
-            'module': function (mod) {
-                if (mod.module) {
-                    return mod.module;
-                } else {
-                    return (mod.module = {
-                        id: mod.map.id,
-                        uri: mod.map.url,
-                        config: function () {
-                            return  getOwn(config.config, mod.map.id) || {};
-                        },
-                        exports: mod.exports || (mod.exports = {})
-                    });
-                }
-            }
-        };
-
-        function cleanRegistry(id) {
-            //Clean up machinery used for waiting modules.
-            delete registry[id];
-            delete enabledRegistry[id];
-        }
-
-        function breakCycle(mod, traced, processed) {
-            var id = mod.map.id;
-
-            if (mod.error) {
-                mod.emit('error', mod.error);
-            } else {
-                traced[id] = true;
-                each(mod.depMaps, function (depMap, i) {
-                    var depId = depMap.id,
-                        dep = getOwn(registry, depId);
-
-                    //Only force things that have not completed
-                    //being defined, so still in the registry,
-                    //and only if it has not been matched up
-                    //in the module already.
-                    if (dep && !mod.depMatched[i] && !processed[depId]) {
-                        if (getOwn(traced, depId)) {
-                            mod.defineDep(i, defined[depId]);
-                            mod.check(); //pass false?
-                        } else {
-                            breakCycle(dep, traced, processed);
-                        }
-                    }
-                });
-                processed[id] = true;
-            }
-        }
-
-        function checkLoaded() {
-            var err, usingPathFallback,
-                waitInterval = config.waitSeconds * 1000,
-                //It is possible to disable the wait interval by using waitSeconds of 0.
-                expired = waitInterval && (context.startTime + waitInterval) < new Date().getTime(),
-                noLoads = [],
-                reqCalls = [],
-                stillLoading = false,
-                needCycleCheck = true;
-
-            //Do not bother if this call was a result of a cycle break.
-            if (inCheckLoaded) {
-                return;
-            }
-
-            inCheckLoaded = true;
-
-            //Figure out the state of all the modules.
-            eachProp(enabledRegistry, function (mod) {
-                var map = mod.map,
-                    modId = map.id;
-
-                //Skip things that are not enabled or in error state.
-                if (!mod.enabled) {
-                    return;
-                }
-
-                if (!map.isDefine) {
-                    reqCalls.push(mod);
-                }
-
-                if (!mod.error) {
-                    //If the module should be executed, and it has not
-                    //been inited and time is up, remember it.
-                    if (!mod.inited && expired) {
-                        if (hasPathFallback(modId)) {
-                            usingPathFallback = true;
-                            stillLoading = true;
-                        } else {
-                            noLoads.push(modId);
-                            removeScript(modId);
-                        }
-                    } else if (!mod.inited && mod.fetched && map.isDefine) {
-                        stillLoading = true;
-                        if (!map.prefix) {
-                            //No reason to keep looking for unfinished
-                            //loading. If the only stillLoading is a
-                            //plugin resource though, keep going,
-                            //because it may be that a plugin resource
-                            //is waiting on a non-plugin cycle.
-                            return (needCycleCheck = false);
-                        }
-                    }
-                }
-            });
-
-            if (expired && noLoads.length) {
-                //If wait time expired, throw error of unloaded modules.
-                err = makeError('timeout', 'Load timeout for modules: ' + noLoads, null, noLoads);
-                err.contextName = context.contextName;
-                return onError(err);
-            }
-
-            //Not expired, check for a cycle.
-            if (needCycleCheck) {
-                each(reqCalls, function (mod) {
-                    breakCycle(mod, {}, {});
-                });
-            }
-
-            //If still waiting on loads, and the waiting load is something
-            //other than a plugin resource, or there are still outstanding
-            //scripts, then just try back later.
-            if ((!expired || usingPathFallback) && stillLoading) {
-                //Something is still waiting to load. Wait for it, but only
-                //if a timeout is not already in effect.
-                if ((isBrowser || isWebWorker) && !checkLoadedTimeoutId) {
-                    checkLoadedTimeoutId = setTimeout(function () {
-                        checkLoadedTimeoutId = 0;
-                        checkLoaded();
-                    }, 50);
-                }
-            }
-
-            inCheckLoaded = false;
-        }
-
-        Module = function (map) {
-            this.events = getOwn(undefEvents, map.id) || {};
-            this.map = map;
-            this.shim = getOwn(config.shim, map.id);
-            this.depExports = [];
-            this.depMaps = [];
-            this.depMatched = [];
-            this.pluginMaps = {};
-            this.depCount = 0;
-
-            /* this.exports this.factory
-               this.depMaps = [],
-               this.enabled, this.fetched
-            */
-        };
-
-        Module.prototype = {
-            init: function (depMaps, factory, errback, options) {
-                options = options || {};
-
-                //Do not do more inits if already done. Can happen if there
-                //are multiple define calls for the same module. That is not
-                //a normal, common case, but it is also not unexpected.
-                if (this.inited) {
-                    return;
-                }
-
-                this.factory = factory;
-
-                if (errback) {
-                    //Register for errors on this module.
-                    this.on('error', errback);
-                } else if (this.events.error) {
-                    //If no errback already, but there are error listeners
-                    //on this module, set up an errback to pass to the deps.
-                    errback = bind(this, function (err) {
-                        this.emit('error', err);
-                    });
-                }
-
-                //Do a copy of the dependency array, so that
-                //source inputs are not modified. For example
-                //"shim" deps are passed in here directly, and
-                //doing a direct modification of the depMaps array
-                //would affect that config.
-                this.depMaps = depMaps && depMaps.slice(0);
-
-                this.errback = errback;
-
-                //Indicate this module has be initialized
-                this.inited = true;
-
-                this.ignore = options.ignore;
-
-                //Could have option to init this module in enabled mode,
-                //or could have been previously marked as enabled. However,
-                //the dependencies are not known until init is called. So
-                //if enabled previously, now trigger dependencies as enabled.
-                if (options.enabled || this.enabled) {
-                    //Enable this module and dependencies.
-                    //Will call this.check()
-                    this.enable();
-                } else {
-                    this.check();
-                }
-            },
-
-            defineDep: function (i, depExports) {
-                //Because of cycles, defined callback for a given
-                //export can be called more than once.
-                if (!this.depMatched[i]) {
-                    this.depMatched[i] = true;
-                    this.depCount -= 1;
-                    this.depExports[i] = depExports;
-                }
-            },
-
-            fetch: function () {
-                if (this.fetched) {
-                    return;
-                }
-                this.fetched = true;
-
-                context.startTime = (new Date()).getTime();
-
-                var map = this.map;
-
-                //If the manager is for a plugin managed resource,
-                //ask the plugin to load it now.
-                if (this.shim) {
-                    context.makeRequire(this.map, {
-                        enableBuildCallback: true
-                    })(this.shim.deps || [], bind(this, function () {
-                        return map.prefix ? this.callPlugin() : this.load();
-                    }));
-                } else {
-                    //Regular dependency.
-                    return map.prefix ? this.callPlugin() : this.load();
-                }
-            },
-
-            load: function () {
-                var url = this.map.url;
-
-                //Regular dependency.
-                if (!urlFetched[url]) {
-                    urlFetched[url] = true;
-                    context.load(this.map.id, url);
-                }
-            },
-
-            /**
-             * Checks if the module is ready to define itself, and if so,
-             * define it.
-             */
-            check: function () {
-                if (!this.enabled || this.enabling) {
-                    return;
-                }
-
-                var err, cjsModule,
-                    id = this.map.id,
-                    depExports = this.depExports,
-                    exports = this.exports,
-                    factory = this.factory;
-
-                if (!this.inited) {
-                    this.fetch();
-                } else if (this.error) {
-                    this.emit('error', this.error);
-                } else if (!this.defining) {
-                    //The factory could trigger another require call
-                    //that would result in checking this module to
-                    //define itself again. If already in the process
-                    //of doing that, skip this work.
-                    this.defining = true;
-
-                    if (this.depCount < 1 && !this.defined) {
-                        if (isFunction(factory)) {
-                            //If there is an error listener, favor passing
-                            //to that instead of throwing an error. However,
-                            //only do it for define()'d  modules. require
-                            //errbacks should not be called for failures in
-                            //their callbacks (#699). However if a global
-                            //onError is set, use that.
-                            if ((this.events.error && this.map.isDefine) ||
-                                req.onError !== defaultOnError) {
-                                try {
-                                    exports = context.execCb(id, factory, depExports, exports);
-                                } catch (e) {
-                                    err = e;
-                                }
-                            } else {
-                                exports = context.execCb(id, factory, depExports, exports);
-                            }
-
-                            // Favor return value over exports. If node/cjs in play,
-                            // then will not have a return value anyway. Favor
-                            // module.exports assignment over exports object.
-                            if (this.map.isDefine && exports === undefined) {
-                                cjsModule = this.module;
-                                if (cjsModule) {
-                                    exports = cjsModule.exports;
-                                } else if (this.usingExports) {
-                                    //exports already set the defined value.
-                                    exports = this.exports;
-                                }
-                            }
-
-                            if (err) {
-                                err.requireMap = this.map;
-                                err.requireModules = this.map.isDefine ? [this.map.id] : null;
-                                err.requireType = this.map.isDefine ? 'define' : 'require';
-                                return onError((this.error = err));
-                            }
-
-                        } else {
-                            //Just a literal value
-                            exports = factory;
-                        }
-
-                        this.exports = exports;
-
-                        if (this.map.isDefine && !this.ignore) {
-                            defined[id] = exports;
-
-                            if (req.onResourceLoad) {
-                                req.onResourceLoad(context, this.map, this.depMaps);
-                            }
-                        }
-
-                        //Clean up
-                        cleanRegistry(id);
-
-                        this.defined = true;
-                    }
-
-                    //Finished the define stage. Allow calling check again
-                    //to allow define notifications below in the case of a
-                    //cycle.
-                    this.defining = false;
-
-                    if (this.defined && !this.defineEmitted) {
-                        this.defineEmitted = true;
-                        this.emit('defined', this.exports);
-                        this.defineEmitComplete = true;
-                    }
-
-                }
-            },
-
-            callPlugin: function () {
-                var map = this.map,
-                    id = map.id,
-                    //Map already normalized the prefix.
-                    pluginMap = makeModuleMap(map.prefix);
-
-                //Mark this as a dependency for this plugin, so it
-                //can be traced for cycles.
-                this.depMaps.push(pluginMap);
-
-                on(pluginMap, 'defined', bind(this, function (plugin) {
-                    var load, normalizedMap, normalizedMod,
-                        bundleId = getOwn(bundlesMap, this.map.id),
-                        name = this.map.name,
-                        parentName = this.map.parentMap ? this.map.parentMap.name : null,
-                        localRequire = context.makeRequire(map.parentMap, {
-                            enableBuildCallback: true
-                        });
-
-                    //If current map is not normalized, wait for that
-                    //normalized name to load instead of continuing.
-                    if (this.map.unnormalized) {
-                        //Normalize the ID if the plugin allows it.
-                        if (plugin.normalize) {
-                            name = plugin.normalize(name, function (name) {
-                                return normalize(name, parentName, true);
-                            }) || '';
-                        }
-
-                        //prefix and name should already be normalized, no need
-                        //for applying map config again either.
-                        normalizedMap = makeModuleMap(map.prefix + '!' + name,
-                                                      this.map.parentMap);
-                        on(normalizedMap,
-                            'defined', bind(this, function (value) {
-                                this.init([], function () { return value; }, null, {
-                                    enabled: true,
-                                    ignore: true
-                                });
-                            }));
-
-                        normalizedMod = getOwn(registry, normalizedMap.id);
-                        if (normalizedMod) {
-                            //Mark this as a dependency for this plugin, so it
-                            //can be traced for cycles.
-                            this.depMaps.push(normalizedMap);
-
-                            if (this.events.error) {
-                                normalizedMod.on('error', bind(this, function (err) {
-                                    this.emit('error', err);
-                                }));
-                            }
-                            normalizedMod.enable();
-                        }
-
-                        return;
-                    }
-
-                    //If a paths config, then just load that file instead to
-                    //resolve the plugin, as it is built into that paths layer.
-                    if (bundleId) {
-                        this.map.url = context.nameToUrl(bundleId);
-                        this.load();
-                        return;
-                    }
-
-                    load = bind(this, function (value) {
-                        this.init([], function () { return value; }, null, {
-                            enabled: true
-                        });
-                    });
-
-                    load.error = bind(this, function (err) {
-                        this.inited = true;
-                        this.error = err;
-                        err.requireModules = [id];
-
-                        //Remove temp unnormalized modules for this module,
-                        //since they will never be resolved otherwise now.
-                        eachProp(registry, function (mod) {
-                            if (mod.map.id.indexOf(id + '_unnormalized') === 0) {
-                                cleanRegistry(mod.map.id);
-                            }
-                        });
-
-                        onError(err);
-                    });
-
-                    //Allow plugins to load other code without having to know the
-                    //context or how to 'complete' the load.
-                    load.fromText = bind(this, function (text, textAlt) {
-                        /*jslint evil: true */
-                        var moduleName = map.name,
-                            moduleMap = makeModuleMap(moduleName),
-                            hasInteractive = useInteractive;
-
-                        //As of 2.1.0, support just passing the text, to reinforce
-                        //fromText only being called once per resource. Still
-                        //support old style of passing moduleName but discard
-                        //that moduleName in favor of the internal ref.
-                        if (textAlt) {
-                            text = textAlt;
-                        }
-
-                        //Turn off interactive script matching for IE for any define
-                        //calls in the text, then turn it back on at the end.
-                        if (hasInteractive) {
-                            useInteractive = false;
-                        }
-
-                        //Prime the system by creating a module instance for
-                        //it.
-                        getModule(moduleMap);
-
-                        //Transfer any config to this other module.
-                        if (hasProp(config.config, id)) {
-                            config.config[moduleName] = config.config[id];
-                        }
-
-                        try {
-                            req.exec(text);
-                        } catch (e) {
-                            return onError(makeError('fromtexteval',
-                                             'fromText eval for ' + id +
-                                            ' failed: ' + e,
-                                             e,
-                                             [id]));
-                        }
-
-                        if (hasInteractive) {
-                            useInteractive = true;
-                        }
-
-                        //Mark this as a dependency for the plugin
-                        //resource
-                        this.depMaps.push(moduleMap);
-
-                        //Support anonymous modules.
-                        context.completeLoad(moduleName);
-
-                        //Bind the value of that module to the value for this
-                        //resource ID.
-                        localRequire([moduleName], load);
-                    });
-
-                    //Use parentName here since the plugin's name is not reliable,
-                    //could be some weird string with no path that actually wants to
-                    //reference the parentName's path.
-                    plugin.load(map.name, localRequire, load, config);
-                }));
-
-                context.enable(pluginMap, this);
-                this.pluginMaps[pluginMap.id] = pluginMap;
-            },
-
-            enable: function () {
-                enabledRegistry[this.map.id] = this;
-                this.enabled = true;
-
-                //Set flag mentioning that the module is enabling,
-                //so that immediate calls to the defined callbacks
-                //for dependencies do not trigger inadvertent load
-                //with the depCount still being zero.
-                this.enabling = true;
-
-                //Enable each dependency
-                each(this.depMaps, bind(this, function (depMap, i) {
-                    var id, mod, handler;
-
-                    if (typeof depMap === 'string') {
-                        //Dependency needs to be converted to a depMap
-                        //and wired up to this module.
-                        depMap = makeModuleMap(depMap,
-                                               (this.map.isDefine ? this.map : this.map.parentMap),
-                                               false,
-                                               !this.skipMap);
-                        this.depMaps[i] = depMap;
-
-                        handler = getOwn(handlers, depMap.id);
-
-                        if (handler) {
-                            this.depExports[i] = handler(this);
-                            return;
-                        }
-
-                        this.depCount += 1;
-
-                        on(depMap, 'defined', bind(this, function (depExports) {
-                            this.defineDep(i, depExports);
-                            this.check();
-                        }));
-
-                        if (this.errback) {
-                            on(depMap, 'error', bind(this, this.errback));
-                        }
-                    }
-
-                    id = depMap.id;
-                    mod = registry[id];
-
-                    //Skip special modules like 'require', 'exports', 'module'
-                    //Also, don't call enable if it is already enabled,
-                    //important in circular dependency cases.
-                    if (!hasProp(handlers, id) && mod && !mod.enabled) {
-                        context.enable(depMap, this);
-                    }
-                }));
-
-                //Enable each plugin that is used in
-                //a dependency
-                eachProp(this.pluginMaps, bind(this, function (pluginMap) {
-                    var mod = getOwn(registry, pluginMap.id);
-                    if (mod && !mod.enabled) {
-                        context.enable(pluginMap, this);
-                    }
-                }));
-
-                this.enabling = false;
-
-                this.check();
-            },
-
-            on: function (name, cb) {
-                var cbs = this.events[name];
-                if (!cbs) {
-                    cbs = this.events[name] = [];
-                }
-                cbs.push(cb);
-            },
-
-            emit: function (name, evt) {
-                each(this.events[name], function (cb) {
-                    cb(evt);
-                });
-                if (name === 'error') {
-                    //Now that the error handler was triggered, remove
-                    //the listeners, since this broken Module instance
-                    //can stay around for a while in the registry.
-                    delete this.events[name];
-                }
-            }
-        };
-
-        function callGetModule(args) {
-            //Skip modules already defined.
-            if (!hasProp(defined, args[0])) {
-                getModule(makeModuleMap(args[0], null, true)).init(args[1], args[2]);
-            }
-        }
-
-        function removeListener(node, func, name, ieName) {
-            //Favor detachEvent because of IE9
-            //issue, see attachEvent/addEventListener comment elsewhere
-            //in this file.
-            if (node.detachEvent && !isOpera) {
-                //Probably IE. If not it will throw an error, which will be
-                //useful to know.
-                if (ieName) {
-                    node.detachEvent(ieName, func);
-                }
-            } else {
-                node.removeEventListener(name, func, false);
-            }
-        }
-
-        /**
-         * Given an event from a script node, get the requirejs info from it,
-         * and then removes the event listeners on the node.
-         * @param {Event} evt
-         * @returns {Object}
-         */
-        function getScriptData(evt) {
-            //Using currentTarget instead of target for Firefox 2.0's sake. Not
-            //all old browsers will be supported, but this one was easy enough
-            //to support and still makes sense.
-            var node = evt.currentTarget || evt.srcElement;
-
-            //Remove the listeners once here.
-            removeListener(node, context.onScriptLoad, 'load', 'onreadystatechange');
-            removeListener(node, context.onScriptError, 'error');
-
-            return {
-                node: node,
-                id: node && node.getAttribute('data-requiremodule')
-            };
-        }
-
-        function intakeDefines() {
-            var args;
-
-            //Any defined modules in the global queue, intake them now.
-            takeGlobalQueue();
-
-            //Make sure any remaining defQueue items get properly processed.
-            while (defQueue.length) {
-                args = defQueue.shift();
-                if (args[0] === null) {
-                    return onError(makeError('mismatch', 'Mismatched anonymous define() module: ' + args[args.length - 1]));
-                } else {
-                    //args are id, deps, factory. Should be normalized by the
-                    //define() function.
-                    callGetModule(args);
-                }
-            }
-        }
-
-        context = {
-            config: config,
-            contextName: contextName,
-            registry: registry,
-            defined: defined,
-            urlFetched: urlFetched,
-            defQueue: defQueue,
-            Module: Module,
-            makeModuleMap: makeModuleMap,
-            nextTick: req.nextTick,
-            onError: onError,
-
-            /**
-             * Set a configuration for the context.
-             * @param {Object} cfg config object to integrate.
-             */
-            configure: function (cfg) {
-                //Make sure the baseUrl ends in a slash.
-                if (cfg.baseUrl) {
-                    if (cfg.baseUrl.charAt(cfg.baseUrl.length - 1) !== '/') {
-                        cfg.baseUrl += '/';
-                    }
-                }
-
-                //Save off the paths since they require special processing,
-                //they are additive.
-                var shim = config.shim,
-                    objs = {
-                        paths: true,
-                        bundles: true,
-                        config: true,
-                        map: true
-                    };
-
-                eachProp(cfg, function (value, prop) {
-                    if (objs[prop]) {
-                        if (!config[prop]) {
-                            config[prop] = {};
-                        }
-                        mixin(config[prop], value, true, true);
-                    } else {
-                        config[prop] = value;
-                    }
-                });
-
-                //Reverse map the bundles
-                if (cfg.bundles) {
-                    eachProp(cfg.bundles, function (value, prop) {
-                        each(value, function (v) {
-                            if (v !== prop) {
-                                bundlesMap[v] = prop;
-                            }
-                        });
-                    });
-                }
-
-                //Merge shim
-                if (cfg.shim) {
-                    eachProp(cfg.shim, function (value, id) {
-                        //Normalize the structure
-                        if (isArray(value)) {
-                            value = {
-                                deps: value
-                            };
-                        }
-                        if ((value.exports || value.init) && !value.exportsFn) {
-                            value.exportsFn = context.makeShimExports(value);
-                        }
-                        shim[id] = value;
-                    });
-                    config.shim = shim;
-                }
-
-                //Adjust packages if necessary.
-                if (cfg.packages) {
-                    each(cfg.packages, function (pkgObj) {
-                        var location, name;
-
-                        pkgObj = typeof pkgObj === 'string' ? { name: pkgObj } : pkgObj;
-
-                        name = pkgObj.name;
-                        location = pkgObj.location;
-                        if (location) {
-                            config.paths[name] = pkgObj.location;
-                        }
-
-                        //Save pointer to main module ID for pkg name.
-                        //Remove leading dot in main, so main paths are normalized,
-                        //and remove any trailing .js, since different package
-                        //envs have different conventions: some use a module name,
-                        //some use a file name.
-                        config.pkgs[name] = pkgObj.name + '/' + (pkgObj.main || 'main')
-                                     .replace(currDirRegExp, '')
-                                     .replace(jsSuffixRegExp, '');
-                    });
-                }
-
-                //If there are any "waiting to execute" modules in the registry,
-                //update the maps for them, since their info, like URLs to load,
-                //may have changed.
-                eachProp(registry, function (mod, id) {
-                    //If module already has init called, since it is too
-                    //late to modify them, and ignore unnormalized ones
-                    //since they are transient.
-                    if (!mod.inited && !mod.map.unnormalized) {
-                        mod.map = makeModuleMap(id);
-                    }
-                });
-
-                //If a deps array or a config callback is specified, then call
-                //require with those args. This is useful when require is defined as a
-                //config object before require.js is loaded.
-                if (cfg.deps || cfg.callback) {
-                    context.require(cfg.deps || [], cfg.callback);
-                }
-            },
-
-            makeShimExports: function (value) {
-                function fn() {
-                    var ret;
-                    if (value.init) {
-                        ret = value.init.apply(global, arguments);
-                    }
-                    return ret || (value.exports && getGlobal(value.exports));
-                }
-                return fn;
-            },
-
-            makeRequire: function (relMap, options) {
-                options = options || {};
-
-                function localRequire(deps, callback, errback) {
-                    var id, map, requireMod;
-
-                    if (options.enableBuildCallback && callback && isFunction(callback)) {
-                        callback.__requireJsBuild = true;
-                    }
-
-                    if (typeof deps === 'string') {
-                        if (isFunction(callback)) {
-                            //Invalid call
-                            return onError(makeError('requireargs', 'Invalid require call'), errback);
-                        }
-
-                        //If require|exports|module are requested, get the
-                        //value for them from the special handlers. Caveat:
-                        //this only works while module is being defined.
-                        if (relMap && hasProp(handlers, deps)) {
-                            return handlers[deps](registry[relMap.id]);
-                        }
-
-                        //Synchronous access to one module. If require.get is
-                        //available (as in the Node adapter), prefer that.
-                        if (req.get) {
-                            return req.get(context, deps, relMap, localRequire);
-                        }
-
-                        //Normalize module name, if it contains . or ..
-                        map = makeModuleMap(deps, relMap, false, true);
-                        id = map.id;
-
-                        if (!hasProp(defined, id)) {
-                            return onError(makeError('notloaded', 'Module name "' +
-                                        id +
-                                        '" has not been loaded yet for context: ' +
-                                        contextName +
-                                        (relMap ? '' : '. Use require([])')));
-                        }
-                        return defined[id];
-                    }
-
-                    //Grab defines waiting in the global queue.
-                    intakeDefines();
-
-                    //Mark all the dependencies as needing to be loaded.
-                    context.nextTick(function () {
-                        //Some defines could have been added since the
-                        //require call, collect them.
-                        intakeDefines();
-
-                        requireMod = getModule(makeModuleMap(null, relMap));
-
-                        //Store if map config should be applied to this require
-                        //call for dependencies.
-                        requireMod.skipMap = options.skipMap;
-
-                        requireMod.init(deps, callback, errback, {
-                            enabled: true
-                        });
-
-                        checkLoaded();
-                    });
-
-                    return localRequire;
-                }
-
-                mixin(localRequire, {
-                    isBrowser: isBrowser,
-
-                    /**
-                     * Converts a module name + .extension into an URL path.
-                     * *Requires* the use of a module name. It does not support using
-                     * plain URLs like nameToUrl.
-                     */
-                    toUrl: function (moduleNamePlusExt) {
-                        var ext,
-                            index = moduleNamePlusExt.lastIndexOf('.'),
-                            segment = moduleNamePlusExt.split('/')[0],
-                            isRelative = segment === '.' || segment === '..';
-
-                        //Have a file extension alias, and it is not the
-                        //dots from a relative path.
-                        if (index !== -1 && (!isRelative || index > 1)) {
-                            ext = moduleNamePlusExt.substring(index, moduleNamePlusExt.length);
-                            moduleNamePlusExt = moduleNamePlusExt.substring(0, index);
-                        }
-
-                        return context.nameToUrl(normalize(moduleNamePlusExt,
-                                                relMap && relMap.id, true), ext,  true);
-                    },
-
-                    defined: function (id) {
-                        return hasProp(defined, makeModuleMap(id, relMap, false, true).id);
-                    },
-
-                    specified: function (id) {
-                        id = makeModuleMap(id, relMap, false, true).id;
-                        return hasProp(defined, id) || hasProp(registry, id);
-                    }
-                });
-
-                //Only allow undef on top level require calls
-                if (!relMap) {
-                    localRequire.undef = function (id) {
-                        //Bind any waiting define() calls to this context,
-                        //fix for #408
-                        takeGlobalQueue();
-
-                        var map = makeModuleMap(id, relMap, true),
-                            mod = getOwn(registry, id);
-
-                        removeScript(id);
-
-                        delete defined[id];
-                        delete urlFetched[map.url];
-                        delete undefEvents[id];
-
-                        //Clean queued defines too. Go backwards
-                        //in array so that the splices do not
-                        //mess up the iteration.
-                        eachReverse(defQueue, function(args, i) {
-                            if(args[0] === id) {
-                                defQueue.splice(i, 1);
-                            }
-                        });
-
-                        if (mod) {
-                            //Hold on to listeners in case the
-                            //module will be attempted to be reloaded
-                            //using a different config.
-                            if (mod.events.defined) {
-                                undefEvents[id] = mod.events;
-                            }
-
-                            cleanRegistry(id);
-                        }
-                    };
-                }
-
-                return localRequire;
-            },
-
-            /**
-             * Called to enable a module if it is still in the registry
-             * awaiting enablement. A second arg, parent, the parent module,
-             * is passed in for context, when this method is overridden by
-             * the optimizer. Not shown here to keep code compact.
-             */
-            enable: function (depMap) {
-                var mod = getOwn(registry, depMap.id);
-                if (mod) {
-                    getModule(depMap).enable();
-                }
-            },
-
-            /**
-             * Internal method used by environment adapters to complete a load event.
-             * A load event could be a script load or just a load pass from a synchronous
-             * load call.
-             * @param {String} moduleName the name of the module to potentially complete.
-             */
-            completeLoad: function (moduleName) {
-                var found, args, mod,
-                    shim = getOwn(config.shim, moduleName) || {},
-                    shExports = shim.exports;
-
-                takeGlobalQueue();
-
-                while (defQueue.length) {
-                    args = defQueue.shift();
-                    if (args[0] === null) {
-                        args[0] = moduleName;
-                        //If already found an anonymous module and bound it
-                        //to this name, then this is some other anon module
-                        //waiting for its completeLoad to fire.
-                        if (found) {
-                            break;
-                        }
-                        found = true;
-                    } else if (args[0] === moduleName) {
-                        //Found matching define call for this script!
-                        found = true;
-                    }
-
-                    callGetModule(args);
-                }
-
-                //Do this after the cycle of callGetModule in case the result
-                //of those calls/init calls changes the registry.
-                mod = getOwn(registry, moduleName);
-
-                if (!found && !hasProp(defined, moduleName) && mod && !mod.inited) {
-                    if (config.enforceDefine && (!shExports || !getGlobal(shExports))) {
-                        if (hasPathFallback(moduleName)) {
-                            return;
-                        } else {
-                            return onError(makeError('nodefine',
-                                             'No define call for ' + moduleName,
-                                             null,
-                                             [moduleName]));
-                        }
-                    } else {
-                        //A script that does not call define(), so just simulate
-                        //the call for it.
-                        callGetModule([moduleName, (shim.deps || []), shim.exportsFn]);
-                    }
-                }
-
-                checkLoaded();
-            },
-
-            /**
-             * Converts a module name to a file path. Supports cases where
-             * moduleName may actually be just an URL.
-             * Note that it **does not** call normalize on the moduleName,
-             * it is assumed to have already been normalized. This is an
-             * internal API, not a public one. Use toUrl for the public API.
-             */
-            nameToUrl: function (moduleName, ext, skipExt) {
-                var paths, syms, i, parentModule, url,
-                    parentPath, bundleId,
-                    pkgMain = getOwn(config.pkgs, moduleName);
-
-                if (pkgMain) {
-                    moduleName = pkgMain;
-                }
-
-                bundleId = getOwn(bundlesMap, moduleName);
-
-                if (bundleId) {
-                    return context.nameToUrl(bundleId, ext, skipExt);
-                }
-
-                //If a colon is in the URL, it indicates a protocol is used and it is just
-                //an URL to a file, or if it starts with a slash, contains a query arg (i.e. ?)
-                //or ends with .js, then assume the user meant to use an url and not a module id.
-                //The slash is important for protocol-less URLs as well as full paths.
-                if (req.jsExtRegExp.test(moduleName)) {
-                    //Just a plain path, not module name lookup, so just return it.
-                    //Add extension if it is included. This is a bit wonky, only non-.js things pass
-                    //an extension, this method probably needs to be reworked.
-                    url = moduleName + (ext || '');
-                } else {
-                    //A module that needs to be converted to a path.
-                    paths = config.paths;
-
-                    syms = moduleName.split('/');
-                    //For each module name segment, see if there is a path
-                    //registered for it. Start with most specific name
-                    //and work up from it.
-                    for (i = syms.length; i > 0; i -= 1) {
-                        parentModule = syms.slice(0, i).join('/');
-
-                        parentPath = getOwn(paths, parentModule);
-                        if (parentPath) {
-                            //If an array, it means there are a few choices,
-                            //Choose the one that is desired
-                            if (isArray(parentPath)) {
-                                parentPath = parentPath[0];
-                            }
-                            syms.splice(0, i, parentPath);
-                            break;
-                        }
-                    }
-
-                    //Join the path parts together, then figure out if baseUrl is needed.
-                    url = syms.join('/');
-                    url += (ext || (/^data\:|\?/.test(url) || skipExt ? '' : '.js'));
-                    url = (url.charAt(0) === '/' || url.match(/^[\w\+\.\-]+:/) ? '' : config.baseUrl) + url;
-                }
-
-                return config.urlArgs ? url +
-                                        ((url.indexOf('?') === -1 ? '?' : '&') +
-                                         config.urlArgs) : url;
-            },
-
-            //Delegates to req.load. Broken out as a separate function to
-            //allow overriding in the optimizer.
-            load: function (id, url) {
-                req.load(context, id, url);
-            },
-
-            /**
-             * Executes a module callback function. Broken out as a separate function
-             * solely to allow the build system to sequence the files in the built
-             * layer in the right sequence.
-             *
-             * @private
-             */
-            execCb: function (name, callback, args, exports) {
-                return callback.apply(exports, args);
-            },
-
-            /**
-             * callback for script loads, used to check status of loading.
-             *
-             * @param {Event} evt the event from the browser for the script
-             * that was loaded.
-             */
-            onScriptLoad: function (evt) {
-                //Using currentTarget instead of target for Firefox 2.0's sake. Not
-                //all old browsers will be supported, but this one was easy enough
-                //to support and still makes sense.
-                if (evt.type === 'load' ||
-                        (readyRegExp.test((evt.currentTarget || evt.srcElement).readyState))) {
-                    //Reset interactive script so a script node is not held onto for
-                    //to long.
-                    interactiveScript = null;
-
-                    //Pull out the name of the module and the context.
-                    var data = getScriptData(evt);
-                    context.completeLoad(data.id);
-                }
-            },
-
-            /**
-             * Callback for script errors.
-             */
-            onScriptError: function (evt) {
-                var data = getScriptData(evt);
-                if (!hasPathFallback(data.id)) {
-                    return onError(makeError('scripterror', 'Script error for: ' + data.id, evt, [data.id]));
-                }
-            }
-        };
-
-        context.require = context.makeRequire();
-        return context;
-    }
-
-    /**
-     * Main entry point.
-     *
-     * If the only argument to require is a string, then the module that
-     * is represented by that string is fetched for the appropriate context.
-     *
-     * If the first argument is an array, then it will be treated as an array
-     * of dependency string names to fetch. An optional function callback can
-     * be specified to execute when all of those dependencies are available.
-     *
-     * Make a local req variable to help Caja compliance (it assumes things
-     * on a require that are not standardized), and to give a short
-     * name for minification/local scope use.
-     */
-    req = requirejs = function (deps, callback, errback, optional) {
-
-        //Find the right context, use default
-        var context, config,
-            contextName = defContextName;
-
-        // Determine if have config object in the call.
-        if (!isArray(deps) && typeof deps !== 'string') {
-            // deps is a config object
-            config = deps;
-            if (isArray(callback)) {
-                // Adjust args if there are dependencies
-                deps = callback;
-                callback = errback;
-                errback = optional;
-            } else {
-                deps = [];
-            }
-        }
-
-        if (config && config.context) {
-            contextName = config.context;
-        }
-
-        context = getOwn(contexts, contextName);
-        if (!context) {
-            context = contexts[contextName] = req.s.newContext(contextName);
-        }
-
-        if (config) {
-            context.configure(config);
-        }
-
-        return context.require(deps, callback, errback);
-    };
-
-    /**
-     * Support require.config() to make it easier to cooperate with other
-     * AMD loaders on globally agreed names.
-     */
-    req.config = function (config) {
-        return req(config);
-    };
-
-    /**
-     * Execute something after the current tick
-     * of the event loop. Override for other envs
-     * that have a better solution than setTimeout.
-     * @param  {Function} fn function to execute later.
-     */
-    req.nextTick = typeof setTimeout !== 'undefined' ? function (fn) {
-        setTimeout(fn, 4);
-    } : function (fn) { fn(); };
-
-    /**
-     * Export require as a global, but only if it does not already exist.
-     */
-    if (!require) {
-        require = req;
-    }
-
-    req.version = version;
-
-    //Used to filter out dependencies that are already paths.
-    req.jsExtRegExp = /^\/|:|\?|\.js$/;
-    req.isBrowser = isBrowser;
-    s = req.s = {
-        contexts: contexts,
-        newContext: newContext
-    };
-
-    //Create default context.
-    req({});
-
-    //Exports some context-sensitive methods on global require.
-    each([
-        'toUrl',
-        'undef',
-        'defined',
-        'specified'
-    ], function (prop) {
-        //Reference from contexts instead of early binding to default context,
-        //so that during builds, the latest instance of the default context
-        //with its config gets used.
-        req[prop] = function () {
-            var ctx = contexts[defContextName];
-            return ctx.require[prop].apply(ctx, arguments);
-        };
-    });
-
-    if (isBrowser) {
-        head = s.head = document.getElementsByTagName('head')[0];
-        //If BASE tag is in play, using appendChild is a problem for IE6.
-        //When that browser dies, this can be removed. Details in this jQuery bug:
-        //http://dev.jquery.com/ticket/2709
-        baseElement = document.getElementsByTagName('base')[0];
-        if (baseElement) {
-            head = s.head = baseElement.parentNode;
-        }
-    }
-
-    /**
-     * Any errors that require explicitly generates will be passed to this
-     * function. Intercept/override it if you want custom error handling.
-     * @param {Error} err the error object.
-     */
-    req.onError = defaultOnError;
-
-    /**
-     * Creates the node for the load command. Only used in browser envs.
-     */
-    req.createNode = function (config, moduleName, url) {
-        var node = config.xhtml ?
-                document.createElementNS('http://www.w3.org/1999/xhtml', 'html:script') :
-                document.createElement('script');
-        node.type = config.scriptType || 'text/javascript';
-        node.charset = 'utf-8';
-        node.async = true;
-        return node;
-    };
-
-    /**
-     * Does the request to load a module for the browser case.
-     * Make this a separate function to allow other environments
-     * to override it.
-     *
-     * @param {Object} context the require context to find state.
-     * @param {String} moduleName the name of the module.
-     * @param {Object} url the URL to the module.
-     */
-    req.load = function (context, moduleName, url) {
-        var config = (context && context.config) || {},
-            node;
-        if (isBrowser) {
-            //In the browser so use a script tag
-            node = req.createNode(config, moduleName, url);
-
-            node.setAttribute('data-requirecontext', context.contextName);
-            node.setAttribute('data-requiremodule', moduleName);
-
-            //Set up load listener. Test attachEvent first because IE9 has
-            //a subtle issue in its addEventListener and script onload firings
-            //that do not match the behavior of all other browsers with
-            //addEventListener support, which fire the onload event for a
-            //script right after the script execution. See:
-            //https://connect.microsoft.com/IE/feedback/details/648057/script-onload-event-is-not-fired-immediately-after-script-execution
-            //UNFORTUNATELY Opera implements attachEvent but does not follow the script
-            //script execution mode.
-            if (node.attachEvent &&
-                    //Check if node.attachEvent is artificially added by custom script or
-                    //natively supported by browser
-                    //read https://github.com/jrburke/requirejs/issues/187
-                    //if we can NOT find [native code] then it must NOT natively supported.
-                    //in IE8, node.attachEvent does not have toString()
-                    //Note the test for "[native code" with no closing brace, see:
-                    //https://github.com/jrburke/requirejs/issues/273
-                    !(node.attachEvent.toString && node.attachEvent.toString().indexOf('[native code') < 0) &&
-                    !isOpera) {
-                //Probably IE. IE (at least 6-8) do not fire
-                //script onload right after executing the script, so
-                //we cannot tie the anonymous define call to a name.
-                //However, IE reports the script as being in 'interactive'
-                //readyState at the time of the define call.
-                useInteractive = true;
-
-                node.attachEvent('onreadystatechange', context.onScriptLoad);
-                //It would be great to add an error handler here to catch
-                //404s in IE9+. However, onreadystatechange will fire before
-                //the error handler, so that does not help. If addEventListener
-                //is used, then IE will fire error before load, but we cannot
-                //use that pathway given the connect.microsoft.com issue
-                //mentioned above about not doing the 'script execute,
-                //then fire the script load event listener before execute
-                //next script' that other browsers do.
-                //Best hope: IE10 fixes the issues,
-                //and then destroys all installs of IE 6-9.
-                //node.attachEvent('onerror', context.onScriptError);
-            } else {
-                node.addEventListener('load', context.onScriptLoad, false);
-                node.addEventListener('error', context.onScriptError, false);
-            }
-            node.src = url;
-
-            //For some cache cases in IE 6-8, the script executes before the end
-            //of the appendChild execution, so to tie an anonymous define
-            //call to the module name (which is stored on the node), hold on
-            //to a reference to this node, but clear after the DOM insertion.
-            currentlyAddingScript = node;
-            if (baseElement) {
-                head.insertBefore(node, baseElement);
-            } else {
-                head.appendChild(node);
-            }
-            currentlyAddingScript = null;
-
-            return node;
-        } else if (isWebWorker) {
-            try {
-                //In a web worker, use importScripts. This is not a very
-                //efficient use of importScripts, importScripts will block until
-                //its script is downloaded and evaluated. However, if web workers
-                //are in play, the expectation that a build has been done so that
-                //only one script needs to be loaded anyway. This may need to be
-                //reevaluated if other use cases become common.
-                importScripts(url);
-
-                //Account for anonymous modules
-                context.completeLoad(moduleName);
-            } catch (e) {
-                context.onError(makeError('importscripts',
-                                'importScripts failed for ' +
-                                    moduleName + ' at ' + url,
-                                e,
-                                [moduleName]));
-            }
-        }
-    };
-
-    function getInteractiveScript() {
-        if (interactiveScript && interactiveScript.readyState === 'interactive') {
-            return interactiveScript;
-        }
-
-        eachReverse(scripts(), function (script) {
-            if (script.readyState === 'interactive') {
-                return (interactiveScript = script);
-            }
-        });
-        return interactiveScript;
-    }
-
-    //Look for a data-main script attribute, which could also adjust the baseUrl.
-    if (isBrowser && !cfg.skipDataMain) {
-        //Figure out baseUrl. Get it from the script tag with require.js in it.
-        eachReverse(scripts(), function (script) {
-            //Set the 'head' where we can append children by
-            //using the script's parent.
-            if (!head) {
-                head = script.parentNode;
-            }
-
-            //Look for a data-main attribute to set main script for the page
-            //to load. If it is there, the path to data main becomes the
-            //baseUrl, if it is not already set.
-            dataMain = script.getAttribute('data-main');
-            if (dataMain) {
-                //Preserve dataMain in case it is a path (i.e. contains '?')
-                mainScript = dataMain;
-
-                //Set final baseUrl if there is not already an explicit one.
-                if (!cfg.baseUrl) {
-                    //Pull off the directory of data-main for use as the
-                    //baseUrl.
-                    src = mainScript.split('/');
-                    mainScript = src.pop();
-                    subPath = src.length ? src.join('/')  + '/' : './';
-
-                    cfg.baseUrl = subPath;
-                }
-
-                //Strip off any trailing .js since mainScript is now
-                //like a module name.
-                mainScript = mainScript.replace(jsSuffixRegExp, '');
-
-                 //If mainScript is still a path, fall back to dataMain
-                if (req.jsExtRegExp.test(mainScript)) {
-                    mainScript = dataMain;
-                }
-
-                //Put the data-main script in the files to load.
-                cfg.deps = cfg.deps ? cfg.deps.concat(mainScript) : [mainScript];
-
-                return true;
-            }
-        });
-    }
-
-    /**
-     * The function that handles definitions of modules. Differs from
-     * require() in that a string for the module should be the first argument,
-     * and the function to execute after dependencies are loaded should
-     * return a value to define the module corresponding to the first argument's
-     * name.
-     */
-    define = function (name, deps, callback) {
-        var node, context;
-
-        //Allow for anonymous modules
-        if (typeof name !== 'string') {
-            //Adjust args appropriately
-            callback = deps;
-            deps = name;
-            name = null;
-        }
-
-        //This module may not have dependencies
-        if (!isArray(deps)) {
-            callback = deps;
-            deps = null;
-        }
-
-        //If no name, and callback is a function, then figure out if it a
-        //CommonJS thing with dependencies.
-        if (!deps && isFunction(callback)) {
-            deps = [];
-            //Remove comments from the callback string,
-            //look for require calls, and pull them into the dependencies,
-            //but only if there are function args.
-            if (callback.length) {
-                callback
-                    .toString()
-                    .replace(commentRegExp, '')
-                    .replace(cjsRequireRegExp, function (match, dep) {
-                        deps.push(dep);
-                    });
-
-                //May be a CommonJS thing even without require calls, but still
-                //could use exports, and module. Avoid doing exports and module
-                //work though if it just needs require.
-                //REQUIRES the function to expect the CommonJS variables in the
-                //order listed below.
-                deps = (callback.length === 1 ? ['require'] : ['require', 'exports', 'module']).concat(deps);
-            }
-        }
-
-        //If in IE 6-8 and hit an anonymous define() call, do the interactive
-        //work.
-        if (useInteractive) {
-            node = currentlyAddingScript || getInteractiveScript();
-            if (node) {
-                if (!name) {
-                    name = node.getAttribute('data-requiremodule');
-                }
-                context = contexts[node.getAttribute('data-requirecontext')];
-            }
-        }
-
-        //Always save off evaluating the def call until the script onload handler.
-        //This allows multiple modules to be in a file without prematurely
-        //tracing dependencies, and allows for anonymous module support,
-        //where the module name is not known until the script onload event
-        //occurs. If no context, use the global queue, and get it processed
-        //in the onscript load callback.
-        (context ? context.defQueue : globalDefQueue).push([name, deps, callback]);
-    };
-
-    define.amd = {
-        jQuery: true
-    };
-
-
-    /**
-     * Executes the text. Normally just uses eval, but can be modified
-     * to use a better, environment-specific call. Only used for transpiling
-     * loader plugins, not for plain JS modules.
-     * @param {String} text the text to execute/evaluate.
-     */
-    req.exec = function (text) {
-        /*jslint evil: true */
-        return eval(text);
-    };
-
-    //Set up with config info.
-    req(cfg);
-}(this));
-
 // This file is deprecated in 1.12.0 to be removed in 1.13
 ( function() {
 define( [
@@ -5734,4200 +3657,6 @@ $.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
 } );
 
 return $.widget;
-
-} ) );
-
-/*!
- * jQuery UI Effects Blind 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Blind Effect
-//>>group: Effects
-//>>description: Blinds the element.
-//>>docs: http://api.jqueryui.com/blind-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "blind", "hide", function( options, done ) {
-	var map = {
-			up: [ "bottom", "top" ],
-			vertical: [ "bottom", "top" ],
-			down: [ "top", "bottom" ],
-			left: [ "right", "left" ],
-			horizontal: [ "right", "left" ],
-			right: [ "left", "right" ]
-		},
-		element = $( this ),
-		direction = options.direction || "up",
-		start = element.cssClip(),
-		animate = { clip: $.extend( {}, start ) },
-		placeholder = $.effects.createPlaceholder( element );
-
-	animate.clip[ map[ direction ][ 0 ] ] = animate.clip[ map[ direction ][ 1 ] ];
-
-	if ( options.mode === "show" ) {
-		element.cssClip( animate.clip );
-		if ( placeholder ) {
-			placeholder.css( $.effects.clipToBox( animate ) );
-		}
-
-		animate.clip = start;
-	}
-
-	if ( placeholder ) {
-		placeholder.animate( $.effects.clipToBox( animate ), options.duration, options.easing );
-	}
-
-	element.animate( animate, {
-		queue: false,
-		duration: options.duration,
-		easing: options.easing,
-		complete: done
-	} );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Bounce 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Bounce Effect
-//>>group: Effects
-//>>description: Bounces an element horizontally or vertically n times.
-//>>docs: http://api.jqueryui.com/bounce-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "bounce", function( options, done ) {
-	var upAnim, downAnim, refValue,
-		element = $( this ),
-
-		// Defaults:
-		mode = options.mode,
-		hide = mode === "hide",
-		show = mode === "show",
-		direction = options.direction || "up",
-		distance = options.distance,
-		times = options.times || 5,
-
-		// Number of internal animations
-		anims = times * 2 + ( show || hide ? 1 : 0 ),
-		speed = options.duration / anims,
-		easing = options.easing,
-
-		// Utility:
-		ref = ( direction === "up" || direction === "down" ) ? "top" : "left",
-		motion = ( direction === "up" || direction === "left" ),
-		i = 0,
-
-		queuelen = element.queue().length;
-
-	$.effects.createPlaceholder( element );
-
-	refValue = element.css( ref );
-
-	// Default distance for the BIGGEST bounce is the outer Distance / 3
-	if ( !distance ) {
-		distance = element[ ref === "top" ? "outerHeight" : "outerWidth" ]() / 3;
-	}
-
-	if ( show ) {
-		downAnim = { opacity: 1 };
-		downAnim[ ref ] = refValue;
-
-		// If we are showing, force opacity 0 and set the initial position
-		// then do the "first" animation
-		element
-			.css( "opacity", 0 )
-			.css( ref, motion ? -distance * 2 : distance * 2 )
-			.animate( downAnim, speed, easing );
-	}
-
-	// Start at the smallest distance if we are hiding
-	if ( hide ) {
-		distance = distance / Math.pow( 2, times - 1 );
-	}
-
-	downAnim = {};
-	downAnim[ ref ] = refValue;
-
-	// Bounces up/down/left/right then back to 0 -- times * 2 animations happen here
-	for ( ; i < times; i++ ) {
-		upAnim = {};
-		upAnim[ ref ] = ( motion ? "-=" : "+=" ) + distance;
-
-		element
-			.animate( upAnim, speed, easing )
-			.animate( downAnim, speed, easing );
-
-		distance = hide ? distance * 2 : distance / 2;
-	}
-
-	// Last Bounce when Hiding
-	if ( hide ) {
-		upAnim = { opacity: 0 };
-		upAnim[ ref ] = ( motion ? "-=" : "+=" ) + distance;
-
-		element.animate( upAnim, speed, easing );
-	}
-
-	element.queue( done );
-
-	$.effects.unshift( element, queuelen, anims + 1 );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Clip 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Clip Effect
-//>>group: Effects
-//>>description: Clips the element on and off like an old TV.
-//>>docs: http://api.jqueryui.com/clip-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "clip", "hide", function( options, done ) {
-	var start,
-		animate = {},
-		element = $( this ),
-		direction = options.direction || "vertical",
-		both = direction === "both",
-		horizontal = both || direction === "horizontal",
-		vertical = both || direction === "vertical";
-
-	start = element.cssClip();
-	animate.clip = {
-		top: vertical ? ( start.bottom - start.top ) / 2 : start.top,
-		right: horizontal ? ( start.right - start.left ) / 2 : start.right,
-		bottom: vertical ? ( start.bottom - start.top ) / 2 : start.bottom,
-		left: horizontal ? ( start.right - start.left ) / 2 : start.left
-	};
-
-	$.effects.createPlaceholder( element );
-
-	if ( options.mode === "show" ) {
-		element.cssClip( animate.clip );
-		animate.clip = start;
-	}
-
-	element.animate( animate, {
-		queue: false,
-		duration: options.duration,
-		easing: options.easing,
-		complete: done
-	} );
-
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Drop 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Drop Effect
-//>>group: Effects
-//>>description: Moves an element in one direction and hides it at the same time.
-//>>docs: http://api.jqueryui.com/drop-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "drop", "hide", function( options, done ) {
-
-	var distance,
-		element = $( this ),
-		mode = options.mode,
-		show = mode === "show",
-		direction = options.direction || "left",
-		ref = ( direction === "up" || direction === "down" ) ? "top" : "left",
-		motion = ( direction === "up" || direction === "left" ) ? "-=" : "+=",
-		oppositeMotion = ( motion === "+=" ) ? "-=" : "+=",
-		animation = {
-			opacity: 0
-		};
-
-	$.effects.createPlaceholder( element );
-
-	distance = options.distance ||
-		element[ ref === "top" ? "outerHeight" : "outerWidth" ]( true ) / 2;
-
-	animation[ ref ] = motion + distance;
-
-	if ( show ) {
-		element.css( animation );
-
-		animation[ ref ] = oppositeMotion + distance;
-		animation.opacity = 1;
-	}
-
-	// Animate
-	element.animate( animation, {
-		queue: false,
-		duration: options.duration,
-		easing: options.easing,
-		complete: done
-	} );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Explode 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Explode Effect
-//>>group: Effects
-// jscs:disable maximumLineLength
-//>>description: Explodes an element in all directions into n pieces. Implodes an element to its original wholeness.
-// jscs:enable maximumLineLength
-//>>docs: http://api.jqueryui.com/explode-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "explode", "hide", function( options, done ) {
-
-	var i, j, left, top, mx, my,
-		rows = options.pieces ? Math.round( Math.sqrt( options.pieces ) ) : 3,
-		cells = rows,
-		element = $( this ),
-		mode = options.mode,
-		show = mode === "show",
-
-		// Show and then visibility:hidden the element before calculating offset
-		offset = element.show().css( "visibility", "hidden" ).offset(),
-
-		// Width and height of a piece
-		width = Math.ceil( element.outerWidth() / cells ),
-		height = Math.ceil( element.outerHeight() / rows ),
-		pieces = [];
-
-	// Children animate complete:
-	function childComplete() {
-		pieces.push( this );
-		if ( pieces.length === rows * cells ) {
-			animComplete();
-		}
-	}
-
-	// Clone the element for each row and cell.
-	for ( i = 0; i < rows; i++ ) { // ===>
-		top = offset.top + i * height;
-		my = i - ( rows - 1 ) / 2;
-
-		for ( j = 0; j < cells; j++ ) { // |||
-			left = offset.left + j * width;
-			mx = j - ( cells - 1 ) / 2;
-
-			// Create a clone of the now hidden main element that will be absolute positioned
-			// within a wrapper div off the -left and -top equal to size of our pieces
-			element
-				.clone()
-				.appendTo( "body" )
-				.wrap( "<div></div>" )
-				.css( {
-					position: "absolute",
-					visibility: "visible",
-					left: -j * width,
-					top: -i * height
-				} )
-
-				// Select the wrapper - make it overflow: hidden and absolute positioned based on
-				// where the original was located +left and +top equal to the size of pieces
-				.parent()
-					.addClass( "ui-effects-explode" )
-					.css( {
-						position: "absolute",
-						overflow: "hidden",
-						width: width,
-						height: height,
-						left: left + ( show ? mx * width : 0 ),
-						top: top + ( show ? my * height : 0 ),
-						opacity: show ? 0 : 1
-					} )
-					.animate( {
-						left: left + ( show ? 0 : mx * width ),
-						top: top + ( show ? 0 : my * height ),
-						opacity: show ? 1 : 0
-					}, options.duration || 500, options.easing, childComplete );
-		}
-	}
-
-	function animComplete() {
-		element.css( {
-			visibility: "visible"
-		} );
-		$( pieces ).remove();
-		done();
-	}
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Fade 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Fade Effect
-//>>group: Effects
-//>>description: Fades the element.
-//>>docs: http://api.jqueryui.com/fade-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "fade", "toggle", function( options, done ) {
-	var show = options.mode === "show";
-
-	$( this )
-		.css( "opacity", show ? 0 : 1 )
-		.animate( {
-			opacity: show ? 1 : 0
-		}, {
-			queue: false,
-			duration: options.duration,
-			easing: options.easing,
-			complete: done
-		} );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Fold 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Fold Effect
-//>>group: Effects
-//>>description: Folds an element first horizontally and then vertically.
-//>>docs: http://api.jqueryui.com/fold-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "fold", "hide", function( options, done ) {
-
-	// Create element
-	var element = $( this ),
-		mode = options.mode,
-		show = mode === "show",
-		hide = mode === "hide",
-		size = options.size || 15,
-		percent = /([0-9]+)%/.exec( size ),
-		horizFirst = !!options.horizFirst,
-		ref = horizFirst ? [ "right", "bottom" ] : [ "bottom", "right" ],
-		duration = options.duration / 2,
-
-		placeholder = $.effects.createPlaceholder( element ),
-
-		start = element.cssClip(),
-		animation1 = { clip: $.extend( {}, start ) },
-		animation2 = { clip: $.extend( {}, start ) },
-
-		distance = [ start[ ref[ 0 ] ], start[ ref[ 1 ] ] ],
-
-		queuelen = element.queue().length;
-
-	if ( percent ) {
-		size = parseInt( percent[ 1 ], 10 ) / 100 * distance[ hide ? 0 : 1 ];
-	}
-	animation1.clip[ ref[ 0 ] ] = size;
-	animation2.clip[ ref[ 0 ] ] = size;
-	animation2.clip[ ref[ 1 ] ] = 0;
-
-	if ( show ) {
-		element.cssClip( animation2.clip );
-		if ( placeholder ) {
-			placeholder.css( $.effects.clipToBox( animation2 ) );
-		}
-
-		animation2.clip = start;
-	}
-
-	// Animate
-	element
-		.queue( function( next ) {
-			if ( placeholder ) {
-				placeholder
-					.animate( $.effects.clipToBox( animation1 ), duration, options.easing )
-					.animate( $.effects.clipToBox( animation2 ), duration, options.easing );
-			}
-
-			next();
-		} )
-		.animate( animation1, duration, options.easing )
-		.animate( animation2, duration, options.easing )
-		.queue( done );
-
-	$.effects.unshift( element, queuelen, 4 );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Highlight 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Highlight Effect
-//>>group: Effects
-//>>description: Highlights the background of an element in a defined color for a custom duration.
-//>>docs: http://api.jqueryui.com/highlight-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "highlight", "show", function( options, done ) {
-	var element = $( this ),
-		animation = {
-			backgroundColor: element.css( "backgroundColor" )
-		};
-
-	if ( options.mode === "hide" ) {
-		animation.opacity = 0;
-	}
-
-	$.effects.saveStyle( element );
-
-	element
-		.css( {
-			backgroundImage: "none",
-			backgroundColor: options.color || "#ffff99"
-		} )
-		.animate( animation, {
-			queue: false,
-			duration: options.duration,
-			easing: options.easing,
-			complete: done
-		} );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Puff 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Puff Effect
-//>>group: Effects
-//>>description: Creates a puff effect by scaling the element up and hiding it at the same time.
-//>>docs: http://api.jqueryui.com/puff-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect",
-			"./effect-scale"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "puff", "hide", function( options, done ) {
-	var newOptions = $.extend( true, {}, options, {
-		fade: true,
-		percent: parseInt( options.percent, 10 ) || 150
-	} );
-
-	$.effects.effect.scale.call( this, newOptions, done );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Pulsate 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Pulsate Effect
-//>>group: Effects
-//>>description: Pulsates an element n times by changing the opacity to zero and back.
-//>>docs: http://api.jqueryui.com/pulsate-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "pulsate", "show", function( options, done ) {
-	var element = $( this ),
-		mode = options.mode,
-		show = mode === "show",
-		hide = mode === "hide",
-		showhide = show || hide,
-
-		// Showing or hiding leaves off the "last" animation
-		anims = ( ( options.times || 5 ) * 2 ) + ( showhide ? 1 : 0 ),
-		duration = options.duration / anims,
-		animateTo = 0,
-		i = 1,
-		queuelen = element.queue().length;
-
-	if ( show || !element.is( ":visible" ) ) {
-		element.css( "opacity", 0 ).show();
-		animateTo = 1;
-	}
-
-	// Anims - 1 opacity "toggles"
-	for ( ; i < anims; i++ ) {
-		element.animate( { opacity: animateTo }, duration, options.easing );
-		animateTo = 1 - animateTo;
-	}
-
-	element.animate( { opacity: animateTo }, duration, options.easing );
-
-	element.queue( done );
-
-	$.effects.unshift( element, queuelen, anims + 1 );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Scale 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Scale Effect
-//>>group: Effects
-//>>description: Grows or shrinks an element and its content.
-//>>docs: http://api.jqueryui.com/scale-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect",
-			"./effect-size"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "scale", function( options, done ) {
-
-	// Create element
-	var el = $( this ),
-		mode = options.mode,
-		percent = parseInt( options.percent, 10 ) ||
-			( parseInt( options.percent, 10 ) === 0 ? 0 : ( mode !== "effect" ? 0 : 100 ) ),
-
-		newOptions = $.extend( true, {
-			from: $.effects.scaledDimensions( el ),
-			to: $.effects.scaledDimensions( el, percent, options.direction || "both" ),
-			origin: options.origin || [ "middle", "center" ]
-		}, options );
-
-	// Fade option to support puff
-	if ( options.fade ) {
-		newOptions.from.opacity = 1;
-		newOptions.to.opacity = 0;
-	}
-
-	$.effects.effect.size.call( this, newOptions, done );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Shake 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Shake Effect
-//>>group: Effects
-//>>description: Shakes an element horizontally or vertically n times.
-//>>docs: http://api.jqueryui.com/shake-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "shake", function( options, done ) {
-
-	var i = 1,
-		element = $( this ),
-		direction = options.direction || "left",
-		distance = options.distance || 20,
-		times = options.times || 3,
-		anims = times * 2 + 1,
-		speed = Math.round( options.duration / anims ),
-		ref = ( direction === "up" || direction === "down" ) ? "top" : "left",
-		positiveMotion = ( direction === "up" || direction === "left" ),
-		animation = {},
-		animation1 = {},
-		animation2 = {},
-
-		queuelen = element.queue().length;
-
-	$.effects.createPlaceholder( element );
-
-	// Animation
-	animation[ ref ] = ( positiveMotion ? "-=" : "+=" ) + distance;
-	animation1[ ref ] = ( positiveMotion ? "+=" : "-=" ) + distance * 2;
-	animation2[ ref ] = ( positiveMotion ? "-=" : "+=" ) + distance * 2;
-
-	// Animate
-	element.animate( animation, speed, options.easing );
-
-	// Shakes
-	for ( ; i < times; i++ ) {
-		element
-			.animate( animation1, speed, options.easing )
-			.animate( animation2, speed, options.easing );
-	}
-
-	element
-		.animate( animation1, speed, options.easing )
-		.animate( animation, speed / 2, options.easing )
-		.queue( done );
-
-	$.effects.unshift( element, queuelen, anims + 1 );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Size 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Size Effect
-//>>group: Effects
-//>>description: Resize an element to a specified width and height.
-//>>docs: http://api.jqueryui.com/size-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "size", function( options, done ) {
-
-	// Create element
-	var baseline, factor, temp,
-		element = $( this ),
-
-		// Copy for children
-		cProps = [ "fontSize" ],
-		vProps = [ "borderTopWidth", "borderBottomWidth", "paddingTop", "paddingBottom" ],
-		hProps = [ "borderLeftWidth", "borderRightWidth", "paddingLeft", "paddingRight" ],
-
-		// Set options
-		mode = options.mode,
-		restore = mode !== "effect",
-		scale = options.scale || "both",
-		origin = options.origin || [ "middle", "center" ],
-		position = element.css( "position" ),
-		pos = element.position(),
-		original = $.effects.scaledDimensions( element ),
-		from = options.from || original,
-		to = options.to || $.effects.scaledDimensions( element, 0 );
-
-	$.effects.createPlaceholder( element );
-
-	if ( mode === "show" ) {
-		temp = from;
-		from = to;
-		to = temp;
-	}
-
-	// Set scaling factor
-	factor = {
-		from: {
-			y: from.height / original.height,
-			x: from.width / original.width
-		},
-		to: {
-			y: to.height / original.height,
-			x: to.width / original.width
-		}
-	};
-
-	// Scale the css box
-	if ( scale === "box" || scale === "both" ) {
-
-		// Vertical props scaling
-		if ( factor.from.y !== factor.to.y ) {
-			from = $.effects.setTransition( element, vProps, factor.from.y, from );
-			to = $.effects.setTransition( element, vProps, factor.to.y, to );
-		}
-
-		// Horizontal props scaling
-		if ( factor.from.x !== factor.to.x ) {
-			from = $.effects.setTransition( element, hProps, factor.from.x, from );
-			to = $.effects.setTransition( element, hProps, factor.to.x, to );
-		}
-	}
-
-	// Scale the content
-	if ( scale === "content" || scale === "both" ) {
-
-		// Vertical props scaling
-		if ( factor.from.y !== factor.to.y ) {
-			from = $.effects.setTransition( element, cProps, factor.from.y, from );
-			to = $.effects.setTransition( element, cProps, factor.to.y, to );
-		}
-	}
-
-	// Adjust the position properties based on the provided origin points
-	if ( origin ) {
-		baseline = $.effects.getBaseline( origin, original );
-		from.top = ( original.outerHeight - from.outerHeight ) * baseline.y + pos.top;
-		from.left = ( original.outerWidth - from.outerWidth ) * baseline.x + pos.left;
-		to.top = ( original.outerHeight - to.outerHeight ) * baseline.y + pos.top;
-		to.left = ( original.outerWidth - to.outerWidth ) * baseline.x + pos.left;
-	}
-	element.css( from );
-
-	// Animate the children if desired
-	if ( scale === "content" || scale === "both" ) {
-
-		vProps = vProps.concat( [ "marginTop", "marginBottom" ] ).concat( cProps );
-		hProps = hProps.concat( [ "marginLeft", "marginRight" ] );
-
-		// Only animate children with width attributes specified
-		// TODO: is this right? should we include anything with css width specified as well
-		element.find( "*[width]" ).each( function() {
-			var child = $( this ),
-				childOriginal = $.effects.scaledDimensions( child ),
-				childFrom = {
-					height: childOriginal.height * factor.from.y,
-					width: childOriginal.width * factor.from.x,
-					outerHeight: childOriginal.outerHeight * factor.from.y,
-					outerWidth: childOriginal.outerWidth * factor.from.x
-				},
-				childTo = {
-					height: childOriginal.height * factor.to.y,
-					width: childOriginal.width * factor.to.x,
-					outerHeight: childOriginal.height * factor.to.y,
-					outerWidth: childOriginal.width * factor.to.x
-				};
-
-			// Vertical props scaling
-			if ( factor.from.y !== factor.to.y ) {
-				childFrom = $.effects.setTransition( child, vProps, factor.from.y, childFrom );
-				childTo = $.effects.setTransition( child, vProps, factor.to.y, childTo );
-			}
-
-			// Horizontal props scaling
-			if ( factor.from.x !== factor.to.x ) {
-				childFrom = $.effects.setTransition( child, hProps, factor.from.x, childFrom );
-				childTo = $.effects.setTransition( child, hProps, factor.to.x, childTo );
-			}
-
-			if ( restore ) {
-				$.effects.saveStyle( child );
-			}
-
-			// Animate children
-			child.css( childFrom );
-			child.animate( childTo, options.duration, options.easing, function() {
-
-				// Restore children
-				if ( restore ) {
-					$.effects.restoreStyle( child );
-				}
-			} );
-		} );
-	}
-
-	// Animate
-	element.animate( to, {
-		queue: false,
-		duration: options.duration,
-		easing: options.easing,
-		complete: function() {
-
-			var offset = element.offset();
-
-			if ( to.opacity === 0 ) {
-				element.css( "opacity", from.opacity );
-			}
-
-			if ( !restore ) {
-				element
-					.css( "position", position === "static" ? "relative" : position )
-					.offset( offset );
-
-				// Need to save style here so that automatic style restoration
-				// doesn't restore to the original styles from before the animation.
-				$.effects.saveStyle( element );
-			}
-
-			done();
-		}
-	} );
-
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Slide 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Slide Effect
-//>>group: Effects
-//>>description: Slides an element in and out of the viewport.
-//>>docs: http://api.jqueryui.com/slide-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-return $.effects.define( "slide", "show", function( options, done ) {
-	var startClip, startRef,
-		element = $( this ),
-		map = {
-			up: [ "bottom", "top" ],
-			down: [ "top", "bottom" ],
-			left: [ "right", "left" ],
-			right: [ "left", "right" ]
-		},
-		mode = options.mode,
-		direction = options.direction || "left",
-		ref = ( direction === "up" || direction === "down" ) ? "top" : "left",
-		positiveMotion = ( direction === "up" || direction === "left" ),
-		distance = options.distance ||
-			element[ ref === "top" ? "outerHeight" : "outerWidth" ]( true ),
-		animation = {};
-
-	$.effects.createPlaceholder( element );
-
-	startClip = element.cssClip();
-	startRef = element.position()[ ref ];
-
-	// Define hide animation
-	animation[ ref ] = ( positiveMotion ? -1 : 1 ) * distance + startRef;
-	animation.clip = element.cssClip();
-	animation.clip[ map[ direction ][ 1 ] ] = animation.clip[ map[ direction ][ 0 ] ];
-
-	// Reverse the animation if we're showing
-	if ( mode === "show" ) {
-		element.cssClip( animation.clip );
-		element.css( ref, animation[ ref ] );
-		animation.clip = startClip;
-		animation[ ref ] = startRef;
-	}
-
-	// Actually animate
-	element.animate( animation, {
-		queue: false,
-		duration: options.duration,
-		easing: options.easing,
-		complete: done
-	} );
-} );
-
-} ) );
-
-/*!
- * jQuery UI Effects Transfer 1.12.1
- * http://jqueryui.com
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- */
-
-//>>label: Transfer Effect
-//>>group: Effects
-//>>description: Displays a transfer effect from one element to another.
-//>>docs: http://api.jqueryui.com/transfer-effect/
-//>>demos: http://jqueryui.com/effect/
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [
-			"jquery",
-			"../version",
-			"../effect"
-		], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery );
-	}
-}( function( $ ) {
-
-var effect;
-if ( $.uiBackCompat !== false ) {
-	effect = $.effects.define( "transfer", function( options, done ) {
-		$( this ).transfer( options, done );
-	} );
-}
-return effect;
-
-} ) );
-
-/* Afrikaans initialisation for the jQuery UI date picker plugin. */
-/* Written by Renier Pretorius. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.af = {
-	closeText: "Selekteer",
-	prevText: "Vorige",
-	nextText: "Volgende",
-	currentText: "Vandag",
-	monthNames: [ "Januarie","Februarie","Maart","April","Mei","Junie",
-	"Julie","Augustus","September","Oktober","November","Desember" ],
-	monthNamesShort: [ "Jan", "Feb", "Mrt", "Apr", "Mei", "Jun",
-	"Jul", "Aug", "Sep", "Okt", "Nov", "Des" ],
-	dayNames: [ "Sondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrydag", "Saterdag" ],
-	dayNamesShort: [ "Son", "Maa", "Din", "Woe", "Don", "Vry", "Sat" ],
-	dayNamesMin: [ "So","Ma","Di","Wo","Do","Vr","Sa" ],
-	weekHeader: "Wk",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.af );
-
-return datepicker.regional.af;
-
-} ) );
-
-/* Algerian Arabic Translation for jQuery UI date picker plugin.
-/* Used in most of Maghreb countries, primarily in Algeria, Tunisia, Morocco.
-/* Mohamed Cherif BOUCHELAGHEM -- cherifbouchelaghem@yahoo.fr */
-/* Mohamed Amine HADDAD -- zatamine@gmail.com */
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "ar-DZ" ] = {
-	closeText: "إغلاق",
-	prevText: "&#x3C;السابق",
-	nextText: "التالي&#x3E;",
-	currentText: "اليوم",
-	monthNames: [ "جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان",
-	"جويلية", "أوت", "سبتمبر","أكتوبر", "نوفمبر", "ديسمبر" ],
-	monthNamesShort: [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
-	dayNames: [ "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت" ],
-	dayNamesShort: [ "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت" ],
-	dayNamesMin: [ "ح", "ن", "ث", "ر", "خ", "ج", "س" ],
-	weekHeader: "أسبوع",
-	dateFormat: "dd/mm/yy",
-	firstDay: 6,
-		isRTL: true,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional[ "ar-DZ" ] );
-
-return datepicker.regional[ "ar-DZ" ];
-
-} ) );
-
-/* Arabic Translation for jQuery UI date picker plugin. */
-/* Used in most of Arab countries, primarily in Bahrain, */
-/* Kuwait, Oman, Qatar, Saudi Arabia and the United Arab Emirates, Egypt, Sudan and Yemen. */
-/* Written by Mohammed Alshehri -- m@dralshehri.com */
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ar = {
-	closeText: "إغلاق",
-	prevText: "&#x3C;السابق",
-	nextText: "التالي&#x3E;",
-	currentText: "اليوم",
-	monthNames: [ "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-	"يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر" ],
-	monthNamesShort: [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
-	dayNames: [ "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت" ],
-	dayNamesShort: [ "أحد", "اثنين", "ثلاثاء", "أربعاء", "خميس", "جمعة", "سبت" ],
-	dayNamesMin: [ "ح", "ن", "ث", "ر", "خ", "ج", "س" ],
-	weekHeader: "أسبوع",
-	dateFormat: "dd/mm/yy",
-	firstDay: 0,
-		isRTL: true,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.ar );
-
-return datepicker.regional.ar;
-
-} ) );
-
-/* Azerbaijani (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by Jamil Najafov (necefov33@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.az = {
-	closeText: "Bağla",
-	prevText: "&#x3C;Geri",
-	nextText: "İrəli&#x3E;",
-	currentText: "Bugün",
-	monthNames: [ "Yanvar","Fevral","Mart","Aprel","May","İyun",
-	"İyul","Avqust","Sentyabr","Oktyabr","Noyabr","Dekabr" ],
-	monthNamesShort: [ "Yan","Fev","Mar","Apr","May","İyun",
-	"İyul","Avq","Sen","Okt","Noy","Dek" ],
-	dayNames: [ "Bazar","Bazar ertəsi","Çərşənbə axşamı","Çərşənbə","Cümə axşamı","Cümə","Şənbə" ],
-	dayNamesShort: [ "B","Be","Ça","Ç","Ca","C","Ş" ],
-	dayNamesMin: [ "B","B","Ç","С","Ç","C","Ş" ],
-	weekHeader: "Hf",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.az );
-
-return datepicker.regional.az;
-
-} ) );
-
-/* Belarusian initialisation for the jQuery UI date picker plugin. */
-/* Written by Pavel Selitskas <p.selitskas@gmail.com> */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.be = {
-	closeText: "Зачыніць",
-	prevText: "&larr;Папяр.",
-	nextText: "Наст.&rarr;",
-	currentText: "Сёньня",
-	monthNames: [ "Студзень","Люты","Сакавік","Красавік","Травень","Чэрвень",
-	"Ліпень","Жнівень","Верасень","Кастрычнік","Лістапад","Сьнежань" ],
-	monthNamesShort: [ "Сту","Лют","Сак","Кра","Тра","Чэр",
-	"Ліп","Жні","Вер","Кас","Ліс","Сьн" ],
-	dayNames: [ "нядзеля","панядзелак","аўторак","серада","чацьвер","пятніца","субота" ],
-	dayNamesShort: [ "ндз","пнд","аўт","срд","чцв","птн","сбт" ],
-	dayNamesMin: [ "Нд","Пн","Аў","Ср","Чц","Пт","Сб" ],
-	weekHeader: "Тд",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.be );
-
-return datepicker.regional.be;
-
-} ) );
-
-/* Bulgarian initialisation for the jQuery UI date picker plugin. */
-/* Written by Stoyan Kyosev (http://svest.org). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.bg = {
-	closeText: "затвори",
-	prevText: "&#x3C;назад",
-	nextText: "напред&#x3E;",
-	nextBigText: "&#x3E;&#x3E;",
-	currentText: "днес",
-	monthNames: [ "Януари","Февруари","Март","Април","Май","Юни",
-	"Юли","Август","Септември","Октомври","Ноември","Декември" ],
-	monthNamesShort: [ "Яну","Фев","Мар","Апр","Май","Юни",
-	"Юли","Авг","Сеп","Окт","Нов","Дек" ],
-	dayNames: [ "Неделя","Понеделник","Вторник","Сряда","Четвъртък","Петък","Събота" ],
-	dayNamesShort: [ "Нед","Пон","Вто","Сря","Чет","Пет","Съб" ],
-	dayNamesMin: [ "Не","По","Вт","Ср","Че","Пе","Съ" ],
-	weekHeader: "Wk",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.bg );
-
-return datepicker.regional.bg;
-
-} ) );
-
-/* Bosnian i18n for the jQuery UI date picker plugin. */
-/* Written by Kenan Konjo. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.bs = {
-	closeText: "Zatvori",
-	prevText: "&#x3C;",
-	nextText: "&#x3E;",
-	currentText: "Danas",
-	monthNames: [ "Januar","Februar","Mart","April","Maj","Juni",
-	"Juli","August","Septembar","Oktobar","Novembar","Decembar" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
-	"Jul","Aug","Sep","Okt","Nov","Dec" ],
-	dayNames: [ "Nedelja","Ponedeljak","Utorak","Srijeda","Četvrtak","Petak","Subota" ],
-	dayNamesShort: [ "Ned","Pon","Uto","Sri","Čet","Pet","Sub" ],
-	dayNamesMin: [ "Ne","Po","Ut","Sr","Če","Pe","Su" ],
-	weekHeader: "Wk",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.bs );
-
-return datepicker.regional.bs;
-
-} ) );
-
-/* Inicialització en català per a l'extensió 'UI date picker' per jQuery. */
-/* Writers: (joan.leon@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ca = {
-	closeText: "Tanca",
-	prevText: "Anterior",
-	nextText: "Següent",
-	currentText: "Avui",
-	monthNames: [ "gener","febrer","març","abril","maig","juny",
-	"juliol","agost","setembre","octubre","novembre","desembre" ],
-	monthNamesShort: [ "gen","feb","març","abr","maig","juny",
-	"jul","ag","set","oct","nov","des" ],
-	dayNames: [ "diumenge","dilluns","dimarts","dimecres","dijous","divendres","dissabte" ],
-	dayNamesShort: [ "dg","dl","dt","dc","dj","dv","ds" ],
-	dayNamesMin: [ "dg","dl","dt","dc","dj","dv","ds" ],
-	weekHeader: "Set",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.ca );
-
-return datepicker.regional.ca;
-
-} ) );
-
-/* Czech initialisation for the jQuery UI date picker plugin. */
-/* Written by Tomas Muller (tomas@tomas-muller.net). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.cs = {
-	closeText: "Zavřít",
-	prevText: "&#x3C;Dříve",
-	nextText: "Později&#x3E;",
-	currentText: "Nyní",
-	monthNames: [ "leden","únor","březen","duben","květen","červen",
-	"červenec","srpen","září","říjen","listopad","prosinec" ],
-	monthNamesShort: [ "led","úno","bře","dub","kvě","čer",
-	"čvc","srp","zář","říj","lis","pro" ],
-	dayNames: [ "neděle", "pondělí", "úterý", "středa", "čtvrtek", "pátek", "sobota" ],
-	dayNamesShort: [ "ne", "po", "út", "st", "čt", "pá", "so" ],
-	dayNamesMin: [ "ne","po","út","st","čt","pá","so" ],
-	weekHeader: "Týd",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.cs );
-
-return datepicker.regional.cs;
-
-} ) );
-
-/* Welsh/UK initialisation for the jQuery UI date picker plugin. */
-/* Written by William Griffiths. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "cy-GB" ] = {
-	closeText: "Done",
-	prevText: "Prev",
-	nextText: "Next",
-	currentText: "Today",
-	monthNames: [ "Ionawr","Chwefror","Mawrth","Ebrill","Mai","Mehefin",
-	"Gorffennaf","Awst","Medi","Hydref","Tachwedd","Rhagfyr" ],
-	monthNamesShort: [ "Ion", "Chw", "Maw", "Ebr", "Mai", "Meh",
-	"Gor", "Aws", "Med", "Hyd", "Tac", "Rha" ],
-	dayNames: [
-		"Dydd Sul",
-		"Dydd Llun",
-		"Dydd Mawrth",
-		"Dydd Mercher",
-		"Dydd Iau",
-		"Dydd Gwener",
-		"Dydd Sadwrn"
-	],
-	dayNamesShort: [ "Sul", "Llu", "Maw", "Mer", "Iau", "Gwe", "Sad" ],
-	dayNamesMin: [ "Su","Ll","Ma","Me","Ia","Gw","Sa" ],
-	weekHeader: "Wy",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional[ "cy-GB" ] );
-
-return datepicker.regional[ "cy-GB" ];
-
-} ) );
-
-/* Danish initialisation for the jQuery UI date picker plugin. */
-/* Written by Jan Christensen ( deletestuff@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.da = {
-	closeText: "Luk",
-	prevText: "&#x3C;Forrige",
-	nextText: "Næste&#x3E;",
-	currentText: "Idag",
-	monthNames: [ "Januar","Februar","Marts","April","Maj","Juni",
-	"Juli","August","September","Oktober","November","December" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
-	"Jul","Aug","Sep","Okt","Nov","Dec" ],
-	dayNames: [ "Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag" ],
-	dayNamesShort: [ "Søn","Man","Tir","Ons","Tor","Fre","Lør" ],
-	dayNamesMin: [ "Sø","Ma","Ti","On","To","Fr","Lø" ],
-	weekHeader: "Uge",
-	dateFormat: "dd-mm-yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.da );
-
-return datepicker.regional.da;
-
-} ) );
-
-/* German initialisation for the jQuery UI date picker plugin. */
-/* Written by Milian Wolff (mail@milianw.de). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.de = {
-	closeText: "Schließen",
-	prevText: "&#x3C;Zurück",
-	nextText: "Vor&#x3E;",
-	currentText: "Heute",
-	monthNames: [ "Januar","Februar","März","April","Mai","Juni",
-	"Juli","August","September","Oktober","November","Dezember" ],
-	monthNamesShort: [ "Jan","Feb","Mär","Apr","Mai","Jun",
-	"Jul","Aug","Sep","Okt","Nov","Dez" ],
-	dayNames: [ "Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag" ],
-	dayNamesShort: [ "So","Mo","Di","Mi","Do","Fr","Sa" ],
-	dayNamesMin: [ "So","Mo","Di","Mi","Do","Fr","Sa" ],
-	weekHeader: "KW",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.de );
-
-return datepicker.regional.de;
-
-} ) );
-
-/* Greek (el) initialisation for the jQuery UI date picker plugin. */
-/* Written by Alex Cicovic (http://www.alexcicovic.com) */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.el = {
-	closeText: "Κλείσιμο",
-	prevText: "Προηγούμενος",
-	nextText: "Επόμενος",
-	currentText: "Σήμερα",
-	monthNames: [ "Ιανουάριος","Φεβρουάριος","Μάρτιος","Απρίλιος","Μάιος","Ιούνιος",
-	"Ιούλιος","Αύγουστος","Σεπτέμβριος","Οκτώβριος","Νοέμβριος","Δεκέμβριος" ],
-	monthNamesShort: [ "Ιαν","Φεβ","Μαρ","Απρ","Μαι","Ιουν",
-	"Ιουλ","Αυγ","Σεπ","Οκτ","Νοε","Δεκ" ],
-	dayNames: [ "Κυριακή","Δευτέρα","Τρίτη","Τετάρτη","Πέμπτη","Παρασκευή","Σάββατο" ],
-	dayNamesShort: [ "Κυρ","Δευ","Τρι","Τετ","Πεμ","Παρ","Σαβ" ],
-	dayNamesMin: [ "Κυ","Δε","Τρ","Τε","Πε","Πα","Σα" ],
-	weekHeader: "Εβδ",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.el );
-
-return datepicker.regional.el;
-
-} ) );
-
-/* English/Australia initialisation for the jQuery UI date picker plugin. */
-/* Based on the en-GB initialisation. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "en-AU" ] = {
-	closeText: "Done",
-	prevText: "Prev",
-	nextText: "Next",
-	currentText: "Today",
-	monthNames: [ "January","February","March","April","May","June",
-	"July","August","September","October","November","December" ],
-	monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-	dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
-	dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
-	dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ],
-	weekHeader: "Wk",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional[ "en-AU" ] );
-
-return datepicker.regional[ "en-AU" ];
-
-} ) );
-
-/* English/UK initialisation for the jQuery UI date picker plugin. */
-/* Written by Stuart. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "en-GB" ] = {
-	closeText: "Done",
-	prevText: "Prev",
-	nextText: "Next",
-	currentText: "Today",
-	monthNames: [ "January","February","March","April","May","June",
-	"July","August","September","October","November","December" ],
-	monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-	dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
-	dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
-	dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ],
-	weekHeader: "Wk",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional[ "en-GB" ] );
-
-return datepicker.regional[ "en-GB" ];
-
-} ) );
-
-/* English/New Zealand initialisation for the jQuery UI date picker plugin. */
-/* Based on the en-GB initialisation. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "en-NZ" ] = {
-	closeText: "Done",
-	prevText: "Prev",
-	nextText: "Next",
-	currentText: "Today",
-	monthNames: [ "January","February","March","April","May","June",
-	"July","August","September","October","November","December" ],
-	monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-	dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
-	dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
-	dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ],
-	weekHeader: "Wk",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional[ "en-NZ" ] );
-
-return datepicker.regional[ "en-NZ" ];
-
-} ) );
-
-/* Esperanto initialisation for the jQuery UI date picker plugin. */
-/* Written by Olivier M. (olivierweb@ifrance.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.eo = {
-	closeText: "Fermi",
-	prevText: "&#x3C;Anta",
-	nextText: "Sekv&#x3E;",
-	currentText: "Nuna",
-	monthNames: [ "Januaro","Februaro","Marto","Aprilo","Majo","Junio",
-	"Julio","Aŭgusto","Septembro","Oktobro","Novembro","Decembro" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
-	"Jul","Aŭg","Sep","Okt","Nov","Dec" ],
-	dayNames: [ "Dimanĉo","Lundo","Mardo","Merkredo","Ĵaŭdo","Vendredo","Sabato" ],
-	dayNamesShort: [ "Dim","Lun","Mar","Mer","Ĵaŭ","Ven","Sab" ],
-	dayNamesMin: [ "Di","Lu","Ma","Me","Ĵa","Ve","Sa" ],
-	weekHeader: "Sb",
-	dateFormat: "dd/mm/yy",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.eo );
-
-return datepicker.regional.eo;
-
-} ) );
-
-/* Inicialización en español para la extensión 'UI date picker' para jQuery. */
-/* Traducido por Vester (xvester@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.es = {
-	closeText: "Cerrar",
-	prevText: "&#x3C;Ant",
-	nextText: "Sig&#x3E;",
-	currentText: "Hoy",
-	monthNames: [ "enero","febrero","marzo","abril","mayo","junio",
-	"julio","agosto","septiembre","octubre","noviembre","diciembre" ],
-	monthNamesShort: [ "ene","feb","mar","abr","may","jun",
-	"jul","ago","sep","oct","nov","dic" ],
-	dayNames: [ "domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
-	dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
-	dayNamesMin: [ "D","L","M","X","J","V","S" ],
-	weekHeader: "Sm",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.es );
-
-return datepicker.regional.es;
-
-} ) );
-
-/* Estonian initialisation for the jQuery UI date picker plugin. */
-/* Written by Mart Sõmermaa (mrts.pydev at gmail com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.et = {
-	closeText: "Sulge",
-	prevText: "Eelnev",
-	nextText: "Järgnev",
-	currentText: "Täna",
-	monthNames: [ "Jaanuar","Veebruar","Märts","Aprill","Mai","Juuni",
-	"Juuli","August","September","Oktoober","November","Detsember" ],
-	monthNamesShort: [ "Jaan", "Veebr", "Märts", "Apr", "Mai", "Juuni",
-	"Juuli", "Aug", "Sept", "Okt", "Nov", "Dets" ],
-	dayNames: [
-		"Pühapäev",
-		"Esmaspäev",
-		"Teisipäev",
-		"Kolmapäev",
-		"Neljapäev",
-		"Reede",
-		"Laupäev"
-	],
-	dayNamesShort: [ "Pühap", "Esmasp", "Teisip", "Kolmap", "Neljap", "Reede", "Laup" ],
-	dayNamesMin: [ "P","E","T","K","N","R","L" ],
-	weekHeader: "näd",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.et );
-
-return datepicker.regional.et;
-
-} ) );
-
-/* Karrikas-ek itzulia (karrikas@karrikas.com) */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.eu = {
-	closeText: "Egina",
-	prevText: "&#x3C;Aur",
-	nextText: "Hur&#x3E;",
-	currentText: "Gaur",
-	monthNames: [ "urtarrila","otsaila","martxoa","apirila","maiatza","ekaina",
-		"uztaila","abuztua","iraila","urria","azaroa","abendua" ],
-	monthNamesShort: [ "urt.","ots.","mar.","api.","mai.","eka.",
-		"uzt.","abu.","ira.","urr.","aza.","abe." ],
-	dayNames: [ "igandea","astelehena","asteartea","asteazkena","osteguna","ostirala","larunbata" ],
-	dayNamesShort: [ "ig.","al.","ar.","az.","og.","ol.","lr." ],
-	dayNamesMin: [ "ig","al","ar","az","og","ol","lr" ],
-	weekHeader: "As",
-	dateFormat: "yy-mm-dd",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.eu );
-
-return datepicker.regional.eu;
-
-} ) );
-
-/* Persian (Farsi) Translation for the jQuery UI date picker plugin. */
-/* Javad Mowlanezhad -- jmowla@gmail.com */
-/* Jalali calendar should supported soon! (Its implemented but I have to test it) */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.fa = {
-	closeText: "بستن",
-	prevText: "&#x3C;قبلی",
-	nextText: "بعدی&#x3E;",
-	currentText: "امروز",
-	monthNames: [
-		"ژانویه",
-		"فوریه",
-		"مارس",
-		"آوریل",
-		"مه",
-		"ژوئن",
-		"ژوئیه",
-		"اوت",
-		"سپتامبر",
-		"اکتبر",
-		"نوامبر",
-		"دسامبر"
-	],
-	monthNamesShort: [ "1","2","3","4","5","6","7","8","9","10","11","12" ],
-	dayNames: [
-		"يکشنبه",
-		"دوشنبه",
-		"سه‌شنبه",
-		"چهارشنبه",
-		"پنجشنبه",
-		"جمعه",
-		"شنبه"
-	],
-	dayNamesShort: [
-		"ی",
-		"د",
-		"س",
-		"چ",
-		"پ",
-		"ج",
-		"ش"
-	],
-	dayNamesMin: [
-		"ی",
-		"د",
-		"س",
-		"چ",
-		"پ",
-		"ج",
-		"ش"
-	],
-	weekHeader: "هف",
-	dateFormat: "yy/mm/dd",
-	firstDay: 6,
-	isRTL: true,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.fa );
-
-return datepicker.regional.fa;
-
-} ) );
-
-/* Finnish initialisation for the jQuery UI date picker plugin. */
-/* Written by Harri Kilpiö (harrikilpio@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.fi = {
-	closeText: "Sulje",
-	prevText: "&#xAB;Edellinen",
-	nextText: "Seuraava&#xBB;",
-	currentText: "Tänään",
-	monthNames: [ "Tammikuu","Helmikuu","Maaliskuu","Huhtikuu","Toukokuu","Kesäkuu",
-	"Heinäkuu","Elokuu","Syyskuu","Lokakuu","Marraskuu","Joulukuu" ],
-	monthNamesShort: [ "Tammi","Helmi","Maalis","Huhti","Touko","Kesä",
-	"Heinä","Elo","Syys","Loka","Marras","Joulu" ],
-	dayNamesShort: [ "Su","Ma","Ti","Ke","To","Pe","La" ],
-	dayNames: [ "Sunnuntai","Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai" ],
-	dayNamesMin: [ "Su","Ma","Ti","Ke","To","Pe","La" ],
-	weekHeader: "Vk",
-	dateFormat: "d.m.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.fi );
-
-return datepicker.regional.fi;
-
-} ) );
-
-/* Faroese initialisation for the jQuery UI date picker plugin */
-/* Written by Sverri Mohr Olsen, sverrimo@gmail.com */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.fo = {
-	closeText: "Lat aftur",
-	prevText: "&#x3C;Fyrra",
-	nextText: "Næsta&#x3E;",
-	currentText: "Í dag",
-	monthNames: [ "Januar","Februar","Mars","Apríl","Mei","Juni",
-	"Juli","August","September","Oktober","November","Desember" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Mei","Jun",
-	"Jul","Aug","Sep","Okt","Nov","Des" ],
-	dayNames: [
-		"Sunnudagur",
-		"Mánadagur",
-		"Týsdagur",
-		"Mikudagur",
-		"Hósdagur",
-		"Fríggjadagur",
-		"Leyardagur"
-	],
-	dayNamesShort: [ "Sun","Mán","Týs","Mik","Hós","Frí","Ley" ],
-	dayNamesMin: [ "Su","Má","Tý","Mi","Hó","Fr","Le" ],
-	weekHeader: "Vk",
-	dateFormat: "dd-mm-yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.fo );
-
-return datepicker.regional.fo;
-
-} ) );
-
-/* Canadian-French initialisation for the jQuery UI date picker plugin. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "fr-CA" ] = {
-	closeText: "Fermer",
-	prevText: "Précédent",
-	nextText: "Suivant",
-	currentText: "Aujourd'hui",
-	monthNames: [ "janvier", "février", "mars", "avril", "mai", "juin",
-		"juillet", "août", "septembre", "octobre", "novembre", "décembre" ],
-	monthNamesShort: [ "janv.", "févr.", "mars", "avril", "mai", "juin",
-		"juil.", "août", "sept.", "oct.", "nov.", "déc." ],
-	dayNames: [ "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi" ],
-	dayNamesShort: [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ],
-	dayNamesMin: [ "D", "L", "M", "M", "J", "V", "S" ],
-	weekHeader: "Sem.",
-	dateFormat: "yy-mm-dd",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: ""
-};
-datepicker.setDefaults( datepicker.regional[ "fr-CA" ] );
-
-return datepicker.regional[ "fr-CA" ];
-
-} ) );
-
-/* Swiss-French initialisation for the jQuery UI date picker plugin. */
-/* Written Martin Voelkle (martin.voelkle@e-tc.ch). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "fr-CH" ] = {
-	closeText: "Fermer",
-	prevText: "&#x3C;Préc",
-	nextText: "Suiv&#x3E;",
-	currentText: "Courant",
-	monthNames: [ "janvier", "février", "mars", "avril", "mai", "juin",
-		"juillet", "août", "septembre", "octobre", "novembre", "décembre" ],
-	monthNamesShort: [ "janv.", "févr.", "mars", "avril", "mai", "juin",
-		"juil.", "août", "sept.", "oct.", "nov.", "déc." ],
-	dayNames: [ "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi" ],
-	dayNamesShort: [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ],
-	dayNamesMin: [ "D", "L", "M", "M", "J", "V", "S" ],
-	weekHeader: "Sm",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional[ "fr-CH" ] );
-
-return datepicker.regional[ "fr-CH" ];
-
-} ) );
-
-/* French initialisation for the jQuery UI date picker plugin. */
-/* Written by Keith Wood (kbwood{at}iinet.com.au),
-			  Stéphane Nahmani (sholby@sholby.net),
-			  Stéphane Raimbault <stephane.raimbault@gmail.com> */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.fr = {
-	closeText: "Fermer",
-	prevText: "Précédent",
-	nextText: "Suivant",
-	currentText: "Aujourd'hui",
-	monthNames: [ "janvier", "février", "mars", "avril", "mai", "juin",
-		"juillet", "août", "septembre", "octobre", "novembre", "décembre" ],
-	monthNamesShort: [ "janv.", "févr.", "mars", "avr.", "mai", "juin",
-		"juil.", "août", "sept.", "oct.", "nov.", "déc." ],
-	dayNames: [ "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi" ],
-	dayNamesShort: [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ],
-	dayNamesMin: [ "D","L","M","M","J","V","S" ],
-	weekHeader: "Sem.",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.fr );
-
-return datepicker.regional.fr;
-
-} ) );
-
-/* Galician localization for 'UI date picker' jQuery extension. */
-/* Translated by Jorge Barreiro <yortx.barry@gmail.com>. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.gl = {
-	closeText: "Pechar",
-	prevText: "&#x3C;Ant",
-	nextText: "Seg&#x3E;",
-	currentText: "Hoxe",
-	monthNames: [ "Xaneiro","Febreiro","Marzo","Abril","Maio","Xuño",
-	"Xullo","Agosto","Setembro","Outubro","Novembro","Decembro" ],
-	monthNamesShort: [ "Xan","Feb","Mar","Abr","Mai","Xuñ",
-	"Xul","Ago","Set","Out","Nov","Dec" ],
-	dayNames: [ "Domingo","Luns","Martes","Mércores","Xoves","Venres","Sábado" ],
-	dayNamesShort: [ "Dom","Lun","Mar","Mér","Xov","Ven","Sáb" ],
-	dayNamesMin: [ "Do","Lu","Ma","Mé","Xo","Ve","Sá" ],
-	weekHeader: "Sm",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.gl );
-
-return datepicker.regional.gl;
-
-} ) );
-
-/* Hebrew initialisation for the UI Datepicker extension. */
-/* Written by Amir Hardon (ahardon at gmail dot com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.he = {
-	closeText: "סגור",
-	prevText: "&#x3C;הקודם",
-	nextText: "הבא&#x3E;",
-	currentText: "היום",
-	monthNames: [ "ינואר","פברואר","מרץ","אפריל","מאי","יוני",
-	"יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר" ],
-	monthNamesShort: [ "ינו","פבר","מרץ","אפר","מאי","יוני",
-	"יולי","אוג","ספט","אוק","נוב","דצמ" ],
-	dayNames: [ "ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת" ],
-	dayNamesShort: [ "א'","ב'","ג'","ד'","ה'","ו'","שבת" ],
-	dayNamesMin: [ "א'","ב'","ג'","ד'","ה'","ו'","שבת" ],
-	weekHeader: "Wk",
-	dateFormat: "dd/mm/yy",
-	firstDay: 0,
-	isRTL: true,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.he );
-
-return datepicker.regional.he;
-
-} ) );
-
-/* Hindi initialisation for the jQuery UI date picker plugin. */
-/* Written by Michael Dawart. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.hi = {
-	closeText: "बंद",
-	prevText: "पिछला",
-	nextText: "अगला",
-	currentText: "आज",
-	monthNames: [ "जनवरी ","फरवरी","मार्च","अप्रेल","मई","जून",
-	"जूलाई","अगस्त ","सितम्बर","अक्टूबर","नवम्बर","दिसम्बर" ],
-	monthNamesShort: [ "जन", "फर", "मार्च", "अप्रेल", "मई", "जून",
-	"जूलाई", "अग", "सित", "अक्ट", "नव", "दि" ],
-	dayNames: [ "रविवार", "सोमवार", "मंगलवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार" ],
-	dayNamesShort: [ "रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि" ],
-	dayNamesMin: [ "रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि" ],
-	weekHeader: "हफ्ता",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.hi );
-
-return datepicker.regional.hi;
-
-} ) );
-
-/* Croatian i18n for the jQuery UI date picker plugin. */
-/* Written by Vjekoslav Nesek. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.hr = {
-	closeText: "Zatvori",
-	prevText: "&#x3C;",
-	nextText: "&#x3E;",
-	currentText: "Danas",
-	monthNames: [ "Siječanj","Veljača","Ožujak","Travanj","Svibanj","Lipanj",
-	"Srpanj","Kolovoz","Rujan","Listopad","Studeni","Prosinac" ],
-	monthNamesShort: [ "Sij","Velj","Ožu","Tra","Svi","Lip",
-	"Srp","Kol","Ruj","Lis","Stu","Pro" ],
-	dayNames: [ "Nedjelja","Ponedjeljak","Utorak","Srijeda","Četvrtak","Petak","Subota" ],
-	dayNamesShort: [ "Ned","Pon","Uto","Sri","Čet","Pet","Sub" ],
-	dayNamesMin: [ "Ne","Po","Ut","Sr","Če","Pe","Su" ],
-	weekHeader: "Tje",
-	dateFormat: "dd.mm.yy.",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.hr );
-
-return datepicker.regional.hr;
-
-} ) );
-
-/* Hungarian initialisation for the jQuery UI date picker plugin. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.hu = {
-	closeText: "bezár",
-	prevText: "vissza",
-	nextText: "előre",
-	currentText: "ma",
-	monthNames: [ "Január", "Február", "Március", "Április", "Május", "Június",
-	"Július", "Augusztus", "Szeptember", "Október", "November", "December" ],
-	monthNamesShort: [ "Jan", "Feb", "Már", "Ápr", "Máj", "Jún",
-	"Júl", "Aug", "Szep", "Okt", "Nov", "Dec" ],
-	dayNames: [ "Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat" ],
-	dayNamesShort: [ "Vas", "Hét", "Ked", "Sze", "Csü", "Pén", "Szo" ],
-	dayNamesMin: [ "V", "H", "K", "Sze", "Cs", "P", "Szo" ],
-	weekHeader: "Hét",
-	dateFormat: "yy.mm.dd.",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: true,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.hu );
-
-return datepicker.regional.hu;
-
-} ) );
-
-/* Armenian(UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by Levon Zakaryan (levon.zakaryan@gmail.com)*/
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.hy = {
-	closeText: "Փակել",
-	prevText: "&#x3C;Նախ.",
-	nextText: "Հաջ.&#x3E;",
-	currentText: "Այսօր",
-	monthNames: [ "Հունվար","Փետրվար","Մարտ","Ապրիլ","Մայիս","Հունիս",
-	"Հուլիս","Օգոստոս","Սեպտեմբեր","Հոկտեմբեր","Նոյեմբեր","Դեկտեմբեր" ],
-	monthNamesShort: [ "Հունվ","Փետր","Մարտ","Ապր","Մայիս","Հունիս",
-	"Հուլ","Օգս","Սեպ","Հոկ","Նոյ","Դեկ" ],
-	dayNames: [ "կիրակի","եկուշաբթի","երեքշաբթի","չորեքշաբթի","հինգշաբթի","ուրբաթ","շաբաթ" ],
-	dayNamesShort: [ "կիր","երկ","երք","չրք","հնգ","ուրբ","շբթ" ],
-	dayNamesMin: [ "կիր","երկ","երք","չրք","հնգ","ուրբ","շբթ" ],
-	weekHeader: "ՇԲՏ",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.hy );
-
-return datepicker.regional.hy;
-
-} ) );
-
-/* Indonesian initialisation for the jQuery UI date picker plugin. */
-/* Written by Deden Fathurahman (dedenf@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.id = {
-	closeText: "Tutup",
-	prevText: "&#x3C;mundur",
-	nextText: "maju&#x3E;",
-	currentText: "hari ini",
-	monthNames: [ "Januari","Februari","Maret","April","Mei","Juni",
-	"Juli","Agustus","September","Oktober","Nopember","Desember" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Mei","Jun",
-	"Jul","Agus","Sep","Okt","Nop","Des" ],
-	dayNames: [ "Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu" ],
-	dayNamesShort: [ "Min","Sen","Sel","Rab","kam","Jum","Sab" ],
-	dayNamesMin: [ "Mg","Sn","Sl","Rb","Km","jm","Sb" ],
-	weekHeader: "Mg",
-	dateFormat: "dd/mm/yy",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.id );
-
-return datepicker.regional.id;
-
-} ) );
-
-/* Icelandic initialisation for the jQuery UI date picker plugin. */
-/* Written by Haukur H. Thorsson (haukur@eskill.is). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.is = {
-	closeText: "Loka",
-	prevText: "&#x3C; Fyrri",
-	nextText: "Næsti &#x3E;",
-	currentText: "Í dag",
-	monthNames: [ "Janúar","Febrúar","Mars","Apríl","Maí","Júní",
-	"Júlí","Ágúst","September","Október","Nóvember","Desember" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maí","Jún",
-	"Júl","Ágú","Sep","Okt","Nóv","Des" ],
-	dayNames: [
-		"Sunnudagur",
-		"Mánudagur",
-		"Þriðjudagur",
-		"Miðvikudagur",
-		"Fimmtudagur",
-		"Föstudagur",
-		"Laugardagur"
-	],
-	dayNamesShort: [ "Sun","Mán","Þri","Mið","Fim","Fös","Lau" ],
-	dayNamesMin: [ "Su","Má","Þr","Mi","Fi","Fö","La" ],
-	weekHeader: "Vika",
-	dateFormat: "dd.mm.yy",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.is );
-
-return datepicker.regional.is;
-
-} ) );
-
-/* Italian initialisation for the jQuery UI date picker plugin. */
-/* Written by Antonello Pasella (antonello.pasella@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "it-CH" ] = {
-	closeText: "Chiudi",
-	prevText: "&#x3C;Prec",
-	nextText: "Succ&#x3E;",
-	currentText: "Oggi",
-	monthNames: [ "Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno",
-		"Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre" ],
-	monthNamesShort: [ "Gen","Feb","Mar","Apr","Mag","Giu",
-		"Lug","Ago","Set","Ott","Nov","Dic" ],
-	dayNames: [ "Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato" ],
-	dayNamesShort: [ "Dom","Lun","Mar","Mer","Gio","Ven","Sab" ],
-	dayNamesMin: [ "Do","Lu","Ma","Me","Gi","Ve","Sa" ],
-	weekHeader: "Sm",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional[ "it-CH" ] );
-
-return datepicker.regional[ "it-CH" ];
-
-} ) );
-
-/* Italian initialisation for the jQuery UI date picker plugin. */
-/* Written by Antonello Pasella (antonello.pasella@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.it = {
-	closeText: "Chiudi",
-	prevText: "&#x3C;Prec",
-	nextText: "Succ&#x3E;",
-	currentText: "Oggi",
-	monthNames: [ "Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno",
-		"Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre" ],
-	monthNamesShort: [ "Gen","Feb","Mar","Apr","Mag","Giu",
-		"Lug","Ago","Set","Ott","Nov","Dic" ],
-	dayNames: [ "Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato" ],
-	dayNamesShort: [ "Dom","Lun","Mar","Mer","Gio","Ven","Sab" ],
-	dayNamesMin: [ "Do","Lu","Ma","Me","Gi","Ve","Sa" ],
-	weekHeader: "Sm",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.it );
-
-return datepicker.regional.it;
-
-} ) );
-
-/* Japanese initialisation for the jQuery UI date picker plugin. */
-/* Written by Kentaro SATO (kentaro@ranvis.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ja = {
-	closeText: "閉じる",
-	prevText: "&#x3C;前",
-	nextText: "次&#x3E;",
-	currentText: "今日",
-	monthNames: [ "1月","2月","3月","4月","5月","6月",
-	"7月","8月","9月","10月","11月","12月" ],
-	monthNamesShort: [ "1月","2月","3月","4月","5月","6月",
-	"7月","8月","9月","10月","11月","12月" ],
-	dayNames: [ "日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日" ],
-	dayNamesShort: [ "日","月","火","水","木","金","土" ],
-	dayNamesMin: [ "日","月","火","水","木","金","土" ],
-	weekHeader: "週",
-	dateFormat: "yy/mm/dd",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: true,
-	yearSuffix: "年" };
-datepicker.setDefaults( datepicker.regional.ja );
-
-return datepicker.regional.ja;
-
-} ) );
-
-/* Georgian (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by Lado Lomidze (lado.lomidze@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ka = {
-	closeText: "დახურვა",
-	prevText: "&#x3c; წინა",
-	nextText: "შემდეგი &#x3e;",
-	currentText: "დღეს",
-	monthNames: [
-		"იანვარი",
-		"თებერვალი",
-		"მარტი",
-		"აპრილი",
-		"მაისი",
-		"ივნისი",
-		"ივლისი",
-		"აგვისტო",
-		"სექტემბერი",
-		"ოქტომბერი",
-		"ნოემბერი",
-		"დეკემბერი"
-	],
-	monthNamesShort: [ "იან","თებ","მარ","აპრ","მაი","ივნ", "ივლ","აგვ","სექ","ოქტ","ნოე","დეკ" ],
-	dayNames: [ "კვირა","ორშაბათი","სამშაბათი","ოთხშაბათი","ხუთშაბათი","პარასკევი","შაბათი" ],
-	dayNamesShort: [ "კვ","ორშ","სამ","ოთხ","ხუთ","პარ","შაბ" ],
-	dayNamesMin: [ "კვ","ორშ","სამ","ოთხ","ხუთ","პარ","შაბ" ],
-	weekHeader: "კვირა",
-	dateFormat: "dd-mm-yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.ka );
-
-return datepicker.regional.ka;
-
-} ) );
-
-/* Kazakh (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by Dmitriy Karasyov (dmitriy.karasyov@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.kk = {
-	closeText: "Жабу",
-	prevText: "&#x3C;Алдыңғы",
-	nextText: "Келесі&#x3E;",
-	currentText: "Бүгін",
-	monthNames: [ "Қаңтар","Ақпан","Наурыз","Сәуір","Мамыр","Маусым",
-	"Шілде","Тамыз","Қыркүйек","Қазан","Қараша","Желтоқсан" ],
-	monthNamesShort: [ "Қаң","Ақп","Нау","Сәу","Мам","Мау",
-	"Шіл","Там","Қыр","Қаз","Қар","Жел" ],
-	dayNames: [ "Жексенбі","Дүйсенбі","Сейсенбі","Сәрсенбі","Бейсенбі","Жұма","Сенбі" ],
-	dayNamesShort: [ "жкс","дсн","ссн","срс","бсн","жма","снб" ],
-	dayNamesMin: [ "Жк","Дс","Сс","Ср","Бс","Жм","Сн" ],
-	weekHeader: "Не",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.kk );
-
-return datepicker.regional.kk;
-
-} ) );
-
-/* Khmer initialisation for the jQuery calendar extension. */
-/* Written by Chandara Om (chandara.teacher@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.km = {
-	closeText: "ធ្វើ​រួច",
-	prevText: "មុន",
-	nextText: "បន្ទាប់",
-	currentText: "ថ្ងៃ​នេះ",
-	monthNames: [ "មករា","កុម្ភៈ","មីនា","មេសា","ឧសភា","មិថុនា",
-	"កក្កដា","សីហា","កញ្ញា","តុលា","វិច្ឆិកា","ធ្នូ" ],
-	monthNamesShort: [ "មករា","កុម្ភៈ","មីនា","មេសា","ឧសភា","មិថុនា",
-	"កក្កដា","សីហា","កញ្ញា","តុលា","វិច្ឆិកា","ធ្នូ" ],
-	dayNames: [ "អាទិត្យ", "ចន្ទ", "អង្គារ", "ពុធ", "ព្រហស្បតិ៍", "សុក្រ", "សៅរ៍" ],
-	dayNamesShort: [ "អា", "ច", "អ", "ពុ", "ព្រហ", "សុ", "សៅ" ],
-	dayNamesMin: [ "អា", "ច", "អ", "ពុ", "ព្រហ", "សុ", "សៅ" ],
-	weekHeader: "សប្ដាហ៍",
-	dateFormat: "dd-mm-yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.km );
-
-return datepicker.regional.km;
-
-} ) );
-
-/* Korean initialisation for the jQuery calendar extension. */
-/* Written by DaeKwon Kang (ncrash.dk@gmail.com), Edited by Genie and Myeongjin Lee. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ko = {
-	closeText: "닫기",
-	prevText: "이전달",
-	nextText: "다음달",
-	currentText: "오늘",
-	monthNames: [ "1월","2월","3월","4월","5월","6월",
-	"7월","8월","9월","10월","11월","12월" ],
-	monthNamesShort: [ "1월","2월","3월","4월","5월","6월",
-	"7월","8월","9월","10월","11월","12월" ],
-	dayNames: [ "일요일","월요일","화요일","수요일","목요일","금요일","토요일" ],
-	dayNamesShort: [ "일","월","화","수","목","금","토" ],
-	dayNamesMin: [ "일","월","화","수","목","금","토" ],
-	weekHeader: "주",
-	dateFormat: "yy. m. d.",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: true,
-	yearSuffix: "년" };
-datepicker.setDefaults( datepicker.regional.ko );
-
-return datepicker.regional.ko;
-
-} ) );
-
-/* Kyrgyz (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by Sergey Kartashov (ebishkek@yandex.ru). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ky = {
-	closeText: "Жабуу",
-	prevText: "&#x3c;Мур",
-	nextText: "Кий&#x3e;",
-	currentText: "Бүгүн",
-	monthNames: [ "Январь","Февраль","Март","Апрель","Май","Июнь",
-	"Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь" ],
-	monthNamesShort: [ "Янв","Фев","Мар","Апр","Май","Июн",
-	"Июл","Авг","Сен","Окт","Ноя","Дек" ],
-	dayNames: [ "жекшемби", "дүйшөмбү", "шейшемби", "шаршемби", "бейшемби", "жума", "ишемби" ],
-	dayNamesShort: [ "жек", "дүй", "шей", "шар", "бей", "жум", "ише" ],
-	dayNamesMin: [ "Жк","Дш","Шш","Шр","Бш","Жм","Иш" ],
-	weekHeader: "Жум",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: ""
-};
-datepicker.setDefaults( datepicker.regional.ky );
-
-return datepicker.regional.ky;
-
-} ) );
-
-/* Luxembourgish initialisation for the jQuery UI date picker plugin. */
-/* Written by Michel Weimerskirch <michel@weimerskirch.net> */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.lb = {
-	closeText: "Fäerdeg",
-	prevText: "Zréck",
-	nextText: "Weider",
-	currentText: "Haut",
-	monthNames: [ "Januar","Februar","Mäerz","Abrëll","Mee","Juni",
-	"Juli","August","September","Oktober","November","Dezember" ],
-	monthNamesShort: [ "Jan", "Feb", "Mäe", "Abr", "Mee", "Jun",
-	"Jul", "Aug", "Sep", "Okt", "Nov", "Dez" ],
-	dayNames: [
-		"Sonndeg",
-		"Méindeg",
-		"Dënschdeg",
-		"Mëttwoch",
-		"Donneschdeg",
-		"Freideg",
-		"Samschdeg"
-	],
-	dayNamesShort: [ "Son", "Méi", "Dën", "Mët", "Don", "Fre", "Sam" ],
-	dayNamesMin: [ "So","Mé","Dë","Më","Do","Fr","Sa" ],
-	weekHeader: "W",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.lb );
-
-return datepicker.regional.lb;
-
-} ) );
-
-/* Lithuanian (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* @author Arturas Paleicikas <arturas@avalon.lt> */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.lt = {
-	closeText: "Uždaryti",
-	prevText: "&#x3C;Atgal",
-	nextText: "Pirmyn&#x3E;",
-	currentText: "Šiandien",
-	monthNames: [ "Sausis","Vasaris","Kovas","Balandis","Gegužė","Birželis",
-	"Liepa","Rugpjūtis","Rugsėjis","Spalis","Lapkritis","Gruodis" ],
-	monthNamesShort: [ "Sau","Vas","Kov","Bal","Geg","Bir",
-	"Lie","Rugp","Rugs","Spa","Lap","Gru" ],
-	dayNames: [
-		"sekmadienis",
-		"pirmadienis",
-		"antradienis",
-		"trečiadienis",
-		"ketvirtadienis",
-		"penktadienis",
-		"šeštadienis"
-	],
-	dayNamesShort: [ "sek","pir","ant","tre","ket","pen","šeš" ],
-	dayNamesMin: [ "Se","Pr","An","Tr","Ke","Pe","Še" ],
-	weekHeader: "SAV",
-	dateFormat: "yy-mm-dd",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: true,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.lt );
-
-return datepicker.regional.lt;
-
-} ) );
-
-/* Latvian (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* @author Arturas Paleicikas <arturas.paleicikas@metasite.net> */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.lv = {
-	closeText: "Aizvērt",
-	prevText: "Iepr.",
-	nextText: "Nāk.",
-	currentText: "Šodien",
-	monthNames: [ "Janvāris","Februāris","Marts","Aprīlis","Maijs","Jūnijs",
-	"Jūlijs","Augusts","Septembris","Oktobris","Novembris","Decembris" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Mai","Jūn",
-	"Jūl","Aug","Sep","Okt","Nov","Dec" ],
-	dayNames: [
-		"svētdiena",
-		"pirmdiena",
-		"otrdiena",
-		"trešdiena",
-		"ceturtdiena",
-		"piektdiena",
-		"sestdiena"
-	],
-	dayNamesShort: [ "svt","prm","otr","tre","ctr","pkt","sst" ],
-	dayNamesMin: [ "Sv","Pr","Ot","Tr","Ct","Pk","Ss" ],
-	weekHeader: "Ned.",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.lv );
-
-return datepicker.regional.lv;
-
-} ) );
-
-/* Macedonian i18n for the jQuery UI date picker plugin. */
-/* Written by Stojce Slavkovski. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.mk = {
-	closeText: "Затвори",
-	prevText: "&#x3C;",
-	nextText: "&#x3E;",
-	currentText: "Денес",
-	monthNames: [ "Јануари","Февруари","Март","Април","Мај","Јуни",
-	"Јули","Август","Септември","Октомври","Ноември","Декември" ],
-	monthNamesShort: [ "Јан","Фев","Мар","Апр","Мај","Јун",
-	"Јул","Авг","Сеп","Окт","Ное","Дек" ],
-	dayNames: [ "Недела","Понеделник","Вторник","Среда","Четврток","Петок","Сабота" ],
-	dayNamesShort: [ "Нед","Пон","Вто","Сре","Чет","Пет","Саб" ],
-	dayNamesMin: [ "Не","По","Вт","Ср","Че","Пе","Са" ],
-	weekHeader: "Сед",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.mk );
-
-return datepicker.regional.mk;
-
-} ) );
-
-/* Malayalam (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by Saji Nediyanchath (saji89@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ml = {
-	closeText: "ശരി",
-	prevText: "മുന്നത്തെ",
-	nextText: "അടുത്തത് ",
-	currentText: "ഇന്ന്",
-	monthNames: [ "ജനുവരി","ഫെബ്രുവരി","മാര്‍ച്ച്","ഏപ്രില്‍","മേയ്","ജൂണ്‍",
-	"ജൂലൈ","ആഗസ്റ്റ്","സെപ്റ്റംബര്‍","ഒക്ടോബര്‍","നവംബര്‍","ഡിസംബര്‍" ],
-	monthNamesShort: [ "ജനു", "ഫെബ്", "മാര്‍", "ഏപ്രി", "മേയ്", "ജൂണ്‍",
-	"ജൂലാ", "ആഗ", "സെപ്", "ഒക്ടോ", "നവം", "ഡിസ" ],
-	dayNames: [ "ഞായര്‍", "തിങ്കള്‍", "ചൊവ്വ", "ബുധന്‍", "വ്യാഴം", "വെള്ളി", "ശനി" ],
-	dayNamesShort: [ "ഞായ", "തിങ്ക", "ചൊവ്വ", "ബുധ", "വ്യാഴം", "വെള്ളി", "ശനി" ],
-	dayNamesMin: [ "ഞാ","തി","ചൊ","ബു","വ്യാ","വെ","ശ" ],
-	weekHeader: "ആ",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.ml );
-
-return datepicker.regional.ml;
-
-} ) );
-
-/* Malaysian initialisation for the jQuery UI date picker plugin. */
-/* Written by Mohd Nawawi Mohamad Jamili (nawawi@ronggeng.net). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ms = {
-	closeText: "Tutup",
-	prevText: "&#x3C;Sebelum",
-	nextText: "Selepas&#x3E;",
-	currentText: "hari ini",
-	monthNames: [ "Januari","Februari","Mac","April","Mei","Jun",
-	"Julai","Ogos","September","Oktober","November","Disember" ],
-	monthNamesShort: [ "Jan","Feb","Mac","Apr","Mei","Jun",
-	"Jul","Ogo","Sep","Okt","Nov","Dis" ],
-	dayNames: [ "Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu" ],
-	dayNamesShort: [ "Aha","Isn","Sel","Rab","kha","Jum","Sab" ],
-	dayNamesMin: [ "Ah","Is","Se","Ra","Kh","Ju","Sa" ],
-	weekHeader: "Mg",
-	dateFormat: "dd/mm/yy",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.ms );
-
-return datepicker.regional.ms;
-
-} ) );
-
-/* Norwegian Bokmål initialisation for the jQuery UI date picker plugin. */
-/* Written by Bjørn Johansen (post@bjornjohansen.no). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.nb = {
-	closeText: "Lukk",
-	prevText: "&#xAB;Forrige",
-	nextText: "Neste&#xBB;",
-	currentText: "I dag",
-	monthNames: [
-		"januar",
-		"februar",
-		"mars",
-		"april",
-		"mai",
-		"juni",
-		"juli",
-		"august",
-		"september",
-		"oktober",
-		"november",
-		"desember"
-	],
-	monthNamesShort: [ "jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des" ],
-	dayNamesShort: [ "søn","man","tir","ons","tor","fre","lør" ],
-	dayNames: [ "søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag" ],
-	dayNamesMin: [ "sø","ma","ti","on","to","fr","lø" ],
-	weekHeader: "Uke",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: ""
-};
-datepicker.setDefaults( datepicker.regional.nb );
-
-return datepicker.regional.nb;
-
-} ) );
-
-/* Dutch (Belgium) initialisation for the jQuery UI date picker plugin. */
-/* David De Sloovere @DavidDeSloovere */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "nl-BE" ] = {
-	closeText: "Sluiten",
-	prevText: "←",
-	nextText: "→",
-	currentText: "Vandaag",
-	monthNames: [ "januari", "februari", "maart", "april", "mei", "juni",
-	"juli", "augustus", "september", "oktober", "november", "december" ],
-	monthNamesShort: [ "jan", "feb", "mrt", "apr", "mei", "jun",
-	"jul", "aug", "sep", "okt", "nov", "dec" ],
-	dayNames: [ "zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag" ],
-	dayNamesShort: [ "zon", "maa", "din", "woe", "don", "vri", "zat" ],
-	dayNamesMin: [ "zo", "ma", "di", "wo", "do", "vr", "za" ],
-	weekHeader: "Wk",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional[ "nl-BE" ] );
-
-return datepicker.regional[ "nl-BE" ];
-
-} ) );
-
-/* Dutch (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by Mathias Bynens <http://mathiasbynens.be/> */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.nl = {
-	closeText: "Sluiten",
-	prevText: "←",
-	nextText: "→",
-	currentText: "Vandaag",
-	monthNames: [ "januari", "februari", "maart", "april", "mei", "juni",
-	"juli", "augustus", "september", "oktober", "november", "december" ],
-	monthNamesShort: [ "jan", "feb", "mrt", "apr", "mei", "jun",
-	"jul", "aug", "sep", "okt", "nov", "dec" ],
-	dayNames: [ "zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag" ],
-	dayNamesShort: [ "zon", "maa", "din", "woe", "don", "vri", "zat" ],
-	dayNamesMin: [ "zo", "ma", "di", "wo", "do", "vr", "za" ],
-	weekHeader: "Wk",
-	dateFormat: "dd-mm-yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.nl );
-
-return datepicker.regional.nl;
-
-} ) );
-
-/* Norwegian Nynorsk initialisation for the jQuery UI date picker plugin. */
-/* Written by Bjørn Johansen (post@bjornjohansen.no). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.nn = {
-	closeText: "Lukk",
-	prevText: "&#xAB;Førre",
-	nextText: "Neste&#xBB;",
-	currentText: "I dag",
-	monthNames: [
-		"januar",
-		"februar",
-		"mars",
-		"april",
-		"mai",
-		"juni",
-		"juli",
-		"august",
-		"september",
-		"oktober",
-		"november",
-		"desember"
-	],
-	monthNamesShort: [ "jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des" ],
-	dayNamesShort: [ "sun","mån","tys","ons","tor","fre","lau" ],
-	dayNames: [ "sundag","måndag","tysdag","onsdag","torsdag","fredag","laurdag" ],
-	dayNamesMin: [ "su","må","ty","on","to","fr","la" ],
-	weekHeader: "Veke",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: ""
-};
-datepicker.setDefaults( datepicker.regional.nn );
-
-return datepicker.regional.nn;
-
-} ) );
-
-/* Norwegian initialisation for the jQuery UI date picker plugin. */
-/* Written by Naimdjon Takhirov (naimdjon@gmail.com). */
-
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.no = {
-	closeText: "Lukk",
-	prevText: "&#xAB;Forrige",
-	nextText: "Neste&#xBB;",
-	currentText: "I dag",
-	monthNames: [
-		"januar",
-		"februar",
-		"mars",
-		"april",
-		"mai",
-		"juni",
-		"juli",
-		"august",
-		"september",
-		"oktober",
-		"november",
-		"desember"
-	],
-	monthNamesShort: [ "jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des" ],
-	dayNamesShort: [ "søn","man","tir","ons","tor","fre","lør" ],
-	dayNames: [ "søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag" ],
-	dayNamesMin: [ "sø","ma","ti","on","to","fr","lø" ],
-	weekHeader: "Uke",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: ""
-};
-datepicker.setDefaults( datepicker.regional.no );
-
-return datepicker.regional.no;
-
-} ) );
-
-/* Polish initialisation for the jQuery UI date picker plugin. */
-/* Written by Jacek Wysocki (jacek.wysocki@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.pl = {
-	closeText: "Zamknij",
-	prevText: "&#x3C;Poprzedni",
-	nextText: "Następny&#x3E;",
-	currentText: "Dziś",
-	monthNames: [ "Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec",
-	"Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień" ],
-	monthNamesShort: [ "Sty","Lu","Mar","Kw","Maj","Cze",
-	"Lip","Sie","Wrz","Pa","Lis","Gru" ],
-	dayNames: [ "Niedziela","Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota" ],
-	dayNamesShort: [ "Nie","Pn","Wt","Śr","Czw","Pt","So" ],
-	dayNamesMin: [ "N","Pn","Wt","Śr","Cz","Pt","So" ],
-	weekHeader: "Tydz",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.pl );
-
-return datepicker.regional.pl;
-
-} ) );
-
-/* Brazilian initialisation for the jQuery UI date picker plugin. */
-/* Written by Leonildo Costa Silva (leocsilva@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "pt-BR" ] = {
-	closeText: "Fechar",
-	prevText: "&#x3C;Anterior",
-	nextText: "Próximo&#x3E;",
-	currentText: "Hoje",
-	monthNames: [ "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
-	"Julho","Agosto","Setembro","Outubro","Novembro","Dezembro" ],
-	monthNamesShort: [ "Jan","Fev","Mar","Abr","Mai","Jun",
-	"Jul","Ago","Set","Out","Nov","Dez" ],
-	dayNames: [
-		"Domingo",
-		"Segunda-feira",
-		"Terça-feira",
-		"Quarta-feira",
-		"Quinta-feira",
-		"Sexta-feira",
-		"Sábado"
-	],
-	dayNamesShort: [ "Dom","Seg","Ter","Qua","Qui","Sex","Sáb" ],
-	dayNamesMin: [ "Dom","Seg","Ter","Qua","Qui","Sex","Sáb" ],
-	weekHeader: "Sm",
-	dateFormat: "dd/mm/yy",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional[ "pt-BR" ] );
-
-return datepicker.regional[ "pt-BR" ];
-
-} ) );
-
-/* Portuguese initialisation for the jQuery UI date picker plugin. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.pt = {
-	closeText: "Fechar",
-	prevText: "Anterior",
-	nextText: "Seguinte",
-	currentText: "Hoje",
-	monthNames: [ "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
-	"Julho","Agosto","Setembro","Outubro","Novembro","Dezembro" ],
-	monthNamesShort: [ "Jan","Fev","Mar","Abr","Mai","Jun",
-	"Jul","Ago","Set","Out","Nov","Dez" ],
-	dayNames: [
-		"Domingo",
-		"Segunda-feira",
-		"Terça-feira",
-		"Quarta-feira",
-		"Quinta-feira",
-		"Sexta-feira",
-		"Sábado"
-	],
-	dayNamesShort: [ "Dom","Seg","Ter","Qua","Qui","Sex","Sáb" ],
-	dayNamesMin: [ "Dom","Seg","Ter","Qua","Qui","Sex","Sáb" ],
-	weekHeader: "Sem",
-	dateFormat: "dd/mm/yy",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.pt );
-
-return datepicker.regional.pt;
-
-} ) );
-
-/* Romansh initialisation for the jQuery UI date picker plugin. */
-/* Written by Yvonne Gienal (yvonne.gienal@educa.ch). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.rm = {
-	closeText: "Serrar",
-	prevText: "&#x3C;Suandant",
-	nextText: "Precedent&#x3E;",
-	currentText: "Actual",
-	monthNames: [
-		"Schaner",
-		"Favrer",
-		"Mars",
-		"Avrigl",
-		"Matg",
-		"Zercladur",
-		"Fanadur",
-		"Avust",
-		"Settember",
-		"October",
-		"November",
-		"December"
-	],
-	monthNamesShort: [
-		"Scha",
-		"Fev",
-		"Mar",
-		"Avr",
-		"Matg",
-		"Zer",
-		"Fan",
-		"Avu",
-		"Sett",
-		"Oct",
-		"Nov",
-		"Dec"
-	],
-	dayNames: [ "Dumengia","Glindesdi","Mardi","Mesemna","Gievgia","Venderdi","Sonda" ],
-	dayNamesShort: [ "Dum","Gli","Mar","Mes","Gie","Ven","Som" ],
-	dayNamesMin: [ "Du","Gl","Ma","Me","Gi","Ve","So" ],
-	weekHeader: "emna",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.rm );
-
-return datepicker.regional.rm;
-
-} ) );
-
-/* Romanian initialisation for the jQuery UI date picker plugin.
- *
- * Written by Edmond L. (ll_edmond@walla.com)
- * and Ionut G. Stan (ionut.g.stan@gmail.com)
- */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ro = {
-	closeText: "Închide",
-	prevText: "&#xAB; Luna precedentă",
-	nextText: "Luna următoare &#xBB;",
-	currentText: "Azi",
-	monthNames: [ "Ianuarie","Februarie","Martie","Aprilie","Mai","Iunie",
-	"Iulie","August","Septembrie","Octombrie","Noiembrie","Decembrie" ],
-	monthNamesShort: [ "Ian", "Feb", "Mar", "Apr", "Mai", "Iun",
-	"Iul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-	dayNames: [ "Duminică", "Luni", "Marţi", "Miercuri", "Joi", "Vineri", "Sâmbătă" ],
-	dayNamesShort: [ "Dum", "Lun", "Mar", "Mie", "Joi", "Vin", "Sâm" ],
-	dayNamesMin: [ "Du","Lu","Ma","Mi","Jo","Vi","Sâ" ],
-	weekHeader: "Săpt",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.ro );
-
-return datepicker.regional.ro;
-
-} ) );
-
-/* Russian (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by Andrew Stromnov (stromnov@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ru = {
-	closeText: "Закрыть",
-	prevText: "&#x3C;Пред",
-	nextText: "След&#x3E;",
-	currentText: "Сегодня",
-	monthNames: [ "Январь","Февраль","Март","Апрель","Май","Июнь",
-	"Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь" ],
-	monthNamesShort: [ "Янв","Фев","Мар","Апр","Май","Июн",
-	"Июл","Авг","Сен","Окт","Ноя","Дек" ],
-	dayNames: [ "воскресенье","понедельник","вторник","среда","четверг","пятница","суббота" ],
-	dayNamesShort: [ "вск","пнд","втр","срд","чтв","птн","сбт" ],
-	dayNamesMin: [ "Вс","Пн","Вт","Ср","Чт","Пт","Сб" ],
-	weekHeader: "Нед",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.ru );
-
-return datepicker.regional.ru;
-
-} ) );
-
-/* Slovak initialisation for the jQuery UI date picker plugin. */
-/* Written by Vojtech Rinik (vojto@hmm.sk). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.sk = {
-	closeText: "Zavrieť",
-	prevText: "&#x3C;Predchádzajúci",
-	nextText: "Nasledujúci&#x3E;",
-	currentText: "Dnes",
-	monthNames: [ "január","február","marec","apríl","máj","jún",
-	"júl","august","september","október","november","december" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Máj","Jún",
-	"Júl","Aug","Sep","Okt","Nov","Dec" ],
-	dayNames: [ "nedeľa","pondelok","utorok","streda","štvrtok","piatok","sobota" ],
-	dayNamesShort: [ "Ned","Pon","Uto","Str","Štv","Pia","Sob" ],
-	dayNamesMin: [ "Ne","Po","Ut","St","Št","Pia","So" ],
-	weekHeader: "Ty",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.sk );
-
-return datepicker.regional.sk;
-
-} ) );
-
-/* Slovenian initialisation for the jQuery UI date picker plugin. */
-/* Written by Jaka Jancar (jaka@kubje.org). */
-/* c = č, s = š z = ž C = Č S = Š Z = Ž */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.sl = {
-	closeText: "Zapri",
-	prevText: "&#x3C;Prejšnji",
-	nextText: "Naslednji&#x3E;",
-	currentText: "Trenutni",
-	monthNames: [ "Januar","Februar","Marec","April","Maj","Junij",
-	"Julij","Avgust","September","Oktober","November","December" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
-	"Jul","Avg","Sep","Okt","Nov","Dec" ],
-	dayNames: [ "Nedelja","Ponedeljek","Torek","Sreda","Četrtek","Petek","Sobota" ],
-	dayNamesShort: [ "Ned","Pon","Tor","Sre","Čet","Pet","Sob" ],
-	dayNamesMin: [ "Ne","Po","To","Sr","Če","Pe","So" ],
-	weekHeader: "Teden",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.sl );
-
-return datepicker.regional.sl;
-
-} ) );
-
-/* Albanian initialisation for the jQuery UI date picker plugin. */
-/* Written by Flakron Bytyqi (flakron@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.sq = {
-	closeText: "mbylle",
-	prevText: "&#x3C;mbrapa",
-	nextText: "Përpara&#x3E;",
-	currentText: "sot",
-	monthNames: [ "Janar","Shkurt","Mars","Prill","Maj","Qershor",
-	"Korrik","Gusht","Shtator","Tetor","Nëntor","Dhjetor" ],
-	monthNamesShort: [ "Jan","Shk","Mar","Pri","Maj","Qer",
-	"Kor","Gus","Sht","Tet","Nën","Dhj" ],
-	dayNames: [ "E Diel","E Hënë","E Martë","E Mërkurë","E Enjte","E Premte","E Shtune" ],
-	dayNamesShort: [ "Di","Hë","Ma","Më","En","Pr","Sh" ],
-	dayNamesMin: [ "Di","Hë","Ma","Më","En","Pr","Sh" ],
-	weekHeader: "Ja",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.sq );
-
-return datepicker.regional.sq;
-
-} ) );
-
-/* Serbian i18n for the jQuery UI date picker plugin. */
-/* Written by Dejan Dimić. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "sr-SR" ] = {
-	closeText: "Zatvori",
-	prevText: "&#x3C;",
-	nextText: "&#x3E;",
-	currentText: "Danas",
-	monthNames: [ "Januar","Februar","Mart","April","Maj","Jun",
-	"Jul","Avgust","Septembar","Oktobar","Novembar","Decembar" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
-	"Jul","Avg","Sep","Okt","Nov","Dec" ],
-	dayNames: [ "Nedelja","Ponedeljak","Utorak","Sreda","Četvrtak","Petak","Subota" ],
-	dayNamesShort: [ "Ned","Pon","Uto","Sre","Čet","Pet","Sub" ],
-	dayNamesMin: [ "Ne","Po","Ut","Sr","Če","Pe","Su" ],
-	weekHeader: "Sed",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional[ "sr-SR" ] );
-
-return datepicker.regional[ "sr-SR" ];
-
-} ) );
-
-/* Serbian i18n for the jQuery UI date picker plugin. */
-/* Written by Dejan Dimić. */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.sr = {
-	closeText: "Затвори",
-	prevText: "&#x3C;",
-	nextText: "&#x3E;",
-	currentText: "Данас",
-	monthNames: [ "Јануар","Фебруар","Март","Април","Мај","Јун",
-	"Јул","Август","Септембар","Октобар","Новембар","Децембар" ],
-	monthNamesShort: [ "Јан","Феб","Мар","Апр","Мај","Јун",
-	"Јул","Авг","Сеп","Окт","Нов","Дец" ],
-	dayNames: [ "Недеља","Понедељак","Уторак","Среда","Четвртак","Петак","Субота" ],
-	dayNamesShort: [ "Нед","Пон","Уто","Сре","Чет","Пет","Суб" ],
-	dayNamesMin: [ "Не","По","Ут","Ср","Че","Пе","Су" ],
-	weekHeader: "Сед",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.sr );
-
-return datepicker.regional.sr;
-
-} ) );
-
-/* Swedish initialisation for the jQuery UI date picker plugin. */
-/* Written by Anders Ekdahl ( anders@nomadiz.se). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.sv = {
-	closeText: "Stäng",
-	prevText: "&#xAB;Förra",
-	nextText: "Nästa&#xBB;",
-	currentText: "Idag",
-	monthNames: [ "Januari","Februari","Mars","April","Maj","Juni",
-	"Juli","Augusti","September","Oktober","November","December" ],
-	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
-	"Jul","Aug","Sep","Okt","Nov","Dec" ],
-	dayNamesShort: [ "Sön","Mån","Tis","Ons","Tor","Fre","Lör" ],
-	dayNames: [ "Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag" ],
-	dayNamesMin: [ "Sö","Må","Ti","On","To","Fr","Lö" ],
-	weekHeader: "Ve",
-	dateFormat: "yy-mm-dd",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.sv );
-
-return datepicker.regional.sv;
-
-} ) );
-
-/* Tamil (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by S A Sureshkumar (saskumar@live.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.ta = {
-	closeText: "மூடு",
-	prevText: "முன்னையது",
-	nextText: "அடுத்தது",
-	currentText: "இன்று",
-	monthNames: [ "தை","மாசி","பங்குனி","சித்திரை","வைகாசி","ஆனி",
-	"ஆடி","ஆவணி","புரட்டாசி","ஐப்பசி","கார்த்திகை","மார்கழி" ],
-	monthNamesShort: [ "தை","மாசி","பங்","சித்","வைகா","ஆனி",
-	"ஆடி","ஆவ","புர","ஐப்","கார்","மார்" ],
-	dayNames: [
-		"ஞாயிற்றுக்கிழமை",
-		"திங்கட்கிழமை",
-		"செவ்வாய்க்கிழமை",
-		"புதன்கிழமை",
-		"வியாழக்கிழமை",
-		"வெள்ளிக்கிழமை",
-		"சனிக்கிழமை"
-	],
-	dayNamesShort: [
-		"ஞாயிறு",
-		"திங்கள்",
-		"செவ்வாய்",
-		"புதன்",
-		"வியாழன்",
-		"வெள்ளி",
-		"சனி"
-	],
-	dayNamesMin: [ "ஞா","தி","செ","பு","வி","வெ","ச" ],
-	weekHeader: "Не",
-	dateFormat: "dd/mm/yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.ta );
-
-return datepicker.regional.ta;
-
-} ) );
-
-/* Thai initialisation for the jQuery UI date picker plugin. */
-/* Written by pipo (pipo@sixhead.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.th = {
-	closeText: "ปิด",
-	prevText: "&#xAB;&#xA0;ย้อน",
-	nextText: "ถัดไป&#xA0;&#xBB;",
-	currentText: "วันนี้",
-	monthNames: [ "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
-	"กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม" ],
-	monthNamesShort: [ "ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.",
-	"ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค." ],
-	dayNames: [ "อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์" ],
-	dayNamesShort: [ "อา.","จ.","อ.","พ.","พฤ.","ศ.","ส." ],
-	dayNamesMin: [ "อา.","จ.","อ.","พ.","พฤ.","ศ.","ส." ],
-	weekHeader: "Wk",
-	dateFormat: "dd/mm/yy",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.th );
-
-return datepicker.regional.th;
-
-} ) );
-
-/* Tajiki (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by Abdurahmon Saidov (saidovab@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.tj = {
-	closeText: "Идома",
-	prevText: "&#x3c;Қафо",
-	nextText: "Пеш&#x3e;",
-	currentText: "Имрӯз",
-	monthNames: [ "Январ","Феврал","Март","Апрел","Май","Июн",
-	"Июл","Август","Сентябр","Октябр","Ноябр","Декабр" ],
-	monthNamesShort: [ "Янв","Фев","Мар","Апр","Май","Июн",
-	"Июл","Авг","Сен","Окт","Ноя","Дек" ],
-	dayNames: [ "якшанбе","душанбе","сешанбе","чоршанбе","панҷшанбе","ҷумъа","шанбе" ],
-	dayNamesShort: [ "якш","душ","сеш","чор","пан","ҷум","шан" ],
-	dayNamesMin: [ "Як","Дш","Сш","Чш","Пш","Ҷм","Шн" ],
-	weekHeader: "Хф",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.tj );
-
-return datepicker.regional.tj;
-
-} ) );
-
-/* Turkish initialisation for the jQuery UI date picker plugin. */
-/* Written by Izzet Emre Erkan (kara@karalamalar.net). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.tr = {
-	closeText: "kapat",
-	prevText: "&#x3C;geri",
-	nextText: "ileri&#x3e",
-	currentText: "bugün",
-	monthNames: [ "Ocak","Şubat","Mart","Nisan","Mayıs","Haziran",
-	"Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık" ],
-	monthNamesShort: [ "Oca","Şub","Mar","Nis","May","Haz",
-	"Tem","Ağu","Eyl","Eki","Kas","Ara" ],
-	dayNames: [ "Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi" ],
-	dayNamesShort: [ "Pz","Pt","Sa","Ça","Pe","Cu","Ct" ],
-	dayNamesMin: [ "Pz","Pt","Sa","Ça","Pe","Cu","Ct" ],
-	weekHeader: "Hf",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.tr );
-
-return datepicker.regional.tr;
-
-} ) );
-
-/* Ukrainian (UTF-8) initialisation for the jQuery UI date picker plugin. */
-/* Written by Maxim Drogobitskiy (maxdao@gmail.com). */
-/* Corrected by Igor Milla (igor.fsp.milla@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.uk = {
-	closeText: "Закрити",
-	prevText: "&#x3C;",
-	nextText: "&#x3E;",
-	currentText: "Сьогодні",
-	monthNames: [ "Січень","Лютий","Березень","Квітень","Травень","Червень",
-	"Липень","Серпень","Вересень","Жовтень","Листопад","Грудень" ],
-	monthNamesShort: [ "Січ","Лют","Бер","Кві","Тра","Чер",
-	"Лип","Сер","Вер","Жов","Лис","Гру" ],
-	dayNames: [ "неділя","понеділок","вівторок","середа","четвер","п’ятниця","субота" ],
-	dayNamesShort: [ "нед","пнд","вів","срд","чтв","птн","сбт" ],
-	dayNamesMin: [ "Нд","Пн","Вт","Ср","Чт","Пт","Сб" ],
-	weekHeader: "Тиж",
-	dateFormat: "dd.mm.yy",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.uk );
-
-return datepicker.regional.uk;
-
-} ) );
-
-/* Vietnamese initialisation for the jQuery UI date picker plugin. */
-/* Translated by Le Thanh Huy (lthanhhuy@cit.ctu.edu.vn). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional.vi = {
-	closeText: "Đóng",
-	prevText: "&#x3C;Trước",
-	nextText: "Tiếp&#x3E;",
-	currentText: "Hôm nay",
-	monthNames: [ "Tháng Một", "Tháng Hai", "Tháng Ba", "Tháng Tư", "Tháng Năm", "Tháng Sáu",
-	"Tháng Bảy", "Tháng Tám", "Tháng Chín", "Tháng Mười", "Tháng Mười Một", "Tháng Mười Hai" ],
-	monthNamesShort: [ "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
-	"Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" ],
-	dayNames: [ "Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy" ],
-	dayNamesShort: [ "CN", "T2", "T3", "T4", "T5", "T6", "T7" ],
-	dayNamesMin: [ "CN", "T2", "T3", "T4", "T5", "T6", "T7" ],
-	weekHeader: "Tu",
-	dateFormat: "dd/mm/yy",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: false,
-	yearSuffix: "" };
-datepicker.setDefaults( datepicker.regional.vi );
-
-return datepicker.regional.vi;
-
-} ) );
-
-/* Chinese initialisation for the jQuery UI date picker plugin. */
-/* Written by Cloudream (cloudream@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "zh-CN" ] = {
-	closeText: "关闭",
-	prevText: "&#x3C;上月",
-	nextText: "下月&#x3E;",
-	currentText: "今天",
-	monthNames: [ "一月","二月","三月","四月","五月","六月",
-	"七月","八月","九月","十月","十一月","十二月" ],
-	monthNamesShort: [ "一月","二月","三月","四月","五月","六月",
-	"七月","八月","九月","十月","十一月","十二月" ],
-	dayNames: [ "星期日","星期一","星期二","星期三","星期四","星期五","星期六" ],
-	dayNamesShort: [ "周日","周一","周二","周三","周四","周五","周六" ],
-	dayNamesMin: [ "日","一","二","三","四","五","六" ],
-	weekHeader: "周",
-	dateFormat: "yy-mm-dd",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: true,
-	yearSuffix: "年" };
-datepicker.setDefaults( datepicker.regional[ "zh-CN" ] );
-
-return datepicker.regional[ "zh-CN" ];
-
-} ) );
-
-/* Chinese initialisation for the jQuery UI date picker plugin. */
-/* Written by SCCY (samuelcychan@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "zh-HK" ] = {
-	closeText: "關閉",
-	prevText: "&#x3C;上月",
-	nextText: "下月&#x3E;",
-	currentText: "今天",
-	monthNames: [ "一月","二月","三月","四月","五月","六月",
-	"七月","八月","九月","十月","十一月","十二月" ],
-	monthNamesShort: [ "一月","二月","三月","四月","五月","六月",
-	"七月","八月","九月","十月","十一月","十二月" ],
-	dayNames: [ "星期日","星期一","星期二","星期三","星期四","星期五","星期六" ],
-	dayNamesShort: [ "周日","周一","周二","周三","周四","周五","周六" ],
-	dayNamesMin: [ "日","一","二","三","四","五","六" ],
-	weekHeader: "周",
-	dateFormat: "dd-mm-yy",
-	firstDay: 0,
-	isRTL: false,
-	showMonthAfterYear: true,
-	yearSuffix: "年" };
-datepicker.setDefaults( datepicker.regional[ "zh-HK" ] );
-
-return datepicker.regional[ "zh-HK" ];
-
-} ) );
-
-/* Chinese initialisation for the jQuery UI date picker plugin. */
-/* Written by Ressol (ressol@gmail.com). */
-( function( factory ) {
-	if ( typeof define === "function" && define.amd ) {
-
-		// AMD. Register as an anonymous module.
-		define( [ "../widgets/datepicker" ], factory );
-	} else {
-
-		// Browser globals
-		factory( jQuery.datepicker );
-	}
-}( function( datepicker ) {
-
-datepicker.regional[ "zh-TW" ] = {
-	closeText: "關閉",
-	prevText: "&#x3C;上月",
-	nextText: "下月&#x3E;",
-	currentText: "今天",
-	monthNames: [ "一月","二月","三月","四月","五月","六月",
-	"七月","八月","九月","十月","十一月","十二月" ],
-	monthNamesShort: [ "一月","二月","三月","四月","五月","六月",
-	"七月","八月","九月","十月","十一月","十二月" ],
-	dayNames: [ "星期日","星期一","星期二","星期三","星期四","星期五","星期六" ],
-	dayNamesShort: [ "周日","周一","周二","周三","周四","周五","周六" ],
-	dayNamesMin: [ "日","一","二","三","四","五","六" ],
-	weekHeader: "周",
-	dateFormat: "yy/mm/dd",
-	firstDay: 1,
-	isRTL: false,
-	showMonthAfterYear: true,
-	yearSuffix: "年" };
-datepicker.setDefaults( datepicker.regional[ "zh-TW" ] );
-
-return datepicker.regional[ "zh-TW" ];
 
 } ) );
 
@@ -24624,6 +18353,4200 @@ return $.ui.tooltip;
 } ) );
 
 /*!
+ * jQuery UI Effects Blind 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Blind Effect
+//>>group: Effects
+//>>description: Blinds the element.
+//>>docs: http://api.jqueryui.com/blind-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "blind", "hide", function( options, done ) {
+	var map = {
+			up: [ "bottom", "top" ],
+			vertical: [ "bottom", "top" ],
+			down: [ "top", "bottom" ],
+			left: [ "right", "left" ],
+			horizontal: [ "right", "left" ],
+			right: [ "left", "right" ]
+		},
+		element = $( this ),
+		direction = options.direction || "up",
+		start = element.cssClip(),
+		animate = { clip: $.extend( {}, start ) },
+		placeholder = $.effects.createPlaceholder( element );
+
+	animate.clip[ map[ direction ][ 0 ] ] = animate.clip[ map[ direction ][ 1 ] ];
+
+	if ( options.mode === "show" ) {
+		element.cssClip( animate.clip );
+		if ( placeholder ) {
+			placeholder.css( $.effects.clipToBox( animate ) );
+		}
+
+		animate.clip = start;
+	}
+
+	if ( placeholder ) {
+		placeholder.animate( $.effects.clipToBox( animate ), options.duration, options.easing );
+	}
+
+	element.animate( animate, {
+		queue: false,
+		duration: options.duration,
+		easing: options.easing,
+		complete: done
+	} );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Bounce 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Bounce Effect
+//>>group: Effects
+//>>description: Bounces an element horizontally or vertically n times.
+//>>docs: http://api.jqueryui.com/bounce-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "bounce", function( options, done ) {
+	var upAnim, downAnim, refValue,
+		element = $( this ),
+
+		// Defaults:
+		mode = options.mode,
+		hide = mode === "hide",
+		show = mode === "show",
+		direction = options.direction || "up",
+		distance = options.distance,
+		times = options.times || 5,
+
+		// Number of internal animations
+		anims = times * 2 + ( show || hide ? 1 : 0 ),
+		speed = options.duration / anims,
+		easing = options.easing,
+
+		// Utility:
+		ref = ( direction === "up" || direction === "down" ) ? "top" : "left",
+		motion = ( direction === "up" || direction === "left" ),
+		i = 0,
+
+		queuelen = element.queue().length;
+
+	$.effects.createPlaceholder( element );
+
+	refValue = element.css( ref );
+
+	// Default distance for the BIGGEST bounce is the outer Distance / 3
+	if ( !distance ) {
+		distance = element[ ref === "top" ? "outerHeight" : "outerWidth" ]() / 3;
+	}
+
+	if ( show ) {
+		downAnim = { opacity: 1 };
+		downAnim[ ref ] = refValue;
+
+		// If we are showing, force opacity 0 and set the initial position
+		// then do the "first" animation
+		element
+			.css( "opacity", 0 )
+			.css( ref, motion ? -distance * 2 : distance * 2 )
+			.animate( downAnim, speed, easing );
+	}
+
+	// Start at the smallest distance if we are hiding
+	if ( hide ) {
+		distance = distance / Math.pow( 2, times - 1 );
+	}
+
+	downAnim = {};
+	downAnim[ ref ] = refValue;
+
+	// Bounces up/down/left/right then back to 0 -- times * 2 animations happen here
+	for ( ; i < times; i++ ) {
+		upAnim = {};
+		upAnim[ ref ] = ( motion ? "-=" : "+=" ) + distance;
+
+		element
+			.animate( upAnim, speed, easing )
+			.animate( downAnim, speed, easing );
+
+		distance = hide ? distance * 2 : distance / 2;
+	}
+
+	// Last Bounce when Hiding
+	if ( hide ) {
+		upAnim = { opacity: 0 };
+		upAnim[ ref ] = ( motion ? "-=" : "+=" ) + distance;
+
+		element.animate( upAnim, speed, easing );
+	}
+
+	element.queue( done );
+
+	$.effects.unshift( element, queuelen, anims + 1 );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Clip 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Clip Effect
+//>>group: Effects
+//>>description: Clips the element on and off like an old TV.
+//>>docs: http://api.jqueryui.com/clip-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "clip", "hide", function( options, done ) {
+	var start,
+		animate = {},
+		element = $( this ),
+		direction = options.direction || "vertical",
+		both = direction === "both",
+		horizontal = both || direction === "horizontal",
+		vertical = both || direction === "vertical";
+
+	start = element.cssClip();
+	animate.clip = {
+		top: vertical ? ( start.bottom - start.top ) / 2 : start.top,
+		right: horizontal ? ( start.right - start.left ) / 2 : start.right,
+		bottom: vertical ? ( start.bottom - start.top ) / 2 : start.bottom,
+		left: horizontal ? ( start.right - start.left ) / 2 : start.left
+	};
+
+	$.effects.createPlaceholder( element );
+
+	if ( options.mode === "show" ) {
+		element.cssClip( animate.clip );
+		animate.clip = start;
+	}
+
+	element.animate( animate, {
+		queue: false,
+		duration: options.duration,
+		easing: options.easing,
+		complete: done
+	} );
+
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Drop 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Drop Effect
+//>>group: Effects
+//>>description: Moves an element in one direction and hides it at the same time.
+//>>docs: http://api.jqueryui.com/drop-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "drop", "hide", function( options, done ) {
+
+	var distance,
+		element = $( this ),
+		mode = options.mode,
+		show = mode === "show",
+		direction = options.direction || "left",
+		ref = ( direction === "up" || direction === "down" ) ? "top" : "left",
+		motion = ( direction === "up" || direction === "left" ) ? "-=" : "+=",
+		oppositeMotion = ( motion === "+=" ) ? "-=" : "+=",
+		animation = {
+			opacity: 0
+		};
+
+	$.effects.createPlaceholder( element );
+
+	distance = options.distance ||
+		element[ ref === "top" ? "outerHeight" : "outerWidth" ]( true ) / 2;
+
+	animation[ ref ] = motion + distance;
+
+	if ( show ) {
+		element.css( animation );
+
+		animation[ ref ] = oppositeMotion + distance;
+		animation.opacity = 1;
+	}
+
+	// Animate
+	element.animate( animation, {
+		queue: false,
+		duration: options.duration,
+		easing: options.easing,
+		complete: done
+	} );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Explode 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Explode Effect
+//>>group: Effects
+// jscs:disable maximumLineLength
+//>>description: Explodes an element in all directions into n pieces. Implodes an element to its original wholeness.
+// jscs:enable maximumLineLength
+//>>docs: http://api.jqueryui.com/explode-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "explode", "hide", function( options, done ) {
+
+	var i, j, left, top, mx, my,
+		rows = options.pieces ? Math.round( Math.sqrt( options.pieces ) ) : 3,
+		cells = rows,
+		element = $( this ),
+		mode = options.mode,
+		show = mode === "show",
+
+		// Show and then visibility:hidden the element before calculating offset
+		offset = element.show().css( "visibility", "hidden" ).offset(),
+
+		// Width and height of a piece
+		width = Math.ceil( element.outerWidth() / cells ),
+		height = Math.ceil( element.outerHeight() / rows ),
+		pieces = [];
+
+	// Children animate complete:
+	function childComplete() {
+		pieces.push( this );
+		if ( pieces.length === rows * cells ) {
+			animComplete();
+		}
+	}
+
+	// Clone the element for each row and cell.
+	for ( i = 0; i < rows; i++ ) { // ===>
+		top = offset.top + i * height;
+		my = i - ( rows - 1 ) / 2;
+
+		for ( j = 0; j < cells; j++ ) { // |||
+			left = offset.left + j * width;
+			mx = j - ( cells - 1 ) / 2;
+
+			// Create a clone of the now hidden main element that will be absolute positioned
+			// within a wrapper div off the -left and -top equal to size of our pieces
+			element
+				.clone()
+				.appendTo( "body" )
+				.wrap( "<div></div>" )
+				.css( {
+					position: "absolute",
+					visibility: "visible",
+					left: -j * width,
+					top: -i * height
+				} )
+
+				// Select the wrapper - make it overflow: hidden and absolute positioned based on
+				// where the original was located +left and +top equal to the size of pieces
+				.parent()
+					.addClass( "ui-effects-explode" )
+					.css( {
+						position: "absolute",
+						overflow: "hidden",
+						width: width,
+						height: height,
+						left: left + ( show ? mx * width : 0 ),
+						top: top + ( show ? my * height : 0 ),
+						opacity: show ? 0 : 1
+					} )
+					.animate( {
+						left: left + ( show ? 0 : mx * width ),
+						top: top + ( show ? 0 : my * height ),
+						opacity: show ? 1 : 0
+					}, options.duration || 500, options.easing, childComplete );
+		}
+	}
+
+	function animComplete() {
+		element.css( {
+			visibility: "visible"
+		} );
+		$( pieces ).remove();
+		done();
+	}
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Fade 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Fade Effect
+//>>group: Effects
+//>>description: Fades the element.
+//>>docs: http://api.jqueryui.com/fade-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "fade", "toggle", function( options, done ) {
+	var show = options.mode === "show";
+
+	$( this )
+		.css( "opacity", show ? 0 : 1 )
+		.animate( {
+			opacity: show ? 1 : 0
+		}, {
+			queue: false,
+			duration: options.duration,
+			easing: options.easing,
+			complete: done
+		} );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Fold 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Fold Effect
+//>>group: Effects
+//>>description: Folds an element first horizontally and then vertically.
+//>>docs: http://api.jqueryui.com/fold-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "fold", "hide", function( options, done ) {
+
+	// Create element
+	var element = $( this ),
+		mode = options.mode,
+		show = mode === "show",
+		hide = mode === "hide",
+		size = options.size || 15,
+		percent = /([0-9]+)%/.exec( size ),
+		horizFirst = !!options.horizFirst,
+		ref = horizFirst ? [ "right", "bottom" ] : [ "bottom", "right" ],
+		duration = options.duration / 2,
+
+		placeholder = $.effects.createPlaceholder( element ),
+
+		start = element.cssClip(),
+		animation1 = { clip: $.extend( {}, start ) },
+		animation2 = { clip: $.extend( {}, start ) },
+
+		distance = [ start[ ref[ 0 ] ], start[ ref[ 1 ] ] ],
+
+		queuelen = element.queue().length;
+
+	if ( percent ) {
+		size = parseInt( percent[ 1 ], 10 ) / 100 * distance[ hide ? 0 : 1 ];
+	}
+	animation1.clip[ ref[ 0 ] ] = size;
+	animation2.clip[ ref[ 0 ] ] = size;
+	animation2.clip[ ref[ 1 ] ] = 0;
+
+	if ( show ) {
+		element.cssClip( animation2.clip );
+		if ( placeholder ) {
+			placeholder.css( $.effects.clipToBox( animation2 ) );
+		}
+
+		animation2.clip = start;
+	}
+
+	// Animate
+	element
+		.queue( function( next ) {
+			if ( placeholder ) {
+				placeholder
+					.animate( $.effects.clipToBox( animation1 ), duration, options.easing )
+					.animate( $.effects.clipToBox( animation2 ), duration, options.easing );
+			}
+
+			next();
+		} )
+		.animate( animation1, duration, options.easing )
+		.animate( animation2, duration, options.easing )
+		.queue( done );
+
+	$.effects.unshift( element, queuelen, 4 );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Highlight 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Highlight Effect
+//>>group: Effects
+//>>description: Highlights the background of an element in a defined color for a custom duration.
+//>>docs: http://api.jqueryui.com/highlight-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "highlight", "show", function( options, done ) {
+	var element = $( this ),
+		animation = {
+			backgroundColor: element.css( "backgroundColor" )
+		};
+
+	if ( options.mode === "hide" ) {
+		animation.opacity = 0;
+	}
+
+	$.effects.saveStyle( element );
+
+	element
+		.css( {
+			backgroundImage: "none",
+			backgroundColor: options.color || "#ffff99"
+		} )
+		.animate( animation, {
+			queue: false,
+			duration: options.duration,
+			easing: options.easing,
+			complete: done
+		} );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Puff 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Puff Effect
+//>>group: Effects
+//>>description: Creates a puff effect by scaling the element up and hiding it at the same time.
+//>>docs: http://api.jqueryui.com/puff-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect",
+			"./effect-scale"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "puff", "hide", function( options, done ) {
+	var newOptions = $.extend( true, {}, options, {
+		fade: true,
+		percent: parseInt( options.percent, 10 ) || 150
+	} );
+
+	$.effects.effect.scale.call( this, newOptions, done );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Pulsate 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Pulsate Effect
+//>>group: Effects
+//>>description: Pulsates an element n times by changing the opacity to zero and back.
+//>>docs: http://api.jqueryui.com/pulsate-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "pulsate", "show", function( options, done ) {
+	var element = $( this ),
+		mode = options.mode,
+		show = mode === "show",
+		hide = mode === "hide",
+		showhide = show || hide,
+
+		// Showing or hiding leaves off the "last" animation
+		anims = ( ( options.times || 5 ) * 2 ) + ( showhide ? 1 : 0 ),
+		duration = options.duration / anims,
+		animateTo = 0,
+		i = 1,
+		queuelen = element.queue().length;
+
+	if ( show || !element.is( ":visible" ) ) {
+		element.css( "opacity", 0 ).show();
+		animateTo = 1;
+	}
+
+	// Anims - 1 opacity "toggles"
+	for ( ; i < anims; i++ ) {
+		element.animate( { opacity: animateTo }, duration, options.easing );
+		animateTo = 1 - animateTo;
+	}
+
+	element.animate( { opacity: animateTo }, duration, options.easing );
+
+	element.queue( done );
+
+	$.effects.unshift( element, queuelen, anims + 1 );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Scale 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Scale Effect
+//>>group: Effects
+//>>description: Grows or shrinks an element and its content.
+//>>docs: http://api.jqueryui.com/scale-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect",
+			"./effect-size"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "scale", function( options, done ) {
+
+	// Create element
+	var el = $( this ),
+		mode = options.mode,
+		percent = parseInt( options.percent, 10 ) ||
+			( parseInt( options.percent, 10 ) === 0 ? 0 : ( mode !== "effect" ? 0 : 100 ) ),
+
+		newOptions = $.extend( true, {
+			from: $.effects.scaledDimensions( el ),
+			to: $.effects.scaledDimensions( el, percent, options.direction || "both" ),
+			origin: options.origin || [ "middle", "center" ]
+		}, options );
+
+	// Fade option to support puff
+	if ( options.fade ) {
+		newOptions.from.opacity = 1;
+		newOptions.to.opacity = 0;
+	}
+
+	$.effects.effect.size.call( this, newOptions, done );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Shake 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Shake Effect
+//>>group: Effects
+//>>description: Shakes an element horizontally or vertically n times.
+//>>docs: http://api.jqueryui.com/shake-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "shake", function( options, done ) {
+
+	var i = 1,
+		element = $( this ),
+		direction = options.direction || "left",
+		distance = options.distance || 20,
+		times = options.times || 3,
+		anims = times * 2 + 1,
+		speed = Math.round( options.duration / anims ),
+		ref = ( direction === "up" || direction === "down" ) ? "top" : "left",
+		positiveMotion = ( direction === "up" || direction === "left" ),
+		animation = {},
+		animation1 = {},
+		animation2 = {},
+
+		queuelen = element.queue().length;
+
+	$.effects.createPlaceholder( element );
+
+	// Animation
+	animation[ ref ] = ( positiveMotion ? "-=" : "+=" ) + distance;
+	animation1[ ref ] = ( positiveMotion ? "+=" : "-=" ) + distance * 2;
+	animation2[ ref ] = ( positiveMotion ? "-=" : "+=" ) + distance * 2;
+
+	// Animate
+	element.animate( animation, speed, options.easing );
+
+	// Shakes
+	for ( ; i < times; i++ ) {
+		element
+			.animate( animation1, speed, options.easing )
+			.animate( animation2, speed, options.easing );
+	}
+
+	element
+		.animate( animation1, speed, options.easing )
+		.animate( animation, speed / 2, options.easing )
+		.queue( done );
+
+	$.effects.unshift( element, queuelen, anims + 1 );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Size 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Size Effect
+//>>group: Effects
+//>>description: Resize an element to a specified width and height.
+//>>docs: http://api.jqueryui.com/size-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "size", function( options, done ) {
+
+	// Create element
+	var baseline, factor, temp,
+		element = $( this ),
+
+		// Copy for children
+		cProps = [ "fontSize" ],
+		vProps = [ "borderTopWidth", "borderBottomWidth", "paddingTop", "paddingBottom" ],
+		hProps = [ "borderLeftWidth", "borderRightWidth", "paddingLeft", "paddingRight" ],
+
+		// Set options
+		mode = options.mode,
+		restore = mode !== "effect",
+		scale = options.scale || "both",
+		origin = options.origin || [ "middle", "center" ],
+		position = element.css( "position" ),
+		pos = element.position(),
+		original = $.effects.scaledDimensions( element ),
+		from = options.from || original,
+		to = options.to || $.effects.scaledDimensions( element, 0 );
+
+	$.effects.createPlaceholder( element );
+
+	if ( mode === "show" ) {
+		temp = from;
+		from = to;
+		to = temp;
+	}
+
+	// Set scaling factor
+	factor = {
+		from: {
+			y: from.height / original.height,
+			x: from.width / original.width
+		},
+		to: {
+			y: to.height / original.height,
+			x: to.width / original.width
+		}
+	};
+
+	// Scale the css box
+	if ( scale === "box" || scale === "both" ) {
+
+		// Vertical props scaling
+		if ( factor.from.y !== factor.to.y ) {
+			from = $.effects.setTransition( element, vProps, factor.from.y, from );
+			to = $.effects.setTransition( element, vProps, factor.to.y, to );
+		}
+
+		// Horizontal props scaling
+		if ( factor.from.x !== factor.to.x ) {
+			from = $.effects.setTransition( element, hProps, factor.from.x, from );
+			to = $.effects.setTransition( element, hProps, factor.to.x, to );
+		}
+	}
+
+	// Scale the content
+	if ( scale === "content" || scale === "both" ) {
+
+		// Vertical props scaling
+		if ( factor.from.y !== factor.to.y ) {
+			from = $.effects.setTransition( element, cProps, factor.from.y, from );
+			to = $.effects.setTransition( element, cProps, factor.to.y, to );
+		}
+	}
+
+	// Adjust the position properties based on the provided origin points
+	if ( origin ) {
+		baseline = $.effects.getBaseline( origin, original );
+		from.top = ( original.outerHeight - from.outerHeight ) * baseline.y + pos.top;
+		from.left = ( original.outerWidth - from.outerWidth ) * baseline.x + pos.left;
+		to.top = ( original.outerHeight - to.outerHeight ) * baseline.y + pos.top;
+		to.left = ( original.outerWidth - to.outerWidth ) * baseline.x + pos.left;
+	}
+	element.css( from );
+
+	// Animate the children if desired
+	if ( scale === "content" || scale === "both" ) {
+
+		vProps = vProps.concat( [ "marginTop", "marginBottom" ] ).concat( cProps );
+		hProps = hProps.concat( [ "marginLeft", "marginRight" ] );
+
+		// Only animate children with width attributes specified
+		// TODO: is this right? should we include anything with css width specified as well
+		element.find( "*[width]" ).each( function() {
+			var child = $( this ),
+				childOriginal = $.effects.scaledDimensions( child ),
+				childFrom = {
+					height: childOriginal.height * factor.from.y,
+					width: childOriginal.width * factor.from.x,
+					outerHeight: childOriginal.outerHeight * factor.from.y,
+					outerWidth: childOriginal.outerWidth * factor.from.x
+				},
+				childTo = {
+					height: childOriginal.height * factor.to.y,
+					width: childOriginal.width * factor.to.x,
+					outerHeight: childOriginal.height * factor.to.y,
+					outerWidth: childOriginal.width * factor.to.x
+				};
+
+			// Vertical props scaling
+			if ( factor.from.y !== factor.to.y ) {
+				childFrom = $.effects.setTransition( child, vProps, factor.from.y, childFrom );
+				childTo = $.effects.setTransition( child, vProps, factor.to.y, childTo );
+			}
+
+			// Horizontal props scaling
+			if ( factor.from.x !== factor.to.x ) {
+				childFrom = $.effects.setTransition( child, hProps, factor.from.x, childFrom );
+				childTo = $.effects.setTransition( child, hProps, factor.to.x, childTo );
+			}
+
+			if ( restore ) {
+				$.effects.saveStyle( child );
+			}
+
+			// Animate children
+			child.css( childFrom );
+			child.animate( childTo, options.duration, options.easing, function() {
+
+				// Restore children
+				if ( restore ) {
+					$.effects.restoreStyle( child );
+				}
+			} );
+		} );
+	}
+
+	// Animate
+	element.animate( to, {
+		queue: false,
+		duration: options.duration,
+		easing: options.easing,
+		complete: function() {
+
+			var offset = element.offset();
+
+			if ( to.opacity === 0 ) {
+				element.css( "opacity", from.opacity );
+			}
+
+			if ( !restore ) {
+				element
+					.css( "position", position === "static" ? "relative" : position )
+					.offset( offset );
+
+				// Need to save style here so that automatic style restoration
+				// doesn't restore to the original styles from before the animation.
+				$.effects.saveStyle( element );
+			}
+
+			done();
+		}
+	} );
+
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Slide 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Slide Effect
+//>>group: Effects
+//>>description: Slides an element in and out of the viewport.
+//>>docs: http://api.jqueryui.com/slide-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+return $.effects.define( "slide", "show", function( options, done ) {
+	var startClip, startRef,
+		element = $( this ),
+		map = {
+			up: [ "bottom", "top" ],
+			down: [ "top", "bottom" ],
+			left: [ "right", "left" ],
+			right: [ "left", "right" ]
+		},
+		mode = options.mode,
+		direction = options.direction || "left",
+		ref = ( direction === "up" || direction === "down" ) ? "top" : "left",
+		positiveMotion = ( direction === "up" || direction === "left" ),
+		distance = options.distance ||
+			element[ ref === "top" ? "outerHeight" : "outerWidth" ]( true ),
+		animation = {};
+
+	$.effects.createPlaceholder( element );
+
+	startClip = element.cssClip();
+	startRef = element.position()[ ref ];
+
+	// Define hide animation
+	animation[ ref ] = ( positiveMotion ? -1 : 1 ) * distance + startRef;
+	animation.clip = element.cssClip();
+	animation.clip[ map[ direction ][ 1 ] ] = animation.clip[ map[ direction ][ 0 ] ];
+
+	// Reverse the animation if we're showing
+	if ( mode === "show" ) {
+		element.cssClip( animation.clip );
+		element.css( ref, animation[ ref ] );
+		animation.clip = startClip;
+		animation[ ref ] = startRef;
+	}
+
+	// Actually animate
+	element.animate( animation, {
+		queue: false,
+		duration: options.duration,
+		easing: options.easing,
+		complete: done
+	} );
+} );
+
+} ) );
+
+/*!
+ * jQuery UI Effects Transfer 1.12.1
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Transfer Effect
+//>>group: Effects
+//>>description: Displays a transfer effect from one element to another.
+//>>docs: http://api.jqueryui.com/transfer-effect/
+//>>demos: http://jqueryui.com/effect/
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [
+			"jquery",
+			"../version",
+			"../effect"
+		], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}( function( $ ) {
+
+var effect;
+if ( $.uiBackCompat !== false ) {
+	effect = $.effects.define( "transfer", function( options, done ) {
+		$( this ).transfer( options, done );
+	} );
+}
+return effect;
+
+} ) );
+
+/* Afrikaans initialisation for the jQuery UI date picker plugin. */
+/* Written by Renier Pretorius. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.af = {
+	closeText: "Selekteer",
+	prevText: "Vorige",
+	nextText: "Volgende",
+	currentText: "Vandag",
+	monthNames: [ "Januarie","Februarie","Maart","April","Mei","Junie",
+	"Julie","Augustus","September","Oktober","November","Desember" ],
+	monthNamesShort: [ "Jan", "Feb", "Mrt", "Apr", "Mei", "Jun",
+	"Jul", "Aug", "Sep", "Okt", "Nov", "Des" ],
+	dayNames: [ "Sondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrydag", "Saterdag" ],
+	dayNamesShort: [ "Son", "Maa", "Din", "Woe", "Don", "Vry", "Sat" ],
+	dayNamesMin: [ "So","Ma","Di","Wo","Do","Vr","Sa" ],
+	weekHeader: "Wk",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.af );
+
+return datepicker.regional.af;
+
+} ) );
+
+/* Algerian Arabic Translation for jQuery UI date picker plugin.
+/* Used in most of Maghreb countries, primarily in Algeria, Tunisia, Morocco.
+/* Mohamed Cherif BOUCHELAGHEM -- cherifbouchelaghem@yahoo.fr */
+/* Mohamed Amine HADDAD -- zatamine@gmail.com */
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "ar-DZ" ] = {
+	closeText: "إغلاق",
+	prevText: "&#x3C;السابق",
+	nextText: "التالي&#x3E;",
+	currentText: "اليوم",
+	monthNames: [ "جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان",
+	"جويلية", "أوت", "سبتمبر","أكتوبر", "نوفمبر", "ديسمبر" ],
+	monthNamesShort: [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
+	dayNames: [ "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت" ],
+	dayNamesShort: [ "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت" ],
+	dayNamesMin: [ "ح", "ن", "ث", "ر", "خ", "ج", "س" ],
+	weekHeader: "أسبوع",
+	dateFormat: "dd/mm/yy",
+	firstDay: 6,
+		isRTL: true,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional[ "ar-DZ" ] );
+
+return datepicker.regional[ "ar-DZ" ];
+
+} ) );
+
+/* Arabic Translation for jQuery UI date picker plugin. */
+/* Used in most of Arab countries, primarily in Bahrain, */
+/* Kuwait, Oman, Qatar, Saudi Arabia and the United Arab Emirates, Egypt, Sudan and Yemen. */
+/* Written by Mohammed Alshehri -- m@dralshehri.com */
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ar = {
+	closeText: "إغلاق",
+	prevText: "&#x3C;السابق",
+	nextText: "التالي&#x3E;",
+	currentText: "اليوم",
+	monthNames: [ "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+	"يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر" ],
+	monthNamesShort: [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ],
+	dayNames: [ "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت" ],
+	dayNamesShort: [ "أحد", "اثنين", "ثلاثاء", "أربعاء", "خميس", "جمعة", "سبت" ],
+	dayNamesMin: [ "ح", "ن", "ث", "ر", "خ", "ج", "س" ],
+	weekHeader: "أسبوع",
+	dateFormat: "dd/mm/yy",
+	firstDay: 0,
+		isRTL: true,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.ar );
+
+return datepicker.regional.ar;
+
+} ) );
+
+/* Azerbaijani (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by Jamil Najafov (necefov33@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.az = {
+	closeText: "Bağla",
+	prevText: "&#x3C;Geri",
+	nextText: "İrəli&#x3E;",
+	currentText: "Bugün",
+	monthNames: [ "Yanvar","Fevral","Mart","Aprel","May","İyun",
+	"İyul","Avqust","Sentyabr","Oktyabr","Noyabr","Dekabr" ],
+	monthNamesShort: [ "Yan","Fev","Mar","Apr","May","İyun",
+	"İyul","Avq","Sen","Okt","Noy","Dek" ],
+	dayNames: [ "Bazar","Bazar ertəsi","Çərşənbə axşamı","Çərşənbə","Cümə axşamı","Cümə","Şənbə" ],
+	dayNamesShort: [ "B","Be","Ça","Ç","Ca","C","Ş" ],
+	dayNamesMin: [ "B","B","Ç","С","Ç","C","Ş" ],
+	weekHeader: "Hf",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.az );
+
+return datepicker.regional.az;
+
+} ) );
+
+/* Belarusian initialisation for the jQuery UI date picker plugin. */
+/* Written by Pavel Selitskas <p.selitskas@gmail.com> */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.be = {
+	closeText: "Зачыніць",
+	prevText: "&larr;Папяр.",
+	nextText: "Наст.&rarr;",
+	currentText: "Сёньня",
+	monthNames: [ "Студзень","Люты","Сакавік","Красавік","Травень","Чэрвень",
+	"Ліпень","Жнівень","Верасень","Кастрычнік","Лістапад","Сьнежань" ],
+	monthNamesShort: [ "Сту","Лют","Сак","Кра","Тра","Чэр",
+	"Ліп","Жні","Вер","Кас","Ліс","Сьн" ],
+	dayNames: [ "нядзеля","панядзелак","аўторак","серада","чацьвер","пятніца","субота" ],
+	dayNamesShort: [ "ндз","пнд","аўт","срд","чцв","птн","сбт" ],
+	dayNamesMin: [ "Нд","Пн","Аў","Ср","Чц","Пт","Сб" ],
+	weekHeader: "Тд",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.be );
+
+return datepicker.regional.be;
+
+} ) );
+
+/* Bulgarian initialisation for the jQuery UI date picker plugin. */
+/* Written by Stoyan Kyosev (http://svest.org). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.bg = {
+	closeText: "затвори",
+	prevText: "&#x3C;назад",
+	nextText: "напред&#x3E;",
+	nextBigText: "&#x3E;&#x3E;",
+	currentText: "днес",
+	monthNames: [ "Януари","Февруари","Март","Април","Май","Юни",
+	"Юли","Август","Септември","Октомври","Ноември","Декември" ],
+	monthNamesShort: [ "Яну","Фев","Мар","Апр","Май","Юни",
+	"Юли","Авг","Сеп","Окт","Нов","Дек" ],
+	dayNames: [ "Неделя","Понеделник","Вторник","Сряда","Четвъртък","Петък","Събота" ],
+	dayNamesShort: [ "Нед","Пон","Вто","Сря","Чет","Пет","Съб" ],
+	dayNamesMin: [ "Не","По","Вт","Ср","Че","Пе","Съ" ],
+	weekHeader: "Wk",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.bg );
+
+return datepicker.regional.bg;
+
+} ) );
+
+/* Bosnian i18n for the jQuery UI date picker plugin. */
+/* Written by Kenan Konjo. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.bs = {
+	closeText: "Zatvori",
+	prevText: "&#x3C;",
+	nextText: "&#x3E;",
+	currentText: "Danas",
+	monthNames: [ "Januar","Februar","Mart","April","Maj","Juni",
+	"Juli","August","Septembar","Oktobar","Novembar","Decembar" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
+	"Jul","Aug","Sep","Okt","Nov","Dec" ],
+	dayNames: [ "Nedelja","Ponedeljak","Utorak","Srijeda","Četvrtak","Petak","Subota" ],
+	dayNamesShort: [ "Ned","Pon","Uto","Sri","Čet","Pet","Sub" ],
+	dayNamesMin: [ "Ne","Po","Ut","Sr","Če","Pe","Su" ],
+	weekHeader: "Wk",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.bs );
+
+return datepicker.regional.bs;
+
+} ) );
+
+/* Inicialització en català per a l'extensió 'UI date picker' per jQuery. */
+/* Writers: (joan.leon@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ca = {
+	closeText: "Tanca",
+	prevText: "Anterior",
+	nextText: "Següent",
+	currentText: "Avui",
+	monthNames: [ "gener","febrer","març","abril","maig","juny",
+	"juliol","agost","setembre","octubre","novembre","desembre" ],
+	monthNamesShort: [ "gen","feb","març","abr","maig","juny",
+	"jul","ag","set","oct","nov","des" ],
+	dayNames: [ "diumenge","dilluns","dimarts","dimecres","dijous","divendres","dissabte" ],
+	dayNamesShort: [ "dg","dl","dt","dc","dj","dv","ds" ],
+	dayNamesMin: [ "dg","dl","dt","dc","dj","dv","ds" ],
+	weekHeader: "Set",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.ca );
+
+return datepicker.regional.ca;
+
+} ) );
+
+/* Czech initialisation for the jQuery UI date picker plugin. */
+/* Written by Tomas Muller (tomas@tomas-muller.net). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.cs = {
+	closeText: "Zavřít",
+	prevText: "&#x3C;Dříve",
+	nextText: "Později&#x3E;",
+	currentText: "Nyní",
+	monthNames: [ "leden","únor","březen","duben","květen","červen",
+	"červenec","srpen","září","říjen","listopad","prosinec" ],
+	monthNamesShort: [ "led","úno","bře","dub","kvě","čer",
+	"čvc","srp","zář","říj","lis","pro" ],
+	dayNames: [ "neděle", "pondělí", "úterý", "středa", "čtvrtek", "pátek", "sobota" ],
+	dayNamesShort: [ "ne", "po", "út", "st", "čt", "pá", "so" ],
+	dayNamesMin: [ "ne","po","út","st","čt","pá","so" ],
+	weekHeader: "Týd",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.cs );
+
+return datepicker.regional.cs;
+
+} ) );
+
+/* Welsh/UK initialisation for the jQuery UI date picker plugin. */
+/* Written by William Griffiths. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "cy-GB" ] = {
+	closeText: "Done",
+	prevText: "Prev",
+	nextText: "Next",
+	currentText: "Today",
+	monthNames: [ "Ionawr","Chwefror","Mawrth","Ebrill","Mai","Mehefin",
+	"Gorffennaf","Awst","Medi","Hydref","Tachwedd","Rhagfyr" ],
+	monthNamesShort: [ "Ion", "Chw", "Maw", "Ebr", "Mai", "Meh",
+	"Gor", "Aws", "Med", "Hyd", "Tac", "Rha" ],
+	dayNames: [
+		"Dydd Sul",
+		"Dydd Llun",
+		"Dydd Mawrth",
+		"Dydd Mercher",
+		"Dydd Iau",
+		"Dydd Gwener",
+		"Dydd Sadwrn"
+	],
+	dayNamesShort: [ "Sul", "Llu", "Maw", "Mer", "Iau", "Gwe", "Sad" ],
+	dayNamesMin: [ "Su","Ll","Ma","Me","Ia","Gw","Sa" ],
+	weekHeader: "Wy",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional[ "cy-GB" ] );
+
+return datepicker.regional[ "cy-GB" ];
+
+} ) );
+
+/* Danish initialisation for the jQuery UI date picker plugin. */
+/* Written by Jan Christensen ( deletestuff@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.da = {
+	closeText: "Luk",
+	prevText: "&#x3C;Forrige",
+	nextText: "Næste&#x3E;",
+	currentText: "Idag",
+	monthNames: [ "Januar","Februar","Marts","April","Maj","Juni",
+	"Juli","August","September","Oktober","November","December" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
+	"Jul","Aug","Sep","Okt","Nov","Dec" ],
+	dayNames: [ "Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag" ],
+	dayNamesShort: [ "Søn","Man","Tir","Ons","Tor","Fre","Lør" ],
+	dayNamesMin: [ "Sø","Ma","Ti","On","To","Fr","Lø" ],
+	weekHeader: "Uge",
+	dateFormat: "dd-mm-yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.da );
+
+return datepicker.regional.da;
+
+} ) );
+
+/* German initialisation for the jQuery UI date picker plugin. */
+/* Written by Milian Wolff (mail@milianw.de). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.de = {
+	closeText: "Schließen",
+	prevText: "&#x3C;Zurück",
+	nextText: "Vor&#x3E;",
+	currentText: "Heute",
+	monthNames: [ "Januar","Februar","März","April","Mai","Juni",
+	"Juli","August","September","Oktober","November","Dezember" ],
+	monthNamesShort: [ "Jan","Feb","Mär","Apr","Mai","Jun",
+	"Jul","Aug","Sep","Okt","Nov","Dez" ],
+	dayNames: [ "Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag" ],
+	dayNamesShort: [ "So","Mo","Di","Mi","Do","Fr","Sa" ],
+	dayNamesMin: [ "So","Mo","Di","Mi","Do","Fr","Sa" ],
+	weekHeader: "KW",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.de );
+
+return datepicker.regional.de;
+
+} ) );
+
+/* Greek (el) initialisation for the jQuery UI date picker plugin. */
+/* Written by Alex Cicovic (http://www.alexcicovic.com) */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.el = {
+	closeText: "Κλείσιμο",
+	prevText: "Προηγούμενος",
+	nextText: "Επόμενος",
+	currentText: "Σήμερα",
+	monthNames: [ "Ιανουάριος","Φεβρουάριος","Μάρτιος","Απρίλιος","Μάιος","Ιούνιος",
+	"Ιούλιος","Αύγουστος","Σεπτέμβριος","Οκτώβριος","Νοέμβριος","Δεκέμβριος" ],
+	monthNamesShort: [ "Ιαν","Φεβ","Μαρ","Απρ","Μαι","Ιουν",
+	"Ιουλ","Αυγ","Σεπ","Οκτ","Νοε","Δεκ" ],
+	dayNames: [ "Κυριακή","Δευτέρα","Τρίτη","Τετάρτη","Πέμπτη","Παρασκευή","Σάββατο" ],
+	dayNamesShort: [ "Κυρ","Δευ","Τρι","Τετ","Πεμ","Παρ","Σαβ" ],
+	dayNamesMin: [ "Κυ","Δε","Τρ","Τε","Πε","Πα","Σα" ],
+	weekHeader: "Εβδ",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.el );
+
+return datepicker.regional.el;
+
+} ) );
+
+/* English/Australia initialisation for the jQuery UI date picker plugin. */
+/* Based on the en-GB initialisation. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "en-AU" ] = {
+	closeText: "Done",
+	prevText: "Prev",
+	nextText: "Next",
+	currentText: "Today",
+	monthNames: [ "January","February","March","April","May","June",
+	"July","August","September","October","November","December" ],
+	monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+	dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
+	dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+	dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ],
+	weekHeader: "Wk",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional[ "en-AU" ] );
+
+return datepicker.regional[ "en-AU" ];
+
+} ) );
+
+/* English/UK initialisation for the jQuery UI date picker plugin. */
+/* Written by Stuart. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "en-GB" ] = {
+	closeText: "Done",
+	prevText: "Prev",
+	nextText: "Next",
+	currentText: "Today",
+	monthNames: [ "January","February","March","April","May","June",
+	"July","August","September","October","November","December" ],
+	monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+	dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
+	dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+	dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ],
+	weekHeader: "Wk",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional[ "en-GB" ] );
+
+return datepicker.regional[ "en-GB" ];
+
+} ) );
+
+/* English/New Zealand initialisation for the jQuery UI date picker plugin. */
+/* Based on the en-GB initialisation. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "en-NZ" ] = {
+	closeText: "Done",
+	prevText: "Prev",
+	nextText: "Next",
+	currentText: "Today",
+	monthNames: [ "January","February","March","April","May","June",
+	"July","August","September","October","November","December" ],
+	monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+	dayNames: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
+	dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+	dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ],
+	weekHeader: "Wk",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional[ "en-NZ" ] );
+
+return datepicker.regional[ "en-NZ" ];
+
+} ) );
+
+/* Esperanto initialisation for the jQuery UI date picker plugin. */
+/* Written by Olivier M. (olivierweb@ifrance.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.eo = {
+	closeText: "Fermi",
+	prevText: "&#x3C;Anta",
+	nextText: "Sekv&#x3E;",
+	currentText: "Nuna",
+	monthNames: [ "Januaro","Februaro","Marto","Aprilo","Majo","Junio",
+	"Julio","Aŭgusto","Septembro","Oktobro","Novembro","Decembro" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
+	"Jul","Aŭg","Sep","Okt","Nov","Dec" ],
+	dayNames: [ "Dimanĉo","Lundo","Mardo","Merkredo","Ĵaŭdo","Vendredo","Sabato" ],
+	dayNamesShort: [ "Dim","Lun","Mar","Mer","Ĵaŭ","Ven","Sab" ],
+	dayNamesMin: [ "Di","Lu","Ma","Me","Ĵa","Ve","Sa" ],
+	weekHeader: "Sb",
+	dateFormat: "dd/mm/yy",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.eo );
+
+return datepicker.regional.eo;
+
+} ) );
+
+/* Inicialización en español para la extensión 'UI date picker' para jQuery. */
+/* Traducido por Vester (xvester@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.es = {
+	closeText: "Cerrar",
+	prevText: "&#x3C;Ant",
+	nextText: "Sig&#x3E;",
+	currentText: "Hoy",
+	monthNames: [ "enero","febrero","marzo","abril","mayo","junio",
+	"julio","agosto","septiembre","octubre","noviembre","diciembre" ],
+	monthNamesShort: [ "ene","feb","mar","abr","may","jun",
+	"jul","ago","sep","oct","nov","dic" ],
+	dayNames: [ "domingo","lunes","martes","miércoles","jueves","viernes","sábado" ],
+	dayNamesShort: [ "dom","lun","mar","mié","jue","vie","sáb" ],
+	dayNamesMin: [ "D","L","M","X","J","V","S" ],
+	weekHeader: "Sm",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.es );
+
+return datepicker.regional.es;
+
+} ) );
+
+/* Estonian initialisation for the jQuery UI date picker plugin. */
+/* Written by Mart Sõmermaa (mrts.pydev at gmail com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.et = {
+	closeText: "Sulge",
+	prevText: "Eelnev",
+	nextText: "Järgnev",
+	currentText: "Täna",
+	monthNames: [ "Jaanuar","Veebruar","Märts","Aprill","Mai","Juuni",
+	"Juuli","August","September","Oktoober","November","Detsember" ],
+	monthNamesShort: [ "Jaan", "Veebr", "Märts", "Apr", "Mai", "Juuni",
+	"Juuli", "Aug", "Sept", "Okt", "Nov", "Dets" ],
+	dayNames: [
+		"Pühapäev",
+		"Esmaspäev",
+		"Teisipäev",
+		"Kolmapäev",
+		"Neljapäev",
+		"Reede",
+		"Laupäev"
+	],
+	dayNamesShort: [ "Pühap", "Esmasp", "Teisip", "Kolmap", "Neljap", "Reede", "Laup" ],
+	dayNamesMin: [ "P","E","T","K","N","R","L" ],
+	weekHeader: "näd",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.et );
+
+return datepicker.regional.et;
+
+} ) );
+
+/* Karrikas-ek itzulia (karrikas@karrikas.com) */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.eu = {
+	closeText: "Egina",
+	prevText: "&#x3C;Aur",
+	nextText: "Hur&#x3E;",
+	currentText: "Gaur",
+	monthNames: [ "urtarrila","otsaila","martxoa","apirila","maiatza","ekaina",
+		"uztaila","abuztua","iraila","urria","azaroa","abendua" ],
+	monthNamesShort: [ "urt.","ots.","mar.","api.","mai.","eka.",
+		"uzt.","abu.","ira.","urr.","aza.","abe." ],
+	dayNames: [ "igandea","astelehena","asteartea","asteazkena","osteguna","ostirala","larunbata" ],
+	dayNamesShort: [ "ig.","al.","ar.","az.","og.","ol.","lr." ],
+	dayNamesMin: [ "ig","al","ar","az","og","ol","lr" ],
+	weekHeader: "As",
+	dateFormat: "yy-mm-dd",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.eu );
+
+return datepicker.regional.eu;
+
+} ) );
+
+/* Persian (Farsi) Translation for the jQuery UI date picker plugin. */
+/* Javad Mowlanezhad -- jmowla@gmail.com */
+/* Jalali calendar should supported soon! (Its implemented but I have to test it) */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.fa = {
+	closeText: "بستن",
+	prevText: "&#x3C;قبلی",
+	nextText: "بعدی&#x3E;",
+	currentText: "امروز",
+	monthNames: [
+		"ژانویه",
+		"فوریه",
+		"مارس",
+		"آوریل",
+		"مه",
+		"ژوئن",
+		"ژوئیه",
+		"اوت",
+		"سپتامبر",
+		"اکتبر",
+		"نوامبر",
+		"دسامبر"
+	],
+	monthNamesShort: [ "1","2","3","4","5","6","7","8","9","10","11","12" ],
+	dayNames: [
+		"يکشنبه",
+		"دوشنبه",
+		"سه‌شنبه",
+		"چهارشنبه",
+		"پنجشنبه",
+		"جمعه",
+		"شنبه"
+	],
+	dayNamesShort: [
+		"ی",
+		"د",
+		"س",
+		"چ",
+		"پ",
+		"ج",
+		"ش"
+	],
+	dayNamesMin: [
+		"ی",
+		"د",
+		"س",
+		"چ",
+		"پ",
+		"ج",
+		"ش"
+	],
+	weekHeader: "هف",
+	dateFormat: "yy/mm/dd",
+	firstDay: 6,
+	isRTL: true,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.fa );
+
+return datepicker.regional.fa;
+
+} ) );
+
+/* Finnish initialisation for the jQuery UI date picker plugin. */
+/* Written by Harri Kilpiö (harrikilpio@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.fi = {
+	closeText: "Sulje",
+	prevText: "&#xAB;Edellinen",
+	nextText: "Seuraava&#xBB;",
+	currentText: "Tänään",
+	monthNames: [ "Tammikuu","Helmikuu","Maaliskuu","Huhtikuu","Toukokuu","Kesäkuu",
+	"Heinäkuu","Elokuu","Syyskuu","Lokakuu","Marraskuu","Joulukuu" ],
+	monthNamesShort: [ "Tammi","Helmi","Maalis","Huhti","Touko","Kesä",
+	"Heinä","Elo","Syys","Loka","Marras","Joulu" ],
+	dayNamesShort: [ "Su","Ma","Ti","Ke","To","Pe","La" ],
+	dayNames: [ "Sunnuntai","Maanantai","Tiistai","Keskiviikko","Torstai","Perjantai","Lauantai" ],
+	dayNamesMin: [ "Su","Ma","Ti","Ke","To","Pe","La" ],
+	weekHeader: "Vk",
+	dateFormat: "d.m.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.fi );
+
+return datepicker.regional.fi;
+
+} ) );
+
+/* Faroese initialisation for the jQuery UI date picker plugin */
+/* Written by Sverri Mohr Olsen, sverrimo@gmail.com */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.fo = {
+	closeText: "Lat aftur",
+	prevText: "&#x3C;Fyrra",
+	nextText: "Næsta&#x3E;",
+	currentText: "Í dag",
+	monthNames: [ "Januar","Februar","Mars","Apríl","Mei","Juni",
+	"Juli","August","September","Oktober","November","Desember" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Mei","Jun",
+	"Jul","Aug","Sep","Okt","Nov","Des" ],
+	dayNames: [
+		"Sunnudagur",
+		"Mánadagur",
+		"Týsdagur",
+		"Mikudagur",
+		"Hósdagur",
+		"Fríggjadagur",
+		"Leyardagur"
+	],
+	dayNamesShort: [ "Sun","Mán","Týs","Mik","Hós","Frí","Ley" ],
+	dayNamesMin: [ "Su","Má","Tý","Mi","Hó","Fr","Le" ],
+	weekHeader: "Vk",
+	dateFormat: "dd-mm-yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.fo );
+
+return datepicker.regional.fo;
+
+} ) );
+
+/* Canadian-French initialisation for the jQuery UI date picker plugin. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "fr-CA" ] = {
+	closeText: "Fermer",
+	prevText: "Précédent",
+	nextText: "Suivant",
+	currentText: "Aujourd'hui",
+	monthNames: [ "janvier", "février", "mars", "avril", "mai", "juin",
+		"juillet", "août", "septembre", "octobre", "novembre", "décembre" ],
+	monthNamesShort: [ "janv.", "févr.", "mars", "avril", "mai", "juin",
+		"juil.", "août", "sept.", "oct.", "nov.", "déc." ],
+	dayNames: [ "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi" ],
+	dayNamesShort: [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ],
+	dayNamesMin: [ "D", "L", "M", "M", "J", "V", "S" ],
+	weekHeader: "Sem.",
+	dateFormat: "yy-mm-dd",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: ""
+};
+datepicker.setDefaults( datepicker.regional[ "fr-CA" ] );
+
+return datepicker.regional[ "fr-CA" ];
+
+} ) );
+
+/* Swiss-French initialisation for the jQuery UI date picker plugin. */
+/* Written Martin Voelkle (martin.voelkle@e-tc.ch). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "fr-CH" ] = {
+	closeText: "Fermer",
+	prevText: "&#x3C;Préc",
+	nextText: "Suiv&#x3E;",
+	currentText: "Courant",
+	monthNames: [ "janvier", "février", "mars", "avril", "mai", "juin",
+		"juillet", "août", "septembre", "octobre", "novembre", "décembre" ],
+	monthNamesShort: [ "janv.", "févr.", "mars", "avril", "mai", "juin",
+		"juil.", "août", "sept.", "oct.", "nov.", "déc." ],
+	dayNames: [ "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi" ],
+	dayNamesShort: [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ],
+	dayNamesMin: [ "D", "L", "M", "M", "J", "V", "S" ],
+	weekHeader: "Sm",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional[ "fr-CH" ] );
+
+return datepicker.regional[ "fr-CH" ];
+
+} ) );
+
+/* French initialisation for the jQuery UI date picker plugin. */
+/* Written by Keith Wood (kbwood{at}iinet.com.au),
+			  Stéphane Nahmani (sholby@sholby.net),
+			  Stéphane Raimbault <stephane.raimbault@gmail.com> */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.fr = {
+	closeText: "Fermer",
+	prevText: "Précédent",
+	nextText: "Suivant",
+	currentText: "Aujourd'hui",
+	monthNames: [ "janvier", "février", "mars", "avril", "mai", "juin",
+		"juillet", "août", "septembre", "octobre", "novembre", "décembre" ],
+	monthNamesShort: [ "janv.", "févr.", "mars", "avr.", "mai", "juin",
+		"juil.", "août", "sept.", "oct.", "nov.", "déc." ],
+	dayNames: [ "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi" ],
+	dayNamesShort: [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ],
+	dayNamesMin: [ "D","L","M","M","J","V","S" ],
+	weekHeader: "Sem.",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.fr );
+
+return datepicker.regional.fr;
+
+} ) );
+
+/* Galician localization for 'UI date picker' jQuery extension. */
+/* Translated by Jorge Barreiro <yortx.barry@gmail.com>. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.gl = {
+	closeText: "Pechar",
+	prevText: "&#x3C;Ant",
+	nextText: "Seg&#x3E;",
+	currentText: "Hoxe",
+	monthNames: [ "Xaneiro","Febreiro","Marzo","Abril","Maio","Xuño",
+	"Xullo","Agosto","Setembro","Outubro","Novembro","Decembro" ],
+	monthNamesShort: [ "Xan","Feb","Mar","Abr","Mai","Xuñ",
+	"Xul","Ago","Set","Out","Nov","Dec" ],
+	dayNames: [ "Domingo","Luns","Martes","Mércores","Xoves","Venres","Sábado" ],
+	dayNamesShort: [ "Dom","Lun","Mar","Mér","Xov","Ven","Sáb" ],
+	dayNamesMin: [ "Do","Lu","Ma","Mé","Xo","Ve","Sá" ],
+	weekHeader: "Sm",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.gl );
+
+return datepicker.regional.gl;
+
+} ) );
+
+/* Hebrew initialisation for the UI Datepicker extension. */
+/* Written by Amir Hardon (ahardon at gmail dot com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.he = {
+	closeText: "סגור",
+	prevText: "&#x3C;הקודם",
+	nextText: "הבא&#x3E;",
+	currentText: "היום",
+	monthNames: [ "ינואר","פברואר","מרץ","אפריל","מאי","יוני",
+	"יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר" ],
+	monthNamesShort: [ "ינו","פבר","מרץ","אפר","מאי","יוני",
+	"יולי","אוג","ספט","אוק","נוב","דצמ" ],
+	dayNames: [ "ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת" ],
+	dayNamesShort: [ "א'","ב'","ג'","ד'","ה'","ו'","שבת" ],
+	dayNamesMin: [ "א'","ב'","ג'","ד'","ה'","ו'","שבת" ],
+	weekHeader: "Wk",
+	dateFormat: "dd/mm/yy",
+	firstDay: 0,
+	isRTL: true,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.he );
+
+return datepicker.regional.he;
+
+} ) );
+
+/* Hindi initialisation for the jQuery UI date picker plugin. */
+/* Written by Michael Dawart. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.hi = {
+	closeText: "बंद",
+	prevText: "पिछला",
+	nextText: "अगला",
+	currentText: "आज",
+	monthNames: [ "जनवरी ","फरवरी","मार्च","अप्रेल","मई","जून",
+	"जूलाई","अगस्त ","सितम्बर","अक्टूबर","नवम्बर","दिसम्बर" ],
+	monthNamesShort: [ "जन", "फर", "मार्च", "अप्रेल", "मई", "जून",
+	"जूलाई", "अग", "सित", "अक्ट", "नव", "दि" ],
+	dayNames: [ "रविवार", "सोमवार", "मंगलवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार" ],
+	dayNamesShort: [ "रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि" ],
+	dayNamesMin: [ "रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि" ],
+	weekHeader: "हफ्ता",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.hi );
+
+return datepicker.regional.hi;
+
+} ) );
+
+/* Croatian i18n for the jQuery UI date picker plugin. */
+/* Written by Vjekoslav Nesek. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.hr = {
+	closeText: "Zatvori",
+	prevText: "&#x3C;",
+	nextText: "&#x3E;",
+	currentText: "Danas",
+	monthNames: [ "Siječanj","Veljača","Ožujak","Travanj","Svibanj","Lipanj",
+	"Srpanj","Kolovoz","Rujan","Listopad","Studeni","Prosinac" ],
+	monthNamesShort: [ "Sij","Velj","Ožu","Tra","Svi","Lip",
+	"Srp","Kol","Ruj","Lis","Stu","Pro" ],
+	dayNames: [ "Nedjelja","Ponedjeljak","Utorak","Srijeda","Četvrtak","Petak","Subota" ],
+	dayNamesShort: [ "Ned","Pon","Uto","Sri","Čet","Pet","Sub" ],
+	dayNamesMin: [ "Ne","Po","Ut","Sr","Če","Pe","Su" ],
+	weekHeader: "Tje",
+	dateFormat: "dd.mm.yy.",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.hr );
+
+return datepicker.regional.hr;
+
+} ) );
+
+/* Hungarian initialisation for the jQuery UI date picker plugin. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.hu = {
+	closeText: "bezár",
+	prevText: "vissza",
+	nextText: "előre",
+	currentText: "ma",
+	monthNames: [ "Január", "Február", "Március", "Április", "Május", "Június",
+	"Július", "Augusztus", "Szeptember", "Október", "November", "December" ],
+	monthNamesShort: [ "Jan", "Feb", "Már", "Ápr", "Máj", "Jún",
+	"Júl", "Aug", "Szep", "Okt", "Nov", "Dec" ],
+	dayNames: [ "Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat" ],
+	dayNamesShort: [ "Vas", "Hét", "Ked", "Sze", "Csü", "Pén", "Szo" ],
+	dayNamesMin: [ "V", "H", "K", "Sze", "Cs", "P", "Szo" ],
+	weekHeader: "Hét",
+	dateFormat: "yy.mm.dd.",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: true,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.hu );
+
+return datepicker.regional.hu;
+
+} ) );
+
+/* Armenian(UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by Levon Zakaryan (levon.zakaryan@gmail.com)*/
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.hy = {
+	closeText: "Փակել",
+	prevText: "&#x3C;Նախ.",
+	nextText: "Հաջ.&#x3E;",
+	currentText: "Այսօր",
+	monthNames: [ "Հունվար","Փետրվար","Մարտ","Ապրիլ","Մայիս","Հունիս",
+	"Հուլիս","Օգոստոս","Սեպտեմբեր","Հոկտեմբեր","Նոյեմբեր","Դեկտեմբեր" ],
+	monthNamesShort: [ "Հունվ","Փետր","Մարտ","Ապր","Մայիս","Հունիս",
+	"Հուլ","Օգս","Սեպ","Հոկ","Նոյ","Դեկ" ],
+	dayNames: [ "կիրակի","եկուշաբթի","երեքշաբթի","չորեքշաբթի","հինգշաբթի","ուրբաթ","շաբաթ" ],
+	dayNamesShort: [ "կիր","երկ","երք","չրք","հնգ","ուրբ","շբթ" ],
+	dayNamesMin: [ "կիր","երկ","երք","չրք","հնգ","ուրբ","շբթ" ],
+	weekHeader: "ՇԲՏ",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.hy );
+
+return datepicker.regional.hy;
+
+} ) );
+
+/* Indonesian initialisation for the jQuery UI date picker plugin. */
+/* Written by Deden Fathurahman (dedenf@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.id = {
+	closeText: "Tutup",
+	prevText: "&#x3C;mundur",
+	nextText: "maju&#x3E;",
+	currentText: "hari ini",
+	monthNames: [ "Januari","Februari","Maret","April","Mei","Juni",
+	"Juli","Agustus","September","Oktober","Nopember","Desember" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Mei","Jun",
+	"Jul","Agus","Sep","Okt","Nop","Des" ],
+	dayNames: [ "Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu" ],
+	dayNamesShort: [ "Min","Sen","Sel","Rab","kam","Jum","Sab" ],
+	dayNamesMin: [ "Mg","Sn","Sl","Rb","Km","jm","Sb" ],
+	weekHeader: "Mg",
+	dateFormat: "dd/mm/yy",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.id );
+
+return datepicker.regional.id;
+
+} ) );
+
+/* Icelandic initialisation for the jQuery UI date picker plugin. */
+/* Written by Haukur H. Thorsson (haukur@eskill.is). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.is = {
+	closeText: "Loka",
+	prevText: "&#x3C; Fyrri",
+	nextText: "Næsti &#x3E;",
+	currentText: "Í dag",
+	monthNames: [ "Janúar","Febrúar","Mars","Apríl","Maí","Júní",
+	"Júlí","Ágúst","September","Október","Nóvember","Desember" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maí","Jún",
+	"Júl","Ágú","Sep","Okt","Nóv","Des" ],
+	dayNames: [
+		"Sunnudagur",
+		"Mánudagur",
+		"Þriðjudagur",
+		"Miðvikudagur",
+		"Fimmtudagur",
+		"Föstudagur",
+		"Laugardagur"
+	],
+	dayNamesShort: [ "Sun","Mán","Þri","Mið","Fim","Fös","Lau" ],
+	dayNamesMin: [ "Su","Má","Þr","Mi","Fi","Fö","La" ],
+	weekHeader: "Vika",
+	dateFormat: "dd.mm.yy",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.is );
+
+return datepicker.regional.is;
+
+} ) );
+
+/* Italian initialisation for the jQuery UI date picker plugin. */
+/* Written by Antonello Pasella (antonello.pasella@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "it-CH" ] = {
+	closeText: "Chiudi",
+	prevText: "&#x3C;Prec",
+	nextText: "Succ&#x3E;",
+	currentText: "Oggi",
+	monthNames: [ "Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno",
+		"Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre" ],
+	monthNamesShort: [ "Gen","Feb","Mar","Apr","Mag","Giu",
+		"Lug","Ago","Set","Ott","Nov","Dic" ],
+	dayNames: [ "Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato" ],
+	dayNamesShort: [ "Dom","Lun","Mar","Mer","Gio","Ven","Sab" ],
+	dayNamesMin: [ "Do","Lu","Ma","Me","Gi","Ve","Sa" ],
+	weekHeader: "Sm",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional[ "it-CH" ] );
+
+return datepicker.regional[ "it-CH" ];
+
+} ) );
+
+/* Italian initialisation for the jQuery UI date picker plugin. */
+/* Written by Antonello Pasella (antonello.pasella@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.it = {
+	closeText: "Chiudi",
+	prevText: "&#x3C;Prec",
+	nextText: "Succ&#x3E;",
+	currentText: "Oggi",
+	monthNames: [ "Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno",
+		"Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre" ],
+	monthNamesShort: [ "Gen","Feb","Mar","Apr","Mag","Giu",
+		"Lug","Ago","Set","Ott","Nov","Dic" ],
+	dayNames: [ "Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato" ],
+	dayNamesShort: [ "Dom","Lun","Mar","Mer","Gio","Ven","Sab" ],
+	dayNamesMin: [ "Do","Lu","Ma","Me","Gi","Ve","Sa" ],
+	weekHeader: "Sm",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.it );
+
+return datepicker.regional.it;
+
+} ) );
+
+/* Japanese initialisation for the jQuery UI date picker plugin. */
+/* Written by Kentaro SATO (kentaro@ranvis.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ja = {
+	closeText: "閉じる",
+	prevText: "&#x3C;前",
+	nextText: "次&#x3E;",
+	currentText: "今日",
+	monthNames: [ "1月","2月","3月","4月","5月","6月",
+	"7月","8月","9月","10月","11月","12月" ],
+	monthNamesShort: [ "1月","2月","3月","4月","5月","6月",
+	"7月","8月","9月","10月","11月","12月" ],
+	dayNames: [ "日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日" ],
+	dayNamesShort: [ "日","月","火","水","木","金","土" ],
+	dayNamesMin: [ "日","月","火","水","木","金","土" ],
+	weekHeader: "週",
+	dateFormat: "yy/mm/dd",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: true,
+	yearSuffix: "年" };
+datepicker.setDefaults( datepicker.regional.ja );
+
+return datepicker.regional.ja;
+
+} ) );
+
+/* Georgian (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by Lado Lomidze (lado.lomidze@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ka = {
+	closeText: "დახურვა",
+	prevText: "&#x3c; წინა",
+	nextText: "შემდეგი &#x3e;",
+	currentText: "დღეს",
+	monthNames: [
+		"იანვარი",
+		"თებერვალი",
+		"მარტი",
+		"აპრილი",
+		"მაისი",
+		"ივნისი",
+		"ივლისი",
+		"აგვისტო",
+		"სექტემბერი",
+		"ოქტომბერი",
+		"ნოემბერი",
+		"დეკემბერი"
+	],
+	monthNamesShort: [ "იან","თებ","მარ","აპრ","მაი","ივნ", "ივლ","აგვ","სექ","ოქტ","ნოე","დეკ" ],
+	dayNames: [ "კვირა","ორშაბათი","სამშაბათი","ოთხშაბათი","ხუთშაბათი","პარასკევი","შაბათი" ],
+	dayNamesShort: [ "კვ","ორშ","სამ","ოთხ","ხუთ","პარ","შაბ" ],
+	dayNamesMin: [ "კვ","ორშ","სამ","ოთხ","ხუთ","პარ","შაბ" ],
+	weekHeader: "კვირა",
+	dateFormat: "dd-mm-yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.ka );
+
+return datepicker.regional.ka;
+
+} ) );
+
+/* Kazakh (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by Dmitriy Karasyov (dmitriy.karasyov@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.kk = {
+	closeText: "Жабу",
+	prevText: "&#x3C;Алдыңғы",
+	nextText: "Келесі&#x3E;",
+	currentText: "Бүгін",
+	monthNames: [ "Қаңтар","Ақпан","Наурыз","Сәуір","Мамыр","Маусым",
+	"Шілде","Тамыз","Қыркүйек","Қазан","Қараша","Желтоқсан" ],
+	monthNamesShort: [ "Қаң","Ақп","Нау","Сәу","Мам","Мау",
+	"Шіл","Там","Қыр","Қаз","Қар","Жел" ],
+	dayNames: [ "Жексенбі","Дүйсенбі","Сейсенбі","Сәрсенбі","Бейсенбі","Жұма","Сенбі" ],
+	dayNamesShort: [ "жкс","дсн","ссн","срс","бсн","жма","снб" ],
+	dayNamesMin: [ "Жк","Дс","Сс","Ср","Бс","Жм","Сн" ],
+	weekHeader: "Не",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.kk );
+
+return datepicker.regional.kk;
+
+} ) );
+
+/* Khmer initialisation for the jQuery calendar extension. */
+/* Written by Chandara Om (chandara.teacher@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.km = {
+	closeText: "ធ្វើ​រួច",
+	prevText: "មុន",
+	nextText: "បន្ទាប់",
+	currentText: "ថ្ងៃ​នេះ",
+	monthNames: [ "មករា","កុម្ភៈ","មីនា","មេសា","ឧសភា","មិថុនា",
+	"កក្កដា","សីហា","កញ្ញា","តុលា","វិច្ឆិកា","ធ្នូ" ],
+	monthNamesShort: [ "មករា","កុម្ភៈ","មីនា","មេសា","ឧសភា","មិថុនា",
+	"កក្កដា","សីហា","កញ្ញា","តុលា","វិច្ឆិកា","ធ្នូ" ],
+	dayNames: [ "អាទិត្យ", "ចន្ទ", "អង្គារ", "ពុធ", "ព្រហស្បតិ៍", "សុក្រ", "សៅរ៍" ],
+	dayNamesShort: [ "អា", "ច", "អ", "ពុ", "ព្រហ", "សុ", "សៅ" ],
+	dayNamesMin: [ "អា", "ច", "អ", "ពុ", "ព្រហ", "សុ", "សៅ" ],
+	weekHeader: "សប្ដាហ៍",
+	dateFormat: "dd-mm-yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.km );
+
+return datepicker.regional.km;
+
+} ) );
+
+/* Korean initialisation for the jQuery calendar extension. */
+/* Written by DaeKwon Kang (ncrash.dk@gmail.com), Edited by Genie and Myeongjin Lee. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ko = {
+	closeText: "닫기",
+	prevText: "이전달",
+	nextText: "다음달",
+	currentText: "오늘",
+	monthNames: [ "1월","2월","3월","4월","5월","6월",
+	"7월","8월","9월","10월","11월","12월" ],
+	monthNamesShort: [ "1월","2월","3월","4월","5월","6월",
+	"7월","8월","9월","10월","11월","12월" ],
+	dayNames: [ "일요일","월요일","화요일","수요일","목요일","금요일","토요일" ],
+	dayNamesShort: [ "일","월","화","수","목","금","토" ],
+	dayNamesMin: [ "일","월","화","수","목","금","토" ],
+	weekHeader: "주",
+	dateFormat: "yy. m. d.",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: true,
+	yearSuffix: "년" };
+datepicker.setDefaults( datepicker.regional.ko );
+
+return datepicker.regional.ko;
+
+} ) );
+
+/* Kyrgyz (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by Sergey Kartashov (ebishkek@yandex.ru). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ky = {
+	closeText: "Жабуу",
+	prevText: "&#x3c;Мур",
+	nextText: "Кий&#x3e;",
+	currentText: "Бүгүн",
+	monthNames: [ "Январь","Февраль","Март","Апрель","Май","Июнь",
+	"Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь" ],
+	monthNamesShort: [ "Янв","Фев","Мар","Апр","Май","Июн",
+	"Июл","Авг","Сен","Окт","Ноя","Дек" ],
+	dayNames: [ "жекшемби", "дүйшөмбү", "шейшемби", "шаршемби", "бейшемби", "жума", "ишемби" ],
+	dayNamesShort: [ "жек", "дүй", "шей", "шар", "бей", "жум", "ише" ],
+	dayNamesMin: [ "Жк","Дш","Шш","Шр","Бш","Жм","Иш" ],
+	weekHeader: "Жум",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: ""
+};
+datepicker.setDefaults( datepicker.regional.ky );
+
+return datepicker.regional.ky;
+
+} ) );
+
+/* Luxembourgish initialisation for the jQuery UI date picker plugin. */
+/* Written by Michel Weimerskirch <michel@weimerskirch.net> */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.lb = {
+	closeText: "Fäerdeg",
+	prevText: "Zréck",
+	nextText: "Weider",
+	currentText: "Haut",
+	monthNames: [ "Januar","Februar","Mäerz","Abrëll","Mee","Juni",
+	"Juli","August","September","Oktober","November","Dezember" ],
+	monthNamesShort: [ "Jan", "Feb", "Mäe", "Abr", "Mee", "Jun",
+	"Jul", "Aug", "Sep", "Okt", "Nov", "Dez" ],
+	dayNames: [
+		"Sonndeg",
+		"Méindeg",
+		"Dënschdeg",
+		"Mëttwoch",
+		"Donneschdeg",
+		"Freideg",
+		"Samschdeg"
+	],
+	dayNamesShort: [ "Son", "Méi", "Dën", "Mët", "Don", "Fre", "Sam" ],
+	dayNamesMin: [ "So","Mé","Dë","Më","Do","Fr","Sa" ],
+	weekHeader: "W",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.lb );
+
+return datepicker.regional.lb;
+
+} ) );
+
+/* Lithuanian (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* @author Arturas Paleicikas <arturas@avalon.lt> */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.lt = {
+	closeText: "Uždaryti",
+	prevText: "&#x3C;Atgal",
+	nextText: "Pirmyn&#x3E;",
+	currentText: "Šiandien",
+	monthNames: [ "Sausis","Vasaris","Kovas","Balandis","Gegužė","Birželis",
+	"Liepa","Rugpjūtis","Rugsėjis","Spalis","Lapkritis","Gruodis" ],
+	monthNamesShort: [ "Sau","Vas","Kov","Bal","Geg","Bir",
+	"Lie","Rugp","Rugs","Spa","Lap","Gru" ],
+	dayNames: [
+		"sekmadienis",
+		"pirmadienis",
+		"antradienis",
+		"trečiadienis",
+		"ketvirtadienis",
+		"penktadienis",
+		"šeštadienis"
+	],
+	dayNamesShort: [ "sek","pir","ant","tre","ket","pen","šeš" ],
+	dayNamesMin: [ "Se","Pr","An","Tr","Ke","Pe","Še" ],
+	weekHeader: "SAV",
+	dateFormat: "yy-mm-dd",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: true,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.lt );
+
+return datepicker.regional.lt;
+
+} ) );
+
+/* Latvian (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* @author Arturas Paleicikas <arturas.paleicikas@metasite.net> */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.lv = {
+	closeText: "Aizvērt",
+	prevText: "Iepr.",
+	nextText: "Nāk.",
+	currentText: "Šodien",
+	monthNames: [ "Janvāris","Februāris","Marts","Aprīlis","Maijs","Jūnijs",
+	"Jūlijs","Augusts","Septembris","Oktobris","Novembris","Decembris" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Mai","Jūn",
+	"Jūl","Aug","Sep","Okt","Nov","Dec" ],
+	dayNames: [
+		"svētdiena",
+		"pirmdiena",
+		"otrdiena",
+		"trešdiena",
+		"ceturtdiena",
+		"piektdiena",
+		"sestdiena"
+	],
+	dayNamesShort: [ "svt","prm","otr","tre","ctr","pkt","sst" ],
+	dayNamesMin: [ "Sv","Pr","Ot","Tr","Ct","Pk","Ss" ],
+	weekHeader: "Ned.",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.lv );
+
+return datepicker.regional.lv;
+
+} ) );
+
+/* Macedonian i18n for the jQuery UI date picker plugin. */
+/* Written by Stojce Slavkovski. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.mk = {
+	closeText: "Затвори",
+	prevText: "&#x3C;",
+	nextText: "&#x3E;",
+	currentText: "Денес",
+	monthNames: [ "Јануари","Февруари","Март","Април","Мај","Јуни",
+	"Јули","Август","Септември","Октомври","Ноември","Декември" ],
+	monthNamesShort: [ "Јан","Фев","Мар","Апр","Мај","Јун",
+	"Јул","Авг","Сеп","Окт","Ное","Дек" ],
+	dayNames: [ "Недела","Понеделник","Вторник","Среда","Четврток","Петок","Сабота" ],
+	dayNamesShort: [ "Нед","Пон","Вто","Сре","Чет","Пет","Саб" ],
+	dayNamesMin: [ "Не","По","Вт","Ср","Че","Пе","Са" ],
+	weekHeader: "Сед",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.mk );
+
+return datepicker.regional.mk;
+
+} ) );
+
+/* Malayalam (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by Saji Nediyanchath (saji89@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ml = {
+	closeText: "ശരി",
+	prevText: "മുന്നത്തെ",
+	nextText: "അടുത്തത് ",
+	currentText: "ഇന്ന്",
+	monthNames: [ "ജനുവരി","ഫെബ്രുവരി","മാര്‍ച്ച്","ഏപ്രില്‍","മേയ്","ജൂണ്‍",
+	"ജൂലൈ","ആഗസ്റ്റ്","സെപ്റ്റംബര്‍","ഒക്ടോബര്‍","നവംബര്‍","ഡിസംബര്‍" ],
+	monthNamesShort: [ "ജനു", "ഫെബ്", "മാര്‍", "ഏപ്രി", "മേയ്", "ജൂണ്‍",
+	"ജൂലാ", "ആഗ", "സെപ്", "ഒക്ടോ", "നവം", "ഡിസ" ],
+	dayNames: [ "ഞായര്‍", "തിങ്കള്‍", "ചൊവ്വ", "ബുധന്‍", "വ്യാഴം", "വെള്ളി", "ശനി" ],
+	dayNamesShort: [ "ഞായ", "തിങ്ക", "ചൊവ്വ", "ബുധ", "വ്യാഴം", "വെള്ളി", "ശനി" ],
+	dayNamesMin: [ "ഞാ","തി","ചൊ","ബു","വ്യാ","വെ","ശ" ],
+	weekHeader: "ആ",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.ml );
+
+return datepicker.regional.ml;
+
+} ) );
+
+/* Malaysian initialisation for the jQuery UI date picker plugin. */
+/* Written by Mohd Nawawi Mohamad Jamili (nawawi@ronggeng.net). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ms = {
+	closeText: "Tutup",
+	prevText: "&#x3C;Sebelum",
+	nextText: "Selepas&#x3E;",
+	currentText: "hari ini",
+	monthNames: [ "Januari","Februari","Mac","April","Mei","Jun",
+	"Julai","Ogos","September","Oktober","November","Disember" ],
+	monthNamesShort: [ "Jan","Feb","Mac","Apr","Mei","Jun",
+	"Jul","Ogo","Sep","Okt","Nov","Dis" ],
+	dayNames: [ "Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu" ],
+	dayNamesShort: [ "Aha","Isn","Sel","Rab","kha","Jum","Sab" ],
+	dayNamesMin: [ "Ah","Is","Se","Ra","Kh","Ju","Sa" ],
+	weekHeader: "Mg",
+	dateFormat: "dd/mm/yy",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.ms );
+
+return datepicker.regional.ms;
+
+} ) );
+
+/* Norwegian Bokmål initialisation for the jQuery UI date picker plugin. */
+/* Written by Bjørn Johansen (post@bjornjohansen.no). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.nb = {
+	closeText: "Lukk",
+	prevText: "&#xAB;Forrige",
+	nextText: "Neste&#xBB;",
+	currentText: "I dag",
+	monthNames: [
+		"januar",
+		"februar",
+		"mars",
+		"april",
+		"mai",
+		"juni",
+		"juli",
+		"august",
+		"september",
+		"oktober",
+		"november",
+		"desember"
+	],
+	monthNamesShort: [ "jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des" ],
+	dayNamesShort: [ "søn","man","tir","ons","tor","fre","lør" ],
+	dayNames: [ "søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag" ],
+	dayNamesMin: [ "sø","ma","ti","on","to","fr","lø" ],
+	weekHeader: "Uke",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: ""
+};
+datepicker.setDefaults( datepicker.regional.nb );
+
+return datepicker.regional.nb;
+
+} ) );
+
+/* Dutch (Belgium) initialisation for the jQuery UI date picker plugin. */
+/* David De Sloovere @DavidDeSloovere */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "nl-BE" ] = {
+	closeText: "Sluiten",
+	prevText: "←",
+	nextText: "→",
+	currentText: "Vandaag",
+	monthNames: [ "januari", "februari", "maart", "april", "mei", "juni",
+	"juli", "augustus", "september", "oktober", "november", "december" ],
+	monthNamesShort: [ "jan", "feb", "mrt", "apr", "mei", "jun",
+	"jul", "aug", "sep", "okt", "nov", "dec" ],
+	dayNames: [ "zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag" ],
+	dayNamesShort: [ "zon", "maa", "din", "woe", "don", "vri", "zat" ],
+	dayNamesMin: [ "zo", "ma", "di", "wo", "do", "vr", "za" ],
+	weekHeader: "Wk",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional[ "nl-BE" ] );
+
+return datepicker.regional[ "nl-BE" ];
+
+} ) );
+
+/* Dutch (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by Mathias Bynens <http://mathiasbynens.be/> */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.nl = {
+	closeText: "Sluiten",
+	prevText: "←",
+	nextText: "→",
+	currentText: "Vandaag",
+	monthNames: [ "januari", "februari", "maart", "april", "mei", "juni",
+	"juli", "augustus", "september", "oktober", "november", "december" ],
+	monthNamesShort: [ "jan", "feb", "mrt", "apr", "mei", "jun",
+	"jul", "aug", "sep", "okt", "nov", "dec" ],
+	dayNames: [ "zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag" ],
+	dayNamesShort: [ "zon", "maa", "din", "woe", "don", "vri", "zat" ],
+	dayNamesMin: [ "zo", "ma", "di", "wo", "do", "vr", "za" ],
+	weekHeader: "Wk",
+	dateFormat: "dd-mm-yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.nl );
+
+return datepicker.regional.nl;
+
+} ) );
+
+/* Norwegian Nynorsk initialisation for the jQuery UI date picker plugin. */
+/* Written by Bjørn Johansen (post@bjornjohansen.no). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.nn = {
+	closeText: "Lukk",
+	prevText: "&#xAB;Førre",
+	nextText: "Neste&#xBB;",
+	currentText: "I dag",
+	monthNames: [
+		"januar",
+		"februar",
+		"mars",
+		"april",
+		"mai",
+		"juni",
+		"juli",
+		"august",
+		"september",
+		"oktober",
+		"november",
+		"desember"
+	],
+	monthNamesShort: [ "jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des" ],
+	dayNamesShort: [ "sun","mån","tys","ons","tor","fre","lau" ],
+	dayNames: [ "sundag","måndag","tysdag","onsdag","torsdag","fredag","laurdag" ],
+	dayNamesMin: [ "su","må","ty","on","to","fr","la" ],
+	weekHeader: "Veke",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: ""
+};
+datepicker.setDefaults( datepicker.regional.nn );
+
+return datepicker.regional.nn;
+
+} ) );
+
+/* Norwegian initialisation for the jQuery UI date picker plugin. */
+/* Written by Naimdjon Takhirov (naimdjon@gmail.com). */
+
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.no = {
+	closeText: "Lukk",
+	prevText: "&#xAB;Forrige",
+	nextText: "Neste&#xBB;",
+	currentText: "I dag",
+	monthNames: [
+		"januar",
+		"februar",
+		"mars",
+		"april",
+		"mai",
+		"juni",
+		"juli",
+		"august",
+		"september",
+		"oktober",
+		"november",
+		"desember"
+	],
+	monthNamesShort: [ "jan","feb","mar","apr","mai","jun","jul","aug","sep","okt","nov","des" ],
+	dayNamesShort: [ "søn","man","tir","ons","tor","fre","lør" ],
+	dayNames: [ "søndag","mandag","tirsdag","onsdag","torsdag","fredag","lørdag" ],
+	dayNamesMin: [ "sø","ma","ti","on","to","fr","lø" ],
+	weekHeader: "Uke",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: ""
+};
+datepicker.setDefaults( datepicker.regional.no );
+
+return datepicker.regional.no;
+
+} ) );
+
+/* Polish initialisation for the jQuery UI date picker plugin. */
+/* Written by Jacek Wysocki (jacek.wysocki@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.pl = {
+	closeText: "Zamknij",
+	prevText: "&#x3C;Poprzedni",
+	nextText: "Następny&#x3E;",
+	currentText: "Dziś",
+	monthNames: [ "Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec",
+	"Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień" ],
+	monthNamesShort: [ "Sty","Lu","Mar","Kw","Maj","Cze",
+	"Lip","Sie","Wrz","Pa","Lis","Gru" ],
+	dayNames: [ "Niedziela","Poniedziałek","Wtorek","Środa","Czwartek","Piątek","Sobota" ],
+	dayNamesShort: [ "Nie","Pn","Wt","Śr","Czw","Pt","So" ],
+	dayNamesMin: [ "N","Pn","Wt","Śr","Cz","Pt","So" ],
+	weekHeader: "Tydz",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.pl );
+
+return datepicker.regional.pl;
+
+} ) );
+
+/* Brazilian initialisation for the jQuery UI date picker plugin. */
+/* Written by Leonildo Costa Silva (leocsilva@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "pt-BR" ] = {
+	closeText: "Fechar",
+	prevText: "&#x3C;Anterior",
+	nextText: "Próximo&#x3E;",
+	currentText: "Hoje",
+	monthNames: [ "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+	"Julho","Agosto","Setembro","Outubro","Novembro","Dezembro" ],
+	monthNamesShort: [ "Jan","Fev","Mar","Abr","Mai","Jun",
+	"Jul","Ago","Set","Out","Nov","Dez" ],
+	dayNames: [
+		"Domingo",
+		"Segunda-feira",
+		"Terça-feira",
+		"Quarta-feira",
+		"Quinta-feira",
+		"Sexta-feira",
+		"Sábado"
+	],
+	dayNamesShort: [ "Dom","Seg","Ter","Qua","Qui","Sex","Sáb" ],
+	dayNamesMin: [ "Dom","Seg","Ter","Qua","Qui","Sex","Sáb" ],
+	weekHeader: "Sm",
+	dateFormat: "dd/mm/yy",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional[ "pt-BR" ] );
+
+return datepicker.regional[ "pt-BR" ];
+
+} ) );
+
+/* Portuguese initialisation for the jQuery UI date picker plugin. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.pt = {
+	closeText: "Fechar",
+	prevText: "Anterior",
+	nextText: "Seguinte",
+	currentText: "Hoje",
+	monthNames: [ "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+	"Julho","Agosto","Setembro","Outubro","Novembro","Dezembro" ],
+	monthNamesShort: [ "Jan","Fev","Mar","Abr","Mai","Jun",
+	"Jul","Ago","Set","Out","Nov","Dez" ],
+	dayNames: [
+		"Domingo",
+		"Segunda-feira",
+		"Terça-feira",
+		"Quarta-feira",
+		"Quinta-feira",
+		"Sexta-feira",
+		"Sábado"
+	],
+	dayNamesShort: [ "Dom","Seg","Ter","Qua","Qui","Sex","Sáb" ],
+	dayNamesMin: [ "Dom","Seg","Ter","Qua","Qui","Sex","Sáb" ],
+	weekHeader: "Sem",
+	dateFormat: "dd/mm/yy",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.pt );
+
+return datepicker.regional.pt;
+
+} ) );
+
+/* Romansh initialisation for the jQuery UI date picker plugin. */
+/* Written by Yvonne Gienal (yvonne.gienal@educa.ch). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.rm = {
+	closeText: "Serrar",
+	prevText: "&#x3C;Suandant",
+	nextText: "Precedent&#x3E;",
+	currentText: "Actual",
+	monthNames: [
+		"Schaner",
+		"Favrer",
+		"Mars",
+		"Avrigl",
+		"Matg",
+		"Zercladur",
+		"Fanadur",
+		"Avust",
+		"Settember",
+		"October",
+		"November",
+		"December"
+	],
+	monthNamesShort: [
+		"Scha",
+		"Fev",
+		"Mar",
+		"Avr",
+		"Matg",
+		"Zer",
+		"Fan",
+		"Avu",
+		"Sett",
+		"Oct",
+		"Nov",
+		"Dec"
+	],
+	dayNames: [ "Dumengia","Glindesdi","Mardi","Mesemna","Gievgia","Venderdi","Sonda" ],
+	dayNamesShort: [ "Dum","Gli","Mar","Mes","Gie","Ven","Som" ],
+	dayNamesMin: [ "Du","Gl","Ma","Me","Gi","Ve","So" ],
+	weekHeader: "emna",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.rm );
+
+return datepicker.regional.rm;
+
+} ) );
+
+/* Romanian initialisation for the jQuery UI date picker plugin.
+ *
+ * Written by Edmond L. (ll_edmond@walla.com)
+ * and Ionut G. Stan (ionut.g.stan@gmail.com)
+ */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ro = {
+	closeText: "Închide",
+	prevText: "&#xAB; Luna precedentă",
+	nextText: "Luna următoare &#xBB;",
+	currentText: "Azi",
+	monthNames: [ "Ianuarie","Februarie","Martie","Aprilie","Mai","Iunie",
+	"Iulie","August","Septembrie","Octombrie","Noiembrie","Decembrie" ],
+	monthNamesShort: [ "Ian", "Feb", "Mar", "Apr", "Mai", "Iun",
+	"Iul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+	dayNames: [ "Duminică", "Luni", "Marţi", "Miercuri", "Joi", "Vineri", "Sâmbătă" ],
+	dayNamesShort: [ "Dum", "Lun", "Mar", "Mie", "Joi", "Vin", "Sâm" ],
+	dayNamesMin: [ "Du","Lu","Ma","Mi","Jo","Vi","Sâ" ],
+	weekHeader: "Săpt",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.ro );
+
+return datepicker.regional.ro;
+
+} ) );
+
+/* Russian (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by Andrew Stromnov (stromnov@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ru = {
+	closeText: "Закрыть",
+	prevText: "&#x3C;Пред",
+	nextText: "След&#x3E;",
+	currentText: "Сегодня",
+	monthNames: [ "Январь","Февраль","Март","Апрель","Май","Июнь",
+	"Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь" ],
+	monthNamesShort: [ "Янв","Фев","Мар","Апр","Май","Июн",
+	"Июл","Авг","Сен","Окт","Ноя","Дек" ],
+	dayNames: [ "воскресенье","понедельник","вторник","среда","четверг","пятница","суббота" ],
+	dayNamesShort: [ "вск","пнд","втр","срд","чтв","птн","сбт" ],
+	dayNamesMin: [ "Вс","Пн","Вт","Ср","Чт","Пт","Сб" ],
+	weekHeader: "Нед",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.ru );
+
+return datepicker.regional.ru;
+
+} ) );
+
+/* Slovak initialisation for the jQuery UI date picker plugin. */
+/* Written by Vojtech Rinik (vojto@hmm.sk). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.sk = {
+	closeText: "Zavrieť",
+	prevText: "&#x3C;Predchádzajúci",
+	nextText: "Nasledujúci&#x3E;",
+	currentText: "Dnes",
+	monthNames: [ "január","február","marec","apríl","máj","jún",
+	"júl","august","september","október","november","december" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Máj","Jún",
+	"Júl","Aug","Sep","Okt","Nov","Dec" ],
+	dayNames: [ "nedeľa","pondelok","utorok","streda","štvrtok","piatok","sobota" ],
+	dayNamesShort: [ "Ned","Pon","Uto","Str","Štv","Pia","Sob" ],
+	dayNamesMin: [ "Ne","Po","Ut","St","Št","Pia","So" ],
+	weekHeader: "Ty",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.sk );
+
+return datepicker.regional.sk;
+
+} ) );
+
+/* Slovenian initialisation for the jQuery UI date picker plugin. */
+/* Written by Jaka Jancar (jaka@kubje.org). */
+/* c = č, s = š z = ž C = Č S = Š Z = Ž */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.sl = {
+	closeText: "Zapri",
+	prevText: "&#x3C;Prejšnji",
+	nextText: "Naslednji&#x3E;",
+	currentText: "Trenutni",
+	monthNames: [ "Januar","Februar","Marec","April","Maj","Junij",
+	"Julij","Avgust","September","Oktober","November","December" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
+	"Jul","Avg","Sep","Okt","Nov","Dec" ],
+	dayNames: [ "Nedelja","Ponedeljek","Torek","Sreda","Četrtek","Petek","Sobota" ],
+	dayNamesShort: [ "Ned","Pon","Tor","Sre","Čet","Pet","Sob" ],
+	dayNamesMin: [ "Ne","Po","To","Sr","Če","Pe","So" ],
+	weekHeader: "Teden",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.sl );
+
+return datepicker.regional.sl;
+
+} ) );
+
+/* Albanian initialisation for the jQuery UI date picker plugin. */
+/* Written by Flakron Bytyqi (flakron@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.sq = {
+	closeText: "mbylle",
+	prevText: "&#x3C;mbrapa",
+	nextText: "Përpara&#x3E;",
+	currentText: "sot",
+	monthNames: [ "Janar","Shkurt","Mars","Prill","Maj","Qershor",
+	"Korrik","Gusht","Shtator","Tetor","Nëntor","Dhjetor" ],
+	monthNamesShort: [ "Jan","Shk","Mar","Pri","Maj","Qer",
+	"Kor","Gus","Sht","Tet","Nën","Dhj" ],
+	dayNames: [ "E Diel","E Hënë","E Martë","E Mërkurë","E Enjte","E Premte","E Shtune" ],
+	dayNamesShort: [ "Di","Hë","Ma","Më","En","Pr","Sh" ],
+	dayNamesMin: [ "Di","Hë","Ma","Më","En","Pr","Sh" ],
+	weekHeader: "Ja",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.sq );
+
+return datepicker.regional.sq;
+
+} ) );
+
+/* Serbian i18n for the jQuery UI date picker plugin. */
+/* Written by Dejan Dimić. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "sr-SR" ] = {
+	closeText: "Zatvori",
+	prevText: "&#x3C;",
+	nextText: "&#x3E;",
+	currentText: "Danas",
+	monthNames: [ "Januar","Februar","Mart","April","Maj","Jun",
+	"Jul","Avgust","Septembar","Oktobar","Novembar","Decembar" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
+	"Jul","Avg","Sep","Okt","Nov","Dec" ],
+	dayNames: [ "Nedelja","Ponedeljak","Utorak","Sreda","Četvrtak","Petak","Subota" ],
+	dayNamesShort: [ "Ned","Pon","Uto","Sre","Čet","Pet","Sub" ],
+	dayNamesMin: [ "Ne","Po","Ut","Sr","Če","Pe","Su" ],
+	weekHeader: "Sed",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional[ "sr-SR" ] );
+
+return datepicker.regional[ "sr-SR" ];
+
+} ) );
+
+/* Serbian i18n for the jQuery UI date picker plugin. */
+/* Written by Dejan Dimić. */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.sr = {
+	closeText: "Затвори",
+	prevText: "&#x3C;",
+	nextText: "&#x3E;",
+	currentText: "Данас",
+	monthNames: [ "Јануар","Фебруар","Март","Април","Мај","Јун",
+	"Јул","Август","Септембар","Октобар","Новембар","Децембар" ],
+	monthNamesShort: [ "Јан","Феб","Мар","Апр","Мај","Јун",
+	"Јул","Авг","Сеп","Окт","Нов","Дец" ],
+	dayNames: [ "Недеља","Понедељак","Уторак","Среда","Четвртак","Петак","Субота" ],
+	dayNamesShort: [ "Нед","Пон","Уто","Сре","Чет","Пет","Суб" ],
+	dayNamesMin: [ "Не","По","Ут","Ср","Че","Пе","Су" ],
+	weekHeader: "Сед",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.sr );
+
+return datepicker.regional.sr;
+
+} ) );
+
+/* Swedish initialisation for the jQuery UI date picker plugin. */
+/* Written by Anders Ekdahl ( anders@nomadiz.se). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.sv = {
+	closeText: "Stäng",
+	prevText: "&#xAB;Förra",
+	nextText: "Nästa&#xBB;",
+	currentText: "Idag",
+	monthNames: [ "Januari","Februari","Mars","April","Maj","Juni",
+	"Juli","Augusti","September","Oktober","November","December" ],
+	monthNamesShort: [ "Jan","Feb","Mar","Apr","Maj","Jun",
+	"Jul","Aug","Sep","Okt","Nov","Dec" ],
+	dayNamesShort: [ "Sön","Mån","Tis","Ons","Tor","Fre","Lör" ],
+	dayNames: [ "Söndag","Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag" ],
+	dayNamesMin: [ "Sö","Må","Ti","On","To","Fr","Lö" ],
+	weekHeader: "Ve",
+	dateFormat: "yy-mm-dd",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.sv );
+
+return datepicker.regional.sv;
+
+} ) );
+
+/* Tamil (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by S A Sureshkumar (saskumar@live.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.ta = {
+	closeText: "மூடு",
+	prevText: "முன்னையது",
+	nextText: "அடுத்தது",
+	currentText: "இன்று",
+	monthNames: [ "தை","மாசி","பங்குனி","சித்திரை","வைகாசி","ஆனி",
+	"ஆடி","ஆவணி","புரட்டாசி","ஐப்பசி","கார்த்திகை","மார்கழி" ],
+	monthNamesShort: [ "தை","மாசி","பங்","சித்","வைகா","ஆனி",
+	"ஆடி","ஆவ","புர","ஐப்","கார்","மார்" ],
+	dayNames: [
+		"ஞாயிற்றுக்கிழமை",
+		"திங்கட்கிழமை",
+		"செவ்வாய்க்கிழமை",
+		"புதன்கிழமை",
+		"வியாழக்கிழமை",
+		"வெள்ளிக்கிழமை",
+		"சனிக்கிழமை"
+	],
+	dayNamesShort: [
+		"ஞாயிறு",
+		"திங்கள்",
+		"செவ்வாய்",
+		"புதன்",
+		"வியாழன்",
+		"வெள்ளி",
+		"சனி"
+	],
+	dayNamesMin: [ "ஞா","தி","செ","பு","வி","வெ","ச" ],
+	weekHeader: "Не",
+	dateFormat: "dd/mm/yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.ta );
+
+return datepicker.regional.ta;
+
+} ) );
+
+/* Thai initialisation for the jQuery UI date picker plugin. */
+/* Written by pipo (pipo@sixhead.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.th = {
+	closeText: "ปิด",
+	prevText: "&#xAB;&#xA0;ย้อน",
+	nextText: "ถัดไป&#xA0;&#xBB;",
+	currentText: "วันนี้",
+	monthNames: [ "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
+	"กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม" ],
+	monthNamesShort: [ "ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.",
+	"ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค." ],
+	dayNames: [ "อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์" ],
+	dayNamesShort: [ "อา.","จ.","อ.","พ.","พฤ.","ศ.","ส." ],
+	dayNamesMin: [ "อา.","จ.","อ.","พ.","พฤ.","ศ.","ส." ],
+	weekHeader: "Wk",
+	dateFormat: "dd/mm/yy",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.th );
+
+return datepicker.regional.th;
+
+} ) );
+
+/* Tajiki (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by Abdurahmon Saidov (saidovab@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.tj = {
+	closeText: "Идома",
+	prevText: "&#x3c;Қафо",
+	nextText: "Пеш&#x3e;",
+	currentText: "Имрӯз",
+	monthNames: [ "Январ","Феврал","Март","Апрел","Май","Июн",
+	"Июл","Август","Сентябр","Октябр","Ноябр","Декабр" ],
+	monthNamesShort: [ "Янв","Фев","Мар","Апр","Май","Июн",
+	"Июл","Авг","Сен","Окт","Ноя","Дек" ],
+	dayNames: [ "якшанбе","душанбе","сешанбе","чоршанбе","панҷшанбе","ҷумъа","шанбе" ],
+	dayNamesShort: [ "якш","душ","сеш","чор","пан","ҷум","шан" ],
+	dayNamesMin: [ "Як","Дш","Сш","Чш","Пш","Ҷм","Шн" ],
+	weekHeader: "Хф",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.tj );
+
+return datepicker.regional.tj;
+
+} ) );
+
+/* Turkish initialisation for the jQuery UI date picker plugin. */
+/* Written by Izzet Emre Erkan (kara@karalamalar.net). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.tr = {
+	closeText: "kapat",
+	prevText: "&#x3C;geri",
+	nextText: "ileri&#x3e",
+	currentText: "bugün",
+	monthNames: [ "Ocak","Şubat","Mart","Nisan","Mayıs","Haziran",
+	"Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık" ],
+	monthNamesShort: [ "Oca","Şub","Mar","Nis","May","Haz",
+	"Tem","Ağu","Eyl","Eki","Kas","Ara" ],
+	dayNames: [ "Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi" ],
+	dayNamesShort: [ "Pz","Pt","Sa","Ça","Pe","Cu","Ct" ],
+	dayNamesMin: [ "Pz","Pt","Sa","Ça","Pe","Cu","Ct" ],
+	weekHeader: "Hf",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.tr );
+
+return datepicker.regional.tr;
+
+} ) );
+
+/* Ukrainian (UTF-8) initialisation for the jQuery UI date picker plugin. */
+/* Written by Maxim Drogobitskiy (maxdao@gmail.com). */
+/* Corrected by Igor Milla (igor.fsp.milla@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.uk = {
+	closeText: "Закрити",
+	prevText: "&#x3C;",
+	nextText: "&#x3E;",
+	currentText: "Сьогодні",
+	monthNames: [ "Січень","Лютий","Березень","Квітень","Травень","Червень",
+	"Липень","Серпень","Вересень","Жовтень","Листопад","Грудень" ],
+	monthNamesShort: [ "Січ","Лют","Бер","Кві","Тра","Чер",
+	"Лип","Сер","Вер","Жов","Лис","Гру" ],
+	dayNames: [ "неділя","понеділок","вівторок","середа","четвер","п’ятниця","субота" ],
+	dayNamesShort: [ "нед","пнд","вів","срд","чтв","птн","сбт" ],
+	dayNamesMin: [ "Нд","Пн","Вт","Ср","Чт","Пт","Сб" ],
+	weekHeader: "Тиж",
+	dateFormat: "dd.mm.yy",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.uk );
+
+return datepicker.regional.uk;
+
+} ) );
+
+/* Vietnamese initialisation for the jQuery UI date picker plugin. */
+/* Translated by Le Thanh Huy (lthanhhuy@cit.ctu.edu.vn). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional.vi = {
+	closeText: "Đóng",
+	prevText: "&#x3C;Trước",
+	nextText: "Tiếp&#x3E;",
+	currentText: "Hôm nay",
+	monthNames: [ "Tháng Một", "Tháng Hai", "Tháng Ba", "Tháng Tư", "Tháng Năm", "Tháng Sáu",
+	"Tháng Bảy", "Tháng Tám", "Tháng Chín", "Tháng Mười", "Tháng Mười Một", "Tháng Mười Hai" ],
+	monthNamesShort: [ "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
+	"Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" ],
+	dayNames: [ "Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy" ],
+	dayNamesShort: [ "CN", "T2", "T3", "T4", "T5", "T6", "T7" ],
+	dayNamesMin: [ "CN", "T2", "T3", "T4", "T5", "T6", "T7" ],
+	weekHeader: "Tu",
+	dateFormat: "dd/mm/yy",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: "" };
+datepicker.setDefaults( datepicker.regional.vi );
+
+return datepicker.regional.vi;
+
+} ) );
+
+/* Chinese initialisation for the jQuery UI date picker plugin. */
+/* Written by Cloudream (cloudream@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "zh-CN" ] = {
+	closeText: "关闭",
+	prevText: "&#x3C;上月",
+	nextText: "下月&#x3E;",
+	currentText: "今天",
+	monthNames: [ "一月","二月","三月","四月","五月","六月",
+	"七月","八月","九月","十月","十一月","十二月" ],
+	monthNamesShort: [ "一月","二月","三月","四月","五月","六月",
+	"七月","八月","九月","十月","十一月","十二月" ],
+	dayNames: [ "星期日","星期一","星期二","星期三","星期四","星期五","星期六" ],
+	dayNamesShort: [ "周日","周一","周二","周三","周四","周五","周六" ],
+	dayNamesMin: [ "日","一","二","三","四","五","六" ],
+	weekHeader: "周",
+	dateFormat: "yy-mm-dd",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: true,
+	yearSuffix: "年" };
+datepicker.setDefaults( datepicker.regional[ "zh-CN" ] );
+
+return datepicker.regional[ "zh-CN" ];
+
+} ) );
+
+/* Chinese initialisation for the jQuery UI date picker plugin. */
+/* Written by SCCY (samuelcychan@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "zh-HK" ] = {
+	closeText: "關閉",
+	prevText: "&#x3C;上月",
+	nextText: "下月&#x3E;",
+	currentText: "今天",
+	monthNames: [ "一月","二月","三月","四月","五月","六月",
+	"七月","八月","九月","十月","十一月","十二月" ],
+	monthNamesShort: [ "一月","二月","三月","四月","五月","六月",
+	"七月","八月","九月","十月","十一月","十二月" ],
+	dayNames: [ "星期日","星期一","星期二","星期三","星期四","星期五","星期六" ],
+	dayNamesShort: [ "周日","周一","周二","周三","周四","周五","周六" ],
+	dayNamesMin: [ "日","一","二","三","四","五","六" ],
+	weekHeader: "周",
+	dateFormat: "dd-mm-yy",
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: true,
+	yearSuffix: "年" };
+datepicker.setDefaults( datepicker.regional[ "zh-HK" ] );
+
+return datepicker.regional[ "zh-HK" ];
+
+} ) );
+
+/* Chinese initialisation for the jQuery UI date picker plugin. */
+/* Written by Ressol (ressol@gmail.com). */
+( function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define( [ "../widgets/datepicker" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery.datepicker );
+	}
+}( function( datepicker ) {
+
+datepicker.regional[ "zh-TW" ] = {
+	closeText: "關閉",
+	prevText: "&#x3C;上月",
+	nextText: "下月&#x3E;",
+	currentText: "今天",
+	monthNames: [ "一月","二月","三月","四月","五月","六月",
+	"七月","八月","九月","十月","十一月","十二月" ],
+	monthNamesShort: [ "一月","二月","三月","四月","五月","六月",
+	"七月","八月","九月","十月","十一月","十二月" ],
+	dayNames: [ "星期日","星期一","星期二","星期三","星期四","星期五","星期六" ],
+	dayNamesShort: [ "周日","周一","周二","周三","周四","周五","周六" ],
+	dayNamesMin: [ "日","一","二","三","四","五","六" ],
+	weekHeader: "周",
+	dateFormat: "yy/mm/dd",
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: true,
+	yearSuffix: "年" };
+datepicker.setDefaults( datepicker.regional[ "zh-TW" ] );
+
+return datepicker.regional[ "zh-TW" ];
+
+} ) );
+
+/*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
  * Licensed under the MIT license
@@ -24637,4 +22560,1010 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
  */
 
 !function(a,b){"function"==typeof define&&define.amd?define("typeahead.js",["jquery"],function(a){return b(a)}):"object"==typeof exports?module.exports=b(require("jquery")):b(jQuery)}(this,function(a){var b=function(){"use strict";return{isMsie:function(){return/(msie|trident)/i.test(navigator.userAgent)?navigator.userAgent.match(/(msie |rv:)(\d+(.\d+)?)/i)[2]:!1},isBlankString:function(a){return!a||/^\s*$/.test(a)},escapeRegExChars:function(a){return a.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g,"\\$&")},isString:function(a){return"string"==typeof a},isNumber:function(a){return"number"==typeof a},isArray:a.isArray,isFunction:a.isFunction,isObject:a.isPlainObject,isUndefined:function(a){return"undefined"==typeof a},isElement:function(a){return!(!a||1!==a.nodeType)},isJQuery:function(b){return b instanceof a},toStr:function(a){return b.isUndefined(a)||null===a?"":a+""},bind:a.proxy,each:function(b,c){function d(a,b){return c(b,a)}a.each(b,d)},map:a.map,filter:a.grep,every:function(b,c){var d=!0;return b?(a.each(b,function(a,e){return(d=c.call(null,e,a,b))?void 0:!1}),!!d):d},some:function(b,c){var d=!1;return b?(a.each(b,function(a,e){return(d=c.call(null,e,a,b))?!1:void 0}),!!d):d},mixin:a.extend,identity:function(a){return a},clone:function(b){return a.extend(!0,{},b)},getIdGenerator:function(){var a=0;return function(){return a++}},templatify:function(b){function c(){return String(b)}return a.isFunction(b)?b:c},defer:function(a){setTimeout(a,0)},debounce:function(a,b,c){var d,e;return function(){var f,g,h=this,i=arguments;return f=function(){d=null,c||(e=a.apply(h,i))},g=c&&!d,clearTimeout(d),d=setTimeout(f,b),g&&(e=a.apply(h,i)),e}},throttle:function(a,b){var c,d,e,f,g,h;return g=0,h=function(){g=new Date,e=null,f=a.apply(c,d)},function(){var i=new Date,j=b-(i-g);return c=this,d=arguments,0>=j?(clearTimeout(e),e=null,g=i,f=a.apply(c,d)):e||(e=setTimeout(h,j)),f}},stringify:function(a){return b.isString(a)?a:JSON.stringify(a)},noop:function(){}}}(),c=function(){"use strict";function a(a){var g,h;return h=b.mixin({},f,a),g={css:e(),classes:h,html:c(h),selectors:d(h)},{css:g.css,html:g.html,classes:g.classes,selectors:g.selectors,mixin:function(a){b.mixin(a,g)}}}function c(a){return{wrapper:'<span class="'+a.wrapper+'"></span>',menu:'<div class="'+a.menu+'"></div>'}}function d(a){var c={};return b.each(a,function(a,b){c[b]="."+a}),c}function e(){var a={wrapper:{position:"relative",display:"inline-block"},hint:{position:"absolute",top:"0",left:"0",borderColor:"transparent",boxShadow:"none",opacity:"1"},input:{position:"relative",verticalAlign:"top",backgroundColor:"transparent"},inputWithNoHint:{position:"relative",verticalAlign:"top"},menu:{position:"absolute",top:"100%",left:"0",zIndex:"100",display:"none"},ltr:{left:"0",right:"auto"},rtl:{left:"auto",right:" 0"}};return b.isMsie()&&b.mixin(a.input,{backgroundImage:"url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)"}),a}var f={wrapper:"twitter-typeahead",input:"tt-input",hint:"tt-hint",menu:"tt-menu",dataset:"tt-dataset",suggestion:"tt-suggestion",selectable:"tt-selectable",empty:"tt-empty",open:"tt-open",cursor:"tt-cursor",highlight:"tt-highlight"};return a}(),d=function(){"use strict";function c(b){b&&b.el||a.error("EventBus initialized without el"),this.$el=a(b.el)}var d,e;return d="typeahead:",e={render:"rendered",cursorchange:"cursorchanged",select:"selected",autocomplete:"autocompleted"},b.mixin(c.prototype,{_trigger:function(b,c){var e;return e=a.Event(d+b),(c=c||[]).unshift(e),this.$el.trigger.apply(this.$el,c),e},before:function(a){var b,c;return b=[].slice.call(arguments,1),c=this._trigger("before"+a,b),c.isDefaultPrevented()},trigger:function(a){var b;this._trigger(a,[].slice.call(arguments,1)),(b=e[a])&&this._trigger(b,[].slice.call(arguments,1))}}),c}(),e=function(){"use strict";function a(a,b,c,d){var e;if(!c)return this;for(b=b.split(i),c=d?h(c,d):c,this._callbacks=this._callbacks||{};e=b.shift();)this._callbacks[e]=this._callbacks[e]||{sync:[],async:[]},this._callbacks[e][a].push(c);return this}function b(b,c,d){return a.call(this,"async",b,c,d)}function c(b,c,d){return a.call(this,"sync",b,c,d)}function d(a){var b;if(!this._callbacks)return this;for(a=a.split(i);b=a.shift();)delete this._callbacks[b];return this}function e(a){var b,c,d,e,g;if(!this._callbacks)return this;for(a=a.split(i),d=[].slice.call(arguments,1);(b=a.shift())&&(c=this._callbacks[b]);)e=f(c.sync,this,[b].concat(d)),g=f(c.async,this,[b].concat(d)),e()&&j(g);return this}function f(a,b,c){function d(){for(var d,e=0,f=a.length;!d&&f>e;e+=1)d=a[e].apply(b,c)===!1;return!d}return d}function g(){var a;return a=window.setImmediate?function(a){setImmediate(function(){a()})}:function(a){setTimeout(function(){a()},0)}}function h(a,b){return a.bind?a.bind(b):function(){a.apply(b,[].slice.call(arguments,0))}}var i=/\s+/,j=g();return{onSync:c,onAsync:b,off:d,trigger:e}}(),f=function(a){"use strict";function c(a,c,d){for(var e,f=[],g=0,h=a.length;h>g;g++)f.push(b.escapeRegExChars(a[g]));return e=d?"\\b("+f.join("|")+")\\b":"("+f.join("|")+")",c?new RegExp(e):new RegExp(e,"i")}var d={node:null,pattern:null,tagName:"strong",className:null,wordsOnly:!1,caseSensitive:!1};return function(e){function f(b){var c,d,f;return(c=h.exec(b.data))&&(f=a.createElement(e.tagName),e.className&&(f.className=e.className),d=b.splitText(c.index),d.splitText(c[0].length),f.appendChild(d.cloneNode(!0)),b.parentNode.replaceChild(f,d)),!!c}function g(a,b){for(var c,d=3,e=0;e<a.childNodes.length;e++)c=a.childNodes[e],c.nodeType===d?e+=b(c)?1:0:g(c,b)}var h;e=b.mixin({},d,e),e.node&&e.pattern&&(e.pattern=b.isArray(e.pattern)?e.pattern:[e.pattern],h=c(e.pattern,e.caseSensitive,e.wordsOnly),g(e.node,f))}}(window.document),g=function(){"use strict";function c(c,e){c=c||{},c.input||a.error("input is missing"),e.mixin(this),this.$hint=a(c.hint),this.$input=a(c.input),this.query=this.$input.val(),this.queryWhenFocused=this.hasFocus()?this.query:null,this.$overflowHelper=d(this.$input),this._checkLanguageDirection(),0===this.$hint.length&&(this.setHint=this.getHint=this.clearHint=this.clearHintIfInvalid=b.noop)}function d(b){return a('<pre aria-hidden="true"></pre>').css({position:"absolute",visibility:"hidden",whiteSpace:"pre",fontFamily:b.css("font-family"),fontSize:b.css("font-size"),fontStyle:b.css("font-style"),fontVariant:b.css("font-variant"),fontWeight:b.css("font-weight"),wordSpacing:b.css("word-spacing"),letterSpacing:b.css("letter-spacing"),textIndent:b.css("text-indent"),textRendering:b.css("text-rendering"),textTransform:b.css("text-transform")}).insertAfter(b)}function f(a,b){return c.normalizeQuery(a)===c.normalizeQuery(b)}function g(a){return a.altKey||a.ctrlKey||a.metaKey||a.shiftKey}var h;return h={9:"tab",27:"esc",37:"left",39:"right",13:"enter",38:"up",40:"down"},c.normalizeQuery=function(a){return b.toStr(a).replace(/^\s*/g,"").replace(/\s{2,}/g," ")},b.mixin(c.prototype,e,{_onBlur:function(){this.resetInputValue(),this.trigger("blurred")},_onFocus:function(){this.queryWhenFocused=this.query,this.trigger("focused")},_onKeydown:function(a){var b=h[a.which||a.keyCode];this._managePreventDefault(b,a),b&&this._shouldTrigger(b,a)&&this.trigger(b+"Keyed",a)},_onInput:function(){this._setQuery(this.getInputValue()),this.clearHintIfInvalid(),this._checkLanguageDirection()},_managePreventDefault:function(a,b){var c;switch(a){case"up":case"down":c=!g(b);break;default:c=!1}c&&b.preventDefault()},_shouldTrigger:function(a,b){var c;switch(a){case"tab":c=!g(b);break;default:c=!0}return c},_checkLanguageDirection:function(){var a=(this.$input.css("direction")||"ltr").toLowerCase();this.dir!==a&&(this.dir=a,this.$hint.attr("dir",a),this.trigger("langDirChanged",a))},_setQuery:function(a,b){var c,d;c=f(a,this.query),d=c?this.query.length!==a.length:!1,this.query=a,b||c?!b&&d&&this.trigger("whitespaceChanged",this.query):this.trigger("queryChanged",this.query)},bind:function(){var a,c,d,e,f=this;return a=b.bind(this._onBlur,this),c=b.bind(this._onFocus,this),d=b.bind(this._onKeydown,this),e=b.bind(this._onInput,this),this.$input.on("blur.tt",a).on("focus.tt",c).on("keydown.tt",d),!b.isMsie()||b.isMsie()>9?this.$input.on("input.tt",e):this.$input.on("keydown.tt keypress.tt cut.tt paste.tt",function(a){h[a.which||a.keyCode]||b.defer(b.bind(f._onInput,f,a))}),this},focus:function(){this.$input.focus()},blur:function(){this.$input.blur()},getLangDir:function(){return this.dir},getQuery:function(){return this.query||""},setQuery:function(a,b){this.setInputValue(a),this._setQuery(a,b)},hasQueryChangedSinceLastFocus:function(){return this.query!==this.queryWhenFocused},getInputValue:function(){return this.$input.val()},setInputValue:function(a){this.$input.val(a),this.clearHintIfInvalid(),this._checkLanguageDirection()},resetInputValue:function(){this.setInputValue(this.query)},getHint:function(){return this.$hint.val()},setHint:function(a){this.$hint.val(a)},clearHint:function(){this.setHint("")},clearHintIfInvalid:function(){var a,b,c,d;a=this.getInputValue(),b=this.getHint(),c=a!==b&&0===b.indexOf(a),d=""!==a&&c&&!this.hasOverflow(),!d&&this.clearHint()},hasFocus:function(){return this.$input.is(":focus")},hasOverflow:function(){var a=this.$input.width()-2;return this.$overflowHelper.text(this.getInputValue()),this.$overflowHelper.width()>=a},isCursorAtEnd:function(){var a,c,d;return a=this.$input.val().length,c=this.$input[0].selectionStart,b.isNumber(c)?c===a:document.selection?(d=document.selection.createRange(),d.moveStart("character",-a),a===d.text.length):!0},destroy:function(){this.$hint.off(".tt"),this.$input.off(".tt"),this.$overflowHelper.remove(),this.$hint=this.$input=this.$overflowHelper=a("<div>")}}),c}(),h=function(){"use strict";function c(c,e){c=c||{},c.templates=c.templates||{},c.templates.notFound=c.templates.notFound||c.templates.empty,c.source||a.error("missing source"),c.node||a.error("missing node"),c.name&&!h(c.name)&&a.error("invalid dataset name: "+c.name),e.mixin(this),this.highlight=!!c.highlight,this.name=c.name||j(),this.limit=c.limit||5,this.displayFn=d(c.display||c.displayKey),this.templates=g(c.templates,this.displayFn),this.source=c.source.__ttAdapter?c.source.__ttAdapter():c.source,this.async=b.isUndefined(c.async)?this.source.length>2:!!c.async,this._resetLastSuggestion(),this.$el=a(c.node).addClass(this.classes.dataset).addClass(this.classes.dataset+"-"+this.name)}function d(a){function c(b){return b[a]}return a=a||b.stringify,b.isFunction(a)?a:c}function g(c,d){function e(b){return a("<div>").text(d(b))}return{notFound:c.notFound&&b.templatify(c.notFound),pending:c.pending&&b.templatify(c.pending),header:c.header&&b.templatify(c.header),footer:c.footer&&b.templatify(c.footer),suggestion:c.suggestion||e}}function h(a){return/^[_a-zA-Z0-9-]+$/.test(a)}var i,j;return i={val:"tt-selectable-display",obj:"tt-selectable-object"},j=b.getIdGenerator(),c.extractData=function(b){var c=a(b);return c.data(i.obj)?{val:c.data(i.val)||"",obj:c.data(i.obj)||null}:null},b.mixin(c.prototype,e,{_overwrite:function(a,b){b=b||[],b.length?this._renderSuggestions(a,b):this.async&&this.templates.pending?this._renderPending(a):!this.async&&this.templates.notFound?this._renderNotFound(a):this._empty(),this.trigger("rendered",this.name,b,!1)},_append:function(a,b){b=b||[],b.length&&this.$lastSuggestion.length?this._appendSuggestions(a,b):b.length?this._renderSuggestions(a,b):!this.$lastSuggestion.length&&this.templates.notFound&&this._renderNotFound(a),this.trigger("rendered",this.name,b,!0)},_renderSuggestions:function(a,b){var c;c=this._getSuggestionsFragment(a,b),this.$lastSuggestion=c.children().last(),this.$el.html(c).prepend(this._getHeader(a,b)).append(this._getFooter(a,b))},_appendSuggestions:function(a,b){var c,d;c=this._getSuggestionsFragment(a,b),d=c.children().last(),this.$lastSuggestion.after(c),this.$lastSuggestion=d},_renderPending:function(a){var b=this.templates.pending;this._resetLastSuggestion(),b&&this.$el.html(b({query:a,dataset:this.name}))},_renderNotFound:function(a){var b=this.templates.notFound;this._resetLastSuggestion(),b&&this.$el.html(b({query:a,dataset:this.name}))},_empty:function(){this.$el.empty(),this._resetLastSuggestion()},_getSuggestionsFragment:function(c,d){var e,g=this;return e=document.createDocumentFragment(),b.each(d,function(b){var d,f;f=g._injectQuery(c,b),d=a(g.templates.suggestion(f)).data(i.obj,b).data(i.val,g.displayFn(b)).addClass(g.classes.suggestion+" "+g.classes.selectable),e.appendChild(d[0])}),this.highlight&&f({className:this.classes.highlight,node:e,pattern:c}),a(e)},_getFooter:function(a,b){return this.templates.footer?this.templates.footer({query:a,suggestions:b,dataset:this.name}):null},_getHeader:function(a,b){return this.templates.header?this.templates.header({query:a,suggestions:b,dataset:this.name}):null},_resetLastSuggestion:function(){this.$lastSuggestion=a()},_injectQuery:function(a,c){return b.isObject(c)?b.mixin({_query:a},c):c},update:function(b){function c(a){g||(g=!0,a=(a||[]).slice(0,e.limit),h=a.length,e._overwrite(b,a),h<e.limit&&e.async&&e.trigger("asyncRequested",b))}function d(c){c=c||[],!f&&h<e.limit&&(e.cancel=a.noop,h+=c.length,e._append(b,c.slice(0,e.limit-h)),e.async&&e.trigger("asyncReceived",b))}var e=this,f=!1,g=!1,h=0;this.cancel(),this.cancel=function(){f=!0,e.cancel=a.noop,e.async&&e.trigger("asyncCanceled",b)},this.source(b,c,d),!g&&c([])},cancel:a.noop,clear:function(){this._empty(),this.cancel(),this.trigger("cleared")},isEmpty:function(){return this.$el.is(":empty")},destroy:function(){this.$el=a("<div>")}}),c}(),i=function(){"use strict";function c(c,d){function e(b){var c=f.$node.find(b.node).first();return b.node=c.length?c:a("<div>").appendTo(f.$node),new h(b,d)}var f=this;c=c||{},c.node||a.error("node is required"),d.mixin(this),this.$node=a(c.node),this.query=null,this.datasets=b.map(c.datasets,e)}return b.mixin(c.prototype,e,{_onSelectableClick:function(b){this.trigger("selectableClicked",a(b.currentTarget))},_onRendered:function(a,b,c,d){this.$node.toggleClass(this.classes.empty,this._allDatasetsEmpty()),this.trigger("datasetRendered",b,c,d)},_onCleared:function(){this.$node.toggleClass(this.classes.empty,this._allDatasetsEmpty()),this.trigger("datasetCleared")},_propagate:function(){this.trigger.apply(this,arguments)},_allDatasetsEmpty:function(){function a(a){return a.isEmpty()}return b.every(this.datasets,a)},_getSelectables:function(){return this.$node.find(this.selectors.selectable)},_removeCursor:function(){var a=this.getActiveSelectable();a&&a.removeClass(this.classes.cursor)},_ensureVisible:function(a){var b,c,d,e;b=a.position().top,c=b+a.outerHeight(!0),d=this.$node.scrollTop(),e=this.$node.height()+parseInt(this.$node.css("paddingTop"),10)+parseInt(this.$node.css("paddingBottom"),10),0>b?this.$node.scrollTop(d+b):c>e&&this.$node.scrollTop(d+(c-e))},bind:function(){var a,c=this;return a=b.bind(this._onSelectableClick,this),this.$node.on("click.tt",this.selectors.selectable,a),b.each(this.datasets,function(a){a.onSync("asyncRequested",c._propagate,c).onSync("asyncCanceled",c._propagate,c).onSync("asyncReceived",c._propagate,c).onSync("rendered",c._onRendered,c).onSync("cleared",c._onCleared,c)}),this},isOpen:function(){return this.$node.hasClass(this.classes.open)},open:function(){this.$node.addClass(this.classes.open)},close:function(){this.$node.removeClass(this.classes.open),this._removeCursor()},setLanguageDirection:function(a){this.$node.attr("dir",a)},selectableRelativeToCursor:function(a){var b,c,d,e;return c=this.getActiveSelectable(),b=this._getSelectables(),d=c?b.index(c):-1,e=d+a,e=(e+1)%(b.length+1)-1,e=-1>e?b.length-1:e,-1===e?null:b.eq(e)},setCursor:function(a){this._removeCursor(),(a=a&&a.first())&&(a.addClass(this.classes.cursor),this._ensureVisible(a))},getSelectableData:function(a){return a&&a.length?h.extractData(a):null},getActiveSelectable:function(){var a=this._getSelectables().filter(this.selectors.cursor).first();return a.length?a:null},getTopSelectable:function(){var a=this._getSelectables().first();return a.length?a:null},update:function(a){function c(b){b.update(a)}var d=a!==this.query;return d&&(this.query=a,b.each(this.datasets,c)),d},empty:function(){function a(a){a.clear()}b.each(this.datasets,a),this.query=null,this.$node.addClass(this.classes.empty)},destroy:function(){function c(a){a.destroy()}this.$node.off(".tt"),this.$node=a("<div>"),b.each(this.datasets,c)}}),c}(),j=function(){"use strict";function a(){i.apply(this,[].slice.call(arguments,0))}var c=i.prototype;return b.mixin(a.prototype,i.prototype,{open:function(){return!this._allDatasetsEmpty()&&this._show(),c.open.apply(this,[].slice.call(arguments,0))},close:function(){return this._hide(),c.close.apply(this,[].slice.call(arguments,0))},_onRendered:function(){return this._allDatasetsEmpty()?this._hide():this.isOpen()&&this._show(),c._onRendered.apply(this,[].slice.call(arguments,0))},_onCleared:function(){return this._allDatasetsEmpty()?this._hide():this.isOpen()&&this._show(),c._onCleared.apply(this,[].slice.call(arguments,0))},setLanguageDirection:function(a){return this.$node.css("ltr"===a?this.css.ltr:this.css.rtl),c.setLanguageDirection.apply(this,[].slice.call(arguments,0))},_hide:function(){this.$node.hide()},_show:function(){this.$node.css("display","block")}}),a}(),k=function(){"use strict";function c(c,e){var f,g,h,i,j,k,l,m,n,o,p;c=c||{},c.input||a.error("missing input"),c.menu||a.error("missing menu"),c.eventBus||a.error("missing event bus"),e.mixin(this),this.eventBus=c.eventBus,this.minLength=b.isNumber(c.minLength)?c.minLength:1,this.input=c.input,this.menu=c.menu,this.enabled=!0,this.active=!1,this.input.hasFocus()&&this.activate(),this.dir=this.input.getLangDir(),this._hacks(),this.menu.bind().onSync("selectableClicked",this._onSelectableClicked,this).onSync("asyncRequested",this._onAsyncRequested,this).onSync("asyncCanceled",this._onAsyncCanceled,this).onSync("asyncReceived",this._onAsyncReceived,this).onSync("datasetRendered",this._onDatasetRendered,this).onSync("datasetCleared",this._onDatasetCleared,this),f=d(this,"activate","open","_onFocused"),g=d(this,"deactivate","_onBlurred"),h=d(this,"isActive","isOpen","_onEnterKeyed"),i=d(this,"isActive","isOpen","_onTabKeyed"),j=d(this,"isActive","_onEscKeyed"),k=d(this,"isActive","open","_onUpKeyed"),l=d(this,"isActive","open","_onDownKeyed"),m=d(this,"isActive","isOpen","_onLeftKeyed"),n=d(this,"isActive","isOpen","_onRightKeyed"),o=d(this,"_openIfActive","_onQueryChanged"),p=d(this,"_openIfActive","_onWhitespaceChanged"),this.input.bind().onSync("focused",f,this).onSync("blurred",g,this).onSync("enterKeyed",h,this).onSync("tabKeyed",i,this).onSync("escKeyed",j,this).onSync("upKeyed",k,this).onSync("downKeyed",l,this).onSync("leftKeyed",m,this).onSync("rightKeyed",n,this).onSync("queryChanged",o,this).onSync("whitespaceChanged",p,this).onSync("langDirChanged",this._onLangDirChanged,this)}function d(a){var c=[].slice.call(arguments,1);return function(){var d=[].slice.call(arguments);b.each(c,function(b){return a[b].apply(a,d)})}}return b.mixin(c.prototype,{_hacks:function(){var c,d;c=this.input.$input||a("<div>"),d=this.menu.$node||a("<div>"),c.on("blur.tt",function(a){var e,f,g;e=document.activeElement,f=d.is(e),g=d.has(e).length>0,b.isMsie()&&(f||g)&&(a.preventDefault(),a.stopImmediatePropagation(),b.defer(function(){c.focus()}))}),d.on("mousedown.tt",function(a){a.preventDefault()})},_onSelectableClicked:function(a,b){this.select(b)},_onDatasetCleared:function(){this._updateHint()},_onDatasetRendered:function(a,b,c,d){this._updateHint(),this.eventBus.trigger("render",c,d,b)},_onAsyncRequested:function(a,b,c){this.eventBus.trigger("asyncrequest",c,b)},_onAsyncCanceled:function(a,b,c){this.eventBus.trigger("asynccancel",c,b)},_onAsyncReceived:function(a,b,c){this.eventBus.trigger("asyncreceive",c,b)},_onFocused:function(){this._minLengthMet()&&this.menu.update(this.input.getQuery())},_onBlurred:function(){this.input.hasQueryChangedSinceLastFocus()&&this.eventBus.trigger("change",this.input.getQuery())},_onEnterKeyed:function(a,b){var c;(c=this.menu.getActiveSelectable())&&this.select(c)&&b.preventDefault()},_onTabKeyed:function(a,b){var c;(c=this.menu.getActiveSelectable())?this.select(c)&&b.preventDefault():(c=this.menu.getTopSelectable())&&this.autocomplete(c)&&b.preventDefault()},_onEscKeyed:function(){this.close()},_onUpKeyed:function(){this.moveCursor(-1)},_onDownKeyed:function(){this.moveCursor(1)},_onLeftKeyed:function(){"rtl"===this.dir&&this.input.isCursorAtEnd()&&this.autocomplete(this.menu.getTopSelectable())},_onRightKeyed:function(){"ltr"===this.dir&&this.input.isCursorAtEnd()&&this.autocomplete(this.menu.getTopSelectable())},_onQueryChanged:function(a,b){this._minLengthMet(b)?this.menu.update(b):this.menu.empty()},_onWhitespaceChanged:function(){this._updateHint()},_onLangDirChanged:function(a,b){this.dir!==b&&(this.dir=b,this.menu.setLanguageDirection(b))},_openIfActive:function(){this.isActive()&&this.open()},_minLengthMet:function(a){return a=b.isString(a)?a:this.input.getQuery()||"",a.length>=this.minLength},_updateHint:function(){var a,c,d,e,f,h,i;a=this.menu.getTopSelectable(),c=this.menu.getSelectableData(a),d=this.input.getInputValue(),!c||b.isBlankString(d)||this.input.hasOverflow()?this.input.clearHint():(e=g.normalizeQuery(d),f=b.escapeRegExChars(e),h=new RegExp("^(?:"+f+")(.+$)","i"),i=h.exec(c.val),i&&this.input.setHint(d+i[1]))},isEnabled:function(){return this.enabled},enable:function(){this.enabled=!0},disable:function(){this.enabled=!1},isActive:function(){return this.active},activate:function(){return this.isActive()?!0:!this.isEnabled()||this.eventBus.before("active")?!1:(this.active=!0,this.eventBus.trigger("active"),!0)},deactivate:function(){return this.isActive()?this.eventBus.before("idle")?!1:(this.active=!1,this.close(),this.eventBus.trigger("idle"),!0):!0},isOpen:function(){return this.menu.isOpen()},open:function(){return this.isOpen()||this.eventBus.before("open")||(this.menu.open(),this._updateHint(),this.eventBus.trigger("open")),this.isOpen()},close:function(){return this.isOpen()&&!this.eventBus.before("close")&&(this.menu.close(),this.input.clearHint(),this.input.resetInputValue(),this.eventBus.trigger("close")),!this.isOpen()},setVal:function(a){this.input.setQuery(b.toStr(a))},getVal:function(){return this.input.getQuery()},select:function(a){var b=this.menu.getSelectableData(a);return b&&!this.eventBus.before("select",b.obj)?(this.input.setQuery(b.val,!0),this.eventBus.trigger("select",b.obj),this.close(),!0):!1},autocomplete:function(a){var b,c,d;return b=this.input.getQuery(),c=this.menu.getSelectableData(a),d=c&&b!==c.val,d&&!this.eventBus.before("autocomplete",c.obj)?(this.input.setQuery(c.val),this.eventBus.trigger("autocomplete",c.obj),!0):!1},moveCursor:function(a){var b,c,d,e,f;return b=this.input.getQuery(),c=this.menu.selectableRelativeToCursor(a),d=this.menu.getSelectableData(c),e=d?d.obj:null,f=this._minLengthMet()&&this.menu.update(b),f||this.eventBus.before("cursorchange",e)?!1:(this.menu.setCursor(c),d?this.input.setInputValue(d.val):(this.input.resetInputValue(),this._updateHint()),this.eventBus.trigger("cursorchange",e),!0)},destroy:function(){this.input.destroy(),this.menu.destroy()}}),c}();!function(){"use strict";function e(b,c){b.each(function(){var b,d=a(this);(b=d.data(p.typeahead))&&c(b,d)})}function f(a,b){return a.clone().addClass(b.classes.hint).removeData().css(b.css.hint).css(l(a)).prop("readonly",!0).removeAttr("id name placeholder required").attr({autocomplete:"off",spellcheck:"false",tabindex:-1})}function h(a,b){a.data(p.attrs,{dir:a.attr("dir"),autocomplete:a.attr("autocomplete"),spellcheck:a.attr("spellcheck"),style:a.attr("style")}),a.addClass(b.classes.input).attr({autocomplete:"off",spellcheck:!1});try{!a.attr("dir")&&a.attr("dir","auto")}catch(c){}return a}function l(a){return{backgroundAttachment:a.css("background-attachment"),backgroundClip:a.css("background-clip"),backgroundColor:a.css("background-color"),backgroundImage:a.css("background-image"),backgroundOrigin:a.css("background-origin"),backgroundPosition:a.css("background-position"),backgroundRepeat:a.css("background-repeat"),backgroundSize:a.css("background-size")}}function m(a){var c,d;c=a.data(p.www),d=a.parent().filter(c.selectors.wrapper),b.each(a.data(p.attrs),function(c,d){b.isUndefined(c)?a.removeAttr(d):a.attr(d,c)}),a.removeData(p.typeahead).removeData(p.www).removeData(p.attr).removeClass(c.classes.input),d.length&&(a.detach().insertAfter(d),d.remove())}function n(c){var d,e;return d=b.isJQuery(c)||b.isElement(c),e=d?a(c).first():[],e.length?e:null}var o,p,q;o=a.fn.typeahead,p={www:"tt-www",attrs:"tt-attrs",typeahead:"tt-typeahead"},q={initialize:function(e,l){function m(){var c,m,q,r,s,t,u,v,w,x,y;b.each(l,function(a){a.highlight=!!e.highlight}),c=a(this),m=a(o.html.wrapper),q=n(e.hint),r=n(e.menu),s=e.hint!==!1&&!q,t=e.menu!==!1&&!r,s&&(q=f(c,o)),t&&(r=a(o.html.menu).css(o.css.menu)),q&&q.val(""),c=h(c,o),(s||t)&&(m.css(o.css.wrapper),c.css(s?o.css.input:o.css.inputWithNoHint),c.wrap(m).parent().prepend(s?q:null).append(t?r:null)),y=t?j:i,u=new d({el:c}),v=new g({hint:q,input:c},o),w=new y({node:r,datasets:l},o),x=new k({input:v,menu:w,eventBus:u,minLength:e.minLength},o),c.data(p.www,o),c.data(p.typeahead,x)}var o;return l=b.isArray(l)?l:[].slice.call(arguments,1),e=e||{},o=c(e.classNames),this.each(m)},isEnabled:function(){var a;return e(this.first(),function(b){a=b.isEnabled()}),a},enable:function(){return e(this,function(a){a.enable()}),this},disable:function(){return e(this,function(a){a.disable()}),this},isActive:function(){var a;return e(this.first(),function(b){a=b.isActive()}),a},activate:function(){return e(this,function(a){a.activate()}),this},deactivate:function(){return e(this,function(a){a.deactivate()}),this},isOpen:function(){var a;return e(this.first(),function(b){a=b.isOpen()}),a},open:function(){return e(this,function(a){a.open()}),this},close:function(){return e(this,function(a){a.close()}),this},select:function(b){var c=!1,d=a(b);return e(this.first(),function(a){c=a.select(d)}),c},autocomplete:function(b){var c=!1,d=a(b);return e(this.first(),function(a){c=a.autocomplete(d)}),c},moveCursor:function(a){var b=!1;return e(this.first(),function(c){b=c.moveCursor(a)}),b},val:function(a){var b;return arguments.length?(e(this,function(b){b.setVal(a)}),this):(e(this.first(),function(a){b=a.getVal()}),b)},destroy:function(){return e(this,function(a,b){m(b),a.destroy()}),this}},a.fn.typeahead=function(a){return q[a]?q[a].apply(this,[].slice.call(arguments,1)):q.initialize.apply(this,arguments)},a.fn.typeahead.noConflict=function(){return a.fn.typeahead=o,this}}()});
+/*
+ * jQuery OrgChart Plugin
+ * https://github.com/dabeng/OrgChart
+ *
+ * Demos of jQuery OrgChart Plugin
+ * http://dabeng.github.io/OrgChart/local-datasource/
+ * http://dabeng.github.io/OrgChart/ajax-datasource/
+ * http://dabeng.github.io/OrgChart/ondemand-loading-data/
+ * http://dabeng.github.io/OrgChart/option-createNode/
+ * http://dabeng.github.io/OrgChart/export-orgchart/
+ * http://dabeng.github.io/OrgChart/integrate-map/
+ *
+ * Copyright 2016, dabeng
+ * http://dabeng.github.io/
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+'use strict';
+
+(function(factory) {
+  if (typeof module === 'object' && typeof module.exports === 'object') {
+    factory(require('jquery'), window, document);
+  } else {
+    factory(jQuery, window, document);
+  }
+}(function($, window, document, undefined) {
+  $.fn.orgchart = function(options) {
+    var defaultOptions = {
+      'nodeTitle': 'name',
+      'nodeId': 'id',
+      'toggleSiblingsResp': false,
+      'depth': 999,
+      'chartClass': '',
+      'exportButton': false,
+      'exportFilename': 'OrgChart',
+      'parentNodeSymbol': 'fa-users',
+      'draggable': false,
+      'direction': 't2b',
+      'pan': false,
+      'zoom': false
+    };
+
+    switch (options) {
+      case 'buildHierarchy':
+        return buildHierarchy.apply(this, Array.prototype.splice.call(arguments, 1));
+      case 'addChildren':
+        return addChildren.apply(this, Array.prototype.splice.call(arguments, 1));
+      case 'addParent':
+        return addParent.apply(this, Array.prototype.splice.call(arguments, 1));
+      case 'addSiblings':
+        return addSiblings.apply(this, Array.prototype.splice.call(arguments, 1));
+      case 'removeNodes':
+        return removeNodes.apply(this, Array.prototype.splice.call(arguments, 1));
+      case 'getHierarchy':
+        return getHierarchy.apply(this, Array.prototype.splice.call(arguments, 1));
+      default: // initiation time
+        var opts = $.extend(defaultOptions, options);
+    }
+
+    // build the org-chart
+    var $chartContainer = this;
+    var data = opts.data;
+    var $chart = $('<div>', {
+      'data': { 'options': opts },
+      'class': 'orgchart' + (opts.chartClass !== '' ? ' ' + opts.chartClass : '') + (opts.direction !== 't2b' ? ' ' + opts.direction : ''),
+      'click': function(event) {
+        if (!$(event.target).closest('.node').length) {
+          $chart.find('.node.focused').removeClass('focused');
+        }
+      }
+    });
+    if ($.type(data) === 'object') {
+      if (data instanceof $) { // ul datasource
+        buildHierarchy($chart, buildJsonDS(data.children()), 0, opts);
+      } else { // local json datasource
+        buildHierarchy($chart, opts.ajaxURL ? data : attachRel(data, '00'), 0, opts);
+      }
+    } else {
+      $.ajax({
+        'url': data,
+        'dataType': 'json',
+        'beforeSend': function () {
+          $chart.append('<i class="fa fa-circle-o-notch fa-spin spinner"></i>');
+        }
+      })
+      .done(function(data, textStatus, jqXHR) {
+        buildHierarchy($chart, opts.ajaxURL ? data : attachRel(data, '00'), 0, opts);
+      })
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+      })
+      .always(function() {
+        $chart.children('.spinner').remove();
+      });
+    }
+    $chartContainer.append($chart);
+
+    // append the export button
+    if (opts.exportButton && !$chartContainer.find('.oc-export-btn').length) {
+      var $exportBtn = $('<button>', {
+        'class': 'oc-export-btn' + (opts.chartClass !== '' ? ' ' + opts.chartClass : ''),
+        'text': 'Export',
+        'click': function() {
+          if ($(this).children('.spinner').length) {
+            return false;
+          }
+          var $mask = $chartContainer.find('.mask');
+          if (!$mask.length) {
+            $chartContainer.append('<div class="mask"><i class="fa fa-circle-o-notch fa-spin spinner"></i></div>');
+          } else {
+            $mask.removeClass('hidden');
+          }
+          var sourceChart = $chartContainer.addClass('canvasContainer').find('.orgchart:visible').get(0);
+          var flag = opts.direction === 'l2r' || opts.direction === 'r2l';
+          html2canvas(sourceChart, {
+            'width': flag ? sourceChart.clientHeight : sourceChart.clientWidth,
+            'height': flag ? sourceChart.clientWidth : sourceChart.clientHeight,
+            'onclone': function(cloneDoc) {
+              $(cloneDoc).find('.canvasContainer').css('overflow', 'visible')
+                .find('.orgchart:visible:first').css('transform', '');
+            },
+            'onrendered': function(canvas) {
+              $chartContainer.find('.mask').addClass('hidden')
+                .end().find('.oc-download-btn').attr('href', canvas.toDataURL())[0].click();
+            }
+          })
+          .then(function() {
+            $chartContainer.removeClass('canvasContainer');
+          }, function() {
+            $chartContainer.removeClass('canvasContainer');
+          });
+        }
+      });
+      var downloadBtn = '<a class="oc-download-btn' + (opts.chartClass !== '' ? ' ' + opts.chartClass : '') + '"'
+        + ' download="' + opts.exportFilename + '.png"></a>';
+      $chartContainer.append($exportBtn).append(downloadBtn);
+    }
+
+    if (opts.pan) {
+      $chartContainer.css('overflow', 'hidden');
+      $chart.on('mousedown',function(e){
+        var $this = $(this);
+        if ($(e.target).closest('.node').length) {
+          $this.data('panning', false);
+          return;
+        } else {
+          $this.css('cursor', 'move').data('panning', true);
+        }
+        var lastX = 0;
+        var lastY = 0;
+        var lastTf = $this.css('transform');
+        if (lastTf !== 'none') {
+          var temp = lastTf.split(',');
+          if (lastTf.indexOf('3d') === -1) {
+            lastX = parseInt(temp[4]);
+            lastY = parseInt(temp[5]);
+          } else {
+            lastX = parseInt(temp[12]);
+            lastY = parseInt(temp[13]);
+          }
+        }
+        var startX = e.pageX - lastX;
+        var startY = e.pageY - lastY;
+
+        $(document).on('mousemove',function(ev) {
+          var newX = ev.pageX - startX;
+          var newY = ev.pageY - startY;
+          var lastTf = $this.css('transform');
+          if (lastTf === 'none') {
+            if (lastTf.indexOf('3d') === -1) {
+              $this.css('transform', 'matrix(1, 0, 0, 1, ' + newX + ', ' + newY + ')');
+            } else {
+              $this.css('transform', 'matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, ' + newX + ', ' + newY + ', 0, 1)');
+            }
+          } else {
+            var matrix = lastTf.split(',');
+            if (lastTf.indexOf('3d') === -1) {
+              matrix[4] = ' ' + newX;
+              matrix[5] = ' ' + newY + ')';
+            } else {
+              matrix[12] = ' ' + newX;
+              matrix[13] = ' ' + newY;
+            }
+            $this.css('transform', matrix.join(','));
+          }
+        });
+      });
+      $(document).on('mouseup',function() {
+        if ($chart.data('panning')) {
+          $chart.css('cursor', 'default');
+          $(this).off('mousemove');
+        }
+      });
+    }
+
+    if (opts.zoom) {
+      $chartContainer.on('wheel', function(event) {
+        event.preventDefault();
+        var lastTf = $chart.css('transform');
+        var newScale  = 1 + (event.originalEvent.deltaY > 0 ? -0.2 : 0.2);
+        if (lastTf === 'none') {
+          $chart.css('transform', 'scale(' + newScale + ',' + newScale + ')');
+        } else {
+          if (lastTf.indexOf('3d') === -1) {
+            $chart.css('transform', lastTf + ' scale(' + newScale + ',' + newScale + ')');
+          } else {
+            $chart.css('transform', lastTf + ' scale3d(' + newScale + ',' + newScale + ', 1)');
+          }
+        }
+      });
+    }
+
+    return $chartContainer;
+  };
+
+  function buildJsonDS($li) {
+    var subObj = {
+      'name': $li.contents().eq(0).text().trim(),
+      'relationship': ($li.parent().parent().is('li') ? '1': '0') + ($li.siblings('li').length ? 1: 0) + ($li.children('ul').length ? 1 : 0)
+    };
+    if ($li[0].id) {
+      subObj.id = $li[0].id;
+    }
+    $li.children('ul').children().each(function() {
+      if (!subObj.children) { subObj.children = []; }
+      subObj.children.push(buildJsonDS($(this)));
+    });
+    return subObj;
+  }
+
+  function attachRel(data, flags) {
+    data.relationship = flags + (data.children && data.children.length > 0 ? 1 : 0);
+    if (data.children) {
+      data.children.forEach(function(item) {
+        attachRel(item, '1' + (data.children.length > 1 ? 1 : 0));
+      });
+    }
+    return data;
+  }
+
+  function loopChart($chart) {
+    var $tr = $chart.find('tr:first');
+    var subObj = { 'id': $tr.find('.node')[0].id };
+    $tr.siblings(':last').children().each(function() {
+      if (!subObj.children) { subObj.children = []; }
+      subObj.children.push(loopChart($(this)));
+    });
+    return subObj;
+  }
+
+  function getHierarchy($chart) {
+    var $chart = $chart || $(this).find('.orgchart');
+    if (!$chart.find('.node:first')[0].id) {
+      return 'Error: Nodes of orghcart to be exported must have id attribute!';
+    }
+    return loopChart($chart);
+  }
+
+  // detect the exist/display state of related node
+  function getNodeState($node, relation) {
+    var $target = {};
+    if (relation === 'parent') {
+      $target = $node.closest('table').closest('tr').siblings(':first').find('.node');
+    } else if (relation === 'children') {
+      $target = $node.closest('tr').siblings();
+    } else {
+      $target = $node.closest('table').parent().siblings();
+    }
+    if ($target.length) {
+      if ($target.is(':visible')) {
+        return {"exist": true, "visible": true};
+      }
+      return {"exist": true, "visible": false};
+    }
+    return {"exist": false, "visible": false};
+  }
+
+  // recursively hide the ancestor node and sibling nodes of the specified node
+  function hideAncestorsSiblings($node) {
+    var $temp = $node.closest('table').closest('tr').siblings();
+    if ($temp.eq(0).find('.spinner').length) {
+      $node.closest('.orgchart').data('inAjax', false);
+    }
+    // hide the sibling nodes
+    if (getNodeState($node, 'siblings').visible) {
+      hideSiblings($node);
+    }
+    // hide the lines
+    var $lines = $temp.slice(1);
+    $lines.css('visibility', 'hidden');
+    // hide the superior nodes with transition
+    var $parent = $temp.eq(0).find('.node');
+    var grandfatherVisible = getNodeState($parent, 'parent').visible;
+    if ($parent.length && $parent.is(':visible')) {
+      $parent.addClass('slide slide-down').one('transitionend', function() {
+        $parent.removeClass('slide');
+        $lines.removeAttr('style');
+        $temp.addClass('hidden');
+      });
+    }
+    // if the current node has the parent node, hide it recursively
+    if ($parent.length && grandfatherVisible) {
+      hideAncestorsSiblings($parent);
+    }
+  }
+
+  // show the parent node of the specified node
+  function showParent($node) {
+    // just show only one superior level
+    var $temp = $node.closest('table').closest('tr').siblings().removeClass('hidden');
+    // just show only one line
+    $temp.eq(2).children().slice(1, -1).addClass('hidden');
+    // show parent node with animation
+    var parent = $temp.eq(0).find('.node')[0];
+    repaint(parent);
+    $(parent).addClass('slide').removeClass('slide-down').one('transitionend', function() {
+      $(parent).removeClass('slide');
+      if (isInAction($node)) {
+        switchVerticalArrow($node.children('.topEdge'));
+      }
+    });
+  }
+
+  // recursively hide the descendant nodes of the specified node
+  function hideDescendants($node) {
+    var $temp = $node.closest('tr').siblings();
+    if ($temp.last().find('.spinner').length) {
+      $node.closest('.orgchart').data('inAjax', false);
+    }
+    var $visibleNodes = $temp.last().find('.node:visible');
+    var isVerticalDesc = $temp.last().is('.verticalNodes') ? true : false;
+    if (!isVerticalDesc) {
+      var $lines = $visibleNodes.closest('table').closest('tr').prevAll('.lines').css('visibility', 'hidden');
+    }
+    $visibleNodes.addClass('slide slide-up').eq(0).one('transitionend', function() {
+      $visibleNodes.removeClass('slide');
+      if (isVerticalDesc) {
+        $temp.addClass('hidden');
+      } else {
+        $lines.removeAttr('style').addClass('hidden').siblings('.nodes').addClass('hidden');
+        $temp.last().find('.verticalNodes').addClass('hidden');
+      }
+      if (isInAction($node)) {
+        switchVerticalArrow($node.children('.bottomEdge'));
+      }
+    });
+  }
+
+  // show the children nodes of the specified node
+  function showDescendants($node) {
+    var $temp = $node.closest('tr').siblings();
+    var isVerticalDesc = $temp.is('.verticalNodes') ? true : false;
+    var $descendants = isVerticalDesc
+      ? $temp.removeClass('hidden').find('.node:visible')
+      : $temp.removeClass('hidden').eq(2).children().find('tr:first').find('.node:visible');
+    // the two following statements are used to enforce browser to repaint
+    repaint($descendants.get(0));
+    $descendants.addClass('slide').removeClass('slide-up').eq(0).one('transitionend', function() {
+      $descendants.removeClass('slide');
+      if (isInAction($node)) {
+        switchVerticalArrow($node.children('.bottomEdge'));
+      }
+    });
+  }
+
+  // hide the sibling nodes of the specified node
+  function hideSiblings($node, direction) {
+    var $nodeContainer = $node.closest('table').parent();
+    if ($nodeContainer.siblings().find('.spinner').length) {
+      $node.closest('.orgchart').data('inAjax', false);
+    }
+    if (direction) {
+      if (direction === 'left') {
+        $nodeContainer.prevAll().find('.node:visible').addClass('slide slide-right');
+      } else {
+        $nodeContainer.nextAll().find('.node:visible').addClass('slide slide-left');
+      }
+    } else {
+      $nodeContainer.prevAll().find('.node:visible').addClass('slide slide-right');
+      $nodeContainer.nextAll().find('.node:visible').addClass('slide slide-left');
+    }
+    var $animatedNodes = $nodeContainer.siblings().find('.slide');
+    var $lines = $animatedNodes.closest('.nodes').prevAll('.lines').css('visibility', 'hidden');
+    $animatedNodes.eq(0).one('transitionend', function() {
+      $lines.removeAttr('style');
+      var $siblings = direction ? (direction === 'left' ? $nodeContainer.prevAll(':not(.hidden)') : $nodeContainer.nextAll(':not(.hidden)')) : $nodeContainer.siblings();
+      $nodeContainer.closest('.nodes').prev().children(':not(.hidden)')
+        .slice(1, direction ? $siblings.length * 2 + 1 : -1).addClass('hidden');
+      $animatedNodes.removeClass('slide');
+      $siblings.find('.node:visible:gt(0)').removeClass('slide-left slide-right').addClass('slide-up')
+        .end().find('.lines, .nodes, .verticalNodes').addClass('hidden')
+        .end().addClass('hidden');
+
+      if (isInAction($node)) {
+        switchHorizontalArrow($node);
+      }
+    });
+  }
+
+  // show the sibling nodes of the specified node
+  function showSiblings($node, direction) {
+    // firstly, show the sibling td tags
+    var $siblings = $();
+    if (direction) {
+      if (direction === 'left') {
+        $siblings = $node.closest('table').parent().prevAll().removeClass('hidden');
+      } else {
+        $siblings = $node.closest('table').parent().nextAll().removeClass('hidden');
+      }
+    } else {
+      $siblings = $node.closest('table').parent().siblings().removeClass('hidden');
+    }
+    // secondly, show the lines
+    var $upperLevel = $node.closest('table').closest('tr').siblings();
+    if (direction) {
+      $upperLevel.eq(2).children('.hidden').slice(0, $siblings.length * 2).removeClass('hidden');
+    } else {
+      $upperLevel.eq(2).children('.hidden').removeClass('hidden');
+    }
+    // thirdly, do some cleaning stuff
+    if (!getNodeState($node, 'parent').visible) {
+      $upperLevel.removeClass('hidden');
+      var parent = $upperLevel.find('.node')[0];
+      repaint(parent);
+      $(parent).addClass('slide').removeClass('slide-down').one('transitionend', function() {
+        $(this).removeClass('slide');
+      });
+    }
+    // lastly, show the sibling nodes with animation
+    $siblings.find('.node:visible').addClass('slide').removeClass('slide-left slide-right').eq(-1).one('transitionend', function() {
+      $siblings.find('.node:visible').removeClass('slide');
+      if (isInAction($node)) {
+        switchHorizontalArrow($node);
+        $node.children('.topEdge').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+      }
+    });
+  }
+
+  // start up loading status for requesting new nodes
+  function startLoading($arrow, $node, options) {
+    var $chart = $node.closest('.orgchart');
+    if (typeof $chart.data('inAjax') !== 'undefined' && $chart.data('inAjax') === true) {
+      return false;
+    }
+
+    $arrow.addClass('hidden');
+    $node.append('<i class="fa fa-circle-o-notch fa-spin spinner"></i>');
+    $node.children().not('.spinner').css('opacity', 0.2);
+    $chart.data('inAjax', true);
+    $('.oc-export-btn' + (options.chartClass !== '' ? '.' + options.chartClass : '')).prop('disabled', true);
+    return true;
+  }
+
+  // terminate loading status for requesting new nodes
+  function endLoading($arrow, $node, options) {
+    var $chart = $node.closest('div.orgchart');
+    $arrow.removeClass('hidden');
+    $node.find('.spinner').remove();
+    $node.children().removeAttr('style');
+    $chart.data('inAjax', false);
+    $('.oc-export-btn' + (options.chartClass !== '' ? '.' + options.chartClass : '')).prop('disabled', false);
+  }
+
+  // whether the cursor is hovering over the node
+  function isInAction($node) {
+    return $node.children('.edge').attr('class').indexOf('fa-') > -1 ? true : false;
+  }
+
+  function switchVerticalArrow($arrow) {
+    $arrow.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
+  }
+
+  function switchHorizontalArrow($node) {
+    var opts = $node.closest('.orgchart').data('options');
+    if (opts.toggleSiblingsResp && (typeof opts.ajaxURL === 'undefined' || $node.closest('.nodes').data('siblingsLoaded'))) {
+      var $prevSib = $node.closest('table').parent().prev();
+      if ($prevSib.length) {
+        if ($prevSib.is('.hidden')) {
+          $node.children('.leftEdge').addClass('fa-chevron-left').removeClass('fa-chevron-right');
+        } else {
+          $node.children('.leftEdge').addClass('fa-chevron-right').removeClass('fa-chevron-left');
+        }
+      }
+      var $nextSib = $node.closest('table').parent().next();
+      if ($nextSib.length) {
+        if ($nextSib.is('.hidden')) {
+          $node.children('.rightEdge').addClass('fa-chevron-right').removeClass('fa-chevron-left');
+        } else {
+          $node.children('.rightEdge').addClass('fa-chevron-left').removeClass('fa-chevron-right');
+        }
+      }
+    } else {
+      var $sibs = $node.closest('table').parent().siblings();
+      var sibsVisible = $sibs.length ? !$sibs.is('.hidden') : false;
+      $node.children('.leftEdge').toggleClass('fa-chevron-right', sibsVisible).toggleClass('fa-chevron-left', !sibsVisible);
+      $node.children('.rightEdge').toggleClass('fa-chevron-left', sibsVisible).toggleClass('fa-chevron-right', !sibsVisible);
+    }
+  }
+
+  function repaint(node) {
+    node.style.offsetWidth = node.offsetWidth;
+  }
+
+  // create node
+  function createNode(nodeData, level, opts) {
+    var dtd = $.Deferred();
+    // construct the content of node
+    var $nodeDiv = $('<div' + (opts.draggable ? ' draggable="true"' : '') + (nodeData[opts.nodeId] ? ' id="' + nodeData[opts.nodeId] + '"' : '') + '>')
+      .addClass('node ' + (nodeData.className || '') +  (level >= opts.depth ? ' slide-up' : ''))
+      .append('<div class="title">' + nodeData[opts.nodeTitle] + '</div>')
+      .append(typeof opts.nodeContent !== 'undefined' ? '<div class="content">' + (nodeData[opts.nodeContent] || '') + '</div>' : '');
+    // append 4 direction arrows or expand/collapse buttons
+    var flags = nodeData.relationship || '';
+    if (opts.verticalDepth && (level + 2) > opts.verticalDepth) {
+      if ((level + 1) >= opts.verticalDepth && Number(flags.substr(2,1))) {
+        $nodeDiv.append('<i class="toggleBtn fa fa-minus-square"></i>');
+      }
+    } else {
+      if (Number(flags.substr(0,1))) {
+        $nodeDiv.append('<i class="edge verticalEdge topEdge fa"></i>');
+      }
+      if(Number(flags.substr(1,1))) {
+        $nodeDiv.append('<i class="edge horizontalEdge rightEdge fa"></i>' +
+          '<i class="edge horizontalEdge leftEdge fa"></i>');
+      }
+      if(Number(flags.substr(2,1))) {
+        $nodeDiv.append('<i class="edge verticalEdge bottomEdge fa"></i>')
+          .children('.title').prepend('<i class="fa '+ opts.parentNodeSymbol + ' symbol"></i>');
+      }
+    }
+
+    $nodeDiv.on('mouseenter mouseleave', function(event) {
+      var $node = $(this), flag = false;
+      var $topEdge = $node.children('.topEdge');
+      var $rightEdge = $node.children('.rightEdge');
+      var $bottomEdge = $node.children('.bottomEdge');
+      var $leftEdge = $node.children('.leftEdge');
+      if (event.type === 'mouseenter') {
+        if ($topEdge.length) {
+          flag = getNodeState($node, 'parent').visible;
+          $topEdge.toggleClass('fa-chevron-up', !flag).toggleClass('fa-chevron-down', flag);
+        }
+        if ($bottomEdge.length) {
+          flag = getNodeState($node, 'children').visible;
+          $bottomEdge.toggleClass('fa-chevron-down', !flag).toggleClass('fa-chevron-up', flag);
+        }
+        if ($leftEdge.length) {
+          switchHorizontalArrow($node);
+        }
+      } else {
+        $node.children('.edge').removeClass('fa-chevron-up fa-chevron-down fa-chevron-right fa-chevron-left');
+      }
+    });
+
+    // define click event handler
+    $nodeDiv.on('click', function(event) {
+      $(this).closest('.orgchart').find('.focused').removeClass('focused');
+      $(this).addClass('focused');
+    });
+
+    // define click event handler for the top edge
+    $nodeDiv.on('click', '.topEdge', function(event) {
+      var $that = $(this);
+      var $node = $that.parent();
+      var parentState = getNodeState($node, 'parent');
+      if (parentState.exist) {
+        var $parent = $node.closest('table').closest('tr').siblings(':first').find('.node');
+        if ($parent.is('.slide')) { return; }
+        // hide the ancestor nodes and sibling nodes of the specified node
+        if (parentState.visible) {
+          hideAncestorsSiblings($node);
+          $parent.one('transitionend', function() {
+            if (isInAction($node)) {
+              switchVerticalArrow($that);
+              switchHorizontalArrow($node);
+            }
+          });
+        } else { // show the ancestors and siblings
+          showParent($node);
+        }
+      } else {
+        // load the new parent node of the specified node by ajax request
+        var nodeId = $that.parent()[0].id;
+        // start up loading status
+        if (startLoading($that, $node, opts)) {
+        // load new nodes
+          $.ajax({ 'url': opts.ajaxURL.parent + nodeId + '/', 'dataType': 'json' })
+          .done(function(data) {
+            if ($node.closest('.orgchart').data('inAjax')) {
+              if (!$.isEmptyObject(data)) {
+                addParent.call($node.closest('.orgchart').parent(), $node, data, opts);
+              }
+            }
+          })
+          .fail(function() { console.log('Failed to get parent node data'); })
+          .always(function() { endLoading($that, $node, opts); });
+        }
+      }
+    });
+
+    // bind click event handler for the bottom edge
+    $nodeDiv.on('click', '.bottomEdge', function(event) {
+      var $that = $(this);
+      var $node = $that.parent();
+      var childrenState = getNodeState($node, 'children');
+      if (childrenState.exist) {
+        var $children = $node.closest('tr').siblings(':last');
+        if ($children.find('.node:visible').is('.slide')) { return; }
+        // hide the descendant nodes of the specified node
+        if (childrenState.visible) {
+          hideDescendants($node);
+        } else { // show the descendants
+          showDescendants($node);
+        }
+      } else { // load the new children nodes of the specified node by ajax request
+        var nodeId = $that.parent()[0].id;
+        if (startLoading($that, $node, opts)) {
+          $.ajax({ 'url': opts.ajaxURL.children + nodeId + '/', 'dataType': 'json' })
+          .done(function(data, textStatus, jqXHR) {
+            if ($node.closest('.orgchart').data('inAjax')) {
+              if (data.children.length) {
+                addChildren($node, data, $.extend({}, opts, { depth: 0 }));
+              }
+            }
+          })
+          .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log('Failed to get children nodes data');
+          })
+          .always(function() {
+            endLoading($that, $node, opts);
+          });
+        }
+      }
+    });
+
+    // event handler for toggle buttons in Hybrid(horizontal + vertical) OrgChart
+    $nodeDiv.on('click', '.toggleBtn', function(event) {
+      var $this = $(this);
+      var $descWrapper = $this.parent().next();
+      var $descendants = $descWrapper.find('.node');
+      var $children = $descWrapper.children().children('.node');
+      if ($children.is('.slide')) { return; }
+      $this.toggleClass('fa-plus-square fa-minus-square');
+      if ($descendants.eq(0).is('.slide-up')) {
+        $descWrapper.removeClass('hidden');
+        repaint($children.get(0));
+        $children.addClass('slide').removeClass('slide-up').eq(0).one('transitionend', function() {
+          $children.removeClass('slide');
+        });
+      } else {
+        $descendants.addClass('slide slide-up').eq(0).one('transitionend', function() {
+          $descendants.removeClass('slide');
+          // $descWrapper.addClass('hidden');
+          $descendants.closest('ul').addClass('hidden');
+        }).find('.toggleBtn').removeClass('fa-minus-square').addClass('fa-plus-square');
+      }
+    });
+
+    // bind click event handler for the left and right edges
+    $nodeDiv.on('click', '.leftEdge, .rightEdge', function(event) {
+      var $that = $(this);
+      var $node = $that.parent();
+      var siblingsState = getNodeState($node, 'siblings');
+      if (siblingsState.exist) {
+        var $siblings = $node.closest('table').parent().siblings();
+        if ($siblings.find('.node:visible').is('.slide')) { return; }
+        if (opts.toggleSiblingsResp) {
+          var $prevSib = $node.closest('table').parent().prev();
+          var $nextSib = $node.closest('table').parent().next();
+          if ($that.is('.leftEdge')) {
+            if ($prevSib.is('.hidden')) {
+              showSiblings($node, 'left');
+            } else {
+              hideSiblings($node, 'left');
+            }
+          } else {
+            if ($nextSib.is('.hidden')) {
+              showSiblings($node, 'right');
+            } else {
+              hideSiblings($node, 'right');
+            }
+          }
+        } else {
+          if (siblingsState.visible) {
+            hideSiblings($node);
+          } else {
+            showSiblings($node);
+          }
+        }
+      } else {
+        // load the new sibling nodes of the specified node by ajax request
+        var nodeId = $that.parent()[0].id;
+        var url = (getNodeState($node, 'parent').exist) ? opts.ajaxURL.siblings : opts.ajaxURL.families;
+        if (startLoading($that, $node, opts)) {
+          $.ajax({ 'url': url + nodeId + '/', 'dataType': 'json' })
+          .done(function(data, textStatus, jqXHR) {
+            if ($node.closest('.orgchart').data('inAjax')) {
+              if (data.siblings || data.children) {
+                addSiblings($node, data, opts);
+              }
+            }
+          })
+          .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log('Failed to get sibling nodes data');
+          })
+          .always(function() {
+            endLoading($that, $node, opts);
+          });
+        }
+      }
+    });
+    if (opts.draggable) {
+      $nodeDiv.on('dragstart', function(event) {
+        if (/firefox/.test(window.navigator.userAgent.toLowerCase())) {
+          event.originalEvent.dataTransfer.setData('text/html', 'hack for firefox');
+        }
+        var $dragged = $(this);
+        var $dragZone = $dragged.closest('.nodes').siblings().eq(0).find('.node:first');
+        var $dragHier = $dragged.closest('table').find('.node');
+        $dragged.closest('.orgchart')
+          .data('dragged', $dragged)
+          .find('.node').each(function(index, node) {
+            if ($dragHier.index(node) === -1) {
+              if (opts.dropCriteria) {
+                if (opts.dropCriteria($dragged, $dragZone, $(node))) {
+                  $(node).addClass('allowedDrop');
+                }
+              } else {
+                $(node).addClass('allowedDrop');
+              }
+            }
+          });
+      })
+      .on('dragover', function(event) {
+        event.preventDefault();
+        var $dropZone = $(this);
+        var $dragged = $dropZone.closest('.orgchart').data('dragged');
+        var $dragZone = $dragged.closest('.nodes').siblings().eq(0).find('.node:first');
+        if ($dragged.closest('table').find('.node').index($dropZone) > -1 ||
+          (opts.dropCriteria && !opts.dropCriteria($dragged, $dragZone, $dropZone))) {
+          event.originalEvent.dataTransfer.dropEffect = 'none';
+        }
+      })
+      .on('dragend', function(event) {
+        $(this).closest('.orgchart').find('.allowedDrop').removeClass('allowedDrop');
+      })
+      .on('drop', function(event) {
+        var $dropZone = $(this);
+        var $orgchart = $dropZone.closest('.orgchart');
+        var $dragged = $orgchart.data('dragged');
+        $orgchart.find('.allowedDrop').removeClass('allowedDrop');
+        var $dragZone = $dragged.closest('.nodes').siblings().eq(0).children();
+        // firstly, deal with the hierarchy of drop zone
+        if (!$dropZone.closest('tr').siblings().length) { // if the drop zone is a leaf node
+          $dropZone.append('<i class="edge verticalEdge bottomEdge fa"></i>')
+            .parent().attr('colspan', 2)
+            .parent().after('<tr class="lines"><td colspan="2"><div class="down"></div></td></tr>'
+            + '<tr class="lines"><td class="right">&nbsp;</td><td class="left">&nbsp;</td></tr>'
+            + '<tr class="nodes"></tr>')
+            .siblings(':last').append($dragged.find('.horizontalEdge').remove().end().closest('table').parent());
+        } else {
+          var dropColspan = parseInt($dropZone.parent().attr('colspan')) + 2;
+          var horizontalEdges = '<i class="edge horizontalEdge rightEdge fa"></i><i class="edge horizontalEdge leftEdge fa"></i>';
+          $dropZone.closest('tr').next().addBack().children().attr('colspan', dropColspan);
+          if (!$dragged.find('.horizontalEdge').length) {
+            $dragged.append(horizontalEdges);
+          }
+          $dropZone.closest('tr').siblings().eq(1).children(':last').before('<td class="left top">&nbsp;</td><td class="right top">&nbsp;</td>')
+            .end().next().append($dragged.closest('table').parent());
+          var $dropSibs = $dragged.closest('table').parent().siblings().find('.node:first');
+          if ($dropSibs.length === 1) {
+            $dropSibs.append(horizontalEdges);
+          }
+        }
+        // secondly, deal with the hierarchy of dragged node
+        var dragColspan = parseInt($dragZone.attr('colspan'));
+        if (dragColspan > 2) {
+          $dragZone.attr('colspan', dragColspan - 2)
+            .parent().next().children().attr('colspan', dragColspan - 2)
+            .end().next().children().slice(1, 3).remove();
+          var $dragSibs = $dragZone.parent().siblings('.nodes').children().find('.node:first');
+          if ($dragSibs.length ===1) {
+            $dragSibs.find('.horizontalEdge').remove();
+          }
+        } else {
+          $dragZone.removeAttr('colspan')
+            .find('.bottomEdge').remove()
+            .end().end().siblings().remove();
+        }
+        $orgchart.triggerHandler({ 'type': 'nodedropped.orgchart', 'draggedNode': $dragged, 'dragZone': $dragZone.children(), 'dropZone': $dropZone });
+      });
+    }
+    // allow user to append dom modification after finishing node create of orgchart 
+    if (opts.createNode) {
+      opts.createNode($nodeDiv, nodeData);
+    }
+    dtd.resolve($nodeDiv);
+    return dtd.promise();
+  }
+  // recursively build the tree
+  function buildHierarchy ($appendTo, nodeData, level, opts, callback) {
+    var $nodeWrapper;
+    // Construct the node
+    var $childNodes = nodeData.children;
+    var hasChildren = $childNodes ? $childNodes.length : false;
+    var isVerticalNode = (opts.verticalDepth && (level + 1) >= opts.verticalDepth) ? true : false;
+    if (Object.keys(nodeData).length > 1) { // if nodeData has nested structure
+      $nodeWrapper = isVerticalNode ? $appendTo : $('<table>');
+      if (!isVerticalNode) {
+        $appendTo.append($nodeWrapper);
+      }
+      $.when(createNode(nodeData, level, opts))
+      .done(function($nodeDiv) {
+        if (isVerticalNode) {
+          $nodeWrapper.append($nodeDiv);
+        }else {
+          $nodeWrapper.append($nodeDiv.wrap('<tr><td' + (hasChildren ? ' colspan="' + $childNodes.length * 2 + '"' : '') + '></td></tr>').closest('tr'));
+        }
+        if (callback) {
+          callback();
+        }
+      })
+      .fail(function() {
+        console.log('Failed to creat node')
+      });
+    }
+    // Construct the inferior nodes and connectiong lines
+    if (hasChildren) {
+      if (Object.keys(nodeData).length === 1) { // if nodeData is just an array
+        $nodeWrapper = $appendTo;
+      }
+      var isHidden = level + 1 >= opts.depth ? ' hidden' : '';
+      var isVerticalLayer = (opts.verticalDepth && (level + 2) >= opts.verticalDepth) ? true : false;
+
+      // draw the line close to parent node
+      if (!isVerticalLayer) {
+        $nodeWrapper.append('<tr class="lines' + isHidden + '"><td colspan="' + $childNodes.length * 2 + '"><div class="down"></div></td></tr>');
+      }
+      // draw the lines close to children nodes
+      var lineLayer = '<tr class="lines' + isHidden + '"><td class="right">&nbsp;</td>';
+      for (var i=1; i<$childNodes.length; i++) {
+        lineLayer += '<td class="left top">&nbsp;</td><td class="right top">&nbsp;</td>';
+      }
+      lineLayer += '<td class="left">&nbsp;</td></tr>';
+      var $nodeLayer;
+      if (isVerticalLayer) {
+        $nodeLayer = $('<ul>');
+        if (level + 2 === opts.verticalDepth) {
+          $nodeWrapper.append('<tr class="verticalNodes"><td></td></tr>')
+            .find('.verticalNodes').children().append($nodeLayer);
+        } else {
+          $nodeWrapper.append($nodeLayer);
+        }
+      } else {
+        $nodeLayer = $('<tr class="nodes' + isHidden + '">');
+        $nodeWrapper.append(lineLayer).append($nodeLayer);
+      }
+      // recurse through children nodes
+      $.each($childNodes, function() {
+        var $nodeCell = isVerticalLayer ? $('<li>') : $('<td colspan="2">');
+        $nodeLayer.append($nodeCell);
+        buildHierarchy($nodeCell, this, level + 1, opts, callback);
+      });
+    }
+  }
+
+  // build the child nodes of specific node
+  function buildChildNode ($appendTo, nodeData, opts, callback) {
+    var opts = opts || $appendTo.closest('.orgchart').data('options');
+    var data = nodeData.children || nodeData.siblings;
+    $appendTo.find('td:first').attr('colspan', data.length * 2);
+    buildHierarchy($appendTo, { 'children': data }, 0, opts, callback);
+  }
+  // exposed method
+  function addChildren($node, data, opts) {
+    var count = 0;
+    buildChildNode.call($node.closest('.orgchart').parent(), $node.closest('table'), data, opts, function() {
+      if (++count === data.children.length) {
+        if (!$node.children('.bottomEdge').length) {
+          $node.append('<i class="edge verticalEdge bottomEdge fa"></i>');
+        }
+        if (!$node.find('.symbol').length) {
+          $node.children('.title').prepend('<i class="fa '+ opts.parentNodeSymbol + ' symbol"></i>');
+        }
+        showDescendants($node);
+      }
+    });
+  }
+
+  // build the parent node of specific node
+  function buildParentNode($currentRoot, nodeData, opts, callback) {
+    var that = this;
+    var $table = $('<table>');
+    nodeData.relationship = '001';
+    $.when(createNode(nodeData, 0, opts || $currentRoot.closest('.orgchart').data('options')))
+      .done(function($nodeDiv) {
+        $table.append($nodeDiv.removeClass('slide-up').addClass('slide-down').wrap('<tr class="hidden"><td colspan="2"></td></tr>').closest('tr'));
+        $table.append('<tr class="lines hidden"><td colspan="2"><div class="down"></div></td></tr>');
+        var linesRow = '<td class="right">&nbsp;</td><td class="left">&nbsp;</td>';
+        $table.append('<tr class="lines hidden">' + linesRow + '</tr>');
+        var $oc = that.children('.orgchart');
+        $oc.prepend($table)
+          .children('table:first').append('<tr class="nodes"><td colspan="2"></td></tr>')
+          .children('tr:last').children().append($oc.children('table').last());
+        callback();
+      })
+      .fail(function() {
+        console.log('Failed to create parent node');
+      });
+  }
+
+  // exposed method
+  function addParent($currentRoot, data, opts) {
+    buildParentNode.call(this, $currentRoot, data, opts, function() {
+      if (!$currentRoot.children('.topEdge').length) {
+        $currentRoot.children('.title').after('<i class="edge verticalEdge topEdge fa"></i>');
+      }
+      showParent($currentRoot);
+    });
+  }
+
+  // subsequent processing of build sibling nodes
+  function complementLine($oneSibling, siblingCount, existingSibligCount) {
+    var lines = '';
+    for (var i = 0; i < existingSibligCount; i++) {
+      lines += '<td class="left top">&nbsp;</td><td class="right top">&nbsp;</td>';
+    }
+    $oneSibling.parent().prevAll('tr:gt(0)').children().attr('colspan', siblingCount * 2)
+      .end().next().children(':first').after(lines);
+  }
+
+  // build the sibling nodes of specific node
+  function buildSiblingNode($nodeChart, nodeData, opts, callback) {
+    var opts = opts || $nodeChart.closest('.orgchart').data('options');
+    var newSiblingCount = nodeData.siblings ? nodeData.siblings.length : nodeData.children.length;
+    var existingSibligCount = $nodeChart.parent().is('td') ? $nodeChart.closest('tr').children().length : 1;
+    var siblingCount = existingSibligCount + newSiblingCount;
+    var insertPostion = (siblingCount > 1) ? Math.floor(siblingCount/2 - 1) : 0;
+    // just build the sibling nodes for the specific node
+    if ($nodeChart.parent().is('td')) {
+      var $parent = $nodeChart.closest('tr').prevAll('tr:last');
+      $nodeChart.closest('tr').prevAll('tr:lt(2)').remove();
+      var childCount = 0;
+      buildChildNode.call($nodeChart.closest('.orgchart').parent(),$nodeChart.parent().closest('table'), nodeData, opts, function() {
+        if (++childCount === newSiblingCount) {
+          var $siblingTds = $nodeChart.parent().closest('table').children('tr:last').children('td');
+          if (existingSibligCount > 1) {
+            complementLine($siblingTds.eq(0).before($nodeChart.closest('td').siblings().addBack().unwrap()), siblingCount, existingSibligCount);
+            $siblingTds.addClass('hidden').find('.node').addClass('slide-left');
+          } else {
+            complementLine($siblingTds.eq(insertPostion).after($nodeChart.closest('td').unwrap()), siblingCount, 1);
+            $siblingTds.not(':eq(' + insertPostion + 1 + ')').addClass('hidden')
+              .slice(0, insertPostion).find('.node').addClass('slide-right')
+              .end().end().slice(insertPostion).find('.node').addClass('slide-left');
+          }
+          callback();
+        }
+      });
+    } else { // build the sibling nodes and parent node for the specific ndoe
+      var nodeCount = 0;
+      buildHierarchy($nodeChart.closest('.orgchart'), nodeData, 0, opts, function() {
+        if (++nodeCount === siblingCount) {
+          complementLine($nodeChart.next().children('tr:last')
+            .children().eq(insertPostion).after($('<td colspan="2">')
+            .append($nodeChart)), siblingCount, 1);
+          $nodeChart.closest('tr').siblings().eq(0).addClass('hidden').find('.node').addClass('slide-down');
+          $nodeChart.parent().siblings().addClass('hidden')
+            .slice(0, insertPostion).find('.node').addClass('slide-right')
+            .end().end().slice(insertPostion).find('.node').addClass('slide-left');
+          callback();
+        }
+      });
+    }
+  }
+
+  function addSiblings($node, data, opts) {
+    buildSiblingNode.call($node.closest('.orgchart').parent(), $node.closest('table'), data, opts, function() {
+      $node.closest('.nodes').data('siblingsLoaded', true);
+      if (!$node.children('.leftEdge').length) {
+        $node.children('.topEdge').after('<i class="edge horizontalEdge rightEdge fa"></i><i class="edge horizontalEdge leftEdge fa"></i>');
+      }
+      showSiblings($node);
+    });
+  }
+
+  function removeNodes($node) {
+    var $parent = $node.closest('table').parent();
+    var $sibs = $parent.parent().siblings();
+    if ($parent.is('td')) {
+      if (getNodeState($node, 'siblings').exist) {
+        $sibs.eq(2).children('.top:lt(2)').remove();
+        $sibs.eq(':lt(2)').children().attr('colspan', $sibs.eq(2).children().length);
+        $parent.remove();
+      } else {
+        $sibs.eq(0).children().removeAttr('colspan')
+          .find('.bottomEdge').remove()
+          .end().end().siblings().remove();
+      }
+    } else {
+      $parent.add($parent.siblings()).remove();
+    }
+  }
+
+}));
+
 //# sourceMappingURL=vendor.js.map

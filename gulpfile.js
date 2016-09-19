@@ -19,6 +19,7 @@ var paths = {
     'bootstrap': './node_modules/bootstrap-sass/',
     'fontawesome': './node_modules/font-awesome/',
     'typeahead': './node_modules/typeahead.js/',
+    'orgchart': './node_modules/orgchart/'
 }
 
 elixir(mix => {
@@ -26,19 +27,30 @@ elixir(mix => {
         'app.scss',
         'variables.scss'
     ])
-    .webpack('app.js')
+    .styles(
+        [
+            paths.jqueryui + 'themes/base',
+            paths.orgchart + 'dist/css',
+        ]
+    )
+    .webpack('vue.js')
     .scripts(
         [
             paths.jquery + 'dist/jquery.min.js',
-            paths.jqueryui + 'external/requirejs/require.js',
             paths.jqueryui + 'ui',
             paths.bootstrap + 'assets/javascripts/bootstrap.min.js',
             paths.typeahead + 'dist/typeahead.jquery.min.js',
-            paths.fontawesome
+            paths.orgchart + '/dist/js/jquery.orgchart.js',
         ],
         'public/js/vendor.js'
     )
+    .scripts(
+        [
+            'app'
+        ],
+        'public/js/app.js'
+    )
     .copy(paths.bootstrap + 'assets/fonts/bootstrap', 'public/fonts/bootstrap')
-    .copy(paths.jqueryui + 'themes/base/images', 'public/css/images');
-    //.copy(paths.fontawesome + 'fonts', 'public/fonts');
+    .copy(paths.jqueryui + 'themes/base/images', 'public/css/images')
+    .copy(paths.fontawesome + 'fonts', 'public/fonts');
 });

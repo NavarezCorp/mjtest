@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/mjtest-staging":{"type":null,"mount_options":[],"guestpath":"/home/vagrant/mjtest-staging","hostpath":"/home/greywolf/working/mjtest-staging","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/greywolf/working/mjtest-staging","disabled":false,"__vagrantfile":true}}}
