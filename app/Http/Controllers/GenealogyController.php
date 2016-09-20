@@ -104,20 +104,29 @@ class GenealogyController extends Controller
         $children = null;
         
         $res_parent = DB::table('ibos')
-            ->select('id', 'firstname', 'middlename', 'lastname')
+            ->select('id', 'firstname', 'middlename', 'lastname', 'placement_position')
             ->where('id', $id)
             ->first();
         
         $res_children = DB::table('ibos')
-            ->select('id', 'firstname', 'middlename', 'lastname')
+            ->select('id', 'firstname', 'middlename', 'lastname', 'placement_position')
             ->where('placement_id', $res_parent->id)
             ->get();
         
         foreach($res_children as $value){
-            $children[] = [
-                'name'=>$value->id,
-                'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
-            ];
+            if($value->placement_position == 'L'){
+                $children[] = [
+                    'name'=>$value->id,
+                    'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                ];
+            }
+            
+            if($value->placement_position == 'R'){
+                $children[] = [
+                    'name'=>$value->id,
+                    'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                ];
+            }
         }
         
         $data = [
@@ -133,15 +142,24 @@ class GenealogyController extends Controller
         $data = null;
         
         $res_children = DB::table('ibos')
-            ->select('id', 'firstname', 'middlename', 'lastname')
+            ->select('id', 'firstname', 'middlename', 'lastname', 'placement_position')
             ->where('placement_id', $id)
             ->get();
         
         foreach($res_children as $value){
-            $data[] = [
-                'name'=>$value->id,
-                'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
-            ];
+            if($value->placement_position == 'L'){
+                $data[] = [
+                    'name'=>$value->id,
+                    'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                ];
+            }
+            
+            if($value->placement_position == 'R'){
+                $data[] = [
+                    'name'=>$value->id,
+                    'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                ];
+            }
         }
         
         return $data;
