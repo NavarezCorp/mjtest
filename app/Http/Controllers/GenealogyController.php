@@ -110,7 +110,7 @@ class GenealogyController extends Controller
         
         $res_children = DB::table('ibos')
             ->select('id', 'firstname', 'middlename', 'lastname')
-            ->where('sponsor_id', $res_parent->id)
+            ->where('placement_id', $res_parent->id)
             ->get();
         
         foreach($res_children as $value){
@@ -134,7 +134,7 @@ class GenealogyController extends Controller
         
         $res_children = DB::table('ibos')
             ->select('id', 'firstname', 'middlename', 'lastname')
-            ->where('sponsor_id', $id)
+            ->where('placement_id', $id)
             ->get();
         
         foreach($res_children as $value){
