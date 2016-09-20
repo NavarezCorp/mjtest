@@ -26,11 +26,11 @@
                         </div>
                         
                         <div class="form-group{{ $errors->has('package_type_id') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Package Type ID</label>
+                            <label class="col-md-4 control-label">Package Type</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="package_type_id" value="{{ old('package_type_id') }}">
-
+                                {{ Form::select('package_type_id', $data['package_types'], null, ['class'=>'form-control']) }}
+                                
                                 @if ($errors->has('package_type_id'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('package_type_id') }}</strong>
@@ -43,25 +43,11 @@
                             <label class="col-md-4 control-label">Created By</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="created_by" value="{{ old('created_by') }}">
-
+                                {{ Form::select('created_by', $data['users'], null, ['class'=>'form-control']) }}
+                                
                                 @if ($errors->has('created_by'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('created_by') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        
-                        <div class="form-group{{ $errors->has('is_used') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Is Used</label>
-
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" name="is_used" value="{{ old('is_used') }}">
-
-                                @if ($errors->has('is_used'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('is_used') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -82,7 +68,7 @@
                         </div>
                         
                         <div class="form-group{{ $errors->has('used_by_ibo_id') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Used By</label>
+                            <label class="col-md-4 control-label">Used By IBO ID</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="used_by_ibo_id" value="{{ old('used_by_ibo_id') }}">
@@ -96,7 +82,7 @@
                         </div>
                         
                         <div class="form-group{{ $errors->has('encoded_by_ibo_id') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Encoded By</label>
+                            <label class="col-md-4 control-label">Encoded By IBO ID</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="encoded_by_ibo_id" value="{{ old('encoded_by_ibo_id') }}">
@@ -109,6 +95,16 @@
                             </div>
                         </div>
                         
+                        <div class="form-group{{ $errors->has('is_used') ? ' has-error' : '' }}">
+                            <div class="col-md-6 col-md-offset-4">
+                                <div class="checkbox" style="float:left; margin-right:30px;">
+                                    <label>
+                                        <input type="checkbox" name="is_active"> Is Used
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">Submit</button>

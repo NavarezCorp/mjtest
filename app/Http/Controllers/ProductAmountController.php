@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
 use App\ProductAmount;
+use App\Product;
+use App\User;
 use Session;
 
 class ProductAmountController extends Controller
@@ -30,7 +32,9 @@ class ProductAmountController extends Controller
     public function create()
     {
         //
-        return view('productamount.create');
+        $data['products'] = Product::pluck('name', 'id');
+        $data['users'] = User::pluck('name', 'id');
+        return view('productamount.create', ['data'=>$data]);
     }
 
     /**
@@ -45,7 +49,7 @@ class ProductAmountController extends Controller
         $model = new ProductAmount;
         $model->product_id = $request->product_id;
         $model->amount = $request->amount;
-        $model->is_active = $request->is_active;
+        $model->is_active = $request->has('is_active');
         $model->created_by = $request->created_by;
         $model->save();
         

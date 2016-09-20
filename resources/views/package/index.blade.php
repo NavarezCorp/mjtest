@@ -36,9 +36,9 @@
                                 <tr>
                                     <td>{{ $value->id }}</td>
                                     <td>{{ $value->activation_code }}</td>
-                                    <td>{{ $value->package_type_id }}</td>
-                                    <td>{{ $value->created_by }}</td>
-                                    <td>{{ $value->is_used }}</td>
+                                    <td>{{ App\PackageType::find($value->package_type_id)->name }}</td>
+                                    <td>{{ App\User::find($value->created_by)->name }}</td>
+                                    <td>{{ $value->is_used ? 'Yes' : 'No' }}</td>
                                     <td>{{ $value->datetime_used }}</td>
                                     <td>{{ $value->used_by_ibo_id }}</td>
                                     <td>{{ $value->encoded_by_ibo_id }}</td>

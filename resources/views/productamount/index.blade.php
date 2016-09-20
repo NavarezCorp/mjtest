@@ -32,10 +32,10 @@
                             @foreach ($data as $key => $value)
                                 <tr>
                                     <td>{{ $value->id }}</td>
-                                    <td>{{ $value->product_id }}</td>
+                                    <td>{{ App\Product::find($value->product_id)->name }}</td>
                                     <td>{{ $value->amount }}</td>
                                     <td>{{ $value->is_active }}</td>
-                                    <td>{{ $value->created_by }}</td>
+                                    <td>{{ App\User::find($value->created_by)->name }}</td>
                                     <td class="table-tools-column">
                                         <a href="{{ route('productamount.show', $value->id) }}">
                                             <i class="glyphicon glyphicon-eye-open"></i>

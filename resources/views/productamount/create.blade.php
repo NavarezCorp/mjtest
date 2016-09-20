@@ -12,11 +12,11 @@
                         {!! csrf_field() !!}
                         
                         <div class="form-group{{ $errors->has('product_id') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Product ID</label>
+                            <label class="col-md-4 control-label">Product</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="product_id" value="{{ old('product_id') }}">
-
+                                {{ Form::select('product_id', $data['products'], null, ['class'=>'form-control']) }}
+                                
                                 @if ($errors->has('product_id'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('product_id') }}</strong>
@@ -39,26 +39,12 @@
                             </div>
                         </div>
                         
-                        <div class="form-group{{ $errors->has('is_active') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Is Active</label>
-
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" name="is_active" value="{{ old('is_active') }}">
-
-                                @if ($errors->has('is_active'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('is_active') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        
                         <div class="form-group{{ $errors->has('created_by') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Created By</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="created_by" value="{{ old('created_by') }}">
-
+                                {{ Form::select('created_by', $data['users'], null, ['class'=>'form-control']) }}
+                                
                                 @if ($errors->has('created_by'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('created_by') }}</strong>
@@ -67,6 +53,16 @@
                             </div>
                         </div>
                         
+                        <div class="form-group{{ $errors->has('is_active') ? ' has-error' : '' }}">
+                            <div class="col-md-6 col-md-offset-4">
+                                <div class="checkbox" style="float:left; margin-right:30px;">
+                                    <label>
+                                        <input type="checkbox" name="is_active"> Is Active
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">Submit</button>

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
 use App\Package;
+use App\User;
+use App\PackageType;
 use Session;
 
 class PackageController extends Controller
@@ -30,7 +32,9 @@ class PackageController extends Controller
     public function create()
     {
         //
-        return view('package.create');
+        $data['package_types'] = PackageType::pluck('name', 'id');
+        $data['users'] = User::pluck('name', 'id');
+        return view('package.create', ['data'=>$data]);
     }
 
     /**
@@ -46,7 +50,7 @@ class PackageController extends Controller
         $model->activation_code = $request->activation_code;
         $model->package_type_id = $request->package_type_id;
         $model->created_by = $request->created_by;
-        $model->is_used = $request->is_used;
+        $model->is_used = $request->has('is_used');
         $model->datetime_used = $request->datetime_used;
         $model->used_by_ibo_id = $request->used_by_ibo_id;
         $model->encoded_by_ibo_id = $request->encoded_by_ibo_id;

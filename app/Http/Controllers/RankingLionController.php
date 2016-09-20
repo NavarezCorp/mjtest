@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
 use App\RankingLion;
+use App\Rebate;
 use Session;
 
 class RankingLionController extends Controller
@@ -30,7 +31,8 @@ class RankingLionController extends Controller
     public function create()
     {
         //
-        return view('rankinglion.create');
+        $data['rebates'] = Rebate::pluck('level', 'id');
+        return view('rankinglion.create', ['data'=>$data]);
     }
 
     /**
@@ -47,7 +49,7 @@ class RankingLionController extends Controller
         $model->description = $request->description;
         $model->app = $request->app;
         $model->agp = $request->agp;
-        $model->rebates_system_id = $request->rebates_system_id;
+        $model->rebates_id = $request->rebates_id;
         $model->save();
         
         Session::flash('message', 'Ranking Lion named "' . $request->name . '" was successfully created');

@@ -19,7 +19,7 @@ class CreateRankingLionsTable extends Migration
             $table->text('description');
             $table->decimal('app', 9, 2);
             $table->decimal('agp', 9, 2);
-            $table->integer('rebates_system_id')->index();
+            $table->integer('rebates_id')->index();
             $table->timestamps();
         });
     }

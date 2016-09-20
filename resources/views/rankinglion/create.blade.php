@@ -67,15 +67,15 @@
                             </div>
                         </div>
                         
-                        <div class="form-group{{ $errors->has('rebates_system_id') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Rebate System ID</label>
+                        <div class="form-group{{ $errors->has('rebates_id') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Rebate</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="rebates_system_id" value="{{ old('rebates_system_id') }}">
+                                {{ Form::select('rebates_id', $data['rebates'], null, ['class'=>'form-control']) }}
 
-                                @if ($errors->has('rebates_system_id'))
+                                @if ($errors->has('rebates_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('rebates_system_id') }}</strong>
+                                        <strong>{{ $errors->first('rebates_id') }}</strong>
                                     </span>
                                 @endif
                             </div>
