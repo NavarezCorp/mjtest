@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use DB;
+use App\Product;
+use Session;
 
 class ProductController extends Controller
 {
@@ -16,6 +18,8 @@ class ProductController extends Controller
     public function index()
     {
         //
+        $data = DB::table('products')->orderBy('id', 'desc')->paginate(15);
+        return view('product.index', ['data'=>$data]);
     }
 
     /**
@@ -26,6 +30,7 @@ class ProductController extends Controller
     public function create()
     {
         //
+        return view('product.create');
     }
 
     /**
@@ -37,6 +42,14 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+        $model = new Product;
+        $model->code = $request->code;
+        $model->name = $request->name;
+        $model->description = $request->description;
+        $model->save();
+        
+        Session::flash('message', 'Product named "' . $request->name . '" was successfully created');
+        return redirect('/product');
     }
 
     /**

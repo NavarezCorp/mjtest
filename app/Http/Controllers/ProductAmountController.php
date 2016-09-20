@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use DB;
+use App\ProductAmount;
+use Session;
 
 class ProductAmountController extends Controller
 {
@@ -16,6 +18,8 @@ class ProductAmountController extends Controller
     public function index()
     {
         //
+        $data = DB::table('product_amounts')->orderBy('id', 'desc')->paginate(15);
+        return view('productamount.index', ['data'=>$data]);
     }
 
     /**
@@ -26,6 +30,7 @@ class ProductAmountController extends Controller
     public function create()
     {
         //
+        return view('productamount.create');
     }
 
     /**
@@ -37,6 +42,15 @@ class ProductAmountController extends Controller
     public function store(Request $request)
     {
         //
+        $model = new ProductAmount;
+        $model->product_id = $request->product_id;
+        $model->amount = $request->amount;
+        $model->is_active = $request->is_active;
+        $model->created_by = $request->created_by;
+        $model->save();
+        
+        Session::flash('message', 'Product amount was successfully created');
+        return redirect('/productamount');
     }
 
     /**

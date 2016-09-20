@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use DB;
+use App\Package;
+use Session;
 
 class PackageController extends Controller
 {
@@ -16,6 +18,8 @@ class PackageController extends Controller
     public function index()
     {
         //
+        $data = DB::table('packages')->orderBy('id', 'desc')->paginate(15);
+        return view('package.index', ['data'=>$data]);
     }
 
     /**
@@ -26,6 +30,7 @@ class PackageController extends Controller
     public function create()
     {
         //
+        return view('package.create');
     }
 
     /**
@@ -37,6 +42,18 @@ class PackageController extends Controller
     public function store(Request $request)
     {
         //
+        $model = new Package;
+        $model->activation_code = $request->activation_code;
+        $model->package_type_id = $request->package_type_id;
+        $model->created_by = $request->created_by;
+        $model->is_used = $request->is_used;
+        $model->datetime_used = $request->datetime_used;
+        $model->used_by_ibo_id = $request->used_by_ibo_id;
+        $model->encoded_by_ibo_id = $request->encoded_by_ibo_id;
+        $model->save();
+        
+        Session::flash('message', 'Package was successfully created');
+        return redirect('/package');
     }
 
     /**

@@ -17,16 +17,27 @@ var paths = {
     'jquery': './node_modules/jquery/',
     'jqueryui': './node_modules/jquery-ui/',
     'bootstrap': './node_modules/bootstrap-sass/',
+    'bootstrapdatetimepicker': './node_modules/bootstrap-datetimepicker/',
     'fontawesome': './node_modules/font-awesome/',
     'typeahead': './node_modules/typeahead.js/',
     'orgchart': './node_modules/orgchart/'
 }
 
 elixir(mix => {
-    mix.sass([
-        'app.scss',
-        'variables.scss'
-    ])
+    mix
+    .sass(
+        [
+            'app.scss',
+            'variables.scss'
+        ]
+    )
+    /*
+    .less(
+        [
+            paths.bootstrapdatetimepicker + 'src/less/bootstrap-datetimepicker.less'
+        ]
+    )
+    */
     .styles(
         [
             paths.jqueryui + 'themes/base/*.css',
@@ -37,10 +48,11 @@ elixir(mix => {
     .scripts(
         [
             paths.jquery + 'dist/jquery.min.js',
-            //paths.jqueryui + 'ui/*.js',
+            //paths.jqueryui + 'ui/widgets',
             paths.bootstrap + 'assets/javascripts/bootstrap.min.js',
             paths.typeahead + 'dist/typeahead.jquery.min.js',
-            paths.orgchart + 'dist/js/jquery.orgchart.js'
+            paths.orgchart + 'dist/js/jquery.orgchart.js',
+            paths.bootstrapdatetimepicker + 'src/js/bootstrap-datetimepicker.js'
         ],
         'public/js/vendor.js'
     )

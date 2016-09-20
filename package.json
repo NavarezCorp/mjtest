@@ -6,6 +6,7 @@
   },
   "devDependencies": {
     "bootstrap": "^3.3.7",
+    "bootstrap-datetimepicker": "0.0.7",
     "bootstrap-sass": "^3.3.7",
     "fontawesome": "^4.5.0",
     "gulp": "^3.9.1",
