@@ -25,17 +25,22 @@
                             </div>
                         </div>
                         
-                        <div class="form-group{{ $errors->has('purchase_amount') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Purchase amount</label>
-
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" name="purchase_amount" value="{{ old('purchase_amount') }}">
-
-                                @if ($errors->has('purchase_amount'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('purchase_amount') }}</strong>
-                                    </span>
-                                @endif
+                        <div class="product-container">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Product</label>
+                                <div class="col-md-6 product-dropdown">
+                                    {{ Form::select('product_id[]', $data['products'], null, ['class'=>'form-control']) }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-md-offset-4">
+                                <div class="checkbox" style="float:left; margin-right:30px;">
+                                    <label>
+                                        <a class="add-product" href="#">Add product</a>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         

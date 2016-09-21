@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
 use App\ProductPurchase;
+use App\Product;
+use App\ProductAmount;
 use Session;
 
 class ProductPurchaseController extends Controller
@@ -30,7 +32,8 @@ class ProductPurchaseController extends Controller
     public function create()
     {
         //
-        return view('productpurchase.create');
+        $data['products'] = Product::pluck('name', 'id');
+        return view('productpurchase.create', ['data'=>$data]);
     }
 
     /**
@@ -42,10 +45,13 @@ class ProductPurchaseController extends Controller
     public function store(Request $request)
     {
         //
-        $model = new ProductPurchase;
-        $model->ibo_id = $request->ibo_id;
-        $model->purchase_amount = $request->purchase_amount;
-        $model->save();
+        foreach($request->product_id as $value){
+            $model = new ProductPurchase;
+            $model->ibo_id = $request->ibo_id;
+            $model->product_id = $value;
+            $model->purchase_amount = ProductAmount::where('product_id', $value)->first()->amount;
+            $model->save();
+        }
         
         Session::flash('message', 'Product purchase of "' . $request->ibo_id . '" was successfully saved');
         return redirect('/productpurchase');

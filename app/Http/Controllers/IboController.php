@@ -54,7 +54,7 @@ class IboController extends Controller
         $model->placement_position = $request->placement_position;
         $model->total_purchase_amount = $request->total_purchase_amount;
         $model->ranking_lions_id = $request->ranking_lions_id;
-        //$model->is_admin = $request->has('is_admin');
+        $model->is_admin = $request->has('is_admin');
         $model->save();
         
         Session::flash('message', 'IBO named "' . $request->firstname . ' ' . $request->middlename . ' ' . $request->lastname . '" was successfully created');

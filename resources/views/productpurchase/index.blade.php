@@ -16,15 +16,16 @@
                         <thead>
                             <th>ID</th>
                             <th>IBO ID</th>
+                            <th>Product</th>
                             <th>Purchase Amount</th>
                             <th>Date Added</th>
-                            <th></th>
                         </thead>
                         <tbody>
                             @foreach ($data as $key => $value)
                                 <tr>
                                     <td>{{ $value->id }}</td>
                                     <td>{{ $value->ibo_id }}</td>
+                                    <td>{{ App\Product::find($value->product_id)->name }}</td>
                                     <td>{{ $value->purchase_amount }}</td>
                                     <td>{{ $value->created_at }}</td>
                                 </tr>
