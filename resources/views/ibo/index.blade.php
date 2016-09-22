@@ -33,7 +33,7 @@
                         <tbody>
                             @foreach ($data as $key => $value)
                                 <tr>
-                                    <td>{{ $value->id }}</td>
+                                    <td>{{ sprintf('%09d', $value->id) }}</td>
                                     <td>{{ $value->firstname }}</td>
                                     <td>{{ $value->middlename }}</td>
                                     <td>{{ $value->lastname }}</td>

@@ -18,7 +18,7 @@ class IboController extends Controller
     public function index()
     {
         //
-        $data = DB::table('ibos')->orderBy('id', 'desc')->paginate(15);
+        $data = DB::table('ibos')->orderBy('id', 'asc')->paginate(15);
         return view('ibo.index', ['data'=>$data]);
     }
 
@@ -42,9 +42,13 @@ class IboController extends Controller
     public function store(Request $request)
     {
         //
-        //var_dump($request->has('is_admin'));
+        $last_ibo_id = Ibo::where('is_part_company', false)->orderBy('id', 'desc')->first();
+        
+        if($last_ibo_id === NULL) $new_id = 1;
+        else $new_id = $last_ibo_id->id + 1;
         
         $model = new Ibo;
+        $model->id = $new_id;
         $model->firstname = $request->firstname;
         $model->middlename = $request->middlename;
         $model->lastname = $request->lastname;
