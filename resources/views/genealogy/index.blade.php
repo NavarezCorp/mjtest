@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<input type="hidden" id="genealogy_ibo_id" value="{{ $data['ibo_id'] }}">
+<input type="hidden" id="genealogy_sponsor_id" value="{{ $data['sponsor_id'] }}">
+<input type="hidden" id="genealogy_placement_id" value="{{ $data['placement_id'] }}">
 <div class="container spark-screen">
     <div class="row">
         <div class="col-md-12">

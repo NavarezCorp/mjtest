@@ -73,7 +73,7 @@
                                     <label for="placement_id" class="col-md-4 control-label">Placement ID</label>
 
                                     <div class="col-md-6">
-                                        <input id="placement_id" type="text" class="form-control" name="placement_id" required>
+                                        <input id="placement_id" type="text" class="form-control" name="placement_id" value="{{ $data['placement_id'] ? $data['placement_id'] : '' }}" required>
 
                                         @if ($errors->has('placement_id'))
                                             <span class="help-block">
@@ -87,7 +87,7 @@
                                     <label for="placement_position" class="col-md-4 control-label">Placement position</label>
 
                                     <div class="col-md-6">
-                                        <input id="placement_position" type="text" class="form-control" name="placement_position" required>
+                                        <input id="placement_position" type="text" class="form-control" name="placement_position" value="{{ $data['placement_position'] ? $data['placement_position'] : '' }}" required>
 
                                         @if ($errors->has('placement_position'))
                                             <span class="help-block">

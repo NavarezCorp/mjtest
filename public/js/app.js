@@ -8,13 +8,17 @@ $('.add-product').click(function(){
     $('.product-container').append(html);
 });
 $('#chart-container').orgchart({
-    'data':'/genealogy/' + $('#genealogy_ibo_id').val(),
+    'data':'/genealogy/' + $('#genealogy_sponsor_id').val(),
     'nodeContent':'title',
-    //'pan': true,
-    //'zoom': true
+    'nodeId':'id'
 })
 .on('click', '.node', function(e){
-    //console.log($(this).find('.title').text());
-    window.location.href = '/genealogy?ibo_id=' + $(this).find('.title').text();
+    if($(this).find('.title').text() == ''){
+        var _id = $(this).attr('id');
+        var id_arr = _id.split('|');
+                
+        window.location.href = '/ibo/create?placement_id=' + id_arr[0] + '&placement_position=' + id_arr[1];
+    }
+    else window.location.href = '/genealogy?sponsor_id=' + $(this).find('.title').text() + '&placement_id=' + $(this).attr('id');
 });
 //# sourceMappingURL=app.js.map

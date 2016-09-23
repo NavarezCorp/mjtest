@@ -17,7 +17,8 @@ class GenealogyController extends Controller
     public function index()
     {
         //
-        $data['ibo_id'] = $_GET['ibo_id'];
+        $data['sponsor_id'] = $_GET['sponsor_id'];
+        $data['placement_id'] = $_GET['placement_id'];
         return view('genealogy.index', ['data'=>$data]);
     }
 
@@ -52,17 +53,48 @@ class GenealogyController extends Controller
     {
         $data = $this->get_genealogy($id);
         
-        foreach($data['children'] as $pkey => $pvalue){
-            $data['children'][$pkey]['children'] = $this->get_children($pvalue['name']);
-            
-            if($data['children'][$pkey]['children']){
-                foreach($data['children'][$pkey]['children'] as $ckey => $cvalue){
-                    $data['children'][$pkey]['children'][$ckey]['children'] = $this->get_children($cvalue['name']);
+        if($data['children']){
+            for($a=0; $a<2; $a++){
+                $data['children'][$a]['children'] = $this->get_children($data['children'][$a]['name']);
+                
+                if($data['children'][$a]['children']){
+                    for($b=0; $b<2; $b++){
+                        if(isset($data['children'][$a]['children'][$b])){
+                            $data['children'][$a]['children'][$b]['children'] = $this->get_children($data['children'][$a]['children'][$b]['name']);
+
+                            if(!$data['children'][$a]['children'][$b]['children']){
+                                $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
+                                $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
+                            }
+                        }
+                        else{
+                            $placement_position = ($a == 1) ? 'R' : 'L';
+                            $data['children'][$a]['children'][$b]['id'] = $data['children'][$a]['name'] . '|' . $placement_position;
+                            $data['children'][$a]['children'][$b]['name'] = '';
+                            $data['children'][$a]['children'][$b]['title'] = '';
+                            $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
+                            $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
+                        }
+                    }
+                }
+                else{
+                    for($b=0; $b<2; $b++){
+                        $data['children'][$a]['children'][$b] = ['id'=>'', 'name'=>'', 'title'=>''];
+
+                        for($c=0; $c<2; $c++) $data['children'][$a]['children'][$b]['children'][$c] = ['id'=>'', 'name'=>'', 'title'=>''];
+                    }
                 }
             }
-            else{
-                $data['children'][$pkey]['children'][] = ['name'=>'', 'title'=>''];
-                $data['children'][$pkey]['children'][] = ['name'=>'', 'title'=>''];
+        }
+        else{
+            for($a=0; $a<2; $a++){
+                $data['children'][$a] = ['id'=>'', 'name'=>'', 'title'=>''];
+                
+                for($b=0; $b<2; $b++){
+                    $data['children'][$a]['children'][$b] = ['id'=>'', 'name'=>'', 'title'=>''];
+                    
+                    for($c=0; $c<2; $c++) $data['children'][$a]['children'][$b]['children'][$c] = ['id'=>'', 'name'=>'', 'title'=>''];
+                }
             }
         }
         
@@ -108,33 +140,41 @@ class GenealogyController extends Controller
         $children = null;
         
         $res_parent = DB::table('ibos')
-            ->select('id', 'firstname', 'middlename', 'lastname', 'placement_position')
+            ->select('id', 'firstname', 'middlename', 'lastname', 'placement_position', 'placement_id')
             ->where('id', $id)
             ->first();
         
         $res_children = DB::table('ibos')
-            ->select('id', 'firstname', 'middlename', 'lastname', 'placement_position')
+            ->select('id', 'firstname', 'middlename', 'lastname', 'placement_position', 'placement_id')
             ->where('placement_id', $res_parent->id)
             ->get();
         
-        
-        foreach($res_children as $value){
-            if($value->placement_position == 'L'){
-                $children[] = [
-                    'name'=>$value->id,
-                    'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
-                ];
-            }
+        if($res_children->count()){
+            foreach($res_children as $value){
+                if($value->placement_position == 'L'){
+                    $children[] = [
+                        'id'=>$value->placement_id,
+                        'name'=>$value->id,
+                        'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                    ];
+                }
 
-            if($value->placement_position == 'R'){
-                $children[] = [
-                    'name'=>$value->id,
-                    'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
-                ];
+                if($value->placement_position == 'R'){
+                    $children[] = [
+                        'id'=>$value->placement_id,
+                        'name'=>$value->id,
+                        'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                    ];
+                }
             }
+        }
+        else{
+            $children[] = ['id'=>$res_parent->id . '|L', 'name'=>'', 'title'=>''];
+            $children[] = ['id'=>$res_parent->id . '|R', 'name'=>'', 'title'=>''];
         }
         
         $data = [
+            'id'=>$res_parent->placement_id,
             'name'=>$res_parent->id,
             'title'=>$res_parent->firstname . ' ' . $res_parent->middlename . ' ' . $res_parent->lastname,
             'children'=>$children
@@ -147,25 +187,32 @@ class GenealogyController extends Controller
         $data = null;
         
         $res_children = DB::table('ibos')
-            ->select('id', 'firstname', 'middlename', 'lastname', 'placement_position')
+            ->select('id', 'firstname', 'middlename', 'lastname', 'placement_position', 'placement_id')
             ->where('placement_id', $id)
             ->get();
         
-        
-        foreach($res_children as $value){
-            if($value->placement_position == 'L'){
-                $data[] = [
-                    'name'=>$value->id,
-                    'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
-                ];
-            }
+        if($res_children->count()){
+            foreach($res_children as $value){
+                if($value->placement_position == 'L'){
+                    $data[] = [
+                        'id'=>$value->placement_id,
+                        'name'=>$value->id,
+                        'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                    ];
+                }
 
-            if($value->placement_position == 'R'){
-                $data[] = [
-                    'name'=>$value->id,
-                    'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
-                ];
+                if($value->placement_position == 'R'){
+                    $data[] = [
+                        'id'=>$value->placement_id,
+                        'name'=>$value->id,
+                        'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                    ];
+                }
             }
+        }
+        else{
+            $data[] = ['id'=>$id . '|L', 'name'=>'', 'title'=>''];
+            $data[] = ['id'=>$id . '|R', 'name'=>'', 'title'=>''];
         }
         
         return $data;

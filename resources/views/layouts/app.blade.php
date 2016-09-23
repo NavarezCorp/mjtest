@@ -78,7 +78,7 @@
                                     </li>
                                     <li>
                                         <a href="{{ url('/ibo') }}">IBO</a>
-                                        <a href="{{ url('/genealogy?ibo_id=' . Auth::user()->ibo_id) }}">Genealogy</a>
+                                        <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
                                         <a href="{{ url('/user/' . Auth::user()->id . '/edit') }}">Profile</a>
                                     </li>
                                     @if (Auth::user()->role == 'admin')

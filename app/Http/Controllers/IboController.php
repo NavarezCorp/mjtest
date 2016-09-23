@@ -30,7 +30,9 @@ class IboController extends Controller
     public function create()
     {
         //
-        return view('ibo.create');
+        $data['placement_id'] = $_GET['placement_id'];
+        $data['placement_position'] = $_GET['placement_position'];
+        return view('ibo.create', ['data'=>$data]);
     }
 
     /**
