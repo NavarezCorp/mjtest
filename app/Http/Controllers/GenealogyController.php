@@ -17,7 +17,8 @@ class GenealogyController extends Controller
     public function index()
     {
         //
-        return view('genealogy.index');
+        $data['ibo_id'] = $_GET['ibo_id'];
+        return view('genealogy.index', ['data'=>$data]);
     }
 
     /**
@@ -49,18 +50,21 @@ class GenealogyController extends Controller
      */
     public function show($id)
     {
-        // 1st & 2nd level
         $data = $this->get_genealogy($id);
         
-        // 3rd level
-        $data['children'][0]['children'] = $this->get_children($data['children'][0]['name']);
-        $data['children'][1]['children'] = $this->get_children($data['children'][1]['name']);
-        
-        // 4th level
-        $data['children'][0]['children'][0]['children'] = $this->get_children($data['children'][0]['children'][0]['name']);
-        $data['children'][0]['children'][1]['children'] = $this->get_children($data['children'][0]['children'][1]['name']);
-        $data['children'][1]['children'][0]['children'] = $this->get_children($data['children'][1]['children'][0]['name']);
-        $data['children'][1]['children'][1]['children'] = $this->get_children($data['children'][1]['children'][1]['name']);
+        foreach($data['children'] as $pkey => $pvalue){
+            $data['children'][$pkey]['children'] = $this->get_children($pvalue['name']);
+            
+            if($data['children'][$pkey]['children']){
+                foreach($data['children'][$pkey]['children'] as $ckey => $cvalue){
+                    $data['children'][$pkey]['children'][$ckey]['children'] = $this->get_children($cvalue['name']);
+                }
+            }
+            else{
+                $data['children'][$pkey]['children'][] = ['name'=>'', 'title'=>''];
+                $data['children'][$pkey]['children'][] = ['name'=>'', 'title'=>''];
+            }
+        }
         
         return $data;
     }
@@ -113,6 +117,7 @@ class GenealogyController extends Controller
             ->where('placement_id', $res_parent->id)
             ->get();
         
+        
         foreach($res_children as $value){
             if($value->placement_position == 'L'){
                 $children[] = [
@@ -120,7 +125,7 @@ class GenealogyController extends Controller
                     'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
                 ];
             }
-            
+
             if($value->placement_position == 'R'){
                 $children[] = [
                     'name'=>$value->id,
@@ -146,6 +151,7 @@ class GenealogyController extends Controller
             ->where('placement_id', $id)
             ->get();
         
+        
         foreach($res_children as $value){
             if($value->placement_position == 'L'){
                 $data[] = [
@@ -153,7 +159,7 @@ class GenealogyController extends Controller
                     'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
                 ];
             }
-            
+
             if($value->placement_position == 'R'){
                 $data[] = [
                     'name'=>$value->id,

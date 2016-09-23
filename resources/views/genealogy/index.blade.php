@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<input type="hidden" id="genealogy_ibo_id" value="{{ $data['ibo_id'] }}">
 <div class="container spark-screen">
     <div class="row">
         <div class="col-md-12">
