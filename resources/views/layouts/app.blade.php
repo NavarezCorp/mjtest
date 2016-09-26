@@ -78,7 +78,7 @@
                                         <a href="{{ url('/user/' . Auth::user()->id . '/edit') }}">Profile</a>
                                     </li>
                                     @if (Auth::user()->role == 'admin')
-                                        <a href="{{ url('/ibo') }}">IBO</a>
+                                        <li><a href="{{ url('/ibo') }}">IBO</a></li>
                                         <li><a href="{{ url('/commission') }}">Commission</a></li>
                                         <li><a href="{{ url('/package') }}">Package</a></li>
                                         <li><a href="{{ url('/packagetype') }}">Package Type</a></li>
