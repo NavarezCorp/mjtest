@@ -66,22 +66,19 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ url('/logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                        <a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             Logout
                                         </a>
-
                                         <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
                                     <li>
-                                        <a href="{{ url('/ibo') }}">IBO</a>
                                         <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
                                         <a href="{{ url('/user/' . Auth::user()->id . '/edit') }}">Profile</a>
                                     </li>
                                     @if (Auth::user()->role == 'admin')
+                                        <a href="{{ url('/ibo') }}">IBO</a>
                                         <li><a href="{{ url('/commission') }}">Commission</a></li>
                                         <li><a href="{{ url('/package') }}">Package</a></li>
                                         <li><a href="{{ url('/packagetype') }}">Package Type</a></li>
