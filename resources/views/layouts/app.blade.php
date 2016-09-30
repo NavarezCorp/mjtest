@@ -76,6 +76,8 @@
                                     <li>
                                         <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
                                         <a href="{{ url('/user/' . Auth::user()->id . '/edit') }}">Profile</a>
+                                        <a href="{{ url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=weekly') }}">Weekly Summary Commission Report</a>
+                                        <a href="{{ url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=monthly') }}">Monthly Summary Commission Report</a>
                                     </li>
                                     @if (Auth::user()->role == 'admin')
                                         <li><a href="{{ url('/ibo') }}">IBO</a></li>
