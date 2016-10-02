@@ -68,8 +68,11 @@ class CommissionSummaryReportController extends Controller
                         ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                         ->orderBy('created_at', 'desc')->get();
                     
-                    $data['commission'][$i]['net_commission'] = count($res) * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
+                    $data['commission'][$i]['direct'] = count($res) * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
+                    $data['commission'][$i]['indirect'] = 0;
+                    $data['commission'][$i]['matching'] = 0;
                     $data['commission'][$i]['fifth_pairs'] = 0;
+                    $data['commission'][$i]['net_commission'] = $data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching'] + $data['commission'][$i]['fifth_pairs'];
                     $date_->subWeek();
                 }
                 
@@ -95,13 +98,20 @@ class CommissionSummaryReportController extends Controller
                     $data['commission'][$i]['date_start'] = $date_->parse('first day of ' . $months[$i] . ' ' . $date_->year)->format('F j, Y');
                     $data['commission'][$i]['date_end'] = $date_->parse('last day of ' . $months[$i] . ' ' . $date_->year)->format('F j, Y');
                     
-                    $firstday = $date_->parse('first day of ' . $months[$i] . ' ' . $date_->year)->toDateString();
-                    $lastday = $date_->parse('last day of ' . $months[$i] . ' ' . $date_->year)->toDateString();
+                    $firstday = $date_->parse('first day of ' . $months[$i] . ' ' . $date_->year)->toDateString() . ' 00:00:00';
+                    $lastday = $date_->parse('last day of ' . $months[$i] . ' ' . $date_->year)->toDateString() . ' 23:59:59';
                     
-                    $res = DB::select('select * from ibos where sponsor_id = ? and (created_at >= ? or created_at <= ?)', [$id, $firstday, $lastday]);
+                    $res = DB::table('ibos')
+                        ->select(DB::raw('count(id) as count'))
+                        ->where('sponsor_id', $id)
+                        ->whereBetween('created_at', [$firstday, $lastday])
+                        ->first();
                     
-                    $data['commission'][$i]['net_commission'] = count($res) * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
+                    $data['commission'][$i]['direct'] = $res->count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
+                    $data['commission'][$i]['indirect'] = 0;
+                    $data['commission'][$i]['matching'] = 0;
                     $data['commission'][$i]['fifth_pairs'] = 0;
+                    $data['commission'][$i]['net_commission'] = $data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching'] + $data['commission'][$i]['fifth_pairs'];
                 }
                 
                 break;

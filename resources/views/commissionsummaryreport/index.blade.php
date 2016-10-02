@@ -13,18 +13,22 @@
                         <thead>
                             <th>Date Start</th>
                             <th>Date End</th>
-                            <th>Net Commission (Php)</th>
-                            <th>Fifth Pairs (Php)</th>
-                            <th>Details</th>
+                            <th>Direct Sponsor</th>
+                            <th>Indirect Sponsor</th>
+                            <th>Matching Bonus</th>
+                            <th>Fifth Pairs</th>
+                            <th>Net Commission</th>
                         </thead>
                         <tbody>
                             @foreach ($data['commission'] as $key => $value)
                                 <tr>
                                     <td><strong>{{ $value['date_start'] }}</strong></td>
                                     <td><strong>{{ $value['date_end'] }}</strong></td>
-                                    <td><strong>{{ $value['net_commission'] }}</strong></td>
+                                    <td><strong>{{ $value['direct'] }}</strong></td>
+                                    <td><strong>{{ $value['indirect'] }}</strong></td>
+                                    <td><strong>{{ $value['matching'] }}</strong></td>
                                     <td><strong>{{ $value['fifth_pairs'] }}</strong></td>
-                                    <td><a href="#">view</a></td>
+                                    <td><strong>{{ $value['net_commission'] }}</strong></td>
                                 </tr>
                             @endforeach
                         </tbody>
