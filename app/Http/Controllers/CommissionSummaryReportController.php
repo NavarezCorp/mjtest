@@ -52,6 +52,7 @@ class CommissionSummaryReportController extends Controller
     {
         //
         $data = null;
+        $param_ = null;
         $date_ = Carbon::now('Asia/Manila');
         $date_->setWeekStartsAt(Carbon::SATURDAY);
         $date_->setWeekEndsAt(Carbon::FRIDAY);
@@ -69,10 +70,18 @@ class CommissionSummaryReportController extends Controller
                         ->orderBy('created_at', 'desc')->get();
                     
                     $data['commission'][$i]['direct'] = count($res) * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
-                    $data['commission'][$i]['indirect'] = 0;
+                    
+                    // indirect sponsor commission
+                    $param_['id'] = $id;
+                    $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
+                    $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
+                    $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
+                    // indirect sponsor commission
+                    
                     $data['commission'][$i]['matching'] = 0;
                     $data['commission'][$i]['fifth_pairs'] = 0;
                     $data['commission'][$i]['net_commission'] = $data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching'] + $data['commission'][$i]['fifth_pairs'];
+                    
                     $date_->subWeek();
                 }
                 
@@ -152,5 +161,93 @@ class CommissionSummaryReportController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function get_indirect($param){
+        $data['counter'] = 0;
+        
+        $data['level_1'] = $this->fetcher_($param);
+        
+        // level 2
+        if(!empty($data['level_1'])){
+            foreach($data['level_1'] as $value){
+                $param['id'] = $value;
+                $res = $this->fetcher_($param);
+                $data['counter'] += count($res);
+                $data['level_2'][] = $res;
+            }
+        }
+        
+        // level 3
+        if(!empty($data['level_2'])){
+            foreach($data['level_2'] as $value){
+                $param['id'] = $value;
+                $res = $this->fetcher_($param);
+                $data['counter'] += count($res);
+                $data['level_3'][] = $res;
+            }
+        }
+        
+        // level 4
+        if(!empty($data['level_3'])){
+            foreach($data['level_3'] as $value){
+                $param['id'] = $value;
+                $res = $this->fetcher_($param);
+                $data['counter'] += count($res);
+                $data['level_4'][] = $res;
+            }
+        }
+        
+        // level 5
+        if(!empty($data['level_4'])){
+            foreach($data['level_4'] as $value){
+                $param['id'] = $value;
+                $res = $this->fetcher_($param);
+                $data['counter'] += count($res);
+                $data['level_5'][] = $res;
+            }
+        }
+        
+        // level 6
+        if(!empty($data['level_5'])){
+            foreach($data['level_5'] as $value){
+                $param['id'] = $value;
+                $res = $this->fetcher_($param);
+                $data['counter'] += count($res);
+                $data['level_6'][] = $res;
+            }
+        }
+        
+        // level 7
+        if(!empty($data['level_6'])){
+            foreach($data['level_6'] as $value){
+                $param['id'] = $value;
+                $res = $this->fetcher_($param);
+                $data['counter'] += count($res);
+                $data['level_7'][] = $res;
+            }
+        }
+        
+        // level 8
+        if(!empty($data['level_7'])){
+            foreach($data['level_7'] as $value){
+                $param['id'] = $value;
+                $res = $this->fetcher_($param);
+                $data['counter'] += count($res);
+                $data['level_8'][] = $res;
+            }
+        }
+        
+        return $data['counter'];
+    }
+    
+    public function fetcher_($param){
+        $data = null;
+        
+        $res = Ibo::where('sponsor_id', $param['id'])->whereBetween('created_at', [$param['start_date'], $param['end_date']])->orderBy('created_at', 'desc')->get();
+        
+        foreach($res as $value) $data[] = $value->id;
+        
+        return $data;
     }
 }

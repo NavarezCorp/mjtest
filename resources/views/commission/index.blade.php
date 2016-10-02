@@ -23,6 +23,7 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Description</th>
+                            <th>Amount</th>
                             <th></th>
                             <th></th>
                         </thead>
@@ -32,6 +33,7 @@
                                     <td>{{ $value->id }}</td>
                                     <td>{{ $value->name }}</td>
                                     <td>{{ $value->description }}</td>
+                                    <td>{{ $value->amount }}</td>
                                     <td class="table-tools-column">
                                         <a href="{{ route('commission.show', $value->id) }}">
                                             <i class="glyphicon glyphicon-eye-open"></i>
