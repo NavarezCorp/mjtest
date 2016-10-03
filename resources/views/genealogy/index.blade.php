@@ -9,6 +9,10 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Genealogy</div>
                 <div class="panel-body">
+                    <div class="downline-container" style="text-align:center;">
+                        <span class="left-counter" style="margin-right:25%;">Left: <strong>{{ $data['left_counter'] }}</strong></span>
+                        <span class="right-counter">Right: <strong>{{ $data['right_counter'] }}</strong></span>
+                    </div>
                     <div id="chart-container"></div>
                 </div>
             </div>

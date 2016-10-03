@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Ibo;
+use Carbon\Carbon;
 use DB;
 
 class GenealogyController extends Controller
@@ -19,6 +20,9 @@ class GenealogyController extends Controller
         //
         $data['sponsor_id'] = $_GET['sponsor_id'];
         $data['placement_id'] = $_GET['placement_id'];
+        $data['left_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'L']);
+        $data['right_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'R']);
+        
         return view('genealogy.index', ['data'=>$data]);
     }
 
@@ -214,6 +218,56 @@ class GenealogyController extends Controller
             $data[] = ['id'=>$id . '|L', 'name'=>'', 'title'=>''];
             $data[] = ['id'=>$id . '|R', 'name'=>'', 'title'=>''];
         }
+        
+        return $data;
+    }
+    
+    public function get_downlines($param){
+        $counter = 0;
+        $ids = null;
+        
+        $res = Ibo::where('placement_id', $param['id'])->get();
+        
+        switch($param['position']){
+            case 'L':
+                if(!empty($res)){
+                    $counter = 1;
+                    $ids = $this->fetcher_(['id'=>$res[0]['id']]);
+                }
+                
+                break;
+                
+            case 'R':
+                if(!empty($res)){
+                    $counter = 1;
+                    $ids = $this->fetcher_(['id'=>$res[1]['id']]);
+                }
+                
+                break;
+        }
+        
+        while(!empty($ids)){
+            $temp = null;
+            $counter += count($ids);
+
+            foreach($ids as $value){
+                $res = $this->fetcher_(['id'=>$value]);
+
+                if(!empty($res)) foreach($res as $val) $temp[] = $val;
+            }
+
+            $ids = $temp;
+        }
+        
+        return $counter;
+    }
+    
+    public function fetcher_($param){
+        $data = null;
+        
+        $res = Ibo::where('placement_id', $param['id'])->get();
+        
+        foreach($res as $value) $data[] = $value->id;
         
         return $data;
     }

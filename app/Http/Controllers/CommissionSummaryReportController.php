@@ -65,6 +65,10 @@ class CommissionSummaryReportController extends Controller
                     $data['commission'][$i]['date_start'] = $date_->startOfWeek()->format('F j, Y');
                     $data['commission'][$i]['date_end'] = $date_->endOfWeek()->format('F j, Y');
                     
+                    $param_['id'] = $id;
+                    $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
+                    $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
+                    
                     $res = Ibo::where('sponsor_id', $id)
                         ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                         ->orderBy('created_at', 'desc')->get();
@@ -72,15 +76,21 @@ class CommissionSummaryReportController extends Controller
                     $data['commission'][$i]['direct'] = count($res) * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
                     
                     // indirect sponsor commission
-                    $param_['id'] = $id;
-                    $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
-                    $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
                     $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
                     // indirect sponsor commission
                     
-                    $data['commission'][$i]['matching'] = 0;
-                    $data['commission'][$i]['fifth_pairs'] = 0;
-                    $data['commission'][$i]['net_commission'] = $data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching'] + $data['commission'][$i]['fifth_pairs'];
+                    // matching bonus
+                    $param_['position'] = 'L';
+                    $left_ = $this->get_matching_bonus($param_);
+                    $param_['position'] = 'R';
+                    $right_ = $this->get_matching_bonus($param_);
+                    
+                    $data['commission'][$i]['fifth_pairs'] = intval(min($left_, $right_) / 5) * Commission::where('name', 'Matching Bonus')->first()->amount;
+                    
+                    $data['commission'][$i]['matching'] = min($left_, $right_) * Commission::where('name', 'Matching Bonus')->first()->amount;
+                    // matching bonus
+                    
+                    $data['commission'][$i]['net_commission'] = ($data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching']) - $data['commission'][$i]['fifth_pairs'];
                     
                     $date_->subWeek();
                 }
@@ -164,87 +174,85 @@ class CommissionSummaryReportController extends Controller
     }
     
     public function get_indirect($param){
-        $data['counter'] = 0;
+        $counter = 0;
+        $ids = null;
         
-        $data['level_1'] = $this->fetcher_($param);
+        $ids = $this->fetcher_($param);
         
-        // level 2
-        if(!empty($data['level_1'])){
-            foreach($data['level_1'] as $value){
+        while(!empty($ids)){
+            $temp = null;
+
+            foreach($ids as $value){
                 $param['id'] = $value;
                 $res = $this->fetcher_($param);
-                $data['counter'] += count($res);
-                $data['level_2'][] = $res;
+
+                if(!empty($res)) foreach($res as $val) $temp[] = $val;
             }
+
+            $ids = $temp;
+            $counter += count($ids);
         }
         
-        // level 3
-        if(!empty($data['level_2'])){
-            foreach($data['level_2'] as $value){
-                $param['id'] = $value;
-                $res = $this->fetcher_($param);
-                $data['counter'] += count($res);
-                $data['level_3'][] = $res;
-            }
-        }
-        
-        // level 4
-        if(!empty($data['level_3'])){
-            foreach($data['level_3'] as $value){
-                $param['id'] = $value;
-                $res = $this->fetcher_($param);
-                $data['counter'] += count($res);
-                $data['level_4'][] = $res;
-            }
-        }
-        
-        // level 5
-        if(!empty($data['level_4'])){
-            foreach($data['level_4'] as $value){
-                $param['id'] = $value;
-                $res = $this->fetcher_($param);
-                $data['counter'] += count($res);
-                $data['level_5'][] = $res;
-            }
-        }
-        
-        // level 6
-        if(!empty($data['level_5'])){
-            foreach($data['level_5'] as $value){
-                $param['id'] = $value;
-                $res = $this->fetcher_($param);
-                $data['counter'] += count($res);
-                $data['level_6'][] = $res;
-            }
-        }
-        
-        // level 7
-        if(!empty($data['level_6'])){
-            foreach($data['level_6'] as $value){
-                $param['id'] = $value;
-                $res = $this->fetcher_($param);
-                $data['counter'] += count($res);
-                $data['level_7'][] = $res;
-            }
-        }
-        
-        // level 8
-        if(!empty($data['level_7'])){
-            foreach($data['level_7'] as $value){
-                $param['id'] = $value;
-                $res = $this->fetcher_($param);
-                $data['counter'] += count($res);
-                $data['level_8'][] = $res;
-            }
-        }
-        
-        return $data['counter'];
+        return $counter;
     }
     
     public function fetcher_($param){
         $data = null;
         
         $res = Ibo::where('sponsor_id', $param['id'])->whereBetween('created_at', [$param['start_date'], $param['end_date']])->orderBy('created_at', 'desc')->get();
+        
+        foreach($res as $value) $data[] = $value->id;
+        
+        return $data;
+    }
+    
+    public function get_matching_bonus($param){
+        $counter = 0;
+        $ids = null;
+        
+        $res = $this->fetcher__($param);
+        
+        switch($param['position']){
+            case 'L':
+                if(!empty($res)){
+                    $counter++;
+                    $param['id'] = $res[0];
+                    $ids = $this->fetcher__($param);
+                }
+                
+                break;
+                
+            case 'R':
+                if(!empty($res)){
+                    $counter++;
+                    $param['id'] = $res[1];
+                    $ids = $this->fetcher__($param);
+                }
+                
+                break;
+        }
+        
+        while(!empty($ids)){
+            $temp = null;
+            $counter += count($ids);
+            
+            foreach($ids as $value){
+                $param['id'] = $value;
+                $res = $this->fetcher__($param);
+                
+                if(!empty($res)) foreach($res as $val) $temp[] = $val;
+            }
+
+            $ids = $temp;
+        }
+        
+        return $counter;
+    }
+    
+    public function fetcher__($param){
+        $data = null;
+        
+        $res = Ibo::where('placement_id', $param['id'])->whereBetween('created_at', [$param['start_date'], $param['end_date']])->orderBy('created_at', 'desc')->get();
         
         foreach($res as $value) $data[] = $value->id;
         
