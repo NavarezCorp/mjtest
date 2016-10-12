@@ -8,6 +8,7 @@ use App\Ibo;
 use App\Commission;
 use Carbon\Carbon;
 use DB;
+use App\ProductPurchase;
 
 class CommissionSummaryReportController extends Controller
 {
@@ -72,7 +73,7 @@ class CommissionSummaryReportController extends Controller
                     $res = Ibo::where('sponsor_id', $id)
                         ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                         ->orderBy('created_at', 'desc')->get();
-                    
+        //print_r(count($res)); die();
                     $data['commission'][$i]['direct'] = count($res) * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
                     
                     // indirect sponsor commission
@@ -113,6 +114,7 @@ class CommissionSummaryReportController extends Controller
                     12=>'december'
                 ];
                 
+                /*
                 for($i = $date_->month; $i >= 1; $i--){
                     $data['commission'][$i]['date_start'] = $date_->parse('first day of ' . $months[$i] . ' ' . $date_->year)->format('F j, Y');
                     $data['commission'][$i]['date_end'] = $date_->parse('last day of ' . $months[$i] . ' ' . $date_->year)->format('F j, Y');
@@ -132,7 +134,22 @@ class CommissionSummaryReportController extends Controller
                     $data['commission'][$i]['fifth_pairs'] = 0;
                     $data['commission'][$i]['net_commission'] = $data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching'] + $data['commission'][$i]['fifth_pairs'];
                 }
+                */
                 
+                $param_['id'] = $id;
+                $param_['level'] = 9;
+                $param_['start_date'] = $date_->parse('first day of ' . $months[$date_->month] . ' ' . $date_->year)->toDateString() . ' 00:00:00';
+                $param_['end_date'] = $date_->parse('last day of ' . $months[$date_->month] . ' ' . $date_->year)->toDateString() . ' 23:59:59';
+                
+                $data['ibos'] = $this->get_ibos_total_purchase($param_);
+                
+                if($data['ibos']['user']['total_purchase'] >= 1500){
+                    foreach($data['ibos']['level_1'] as $value){
+                        //if($value->total_purchase >= 1500)
+                    }
+                }
+                
+                echo json_encode($data['ibos']); die();
                 break;
         }
         
@@ -257,5 +274,48 @@ class CommissionSummaryReportController extends Controller
         foreach($res as $value) $data[] = $value->id;
         
         return $data;
+    }
+    
+    public function get_ibos_total_purchase($param){
+        $ibos = [];
+        $temp = array($param['id']);
+        
+        $buff['ibo_id'] = $param['id'];
+        $buff['total_purchase'] = $this->get_total_purchase($param);
+        $buff['duration_start'] = $param['start_date'];
+        $buff['duration_end'] = $param['end_date'];
+        $ibos['user'] = $buff;
+        
+        for($i = 1; $i <= $param['level']; $i++){
+            $data = null;
+            $buff = null;
+            
+            if(!empty($temp)) $res = Ibo::whereIn('placement_id', $temp)->get();
+            
+            if(!empty($res)){
+                foreach($res as $key => $value){
+                    $data[] = $value->id;
+                    $param['id'] = $value->id;
+                    
+                    $buff[$key]['ibo_id'] = $value->id;
+                    $buff[$key]['total_purchase'] = $this->get_total_purchase($param);
+                    $buff[$key]['duration_start'] = $param['start_date'];
+                    $buff[$key]['duration_end'] = $param['end_date'];
+                }
+                
+                $temp = $data;
+                $ibos['level_' . $i] = $buff;
+            }
+        }
+        
+        return $ibos;
+    }
+    
+    public function get_total_purchase($param){
+        $res = DB::table('product_purchases')
+            ->select(DB::raw('sum(purchase_amount) as total_purchase'))
+            ->where('ibo_id', $param['id'])->whereBetween('created_at', [$param['start_date'], $param['end_date']])->first();
+        
+        return $res->total_purchase;
     }
 }

@@ -72,6 +72,8 @@ class CommissionController extends Controller
     public function edit($id)
     {
         //
+        $data = Commission::find($id);
+        return view('commission.edit', ['data'=>$data]);
     }
 
     /**
@@ -84,6 +86,13 @@ class CommissionController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $model = Commission::find($id);
+        $model->description = $request->description;
+        $model->amount = $request->amount;
+        $model->save();
+        
+        Session::flash('message', 'Commission ' . $request->name . ' was successfully updated');
+        return redirect('/commission');
     }
 
     /**
