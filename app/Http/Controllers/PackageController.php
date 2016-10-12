@@ -80,6 +80,10 @@ class PackageController extends Controller
     public function edit($id)
     {
         //
+        $data['info'] = Package::find($id);
+        $data['package_types'] = PackageType::pluck('name', 'id');
+        $data['users'] = User::pluck('name', 'id');
+        return view('package.edit', ['data'=>$data]);
     }
 
     /**
@@ -92,6 +96,17 @@ class PackageController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $model = Package::find($id);
+        $model->package_type_id = $request->package_type_id;
+        $model->created_by = $request->created_by;
+        $model->datetime_used = $request->datetime_used;
+        $model->used_by_ibo_id = $request->used_by_ibo_id;
+        $model->encoded_by_ibo_id = $request->encoded_by_ibo_id;
+        $model->is_used = $request->has('is_used');
+        $model->save();
+        
+        Session::flash('message', 'Package was successfully updated');
+        return redirect('/package');
     }
 
     /**

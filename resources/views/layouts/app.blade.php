@@ -80,15 +80,15 @@
                                         <a href="{{ url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=monthly') }}">Monthly Summary Commission Report</a>
                                     </li>
                                     @if (Auth::user()->role == 'admin')
-                                        <li><a href="{{ url('/ibo') }}">IBO</a></li>
-                                        <li><a href="{{ url('/commission') }}">Commission</a></li>
-                                        <li><a href="{{ url('/package') }}">Package</a></li>
-                                        <li><a href="{{ url('/packagetype') }}">Package Type</a></li>
-                                        <li><a href="{{ url('/productamount') }}">Product Amount</a></li>
-                                        <li><a href="{{ url('/product') }}">Product</a></li>
-                                        <li><a href="{{ url('/productpurchase') }}">Product Purchase</a></li>
-                                        <li><a href="{{ url('/rankinglion') }}">Ranking Lion</a></li>
-                                        <li><a href="{{ url('/rebate') }}">Rebate</a></li>
+                                        <li><a href="{{ url('/ibo') }}">IBOs</a></li>
+                                        <li><a href="{{ url('/commission') }}">Commissions</a></li>
+                                        <li><a href="{{ url('/package') }}">Packages</a></li>
+                                        <li><a href="{{ url('/packagetype') }}">Package Types</a></li>
+                                        <li><a href="{{ url('/productamount') }}">Product Amounts</a></li>
+                                        <li><a href="{{ url('/product') }}">Products</a></li>
+                                        <li><a href="{{ url('/productpurchase') }}">Product Purchases</a></li>
+                                        <li><a href="{{ url('/rankinglion') }}">Ranking Lions</a></li>
+                                        <li><a href="{{ url('/rebate') }}">Rebates</a></li>
                                     @endif
                                 </ul>
                             </li>
