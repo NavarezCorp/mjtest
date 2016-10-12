@@ -77,6 +77,10 @@ class ProductAmountController extends Controller
     public function edit($id)
     {
         //
+        $data['info'] = ProductAmount::find($id);
+        $data['products'] = Product::pluck('name', 'id');
+        $data['users'] = User::pluck('name', 'id');
+        return view('productamount.edit', ['data'=>$data]);
     }
 
     /**
@@ -89,6 +93,15 @@ class ProductAmountController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $model = ProductAmount::find($id);
+        $model->product_id = $request->product_id;
+        $model->amount = $request->amount;
+        $model->created_by = $request->created_by;
+        $model->is_active = $request->has('is_active');
+        $model->save();
+        
+        Session::flash('message', 'Product Amount was successfully updated');
+        return redirect('/productamount');
     }
 
     /**

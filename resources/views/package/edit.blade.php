@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Add Package</div>
+                <div class="panel-heading">Edit Package</div>
 
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/package/' . $data['info']->id) }}">
@@ -30,7 +30,7 @@
                             <label class="col-md-4 control-label">Package Type</label>
 
                             <div class="col-md-6">
-                                {{ Form::select('package_type_id', $data['package_types'], null, ['class'=>'form-control']) }}
+                                {{ Form::select('package_type_id', $data['package_types'], $data['info']->package_type_id, ['class'=>'form-control']) }}
                                 
                                 @if ($errors->has('package_type_id'))
                                     <span class="help-block">
@@ -44,7 +44,7 @@
                             <label class="col-md-4 control-label">Created By</label>
 
                             <div class="col-md-6">
-                                {{ Form::select('created_by', $data['users'], null, ['class'=>'form-control']) }}
+                                {{ Form::select('created_by', $data['users'], $data['info']->created_by, ['class'=>'form-control']) }}
                                 
                                 @if ($errors->has('created_by'))
                                     <span class="help-block">
