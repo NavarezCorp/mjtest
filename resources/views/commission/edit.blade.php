@@ -56,7 +56,7 @@
                         
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                                 <a href="{{ url('/commission') }}" class="btn btn-default">Cancel</a>
                             </div>
                         </div>

@@ -87,6 +87,8 @@ class IboController extends Controller
     public function edit($id)
     {
         //
+        $data = Ibo::find($id);
+        return view('ibo.edit', ['data'=>$data]);
     }
 
     /**
@@ -99,6 +101,14 @@ class IboController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $model = Ibo::find($id);
+        $model->sponsor_id = $request->sponsor_id;
+        $model->placement_id = $request->placement_id;
+        $model->placement_position = $request->placement_position;
+        $model->save();
+        
+        Session::flash('message', 'IBO ' . $request->firstname . ' ' . $request->middlename . ' ' . $request->lastname . ' was successfully updated');
+        return redirect('/ibo');
     }
 
     /**

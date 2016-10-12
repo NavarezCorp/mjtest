@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Manage IBOs
-                    <a class="pull-right" href="{{ route('ibo.create') }}">Add</a>
+                    <!--<a class="pull-right" href="{{-- route('ibo.create') --}}">Add</a>-->
                 </div>
 
                 <div class="panel-body">
@@ -41,12 +41,12 @@
                                     <td>{{ $value->placement_position }}</td>
                                     <td>{{ $value->ranking_lions_id }}</td>
                                     <td class="table-tools-column">
-                                        <a href="{{ route('rankinglion.show', $value->id) }}">
+                                        <a href="{{ route('ibo.show', $value->id) }}">
                                             <i class="glyphicon glyphicon-eye-open"></i>
                                         </a>
                                     </td>
                                     <td class="table-tools-column">
-                                        <a href="{{ route('rankinglion.edit', $value->id) }}">
+                                        <a href="{{ route('ibo.edit', $value->id) }}">
                                             <i class="glyphicon glyphicon-pencil"></i>
                                         </a>
                                     </td>
