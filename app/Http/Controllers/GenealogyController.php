@@ -61,19 +61,30 @@ class GenealogyController extends Controller
             for($a=0; $a<2; $a++){
                 if(!empty($data['children'][$a])){
                     $data['children'][$a]['children'] = $this->get_children($data['children'][$a]['name']);
-                
+                    
                     if($data['children'][$a]['children']){
                         for($b=0; $b<2; $b++){
-                            if(isset($data['children'][$a]['children'][$b])){
+                            if(!empty($data['children'][$a]['children'][$b])){
                                 $data['children'][$a]['children'][$b]['children'] = $this->get_children($data['children'][$a]['children'][$b]['name']);
 
-                                if(!$data['children'][$a]['children'][$b]['children']){
-                                    $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
-                                    $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
+                                if(empty($data['children'][$a]['children'][$b]['children'][0])){
+                                    $data['children'][$a]['children'][$b]['children'][0] = [
+                                        'id'=>$data['children'][$a]['children'][$b]['name'] . '|L',
+                                        'name'=>'',
+                                        'title'=>''
+                                    ];
+                                }
+                                
+                                if(empty($data['children'][$a]['children'][$b]['children'][1])){
+                                    $data['children'][$a]['children'][$b]['children'][1] = [
+                                        'id'=>$data['children'][$a]['children'][$b]['name'] . '|R',
+                                        'name'=>'',
+                                        'title'=>''
+                                    ];
                                 }
                             }
                             else{
-                                $placement_position = ($a == 1) ? 'R' : 'L';
+                                $placement_position = ($b == 1) ? 'R' : 'L';
                                 $data['children'][$a]['children'][$b]['id'] = $data['children'][$a]['name'] . '|' . $placement_position;
                                 $data['children'][$a]['children'][$b]['name'] = '';
                                 $data['children'][$a]['children'][$b]['title'] = '';
@@ -91,9 +102,7 @@ class GenealogyController extends Controller
                     }
                 }
                 else{
-                    //print_r($data);
                     $placement_position = ($a == 1) ? 'R' : 'L';
-                    
                     $data['children'][$a] = ['id'=>$data['name'] . '|' . $placement_position, 'name'=>'', 'title'=>''];
                     
                     for($b=0; $b<2; $b++){
@@ -106,7 +115,7 @@ class GenealogyController extends Controller
         }
         else{
             for($a=0; $a<2; $a++){
-                $data['children'][$a] = ['id'=>'test', 'name'=>'', 'title'=>''];
+                $data['children'][$a] = ['id'=>'', 'name'=>'', 'title'=>''];
                 
                 for($b=0; $b<2; $b++){
                     $data['children'][$a]['children'][$b] = ['id'=>'', 'name'=>'', 'title'=>''];
@@ -209,6 +218,7 @@ class GenealogyController extends Controller
             ->where('placement_id', $id)
             ->get();
         
+        /*
         if($res_children->count()){
             foreach($res_children as $value){
                 if($value->placement_position == 'L'){
@@ -231,6 +241,69 @@ class GenealogyController extends Controller
         else{
             $data[] = ['id'=>$id . '|L', 'name'=>'', 'title'=>''];
             $data[] = ['id'=>$id . '|R', 'name'=>'', 'title'=>''];
+        }
+        */
+        
+        switch($res_children->count()){
+            case 0:
+                $data[] = ['id'=>$id . '|L', 'name'=>'', 'title'=>''];
+                $data[] = ['id'=>$id . '|R', 'name'=>'', 'title'=>''];
+                break;
+            
+            case 1:
+                switch($res_children[0]->placement_position){
+                    case 'L':
+                        $data[0] = [
+                            'id'=>$res_children[0]->placement_id,
+                            'name'=>$res_children[0]->id,
+                            'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
+                        ];
+                        
+                        $data[1] = [
+                            'id'=>$res_children[0]->placement_id . '|R',
+                            'name'=>'',
+                            'title'=>''
+                        ];
+                        
+                        break;
+                    
+                    case 'R':
+                        $data[0] = [
+                            'id'=>$res_children[0]->placement_id . '|L',
+                            'name'=>'',
+                            'title'=>''
+                        ];
+                        
+                        $data[1] = [
+                            'id'=>$res_children[0]->placement_id,
+                            'name'=>$res_children[0]->id,
+                            'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
+                        ];
+                        break;
+                }
+                
+                break;
+            
+            case 2:
+                foreach($res_children as $value){
+                    if($value->placement_position == 'L'){
+                        $data[] = [
+                            'id'=>$value->placement_id,
+                            'name'=>$value->id,
+                            'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                        ];
+                    }
+
+                    if($value->placement_position == 'R'){
+                        $data[] = [
+                            'id'=>$value->placement_id,
+                            'name'=>$value->id,
+                            'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                        ];
+                    }
+                }
+                
+                break;
         }
         
         return $data;

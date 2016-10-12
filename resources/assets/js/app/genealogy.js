@@ -8,7 +8,7 @@ $('#chart-container').orgchart({
         var _id = $(this).attr('id');
         var id_arr = _id.split('|');
                 
-        window.location.href = '/ibo/create?placement_id=' + id_arr[0] + '&placement_position=' + id_arr[1];
+        if(id_arr[0]) window.location.href = '/ibo/create?placement_id=' + id_arr[0] + '&placement_position=' + id_arr[1];
     }
     else window.location.href = '/genealogy?sponsor_id=' + $(this).find('.title').text() + '&placement_id=' + $(this).attr('id');
 });
