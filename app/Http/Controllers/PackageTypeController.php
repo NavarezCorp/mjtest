@@ -71,6 +71,8 @@ class PackageTypeController extends Controller
     public function edit($id)
     {
         //
+        $data = PackageType::find($id);
+        return view('packagetype.edit', ['data'=>$data]);
     }
 
     /**
@@ -83,6 +85,13 @@ class PackageTypeController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $model = PackageType::find($id);
+        $model->name = $request->name;
+        $model->description = $request->description;
+        $model->save();
+        
+        Session::flash('message', 'Package Type ' . $request->name . ' was successfully updated');
+        return redirect('/packagetype');
     }
 
     /**
