@@ -58,7 +58,7 @@
                             <label class="col-md-4 control-label">IBO ID</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="ibo_id" value="{{ $data->ibo_id }}">
+                                <input type="text" class="form-control" name="ibo_id" value="{{ sprintf('%09d', $data->ibo_id) }}">
 
                                 @if ($errors->has('ibo_id'))
                                     <span class="help-block">

@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Manage IBOs
-                    <!--<a class="pull-right" href="{{-- route('ibo.create') --}}">Add</a>-->
+                    <a class="pull-right" href="{{ route('ibo.create') }}">Add</a>
                 </div>
 
                 <div class="panel-body">
@@ -37,7 +37,7 @@
                                     <td>{{ $value->firstname }}</td>
                                     <td>{{ $value->middlename }}</td>
                                     <td>{{ $value->lastname }}</td>
-                                    <td>{{ $value->sponsor_id }}</td>
+                                    <td>{{ sprintf('%09d', $value->sponsor_id) }}</td>
                                     <td>{{ $value->placement_position }}</td>
                                     <td>{{ $value->ranking_lions_id }}</td>
                                     <td class="table-tools-column">
