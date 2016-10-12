@@ -73,25 +73,20 @@ class CommissionSummaryReportController extends Controller
                     $res = Ibo::where('sponsor_id', $id)
                         ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                         ->orderBy('created_at', 'desc')->get();
-        //print_r(count($res)); die();
+                    
                     $data['commission'][$i]['direct'] = count($res) * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
-                    
-                    // indirect sponsor commission
                     $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
-                    // indirect sponsor commission
                     
-                    // matching bonus
                     $param_['position'] = 'L';
                     $left_ = $this->get_matching_bonus($param_);
                     $param_['position'] = 'R';
                     $right_ = $this->get_matching_bonus($param_);
                     
                     $data['commission'][$i]['fifth_pairs'] = intval(min($left_, $right_) / 5) * Commission::where('name', 'Matching Bonus')->first()->amount;
-                    
-                    $data['commission'][$i]['matching'] = min($left_, $right_) * Commission::where('name', 'Matching Bonus')->first()->amount;
-                    // matching bonus
-                    
-                    $data['commission'][$i]['net_commission'] = ($data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching']) - $data['commission'][$i]['fifth_pairs'];
+                    $data['commission'][$i]['matching'] = (min($left_, $right_) * Commission::where('name', 'Matching Bonus')->first()->amount) - $data['commission'][$i]['fifth_pairs'];
+                    $data['commission'][$i]['gross'] = ($data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching']);
+                    $data['commission'][$i]['tax'] = $data['commission'][$i]['gross'] * .1;
+                    $data['commission'][$i]['net_commission'] = $data['commission'][$i]['gross'] - $data['commission'][$i]['tax'];
                     
                     $date_->subWeek();
                 }
