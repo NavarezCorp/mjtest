@@ -15,7 +15,7 @@
                             <label for="firstname" class="col-md-4 control-label">Firstname</label>
 
                             <div class="col-md-6">
-                                <input id="firstname" type="text" class="form-control" name="firstname" value="{{ $data->firstname }}" readonly>
+                                <input id="firstname" type="text" class="form-control" name="firstname" value="{{ $data->firstname }}" autofocus>
 
                                 @if ($errors->has('firstname'))
                                     <span class="help-block">
@@ -29,7 +29,7 @@
                             <label for="middlename" class="col-md-4 control-label">Middlename</label>
 
                             <div class="col-md-6">
-                                <input id="middlename" type="text" class="form-control" name="middlename" value="{{ $data->middlename }}" readonly>
+                                <input id="middlename" type="text" class="form-control" name="middlename" value="{{ $data->middlename }}">
 
                                 @if ($errors->has('middlename'))
                                     <span class="help-block">
@@ -43,7 +43,7 @@
                             <label for="lastname" class="col-md-4 control-label">Lastname</label>
 
                             <div class="col-md-6">
-                                <input id="lastname" type="text" class="form-control" name="lastname" value="{{ $data->lastname }}" readonly>
+                                <input id="lastname" type="text" class="form-control" name="lastname" value="{{ $data->lastname }}">
 
                                 @if ($errors->has('lastname'))
                                     <span class="help-block">
@@ -57,7 +57,7 @@
                             <label for="sponsor_id" class="col-md-4 control-label">Sponsor ID</label>
 
                             <div class="col-md-6">
-                                <input id="sponsor_id" type="text" class="form-control" name="sponsor_id" value="{{ $data->sponsor_id }}" autofocus>
+                                <input id="sponsor_id" type="text" class="form-control" name="sponsor_id" value="{{ $data->sponsor_id }}">
 
                                 @if ($errors->has('sponsor_id'))
                                     <span class="help-block">
