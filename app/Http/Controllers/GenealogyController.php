@@ -59,29 +59,43 @@ class GenealogyController extends Controller
         
         if($data['children']){
             for($a=0; $a<2; $a++){
-                $data['children'][$a]['children'] = $this->get_children($data['children'][$a]['name']);
+                if(!empty($data['children'][$a])){
+                    $data['children'][$a]['children'] = $this->get_children($data['children'][$a]['name']);
                 
-                if($data['children'][$a]['children']){
-                    for($b=0; $b<2; $b++){
-                        if(isset($data['children'][$a]['children'][$b])){
-                            $data['children'][$a]['children'][$b]['children'] = $this->get_children($data['children'][$a]['children'][$b]['name']);
+                    if($data['children'][$a]['children']){
+                        for($b=0; $b<2; $b++){
+                            if(isset($data['children'][$a]['children'][$b])){
+                                $data['children'][$a]['children'][$b]['children'] = $this->get_children($data['children'][$a]['children'][$b]['name']);
 
-                            if(!$data['children'][$a]['children'][$b]['children']){
+                                if(!$data['children'][$a]['children'][$b]['children']){
+                                    $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
+                                    $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
+                                }
+                            }
+                            else{
+                                $placement_position = ($a == 1) ? 'R' : 'L';
+                                $data['children'][$a]['children'][$b]['id'] = $data['children'][$a]['name'] . '|' . $placement_position;
+                                $data['children'][$a]['children'][$b]['name'] = '';
+                                $data['children'][$a]['children'][$b]['title'] = '';
                                 $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
                                 $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
                             }
                         }
-                        else{
-                            $placement_position = ($a == 1) ? 'R' : 'L';
-                            $data['children'][$a]['children'][$b]['id'] = $data['children'][$a]['name'] . '|' . $placement_position;
-                            $data['children'][$a]['children'][$b]['name'] = '';
-                            $data['children'][$a]['children'][$b]['title'] = '';
-                            $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
-                            $data['children'][$a]['children'][$b]['children'][] = ['id'=>'', 'name'=>'', 'title'=>''];
+                    }
+                    else{
+                        for($b=0; $b<2; $b++){
+                            $data['children'][$a]['children'][$b] = ['id'=>'', 'name'=>'', 'title'=>''];
+
+                            for($c=0; $c<2; $c++) $data['children'][$a]['children'][$b]['children'][$c] = ['id'=>'', 'name'=>'', 'title'=>''];
                         }
                     }
                 }
                 else{
+                    //print_r($data);
+                    $placement_position = ($a == 1) ? 'R' : 'L';
+                    
+                    $data['children'][$a] = ['id'=>$data['name'] . '|' . $placement_position, 'name'=>'', 'title'=>''];
+                    
                     for($b=0; $b<2; $b++){
                         $data['children'][$a]['children'][$b] = ['id'=>'', 'name'=>'', 'title'=>''];
 
@@ -92,7 +106,7 @@ class GenealogyController extends Controller
         }
         else{
             for($a=0; $a<2; $a++){
-                $data['children'][$a] = ['id'=>'', 'name'=>'', 'title'=>''];
+                $data['children'][$a] = ['id'=>'test', 'name'=>'', 'title'=>''];
                 
                 for($b=0; $b<2; $b++){
                     $data['children'][$a]['children'][$b] = ['id'=>'', 'name'=>'', 'title'=>''];
@@ -230,7 +244,7 @@ class GenealogyController extends Controller
         
         switch($param['position']){
             case 'L':
-                if(!empty($res)){
+                if(!empty($res) && !empty($res[0])){
                     $counter = 1;
                     $ids = $this->fetcher_(['id'=>$res[0]['id']]);
                 }
@@ -238,7 +252,7 @@ class GenealogyController extends Controller
                 break;
                 
             case 'R':
-                if(!empty($res)){
+                if(!empty($res) && !empty($res[1])){
                     $counter = 1;
                     $ids = $this->fetcher_(['id'=>$res[1]['id']]);
                 }
