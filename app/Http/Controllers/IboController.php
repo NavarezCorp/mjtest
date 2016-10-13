@@ -45,6 +45,10 @@ class IboController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'activation_code'=>'exists:activation_codes,code',
+        ]);
+        
         $last_ibo_id = Ibo::where('is_part_company', false)->orderBy('id', 'desc')->first();
         
         if($last_ibo_id === NULL) $new_id = 1;

@@ -45,7 +45,7 @@
                                     <label for="lastname" class="col-md-4 control-label">Lastname</label>
 
                                     <div class="col-md-6">
-                                        <input id="lastname" type="text" class="form-control" name="lastname" required>
+                                        <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname') }}" required>
 
                                         @if ($errors->has('lastname'))
                                             <span class="help-block">
@@ -59,7 +59,7 @@
                                     <label for="sponsor_id" class="col-md-4 control-label">Sponsor ID</label>
 
                                     <div class="col-md-6">
-                                        <input id="sponsor_id" type="text" class="form-control" name="sponsor_id" required>
+                                        <input id="sponsor_id" type="text" class="form-control" name="sponsor_id" value="{{ old('sponsor_id') }}" required>
 
                                         @if ($errors->has('sponsor_id'))
                                             <span class="help-block">
@@ -96,6 +96,21 @@
                                         @endif
                                     </div>
                                 </div>
+                                
+                                <div class="form-group{{ $errors->has('activation_code') ? ' has-error' : '' }}">
+                                    <label for="placement_id" class="col-md-4 control-label">Activation Code</label>
+
+                                    <div class="col-md-6">
+                                        <input id="activation_code" type="text" class="form-control" name="activation_code" value="{{ old('activation_code') }}" required>
+
+                                        @if ($errors->has('activation_code'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('activation_code') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                
                                 <!--
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-4">
