@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(IbosTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(CommissionsTableSeeder::class);
+        $this->call(ActivationTypeTableSeeder::class);
     }
 }

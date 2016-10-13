@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use DB;
+use App\ActivationCode;
+use App\ActivationType;
+use Session;
 
 class ActivationCodeController extends Controller
 {
@@ -16,6 +19,9 @@ class ActivationCodeController extends Controller
     public function index()
     {
         //
+        $data['paginate'] = DB::table('activation_codes')->orderBy('id', 'desc')->paginate(15);
+        $data['activation_types'] = ActivationType::pluck('name', 'id');
+        return view('activationcode.index', ['data'=>$data]);
     }
 
     /**
