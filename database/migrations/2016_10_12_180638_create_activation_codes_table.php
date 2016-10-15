@@ -18,7 +18,7 @@ class CreateActivationCodesTable extends Migration
             $table->string('code', 255);
             $table->integer('activation_type_id')->index();
             $table->integer('created_by')->index();
-            $table->integer('used_by_ibo_id')->index();
+            $table->integer('used_by_ibo_id')->index()->nullable();
             $table->dateTime('datetime_used')->nullable();
             $table->timestamps();
         });

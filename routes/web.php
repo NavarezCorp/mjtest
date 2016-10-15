@@ -31,6 +31,8 @@ Route::resource('rebate', 'RebateController');
 Route::resource('user', 'UserController');
 Route::resource('commissionsummaryreport', 'CommissionSummaryReportController');
 Route::resource('activationtype', 'ActivationTypeController');
+
+Route::get('activationcode/get_activation_code', 'ActivationCodeController@get_activation_code');
 Route::resource('activationcode', 'ActivationCodeController');
 
 Route::get('genealogy/get_genealogy', 'GenealogyController@get_genealogy');

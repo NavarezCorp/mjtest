@@ -7,8 +7,35 @@ $('.add-product').click(function(){
     
     $('.product-container').append(html);
 });
+
+$("#code-generator").submit(function(e){
+    e.preventDefault();
+    
+    var data = [];
+    
+    $.each($('#code-generator').serializeArray(), function(i, val){
+        data[val.name] = val.value;
+    });
+    
+    $.getJSON('/activationcode/get_activation_code', 
+        {
+            activation_type_id:data['activation_type_id'],
+            howmanychar:data['howmanychar'], 
+            howmanycode:data['howmanycode']
+        },
+        function(data){
+            window.location = "/activationcode";
+        }
+    );
+    
+    console.log(data);
+});
+var sponsor_id = 0;
+
+if(typeof $('#genealogy_sponsor_id').val() !== 'undefined') sponsor_id = $('#genealogy_sponsor_id').val();
+
 $('#chart-container').orgchart({
-    'data':'/genealogy/' + $('#genealogy_sponsor_id').val(),
+    'data':'/genealogy/' + sponsor_id,
     'nodeContent':'title',
     'nodeId':'id'
 })

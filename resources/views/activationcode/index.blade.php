@@ -17,7 +17,7 @@
                             {{ Session::get('message') }}
                         </div>
                     @endif
-                    <form class="form-horizontal" role="form" method="" action="">
+                    <form class="form-horizontal" role="form" method="" action="" id="code-generator">
                         <div class="form-group">
                             <label class="col-md-4 control-label">Activation Type</label>
                             <div class="col-md-6">
@@ -25,9 +25,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Length</label>
+                            <label class="col-md-4 control-label">How many character</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="length">
+                                <input type="text" class="form-control" name="howmanychar" value="8" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Generate</button>
                             </div>
                         </div>
                     </form>
@@ -58,11 +58,11 @@
                             @foreach ($data['paginate'] as $key => $value)
                                 <tr>
                                     <td>{{ $value->id }}</td>
-                                    <td>{{ $value->code }}</td>
-                                    <td>{{ $value->activation_type_id }}</td>
+                                    <td>{{ decrypt($value->code) }}</td>
+                                    <td>{{ App\ActivationType::find($value->activation_type_id)->name }}</td>
                                     <td>{{ $value->created_at }}</td>
-                                    <td>{{ $value->created_by }}</td>
-                                    <td>{{ $value->used_by_ibo_id }}</td>
+                                    <td>{{ App\User::find($value->created_by)->name }}</td>
+                                    <td>{{ $value->used_by_ibo_id ? App\User::find($value->used_by_ibo_id)->name : '' }}</td>
                                     <td>{{ $value->datetime_used }}</td>
                                 </tr>
                             @endforeach

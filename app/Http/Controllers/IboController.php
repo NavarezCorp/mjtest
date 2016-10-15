@@ -31,8 +31,8 @@ class IboController extends Controller
     public function create()
     {
         //
-        $data['placement_id'] = $_GET['placement_id'];
-        $data['placement_position'] = $_GET['placement_position'];
+        $data['placement_id'] = !empty($_GET['placement_id']) ? $_GET['placement_id'] : '';
+        $data['placement_position'] = !empty($_GET['placement_position']) ? $_GET['placement_position'] : '';
         return view('ibo.create', ['data'=>$data]);
     }
 

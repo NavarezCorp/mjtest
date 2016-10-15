@@ -8,6 +8,8 @@ use DB;
 use App\ActivationCode;
 use App\ActivationType;
 use Session;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ActivationCodeController extends Controller
 {
@@ -88,5 +90,25 @@ class ActivationCodeController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function get_activation_code(){
+        $howmanychar = 8;
+        $howmanycode = $_GET['howmanycode'];
+        
+        for($i = 0; $i < $howmanycode; $i++){
+            $model = new ActivationCode;
+            $model->code = encrypt(Str::upper($this->sfi_get_code($howmanychar)));
+            $model->activation_type_id = $_GET['activation_type_id'];
+            $model->created_by = Auth::user()->id;
+            $model->save();
+        }
+        
+        return json_encode(ActivationCode::get());
+    }
+    
+    private function sfi_get_code($length){
+        $randomData = base64_encode(file_get_contents('/dev/urandom', false, null, 0, $length) . uniqid(mt_rand(), true));
+        return substr(strtr($randomData, array('/' => '', '=' => '', '+' => '')), 0, $length);
     }
 }

@@ -7,3 +7,26 @@ $('.add-product').click(function(){
     
     $('.product-container').append(html);
 });
+
+$("#code-generator").submit(function(e){
+    e.preventDefault();
+    
+    var data = [];
+    
+    $.each($('#code-generator').serializeArray(), function(i, val){
+        data[val.name] = val.value;
+    });
+    
+    $.getJSON('/activationcode/get_activation_code', 
+        {
+            activation_type_id:data['activation_type_id'],
+            howmanychar:data['howmanychar'], 
+            howmanycode:data['howmanycode']
+        },
+        function(data){
+            window.location = "/activationcode";
+        }
+    );
+    
+    console.log(data);
+});

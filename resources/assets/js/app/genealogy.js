@@ -1,5 +1,9 @@
+var sponsor_id = 0;
+
+if(typeof $('#genealogy_sponsor_id').val() !== 'undefined') sponsor_id = $('#genealogy_sponsor_id').val();
+
 $('#chart-container').orgchart({
-    'data':'/genealogy/' + $('#genealogy_sponsor_id').val(),
+    'data':'/genealogy/' + sponsor_id,
     'nodeContent':'title',
     'nodeId':'id'
 })

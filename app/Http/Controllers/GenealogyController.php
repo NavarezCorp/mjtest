@@ -163,6 +163,8 @@ class GenealogyController extends Controller
     }
     
     public function get_genealogy($id){
+        if(!$id) return;
+            
         $data = null;
         $children = null;
         
