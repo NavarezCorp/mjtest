@@ -27,8 +27,33 @@ $("#code-generator").submit(function(e){
             window.location = "/activationcode";
         }
     );
-    
-    console.log(data);
+});
+
+$('.code-search').click(function(){
+    $.getJSON('/activationcode/check_activation_code', {code:$('#activation_code').val().toUpperCase()}, function(data){
+        if(data){
+            console.log(data);
+            
+            var html = '';
+            html += 'Code Type: <strong>' + data.activation_type + '</strong>';
+            
+            if(data.datetime_used) html += ' (used: ' + data.datetime_used + ')';
+            else{
+                html += ' (not yet used)';
+                
+                $('.register-button').removeAttr('disabled');
+            }
+            
+            $('.code-help-block').css('color', 'green').html(html).show();
+        }
+        else $('.code-help-block').css('color', 'red').html('<strong>Code does not exist</strong>').show();
+    });
+});
+
+$("#activation_code").click(function(){
+    $(this).val('');
+    $('.code-help-block').hide();
+    $('.register-button').attr('disabled', true);
 });
 var sponsor_id = 0;
 

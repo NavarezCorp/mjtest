@@ -8,6 +8,7 @@ use DB;
 use App\Ibo;
 use Session;
 use App\User;
+use Illuminate\Validation\Rule;
 
 class IboController extends Controller
 {
@@ -45,10 +46,21 @@ class IboController extends Controller
     public function store(Request $request)
     {
         //
+        /*
         $this->validate($request, [
             'activation_code'=>'exists:activation_codes,code',
         ]);
-        
+        */
+        /*
+        Validator::make($request, [
+            'activation_code' => [
+                'required',
+                Rule::exists('activation_codes')->where(function($query){
+                    $query->where('code', decrypt($request->activation_code));
+                }),
+            ],
+        ]);
+        */
         $last_ibo_id = Ibo::where('is_part_company', false)->orderBy('id', 'desc')->first();
         
         if($last_ibo_id === NULL) $new_id = 1;

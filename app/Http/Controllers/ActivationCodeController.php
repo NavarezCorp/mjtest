@@ -7,6 +7,7 @@ use App\Http\Requests;
 use DB;
 use App\ActivationCode;
 use App\ActivationType;
+use App\User;
 use Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -110,5 +111,28 @@ class ActivationCodeController extends Controller
     private function sfi_get_code($length){
         $randomData = base64_encode(file_get_contents('/dev/urandom', false, null, 0, $length) . uniqid(mt_rand(), true));
         return substr(strtr($randomData, array('/' => '', '=' => '', '+' => '')), 0, $length);
+    }
+    
+    public function check_activation_code(){
+        $data = null;
+        
+        $model = ActivationCode::all();
+        
+        foreach($model as $value){
+            if(decrypt($value->code) == $_GET['code']){
+                $data['code_to_check'] = $_GET['code'];
+                //$data['id'] = $value->id;
+                //$data['code'] = $value->code;
+                $data['activation_type'] = ActivationType::find($value->activation_type_id)->name;
+                $data['created_by'] = User::find($value->created_by)->name;
+                $data['used_by_ibo'] = !empty($value->used_by_ibo_id) ? User::find($value->used_by_ibo_id)->name : null;
+                $data['datetime_used'] = !empty($value->datetime_used) ? $value->datetime_used : null;
+                $data['created_at'] = $value->created_at;
+                
+                break;
+            }
+        }
+        
+        return json_encode($data);
     }
 }

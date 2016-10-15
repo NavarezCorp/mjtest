@@ -100,37 +100,24 @@
                                 <div class="form-group{{ $errors->has('activation_code') ? ' has-error' : '' }}">
                                     <label for="placement_id" class="col-md-4 control-label">Activation Code</label>
 
-                                    <div class="col-md-6">
-                                        <input id="activation_code" type="text" class="form-control" name="activation_code" value="{{ old('activation_code') }}" required>
+                                    <div class="col-md-5">
+                                        <input id="activation_code" type="text" class="form-control" name="activation_code" value="{{ old('activation_code') }}" style="text-transform:uppercase" required>
 
                                         @if ($errors->has('activation_code'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('activation_code') }}</strong>
                                             </span>
                                         @endif
+                                        <span class="help-block code-help-block" style="display:none;"></span>
                                     </div>
+                                    <button type="button" class="btn btn-default code-search">
+                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                    </button>
                                 </div>
-                                
-                                <!--
-                                <div class="form-group">
-                                    <div class="col-md-6 col-md-offset-4">
-                                        <div class="checkbox" style="float:left; margin-right:30px;">
-                                            <label>
-                                                <input type="checkbox" name="is_part_company"> Part of company
-                                            </label>
-                                        </div>
-                                        <div class="checkbox" style="float:left;">
-                                            <label>
-                                                <input type="checkbox" name="is_admin"> Admin
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                -->
                                 <hr>
                                 <div class="form-group">
                                     <div class="col-md-6 col-md-offset-4">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary register-button" disabled>
                                             Register
                                         </button>
                                     </div>
