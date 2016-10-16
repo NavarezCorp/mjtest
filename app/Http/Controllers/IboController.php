@@ -8,6 +8,7 @@ use DB;
 use App\Ibo;
 use Session;
 use App\User;
+use App\ActivationCode;
 use Illuminate\Validation\Rule;
 
 class IboController extends Controller
@@ -86,6 +87,11 @@ class IboController extends Controller
         $model->password = bcrypt('123456');
         $model->ibo_id = $new_id;
         $model->remember_token = $model->getRememberToken();
+        $model->save();
+        
+        $model = ActivationCode::find($request->cid);
+        $model->datetime_used = date('Y-m-d H:i');
+        $model->used_by_ibo_id = $new_id;
         $model->save();
         
         Session::flash('message', 'IBO named "' . $request->firstname . ' ' . $request->middlename . ' ' . $request->lastname . '" was successfully created');

@@ -62,7 +62,7 @@
                                     <td>{{ App\ActivationType::find($value->activation_type_id)->name }}</td>
                                     <td>{{ $value->created_at }}</td>
                                     <td>{{ App\User::find($value->created_by)->name }}</td>
-                                    <td>{{ $value->used_by_ibo_id ? App\User::find($value->used_by_ibo_id)->name : '' }}</td>
+                                    <td>{{ $value->used_by_ibo_id ? App\User::where('ibo_id', $value->used_by_ibo_id)->first()->name : '' }}</td>
                                     <td>{{ $value->datetime_used }}</td>
                                 </tr>
                             @endforeach

@@ -12,7 +12,7 @@
                         <div class="panel-body">
                             <form class="form-horizontal" role="form" method="POST" action="{{ url('/ibo') }}">
                                 {{ csrf_field() }}
-
+                                <input type="hidden" name="cid" id="cid" value="">
                                 <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                                     <label for="firstname" class="col-md-4 control-label">Firstname</label>
 

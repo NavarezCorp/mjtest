@@ -9,7 +9,8 @@
         "laravel/framework": "5.3.*",
         "laravelcollective/html": "^5.3",
         "nesbot/carbon": "^1.21",
-        "spatie/laravel-backup": "^4.0"
+        "spatie/laravel-backup": "^4.0",
+        "barryvdh/laravel-dompdf": "^0.7.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

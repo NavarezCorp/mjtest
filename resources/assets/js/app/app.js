@@ -32,19 +32,24 @@ $("#code-generator").submit(function(e){
 $('.code-search').click(function(){
     $.getJSON('/activationcode/check_activation_code', {code:$('#activation_code').val().toUpperCase()}, function(data){
         if(data){
-            console.log(data);
+            $('#cid').val(data.id);
+            
+            var color = 'green';
             
             var html = '';
             html += 'Code Type: <strong>' + data.activation_type + '</strong>';
             
-            if(data.datetime_used) html += ' (used: ' + data.datetime_used + ')';
+            if(data.datetime_used){
+                html += '<br/>(used: ' + data.datetime_used + ')';
+                color = 'red';
+            }
             else{
                 html += ' (not yet used)';
                 
                 $('.register-button').removeAttr('disabled');
             }
             
-            $('.code-help-block').css('color', 'green').html(html).show();
+            $('.code-help-block').css('color', color).html(html).show();
         }
         else $('.code-help-block').css('color', 'red').html('<strong>Code does not exist</strong>').show();
     });

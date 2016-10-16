@@ -121,7 +121,7 @@ class ActivationCodeController extends Controller
         foreach($model as $value){
             if(decrypt($value->code) == $_GET['code']){
                 $data['code_to_check'] = $_GET['code'];
-                //$data['id'] = $value->id;
+                $data['id'] = $value->id;
                 //$data['code'] = $value->code;
                 $data['activation_type'] = ActivationType::find($value->activation_type_id)->name;
                 $data['created_by'] = User::find($value->created_by)->name;
