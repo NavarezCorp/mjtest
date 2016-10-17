@@ -43,6 +43,9 @@
                         </div>
                     </form>
                     <hr>
+                    <!--<button type="submit" class="btn btn-primary print-codes">Print</button>-->
+                    <a class="btn btn-primary" href="/activationcode/print_code" role="button" target="_blank">Print Codes</a>
+                    <hr>
                     <div class="pull-right">{!! $data['paginate']->links() !!}</div>
                     <table class="table table-striped table-hover table-condensed">
                         <thead>

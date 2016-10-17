@@ -11,6 +11,7 @@ use App\User;
 use Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class ActivationCodeController extends Controller
 {
@@ -134,5 +135,14 @@ class ActivationCodeController extends Controller
         }
         
         return json_encode($data);
+    }
+    
+    public function print_code(){
+        $data = ActivationCode::all();
+        
+        $pdf = PDF::loadView('activationcode.print', ['data'=>$data]);
+        $pdf->setPaper('a4', 'landscape');
+        
+        return $pdf->stream();
     }
 }

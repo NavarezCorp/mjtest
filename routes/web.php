@@ -34,6 +34,16 @@ Route::resource('activationtype', 'ActivationTypeController');
 
 Route::get('activationcode/get_activation_code', 'ActivationCodeController@get_activation_code');
 Route::get('activationcode/check_activation_code', 'ActivationCodeController@check_activation_code');
+
+Route::get('/activationcode/print_code', 'ActivationCodeController@print_code');
+/*
+Route::get('/activationcode/print_code', function(){
+    $data = DB::table('activation_codes')->orderBy('id', 'desc')->get();
+    print_r($data); die();
+    $pdf = PDF::loadView('activationcode.print', $data, $data);
+    return $pdf->stream();
+});
+*/
 Route::resource('activationcode', 'ActivationCodeController');
 
 Route::get('genealogy/get_genealogy', 'GenealogyController@get_genealogy');
