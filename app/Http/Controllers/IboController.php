@@ -79,6 +79,8 @@ class IboController extends Controller
         $model->total_purchase_amount = $request->total_purchase_amount;
         $model->ranking_lions_id = $request->ranking_lions_id;
         $model->is_admin = $request->has('is_admin');
+        $model->activation_code = $request->activation_code;
+        $model->activation_code_type = $request->activation_code_type;
         $model->save();
         
         $model = new User;

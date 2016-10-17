@@ -58,6 +58,8 @@ class CommissionSummaryReportController extends Controller
         $date_->setWeekStartsAt(Carbon::SATURDAY);
         $date_->setWeekEndsAt(Carbon::FRIDAY);
         
+        $user = Ibo::find($id);
+        
         $data['type'] = $_GET['type'];
         
         switch($_GET['type']){
@@ -70,11 +72,17 @@ class CommissionSummaryReportController extends Controller
                     $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
                     $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
                     
-                    $res = Ibo::where('sponsor_id', $id)
-                        ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
-                        ->orderBy('created_at', 'desc')->get();
+                    $direct_count = 0;
                     
-                    $data['commission'][$i]['direct'] = count($res) * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
+                    if(is_null($user->activation_code_type) || ($user->activation_code_type != 'FS')){
+                        $res = Ibo::where('sponsor_id', $id)
+                            ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                            ->orderBy('created_at', 'desc')->get();
+                        
+                        $direct_count = count($res);
+                    }
+                    
+                    $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
                     $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
                     
                     $param_['position'] = 'L';

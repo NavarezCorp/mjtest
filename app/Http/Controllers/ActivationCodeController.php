@@ -123,7 +123,7 @@ class ActivationCodeController extends Controller
                 $data['code_to_check'] = $_GET['code'];
                 $data['id'] = $value->id;
                 //$data['code'] = $value->code;
-                $data['activation_type'] = ActivationType::find($value->activation_type_id)->name;
+                $data['activation_code_type'] = ActivationType::find($value->activation_type_id)->name;
                 $data['created_by'] = User::find($value->created_by)->name;
                 $data['used_by_ibo'] = !empty($value->used_by_ibo_id) ? User::find($value->used_by_ibo_id)->name : null;
                 $data['datetime_used'] = !empty($value->datetime_used) ? $value->datetime_used : null;

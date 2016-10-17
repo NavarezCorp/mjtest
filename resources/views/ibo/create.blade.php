@@ -13,6 +13,7 @@
                             <form class="form-horizontal" role="form" method="POST" action="{{ url('/ibo') }}">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="cid" id="cid" value="">
+                                <input type="hidden" name="activation_code_type" id="activation_code_type" value="">
                                 <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                                     <label for="firstname" class="col-md-4 control-label">Firstname</label>
 
@@ -73,7 +74,7 @@
                                     <label for="placement_id" class="col-md-4 control-label">Placement ID</label>
 
                                     <div class="col-md-6">
-                                        <input id="placement_id" type="text" class="form-control" name="placement_id" value="{{ $data['placement_id'] ? $data['placement_id'] : '' }}" required>
+                                        <input id="placement_id" type="text" class="form-control" name="placement_id" value="{{ $data['placement_id'] ? sprintf('%09d', $data['placement_id']) : '' }}" required>
 
                                         @if ($errors->has('placement_id'))
                                             <span class="help-block">

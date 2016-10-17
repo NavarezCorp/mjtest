@@ -33,11 +33,12 @@ $('.code-search').click(function(){
     $.getJSON('/activationcode/check_activation_code', {code:$('#activation_code').val().toUpperCase()}, function(data){
         if(data){
             $('#cid').val(data.id);
+            $('#activation_code_type').val(data.activation_code_type);
             
             var color = 'green';
             
             var html = '';
-            html += 'Code Type: <strong>' + data.activation_type + '</strong>';
+            html += 'Code Type: <strong>' + data.activation_code_type + '</strong>';
             
             if(data.datetime_used){
                 html += '<br/>(used: ' + data.datetime_used + ')';
