@@ -19,7 +19,7 @@ class ActivationTypeTableSeeder extends Seeder
         
         DB::table('activation_types')->insert([
             'name'=>'FS',
-            'description'=>'Free Start'
+            'description'=>'Free Slot'
         ]);
         
         DB::table('activation_types')->insert([
