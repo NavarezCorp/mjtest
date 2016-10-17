@@ -76,13 +76,14 @@ class CommissionSummaryReportController extends Controller
                     
                     $direct_count = 0;
                     
-                    if(is_null($user->activation_code_type) || ($user->activation_code_type != 'FS')){
-                        $res = Ibo::where('sponsor_id', $id)
-                            ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
-                            ->orderBy('created_at', 'desc')->get();
-                        
-                        $direct_count = count($res);
-                    }
+                    $res = Ibo::where('sponsor_id', $id)
+                        ->where('activation_code_type', '!=', 'FS')
+                        ->where('activation_code_type', '!=', 'CD')
+                        ->where('activation_code_type', '!=', null)
+                        ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                        ->orderBy('created_at', 'desc')->get();
+
+                    $direct_count = count($res);
                     
                     $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
                     $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
@@ -348,15 +349,16 @@ class CommissionSummaryReportController extends Controller
             $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
 
             $direct_count = 0;
+            
+            $res = Ibo::where('sponsor_id', $value->id)
+                ->where('activation_code_type', '!=', 'FS')
+                ->where('activation_code_type', '!=', 'CD')
+                ->where('activation_code_type', '!=', null)
+                ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                ->orderBy('created_at', 'desc')->get();
 
-            if(is_null($ibo->activation_code_type) || ($ibo->activation_code_type != 'FS')){
-                $res = Ibo::where('sponsor_id', $value->id)
-                    ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
-                    ->orderBy('created_at', 'desc')->get();
-
-                $direct_count = count($res);
-            }
-
+            $direct_count = count($res);
+            
             $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
             $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
 
