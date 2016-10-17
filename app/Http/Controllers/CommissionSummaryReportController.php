@@ -226,7 +226,7 @@ class CommissionSummaryReportController extends Controller
         
         switch($param['position']){
             case 'L':
-                if(!empty($res)){
+                if(!empty($res[0])){
                     $counter++;
                     $param['id'] = $res[0];
                     $ids = $this->fetcher__($param);
@@ -235,7 +235,7 @@ class CommissionSummaryReportController extends Controller
                 break;
                 
             case 'R':
-                if(!empty($res)){
+                if(!empty($res[1])){
                     $counter++;
                     $param['id'] = $res[1];
                     $ids = $this->fetcher__($param);

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class IbosTableSeeder extends Seeder
 {
@@ -23,7 +24,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -37,7 +39,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -51,7 +54,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -65,7 +69,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -79,7 +84,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -93,7 +99,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -107,7 +114,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -121,7 +129,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -135,7 +144,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -149,7 +159,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -163,7 +174,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -177,7 +189,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -191,7 +204,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -205,7 +219,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -219,7 +234,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -233,7 +249,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -247,7 +264,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -261,7 +279,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -275,7 +294,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -289,7 +309,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -303,7 +324,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -317,7 +339,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -331,7 +354,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -345,7 +369,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -359,7 +384,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -373,7 +399,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -387,7 +414,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -401,7 +429,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -415,7 +444,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -429,7 +459,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'L',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         
         DB::table('ibos')->insert([
@@ -443,7 +474,8 @@ class IbosTableSeeder extends Seeder
             'placement_position'=>'R',
             'total_purchase_amount'=>0,
             'ranking_lions_id'=>0,
-            'is_admin'=>false
+            'is_admin'=>false,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
     }
 }
