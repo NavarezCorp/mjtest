@@ -9,6 +9,8 @@ use App\Commission;
 use Carbon\Carbon;
 use DB;
 use App\ProductPurchase;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class CommissionSummaryReportController extends Controller
 {
@@ -320,5 +322,56 @@ class CommissionSummaryReportController extends Controller
             ->where('ibo_id', $param['id'])->whereBetween('created_at', [$param['start_date'], $param['end_date']])->first();
         
         return $res->total_purchase;
+    }
+    
+    public function get_all(){
+        $data = null;
+        $param_ = null;
+        $date_ = Carbon::now('Asia/Manila');
+        $date_->setWeekStartsAt(Carbon::SATURDAY);
+        $date_->setWeekEndsAt(Carbon::FRIDAY);
+        
+        $ibos = Ibo::all();
+        
+        $data['type'] = 'all';
+        
+        foreach($ibos as $i => $value){
+            $ibo = Ibo::find($value->id);
+                
+            $data['commission'][$i]['ibo_name'] = $value->firstname . ' ' . $value->middlename . ' ' . $value->lastname . ' (' . sprintf('%09d', $value->id) . ')';
+            
+            $data['date_start'] = $date_->startOfWeek()->format('F j, Y');
+            $data['date_end'] = $date_->endOfWeek()->format('F j, Y');
+
+            $param_['id'] = $value->id;
+            $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
+            $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
+
+            $direct_count = 0;
+
+            if(is_null($ibo->activation_code_type) || ($ibo->activation_code_type != 'FS')){
+                $res = Ibo::where('sponsor_id', $value->id)
+                    ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                    ->orderBy('created_at', 'desc')->get();
+
+                $direct_count = count($res);
+            }
+
+            $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
+            $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
+
+            $param_['position'] = 'L';
+            $left_ = $this->get_matching_bonus($param_);
+            $param_['position'] = 'R';
+            $right_ = $this->get_matching_bonus($param_);
+
+            $data['commission'][$i]['fifth_pairs'] = intval(min($left_, $right_) / 5) * Commission::where('name', 'Matching Bonus')->first()->amount;
+            $data['commission'][$i]['matching'] = (min($left_, $right_) * Commission::where('name', 'Matching Bonus')->first()->amount) - $data['commission'][$i]['fifth_pairs'];
+            $data['commission'][$i]['gross'] = ($data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching']);
+            $data['commission'][$i]['tax'] = $data['commission'][$i]['gross'] * .1;
+            $data['commission'][$i]['net_commission'] = $data['commission'][$i]['gross'] - $data['commission'][$i]['tax'];
+        }
+        
+        return view('commissionsummaryreport.all', ['data'=>$data]);
     }
 }

@@ -91,6 +91,7 @@
                                         <li><a href="{{ url('/rebate') }}">Rebates</a></li>
                                         <li><a href="{{ url('/activationtype') }}">Activation Types</a></li>
                                         <li><a href="{{ url('/activationcode') }}">Activation Codes</a></li>
+                                        <li><a href="{{ url('/commissionsummaryreport/all') }}">Weekly Summary Commission Report (All)</a></li>
                                     @endif
                                 </ul>
                             </li>
