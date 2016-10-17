@@ -43,35 +43,76 @@
                         </div>
                     </form>
                     <hr>
-                    <!--<button type="submit" class="btn btn-primary print-codes">Print</button>-->
-                    <a class="btn btn-primary" href="/activationcode/print_code" role="button" target="_blank">Print Codes</a>
-                    <hr>
-                    <div class="pull-right">{!! $data['paginate']->links() !!}</div>
-                    <table class="table table-striped table-hover table-condensed">
-                        <thead>
-                            <th>ID</th>
-                            <th>Code</th>
-                            <th>Activation Type</th>
-                            <th>DateTime Created</th>
-                            <th>Created By</th>
-                            <th>Used By</th>
-                            <th>DateTime Used</th>
-                        </thead>
-                        <tbody>
-                            @foreach ($data['paginate'] as $key => $value)
-                                <tr>
-                                    <td>{{ $value->id }}</td>
-                                    <td>{{ decrypt($value->code) }}</td>
-                                    <td>{{ App\ActivationType::find($value->activation_type_id)->name }}</td>
-                                    <td>{{ $value->created_at }}</td>
-                                    <td>{{ App\User::find($value->created_by)->name }}</td>
-                                    <td>{{ $value->used_by_ibo_id ? App\User::where('ibo_id', $value->used_by_ibo_id)->first()->name : '' }}</td>
-                                    <td>{{ $value->datetime_used }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <div class="pull-right">{!! $data['paginate']->links() !!}</div>
+                    <ul class="nav nav-tabs" id="code-tabs" role="tablist" style="margin-bottom:20px;">
+                        <li role="presentation" class="active">
+                            <a href="#not-yet-printed-codes" id="not-yet-printed-codes-tab" role="tab" data-toggle="tab" aria-controls="not-yet-printed-codes" aria-expanded="true">Not yet printed</a>
+                        </li>
+                        <li role="presentation" class="">
+                            <a href="#all-codes" role="tab" id="all-codes-tab" data-toggle="tab" aria-controls="all-codes" aria-expanded="false">All</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="codes-tab-content">
+                        <div id="not-yet-printed-codes" class="tab-pane fade active in" role="tabpanel" aria-labelledby="home-tab">
+                            <a class="btn btn-primary" href="/activationcode/print_code/nypc" role="button" target="_blank">Print Codes</a>
+                            <hr>
+                            <div class="pull-right">{!! $data['not_yet_printed']->links() !!}</div>
+                            <table class="table table-striped table-hover table-condensed">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Code</th>
+                                    <th>Activation Type</th>
+                                    <th>DateTime Created</th>
+                                    <th>Created By</th>
+                                    <th>Used By</th>
+                                    <th>DateTime Used</th>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data['not_yet_printed'] as $key => $value)
+                                        <tr>
+                                            <td>{{ $value->id }}</td>
+                                            <td>{{ decrypt($value->code) }}</td>
+                                            <td>{{ App\ActivationType::find($value->activation_type_id)->name }}</td>
+                                            <td>{{ $value->created_at }}</td>
+                                            <td>{{ App\User::find($value->created_by)->name }}</td>
+                                            <td>{{ $value->used_by_ibo_id ? App\User::where('ibo_id', $value->used_by_ibo_id)->first()->name : '' }}</td>
+                                            <td>{{ $value->datetime_used }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <div class="pull-right">{!! $data['not_yet_printed']->links() !!}</div>
+                        </div>
+                        <div id="all-codes" class="tab-pane fade" role="tabpanel" aria-labelledby="profile-tab">
+                            <a class="btn btn-primary" href="/activationcode/print_code/all" role="button" target="_blank">Print Codes</a>
+                            <hr>
+                            <div class="pull-right">{!! $data['all']->links() !!}</div>
+                            <table class="table table-striped table-hover table-condensed">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>Code</th>
+                                    <th>Activation Type</th>
+                                    <th>DateTime Created</th>
+                                    <th>Created By</th>
+                                    <th>Used By</th>
+                                    <th>DateTime Used</th>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data['all'] as $key => $value)
+                                        <tr>
+                                            <td>{{ $value->id }}</td>
+                                            <td>{{ decrypt($value->code) }}</td>
+                                            <td>{{ App\ActivationType::find($value->activation_type_id)->name }}</td>
+                                            <td>{{ $value->created_at }}</td>
+                                            <td>{{ App\User::find($value->created_by)->name }}</td>
+                                            <td>{{ $value->used_by_ibo_id ? App\User::where('ibo_id', $value->used_by_ibo_id)->first()->name : '' }}</td>
+                                            <td>{{ $value->datetime_used }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <div class="pull-right">{!! $data['all']->links() !!}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

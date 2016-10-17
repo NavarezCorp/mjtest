@@ -61,3 +61,8 @@ $("#activation_code").click(function(){
     $('.code-help-block').hide();
     $('.register-button').attr('disabled', true);
 });
+
+$('#code-tabs a').click(function(e){
+  e.preventDefault();
+  $(this).tab('show');
+})

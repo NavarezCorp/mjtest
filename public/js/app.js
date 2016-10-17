@@ -61,15 +61,11 @@ $("#activation_code").click(function(){
     $('.code-help-block').hide();
     $('.register-button').attr('disabled', true);
 });
-/*
-$('.print-codes').click(function(){
-    console.log('test');
-    
-    $.getJSON('/activationcode/print_code', function(data){
-        
-    });
-});
-*/
+
+$('#code-tabs a').click(function(e){
+  e.preventDefault();
+  $(this).tab('show');
+})
 var sponsor_id = 0;
 
 if(typeof $('#genealogy_sponsor_id').val() !== 'undefined') sponsor_id = $('#genealogy_sponsor_id').val();

@@ -18,7 +18,7 @@ class CreatePackagesTable extends Migration
             $table->string('activation_code', 255);
             $table->integer('package_type_id')->index();
             $table->integer('created_by')->index();
-            $table->boolean('is_used');
+            $table->boolean('is_used')->default(false);
             $table->dateTime('datetime_used')->nullable();
             $table->integer('used_by_ibo_id')->index();
             $table->integer('encoded_by_ibo_id')->index();

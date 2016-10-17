@@ -37,7 +37,7 @@ Route::resource('activationtype', 'ActivationTypeController');
 
 Route::get('activationcode/get_activation_code', 'ActivationCodeController@get_activation_code');
 Route::get('activationcode/check_activation_code', 'ActivationCodeController@check_activation_code');
-Route::get('/activationcode/print_code', 'ActivationCodeController@print_code');
+Route::get('/activationcode/print_code/{type}', 'ActivationCodeController@print_code');
 Route::resource('activationcode', 'ActivationCodeController');
 
 Route::get('genealogy/get_genealogy', 'GenealogyController@get_genealogy');

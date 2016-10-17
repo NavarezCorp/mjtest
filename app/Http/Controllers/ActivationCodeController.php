@@ -23,7 +23,8 @@ class ActivationCodeController extends Controller
     public function index()
     {
         //
-        $data['paginate'] = DB::table('activation_codes')->orderBy('id', 'desc')->paginate(15);
+        $data['all'] = DB::table('activation_codes')->orderBy('id', 'desc')->paginate(15);
+        $data['not_yet_printed'] = DB::table('activation_codes')->where('printed', false)->orderBy('id', 'desc')->paginate(15);
         $data['activation_types'] = ActivationType::pluck('name', 'id');
         return view('activationcode.index', ['data'=>$data]);
     }
@@ -137,12 +138,23 @@ class ActivationCodeController extends Controller
         return json_encode($data);
     }
     
-    public function print_code(){
-        $data = ActivationCode::all();
+    public function print_code($type){
+        $data = null;
         
-        $pdf = PDF::loadView('activationcode.print', ['data'=>$data]);
-        $pdf->setPaper('a4', 'landscape');
+        switch($type){
+            case 'nypc':
+                $data = ActivationCode::where('printed', false)->orderBy('id', 'desc')->get();
+                break;
+            
+            case 'all':
+                $data = ActivationCode::orderBy('id', 'desc')->get();
+                break;
+        }
         
-        return $pdf->stream();
+        if($data){
+            $pdf = PDF::loadView('activationcode.print', ['data'=>$data]);
+            $pdf->setPaper('a4', 'landscape');
+            return $pdf->stream();
+        }
     }
 }

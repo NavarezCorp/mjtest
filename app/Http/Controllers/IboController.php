@@ -94,6 +94,7 @@ class IboController extends Controller
         $model = ActivationCode::find($request->cid);
         $model->datetime_used = date('Y-m-d H:i');
         $model->used_by_ibo_id = $new_id;
+        $model->printed = true;
         $model->save();
         
         Session::flash('message', 'IBO named "' . $request->firstname . ' ' . $request->middlename . ' ' . $request->lastname . '" was successfully created');

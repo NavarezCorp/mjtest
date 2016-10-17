@@ -17,7 +17,7 @@ class CreateProductAmountsTable extends Migration
             $table->increments('id');
             $table->integer('product_id')->index();
             $table->decimal('amount', 9, 2);
-            $table->boolean('is_active');
+            $table->boolean('is_active')->default(false);
             $table->integer('created_by')->index();
             $table->timestamps();
         });

@@ -20,6 +20,7 @@ class CreateActivationCodesTable extends Migration
             $table->integer('created_by')->index();
             $table->integer('used_by_ibo_id')->index()->nullable();
             $table->dateTime('datetime_used')->nullable();
+            $table->boolean('printed')->default(false);
             $table->timestamps();
         });
     }
