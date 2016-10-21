@@ -177,92 +177,40 @@ class GenealogyController extends Controller
             ->select('id', 'firstname', 'middlename', 'lastname', 'placement_position', 'placement_id')
             ->where('placement_id', $res_parent->id)
             ->get();
-        //var_dump($res_children->count()); die();
-        /*
+        
         if($res_children->count()){
-            foreach($res_children as $value){
-                if($value->placement_position == 'L'){
+            //foreach($res_children as $key => $value){
+                if($res_children[0]->placement_position == 'L'){
                     $children[] = [
-                        'id'=>$value->placement_id,
-                        'name'=>sprintf('%09d', $value->id),
-                        'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                        'id'=>$res_children[0]->placement_position,
+                        'name'=>sprintf('%09d', $res_children[0]->id),
+                        'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
+                    ];
+                    
+                    $children[] = [
+                        'id'=>$res_children[1]->placement_position,
+                        'name'=>sprintf('%09d', $res_children[1]->id),
+                        'title'=>$res_children[1]->firstname . ' ' . $res_children[1]->middlename . ' ' . $res_children[1]->lastname
                     ];
                 }
-
-                if($value->placement_position == 'R'){
+                else{
                     $children[] = [
-                        'id'=>$value->placement_id,
-                        'name'=>sprintf('%09d', $value->id),
-                        'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
+                        'id'=>$res_children[1]->placement_position,
+                        'name'=>sprintf('%09d', $res_children[1]->id),
+                        'title'=>$res_children[1]->firstname . ' ' . $res_children[1]->middlename . ' ' . $res_children[1]->lastname
+                    ];
+                    
+                    $children[] = [
+                        'id'=>$res_children[0]->placement_position,
+                        'name'=>sprintf('%09d', $res_children[0]->id),
+                        'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
                     ];
                 }
-            }
+            //}
         }
         else{
             $children[] = ['id'=>$res_parent->id . '|L', 'name'=>'', 'title'=>''];
             $children[] = ['id'=>$res_parent->id . '|R', 'name'=>'', 'title'=>''];
-        }
-        */
-        switch($res_children->count()){
-            case 0:
-                $children[] = ['id'=>$id . '|L', 'name'=>'', 'title'=>''];
-                $children[] = ['id'=>$id . '|R', 'name'=>'', 'title'=>''];
-                break;
-            
-            case 1:
-                switch($res_children[0]->placement_position){
-                    case 'L':
-                        $children[0] = [
-                            'id'=>$res_children[0]->placement_id,
-                            'name'=>sprintf('%09d', $res_children[0]->id),
-                            'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
-                        ];
-                        
-                        $children[1] = [
-                            'id'=>$res_children[0]->placement_id . '|R',
-                            'name'=>'',
-                            'title'=>''
-                        ];
-                        
-                        break;
-                    
-                    case 'R':
-                        $children[0] = [
-                            'id'=>$res_children[0]->placement_id . '|L',
-                            'name'=>'',
-                            'title'=>''
-                        ];
-                        
-                        $children[1] = [
-                            'id'=>$res_children[0]->placement_id,
-                            'name'=>sprintf('%09d', $res_children[0]->id),
-                            'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
-                        ];
-                        break;
-                }
-                
-                break;
-            
-            case 2:
-                foreach($res_children as $value){
-                    if($value->placement_position == 'L'){
-                        $children[] = [
-                            'id'=>$value->placement_id,
-                            'name'=>sprintf('%09d', $value->id),
-                            'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
-                        ];
-                    }
-
-                    if($value->placement_position == 'R'){
-                        $children[] = [
-                            'id'=>$value->placement_id,
-                            'name'=>sprintf('%09d', $value->id),
-                            'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
-                        ];
-                    }
-                }
-                
-                break;
         }
         
         $data = [
@@ -271,7 +219,7 @@ class GenealogyController extends Controller
             'title'=>$res_parent->firstname . ' ' . $res_parent->middlename . ' ' . $res_parent->lastname,
             'children'=>$children
         ];
-        
+        //var_dump($data); die();
         return $data;
     }
     
@@ -350,9 +298,10 @@ class GenealogyController extends Controller
                 break;
             
             case 2:
+                /*
                 foreach($res_children as $value){
                     if($value->placement_position == 'L'){
-                        $data[] = [
+                        $data[0] = [
                             'id'=>$value->placement_id,
                             'name'=>sprintf('%09d', $value->id),
                             'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
@@ -360,14 +309,42 @@ class GenealogyController extends Controller
                     }
 
                     if($value->placement_position == 'R'){
-                        $data[] = [
+                        $data[1] = [
                             'id'=>$value->placement_id,
                             'name'=>sprintf('%09d', $value->id),
                             'title'=>$value->firstname . ' ' . $value->middlename . ' ' . $value->lastname
                         ];
                     }
                 }
-                
+                */
+                //foreach($res_children as $key => $value){
+                    if($res_children[0]->placement_position == 'L'){
+                        $data[] = [
+                            'id'=>$res_children[0]->placement_position,
+                            'name'=>sprintf('%09d', $res_children[0]->id),
+                            'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
+                        ];
+
+                        $data[] = [
+                            'id'=>$res_children[1]->placement_position,
+                            'name'=>sprintf('%09d', $res_children[1]->id),
+                            'title'=>$res_children[1]->firstname . ' ' . $res_children[1]->middlename . ' ' . $res_children[1]->lastname
+                        ];
+                    }
+                    else{
+                        $data[] = [
+                            'id'=>$res_children[1]->placement_position,
+                            'name'=>sprintf('%09d', $res_children[1]->id),
+                            'title'=>$res_children[1]->firstname . ' ' . $res_children[1]->middlename . ' ' . $res_children[1]->lastname
+                        ];
+
+                        $data[] = [
+                            'id'=>$res_children[0]->placement_position,
+                            'name'=>sprintf('%09d', $res_children[0]->id),
+                            'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
+                        ];
+                    }
+                //}
                 break;
         }
         
