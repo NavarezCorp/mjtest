@@ -79,7 +79,7 @@ class CommissionSummaryReportController extends Controller
                     $res = Ibo::where('sponsor_id', $id)
                         ->where('activation_code_type', '!=', 'FS')
                         ->where('activation_code_type', '!=', 'CD')
-                        ->where('activation_code_type', '!=', null)
+                        ->where('activation_code_type', '=', null)
                         ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                         ->orderBy('created_at', 'desc')->get();
 
