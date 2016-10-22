@@ -178,8 +178,47 @@ class GenealogyController extends Controller
             ->where('placement_id', $res_parent->id)
             ->get();
         
-        if($res_children->count()){
-            //foreach($res_children as $key => $value){
+        switch($res_children->count()){
+            case 0:
+                $children[] = ['id'=>$res_parent->id . '|L', 'name'=>'', 'title'=>''];
+                $children[] = ['id'=>$res_parent->id . '|R', 'name'=>'', 'title'=>''];
+                break;
+            
+            case 1:
+                switch($res_children[0]->placement_position){
+                    case 'L':
+                        $children[] = [
+                            'id'=>$res_children[0]->placement_id,
+                            'name'=>sprintf('%09d', $res_children[0]->id),
+                            'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
+                        ];
+                        
+                        $children[] = [
+                            'id'=>$res_children[0]->placement_id . '|R',
+                            'name'=>'',
+                            'title'=>''
+                        ];
+                        
+                        break;
+                    
+                    case 'R':
+                        $children[] = [
+                            'id'=>$res_children[0]->placement_id . '|L',
+                            'name'=>'',
+                            'title'=>''
+                        ];
+                        
+                        $children[] = [
+                            'id'=>$res_children[0]->placement_id,
+                            'name'=>sprintf('%09d', $res_children[0]->id),
+                            'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
+                        ];
+                        break;
+                }
+                
+                break;
+            
+            case 2:
                 if($res_children[0]->placement_position == 'L'){
                     $children[] = [
                         'id'=>$res_children[0]->placement_position,
@@ -206,11 +245,8 @@ class GenealogyController extends Controller
                         'title'=>$res_children[0]->firstname . ' ' . $res_children[0]->middlename . ' ' . $res_children[0]->lastname
                     ];
                 }
-            //}
-        }
-        else{
-            $children[] = ['id'=>$res_parent->id . '|L', 'name'=>'', 'title'=>''];
-            $children[] = ['id'=>$res_parent->id . '|R', 'name'=>'', 'title'=>''];
+                
+                break;
         }
         
         $data = [
