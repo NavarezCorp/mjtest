@@ -222,7 +222,13 @@ class CommissionSummaryReportController extends Controller
     public function fetcher_($param){
         $data = null;
         
-        $res = Ibo::where('sponsor_id', $param['id'])->whereBetween('created_at', [$param['start_date'], $param['end_date']])->orderBy('created_at', 'desc')->get();
+        $res = Ibo::where('sponsor_id', $param['id'])
+            ->where('activation_code_type', '!=', 'FS')
+            ->where('activation_code_type', '!=', 'CD')
+            ->where('activation_code_type', '=', null)
+            ->whereBetween('created_at', [$param['start_date'], $param['end_date']])
+            ->orderBy('created_at', 'desc')
+            ->get();
         
         foreach($res as $value) $data[] = $value->id;
         
@@ -275,7 +281,13 @@ class CommissionSummaryReportController extends Controller
     public function fetcher__($param){
         $data = null;
         
-        $res = Ibo::where('placement_id', $param['id'])->whereBetween('created_at', [$param['start_date'], $param['end_date']])->orderBy('created_at', 'desc')->get();
+        $res = Ibo::where('placement_id', $param['id'])
+            ->where('activation_code_type', '!=', 'FS')
+            ->where('activation_code_type', '!=', 'CD')
+            ->where('activation_code_type', '=', null)
+            ->whereBetween('created_at', [$param['start_date'], $param['end_date']])
+            ->orderBy('created_at', 'desc')
+            ->get();
         
         foreach($res as $value) $data[] = $value->id;
         
