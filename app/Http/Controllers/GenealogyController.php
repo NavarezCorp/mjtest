@@ -20,8 +20,9 @@ class GenealogyController extends Controller
         //
         $data['sponsor_id'] = $_GET['sponsor_id'];
         $data['placement_id'] = $_GET['placement_id'];
-        $data['left_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'L']);
-        $data['right_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'R']);
+        //$data['left_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'L']);
+        //$data['right_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'R']);
+        $data['counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id']]);
         
         return view('genealogy.index', ['data'=>$data]);
     }
@@ -390,12 +391,47 @@ class GenealogyController extends Controller
     public function get_downlines($param){
         $counter = 0;
         $ids = null;
+        $data['left'] = 0;
+        $data['right'] = 0;
+        $position_str = null;
         
         $res = Ibo::where('placement_id', $param['id'])->get();
         
+        foreach($res as $value){
+            switch($value->placement_position){
+                case 'L':
+                    $position_str = 'left';
+                    $counter = 1;
+                    $ids = $this->fetcher_(['id'=>$value->id]);
+                    break;
+
+                case 'R':
+                    $position_str = 'right';
+                    $counter = 1;
+                    $ids = $this->fetcher_(['id'=>$value->id]);
+                    break;
+            }
+            
+            while(!empty($ids)){
+                $temp = null;
+                $counter += count($ids);
+
+                foreach($ids as $value){
+                    $res = $this->fetcher_(['id'=>$value]);
+
+                    if(!empty($res)) foreach($res as $val) $temp[] = $val;
+                }
+
+                $ids = $temp;
+            }
+            
+            $data[$position_str] = $counter;
+        }
+        
+        /*
         switch($param['position']){
             case 'L':
-                if(!empty($res) && !empty($res[0])){
+                if(!empty($res) && !empty($res[0]) && ($res[0]->placement_position == 'L')){
                     $counter = 1;
                     $ids = $this->fetcher_(['id'=>$res[0]['id']]);
                 }
@@ -403,7 +439,7 @@ class GenealogyController extends Controller
                 break;
                 
             case 'R':
-                if(!empty($res) && !empty($res[1])){
+                if(!empty($res) && !empty($res[1]) && ($res[1]->placement_position == 'R')){
                     $counter = 1;
                     $ids = $this->fetcher_(['id'=>$res[1]['id']]);
                 }
@@ -423,8 +459,9 @@ class GenealogyController extends Controller
 
             $ids = $temp;
         }
+        */
         
-        return $counter;
+        return $data;
     }
     
     public function fetcher_($param){
