@@ -146,20 +146,239 @@ class CommissionSummaryReportController extends Controller
                 $param_['level'] = 9;
                 $param_['start_date'] = $date_->parse('first day of ' . $months[$date_->month] . ' ' . $date_->year)->toDateString() . ' 00:00:00';
                 $param_['end_date'] = $date_->parse('last day of ' . $months[$date_->month] . ' ' . $date_->year)->toDateString() . ' 23:59:59';
-                
                 $data['ibos'] = $this->get_ibos_total_purchase($param_);
                 
-                if($data['ibos']['user']['total_purchase'] >= 1500){
-                    foreach($data['ibos']['level_1'] as $value){
-                        //if($value->total_purchase >= 1500)
+                if($data['ibos'][$id]['total_purchase'] >= 1500){
+                    $data['rebates_arr'][0][] = $data['ibos'][$id]['ibo_id'];
+                    
+                    // level 1
+                    if(!empty($data['ibos'][1])){
+                        foreach($data['ibos'][1] as $value){
+                            if($value['total_purchase'] >= 1500) $data['rebates_arr'][1][] = $value['ibo_id'];
+                            else $data['rebates_arr'][0][] = $value['ibo_id'];
+                        }
                     }
+                    // level 1
+                    
+                    // level 2
+                    if(!empty($data['ibos'][2])){
+                        foreach($data['ibos'][2] as $value){
+                            if($data['ibos'][1][$value['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][2][] = $value['ibo_id'];
+                                else $data['rebates_arr'][1][] = $value['ibo_id'];
+                            }
+                            else $data['rebates_arr'][0][] = $value['ibo_id'];
+                        }
+                    }
+                    // level 2
+                    
+                    // level 3
+                    if(!empty($data['ibos'][3])){
+                        foreach($data['ibos'][3] as $value){
+                            if($data['ibos'][2][$value['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][3][] = $value['ibo_id'];
+                                else $data['rebates_arr'][2][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][1][$data['ibos'][2][$value['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][2][] = $value['ibo_id'];
+                                else $data['rebates_arr'][1][] = $value['ibo_id'];
+                            }
+                            else $data['rebates_arr'][0][] = $value['ibo_id'];
+                        }
+                    }
+                    // level 3
+                    
+                    // level 4
+                    if(!empty($data['ibos'][4])){
+                        foreach($data['ibos'][4] as $value){
+                            if($data['ibos'][3][$value['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][4][] = $value['ibo_id'];
+                                else $data['rebates_arr'][3][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][2][$data['ibos'][3][$value['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][3][] = $value['ibo_id'];
+                                else $data['rebates_arr'][2][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][1][$data['ibos'][2][$data['ibos'][3][$value['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][2][] = $value['ibo_id'];
+                                else $data['rebates_arr'][1][] = $value['ibo_id'];
+                            }
+                            else $data['rebates_arr'][0][] = $value['ibo_id'];
+                        }
+                    }
+                    // level 4
+                    
+                    // level 5
+                    if(!empty($data['ibos'][5])){
+                        foreach($data['ibos'][5] as $value){
+                            if($data['ibos'][4][$value['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][5][] = $value['ibo_id'];
+                                else $data['rebates_arr'][4][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][3][$data['ibos'][4][$value['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][4][] = $value['ibo_id'];
+                                else $data['rebates_arr'][3][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][2][$data['ibos'][3][$data['ibos'][4][$value['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][3][] = $value['ibo_id'];
+                                else $data['rebates_arr'][2][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][1][$data['ibos'][2][$data['ibos'][3][$data['ibos'][4][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][2][] = $value['ibo_id'];
+                                else $data['rebates_arr'][1][] = $value['ibo_id'];
+                            }
+                            else $data['rebates_arr'][0][] = $value['ibo_id'];
+                        }
+                    }
+                    // level 5
+                    
+                    // level 6
+                    if(!empty($data['ibos'][6])){
+                        foreach($data['ibos'][6] as $value){
+                            if($data['ibos'][5][$value['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][6][] = $value['ibo_id'];
+                                else $data['rebates_arr'][5][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][4][$data['ibos'][5][$value['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][5][] = $value['ibo_id'];
+                                else $data['rebates_arr'][4][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$value['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][4][] = $value['ibo_id'];
+                                else $data['rebates_arr'][3][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][2][$data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][3][] = $value['ibo_id'];
+                                else $data['rebates_arr'][2][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][1][$data['ibos'][2][$data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][2][] = $value['ibo_id'];
+                                else $data['rebates_arr'][1][] = $value['ibo_id'];
+                            }
+                            else $data['rebates_arr'][0][] = $value['ibo_id'];
+                        }
+                    }
+                    // level 6
+                    
+                    // level 7
+                    if(!empty($data['ibos'][7])){
+                        foreach($data['ibos'][7] as $value){
+                            if($data['ibos'][6][$value['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][7][] = $value['ibo_id'];
+                                else $data['rebates_arr'][6][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][5][$data['ibos'][6][$value['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][6][] = $value['ibo_id'];
+                                else $data['rebates_arr'][5][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$value['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][5][] = $value['ibo_id'];
+                                else $data['rebates_arr'][4][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][4][] = $value['ibo_id'];
+                                else $data['rebates_arr'][3][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][2][$data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][3][] = $value['ibo_id'];
+                                else $data['rebates_arr'][2][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][1][$data['ibos'][2][$data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][2][] = $value['ibo_id'];
+                                else $data['rebates_arr'][1][] = $value['ibo_id'];
+                            }
+                            else $data['rebates_arr'][0][] = $value['ibo_id'];
+                        }
+                    }
+                    // level 7
+                    
+                    // level 8
+                    if(!empty($data['ibos'][8])){
+                        foreach($data['ibos'][8] as $value){
+                            if($data['ibos'][7][$value['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][8][] = $value['ibo_id'];
+                                else $data['rebates_arr'][7][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][6][$data['ibos'][7][$value['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][7][] = $value['ibo_id'];
+                                else $data['rebates_arr'][6][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][5][$data['ibos'][6][$data['ibos'][7][$value['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][6][] = $value['ibo_id'];
+                                else $data['rebates_arr'][5][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$data['ibos'][7][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][5][] = $value['ibo_id'];
+                                else $data['rebates_arr'][4][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$data['ibos'][7][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][4][] = $value['ibo_id'];
+                                else $data['rebates_arr'][3][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][2][$data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$data['ibos'][7][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][3][] = $value['ibo_id'];
+                                else $data['rebates_arr'][2][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][1][$data['ibos'][2][$data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$data['ibos'][7][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][2][] = $value['ibo_id'];
+                                else $data['rebates_arr'][1][] = $value['ibo_id'];
+                            }
+                            else $data['rebates_arr'][0][] = $value['ibo_id'];
+                        }
+                    }
+                    // level 8
+                    
+                    // level 9
+                    if(!empty($data['ibos'][9])){
+                        foreach($data['ibos'][9] as $value){
+                            if($data['ibos'][8][$value['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][9][] = $value['ibo_id'];
+                                else $data['rebates_arr'][8][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][7][$data['ibos'][8][$value['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][8][] = $value['ibo_id'];
+                                else $data['rebates_arr'][7][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][6][$data['ibos'][7][$data['ibos'][8][$value['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][7][] = $value['ibo_id'];
+                                else $data['rebates_arr'][6][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][5][$data['ibos'][6][$data['ibos'][7][$data['ibos'][8][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][6][] = $value['ibo_id'];
+                                else $data['rebates_arr'][5][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$data['ibos'][7][$data['ibos'][8][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][5][] = $value['ibo_id'];
+                                else $data['rebates_arr'][4][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$data['ibos'][7][$data['ibos'][8][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][4][] = $value['ibo_id'];
+                                else $data['rebates_arr'][3][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][2][$data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$data['ibos'][7][$data['ibos'][8][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][3][] = $value['ibo_id'];
+                                else $data['rebates_arr'][2][] = $value['ibo_id'];
+                            }
+                            elseif($data['ibos'][1][$data['ibos'][2][$data['ibos'][3][$data['ibos'][4][$data['ibos'][5][$data['ibos'][6][$data['ibos'][7][$data['ibos'][8][$value['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['placement_id']]['total_purchase'] >= 1500){
+                                if($value['total_purchase'] >= 1500) $data['rebates_arr'][2][] = $value['ibo_id'];
+                                else $data['rebates_arr'][1][] = $value['ibo_id'];
+                            }
+                            else $data['rebates_arr'][0][] = $value['ibo_id'];
+                        }
+                    }
+                    // level 9
                 }
                 
-                echo json_encode($data['ibos']); die();
+                echo json_encode($data);
+                die();
                 break;
         }
         
         return view('commissionsummaryreport.index', ['data'=>$data]);
+    }
+    
+    private function get_upline_ibo_id($ibo_id){
+        return Ibo::where('id', $ibo_id)->first()->placement_id;
     }
 
     /**
@@ -302,7 +521,7 @@ class CommissionSummaryReportController extends Controller
         $buff['total_purchase'] = $this->get_total_purchase($param);
         $buff['duration_start'] = $param['start_date'];
         $buff['duration_end'] = $param['end_date'];
-        $ibos['user'] = $buff;
+        $ibos[$param['id']] = $buff;
         
         for($i = 1; $i <= $param['level']; $i++){
             $data = null;
@@ -315,14 +534,15 @@ class CommissionSummaryReportController extends Controller
                     $data[] = $value->id;
                     $param['id'] = $value->id;
                     
-                    $buff[$key]['ibo_id'] = $value->id;
-                    $buff[$key]['total_purchase'] = $this->get_total_purchase($param);
-                    $buff[$key]['duration_start'] = $param['start_date'];
-                    $buff[$key]['duration_end'] = $param['end_date'];
+                    $buff[$param['id']]['ibo_id'] = $value->id;
+                    $buff[$param['id']]['placement_id'] = $value->placement_id;
+                    $buff[$param['id']]['total_purchase'] = $this->get_total_purchase($param) ?: 0;
+                    $buff[$param['id']]['duration_start'] = $param['start_date'];
+                    $buff[$param['id']]['duration_end'] = $param['end_date'];
                 }
                 
                 $temp = $data;
-                $ibos['level_' . $i] = $buff;
+                $ibos[$i] = $buff;
             }
         }
         
@@ -332,7 +552,9 @@ class CommissionSummaryReportController extends Controller
     public function get_total_purchase($param){
         $res = DB::table('product_purchases')
             ->select(DB::raw('sum(purchase_amount) as total_purchase'))
-            ->where('ibo_id', $param['id'])->whereBetween('created_at', [$param['start_date'], $param['end_date']])->first();
+            ->where('ibo_id', $param['id'])
+            ->whereBetween('created_at', [$param['start_date'], $param['end_date']])
+            ->first();
         
         return $res->total_purchase;
     }

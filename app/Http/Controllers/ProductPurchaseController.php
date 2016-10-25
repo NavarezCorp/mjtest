@@ -9,6 +9,7 @@ use App\ProductPurchase;
 use App\Product;
 use App\ProductAmount;
 use Session;
+use Auth;
 
 class ProductPurchaseController extends Controller
 {
@@ -33,6 +34,8 @@ class ProductPurchaseController extends Controller
     {
         //
         $data['products'] = Product::pluck('name', 'id');
+        $data['user_ibo_id'] = Auth::user()->ibo_id;
+        
         return view('productpurchase.create', ['data'=>$data]);
     }
 
@@ -49,7 +52,7 @@ class ProductPurchaseController extends Controller
             $model = new ProductPurchase;
             $model->ibo_id = $request->ibo_id;
             $model->product_id = $value;
-            $model->purchase_amount = ProductAmount::where('product_id', $value)->first()->amount;
+            $model->purchase_amount = ProductAmount::where('product_id', $value)->where('is_active', true)->first()->amount;
             $model->save();
         }
         
