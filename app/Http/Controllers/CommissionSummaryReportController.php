@@ -248,7 +248,7 @@ class CommissionSummaryReportController extends Controller
                     }
                 }
                 
-                echo json_encode($data); die();
+                //echo json_encode($data); die();
                 
                 return view('commissionsummaryreport.rebate', ['data'=>$data]);
                 
