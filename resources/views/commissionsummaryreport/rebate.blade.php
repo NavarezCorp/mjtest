@@ -9,6 +9,10 @@
                     Commission Summary Report ({{ $data['type'] }})
                 </div>
                 <div class="panel-body">
+                    <div>
+                        <strong>Total Rebates: {{ $data['rebates_total'] }}</strong>
+                    </div>
+                    <hr>
                     <table class="table table-striped table-hover table-condensed">
                         <thead>
                             <th>Level</th>
@@ -19,18 +23,21 @@
                         <tbody>
                             <tr>
                                 <td><strong>User</strong></td>
-                                <td><strong>{{ $data['ibos'][0]['ibo_id'] }}</strong></td>
+                                <td><strong>{{ $data['ibos'][0][$data['user_ibo_id']]['ibo_id'] }}</strong></td>
                                 <td><strong></strong></td>
-                                <td><strong>{{ $data['ibos'][0]['total_purchase'] }}</strong></td>
+                                <td><strong>{{ $data['ibos'][0][$data['user_ibo_id']]['total_purchase'] }}</strong></td>
                             </tr>
                             @foreach ($data['ibos_levels'] as $key => $value)
+                                <?php $index = $key + 1 ?>
                                 @foreach ($value as $key_ => $value_)
                                     <tr>
-                                        <td><strong>{{ $key + 1 }}</strong></td>
+                                        <td><strong>{{ $index }}</strong></td>
                                         <td><strong>{{ sprintf('%09d', $value_['ibo_id']) }}</strong></td>
                                         <td><strong>{{ sprintf('%09d', $value_['placement_id']) }}</strong></td>
                                         <td><strong>{{ $value_['total_purchase'] }}</strong></td>
                                     </tr>
+                                    
+                                    <?php $index = '' ?>
                                 @endforeach
                             @endforeach
                         </tbody>
