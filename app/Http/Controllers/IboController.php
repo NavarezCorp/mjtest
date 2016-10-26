@@ -136,6 +136,9 @@ class IboController extends Controller
     {
         //
         $model = Ibo::find($id);
+        $model->firstname = $request->firstname;
+        $model->middlename = $request->middlename;
+        $model->lastname = $request->lastname;
         $model->sponsor_id = $request->sponsor_id;
         $model->placement_id = $request->placement_id;
         $model->placement_position = $request->placement_position;

@@ -16,7 +16,7 @@ class CreateIbosTable extends Migration
         Schema::create('ibos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('firstname', 255);
-            $table->string('middlename', 255);
+            $table->string('middlename', 255)->nullable();
             $table->string('lastname', 255);
             $table->boolean('is_part_company')->default(false);
             $table->integer('sponsor_id')->index();
