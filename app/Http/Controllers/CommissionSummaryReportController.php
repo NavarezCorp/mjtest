@@ -231,17 +231,19 @@ class CommissionSummaryReportController extends Controller
                 
                 $data['rebates_total'] = 0;
                 
-                foreach($data['rebates_arr'] as $key => $value){
-                    if($key == 0) continue;
-                    else{
-                        if(!empty($value)){
-                            $purchases = 0;
-                            
-                            foreach($value as $value_) $purchases += $data['ibos_total_purchases'][$value_]['total_purchase'];
-                            
-                            $data['rebates']['level_' . $key]['total'] = $purchases;
-                            $data['rebates']['level_' . $key]['percented'] = $purchases * (Rebate::where('level', $key)->first()->percentage / 100);
-                            $data['rebates_total'] += $data['rebates']['level_' . $key]['percented'];
+                if(!empty($data['rebates_arr'])){
+                    foreach($data['rebates_arr'] as $key => $value){
+                        if($key == 0) continue;
+                        else{
+                            if(!empty($value)){
+                                $purchases = 0;
+
+                                foreach($value as $value_) $purchases += $data['ibos_total_purchases'][$value_]['total_purchase'];
+
+                                $data['rebates']['level_' . $key]['total'] = $purchases;
+                                $data['rebates']['level_' . $key]['percented'] = $purchases * (Rebate::where('level', $key)->first()->percentage / 100);
+                                $data['rebates_total'] += $data['rebates']['level_' . $key]['percented'];
+                            }
                         }
                     }
                 }
