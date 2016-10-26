@@ -129,6 +129,8 @@ class CommissionSummaryReportController extends Controller
                 $param_['end_date'] = $date_->parse('last day of ' . $months[$date_->month] . ' ' . $date_->year)->toDateString() . ' 23:59:59';
                 $data['ibos'] = $this->get_ibos_total_purchase($param_);
                 
+                $data['rebates_arr'] = null;
+                
                 $indexData = $data['ibos'][0][$id];
                 
                 // Get ibo purchase amount
