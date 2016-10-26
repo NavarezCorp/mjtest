@@ -241,7 +241,7 @@ class CommissionSummaryReportController extends Controller
                                 foreach($value as $value_) $purchases += $data['ibos_total_purchases'][$value_]['total_purchase'];
 
                                 $data['rebates']['level_' . $key]['total'] = $purchases;
-                                $data['rebates']['level_' . $key]['percented'] = $purchases * (Rebate::where('level', $key)->first()->percentage / 100);
+                                $data['rebates']['level_' . $key]['percented'] = $purchases * (!empty(Rebate::where('level', $key)->first()->percentage) ?: 0 / 100);
                                 $data['rebates_total'] += $data['rebates']['level_' . $key]['percented'];
                             }
                         }
