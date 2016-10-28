@@ -453,6 +453,8 @@ class CommissionSummaryReportController extends Controller
         
         if(count($res) == 2){
             foreach($res as $value){
+                $ibo_date = strtotime($value['attributes']['created_at']);
+                
                 switch($value['attributes']['placement_position']){
                     case 'L':
                         $position_str = 'left';
