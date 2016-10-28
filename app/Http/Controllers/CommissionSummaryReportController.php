@@ -89,10 +89,14 @@ class CommissionSummaryReportController extends Controller
                     $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
                     $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
                     
+                    /*
                     $param_['position'] = 'L';
                     $left_ = $this->get_matching_bonus($param_);
                     $param_['position'] = 'R';
                     $right_ = $this->get_matching_bonus($param_);
+                    */
+                    $left_ = $this->get_matching_bonus($param_)['left'];
+                    $right_ = $this->get_matching_bonus($param_)['right'];
                     
                     $data['commission'][$i]['fifth_pairs'] = intval(min($left_, $right_) / 5) * Commission::where('name', 'Matching Bonus')->first()->amount;
                     $data['commission'][$i]['matching'] = (min($left_, $right_) * Commission::where('name', 'Matching Bonus')->first()->amount) - $data['commission'][$i]['fifth_pairs'];
@@ -371,24 +375,51 @@ class CommissionSummaryReportController extends Controller
     public function get_indirect($param){
         $counter = 0;
         $ids = null;
+        $not_in = ['FS', 'CD'];
         
-        $ids = $this->fetcher_($param);
+        $start_date = strtotime($param['start_date']);
+        $end_date = strtotime($param['end_date']);
         
-        while(!empty($ids)){
-            $temp = null;
+        $res = $this->fetcherEx_($param);
+        
+        if(!empty($res)){
+            foreach($res as $value) $ids[] = $value['attributes']['id'];
+        
+            while(!empty($ids)){
+                $temp = null;
 
-            foreach($ids as $value){
-                $param['id'] = $value;
-                $res = $this->fetcher_($param);
+                foreach($ids as $value){
+                    $param['id'] = $value;
+                    $res = $this->fetcherEx_($param);
 
-                if(!empty($res)) foreach($res as $val) $temp[] = $val;
+                    if(!empty($res)){
+                        foreach($res as $val){
+                            $temp[] = $val['attributes']['id'];
+                            
+                            if(!in_array($val['attributes']['activation_code_type'], $not_in)){
+                                $ibo_date = strtotime($val['attributes']['created_at']);
+                                
+                                if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
+                            }
+                        }
+                    }
+                }
+                
+                $ids = $temp;
             }
-
-            $ids = $temp;
-            $counter += count($ids);
         }
         
         return $counter;
+    }
+    
+    public function fetcherEx_($param){
+        $data = null;
+        
+        $res = Ibo::where('placement_id', $param['id'])->orderBy('created_at', 'desc')->get();
+        
+        foreach($res as $value) $data[] = $value;
+        
+        return $data;
     }
     
     public function fetcher_($param){
@@ -397,7 +428,7 @@ class CommissionSummaryReportController extends Controller
         $res = Ibo::where('sponsor_id', $param['id'])
             ->where('activation_code_type', '!=', 'FS')
             ->where('activation_code_type', '!=', 'CD')
-            ->where('activation_code_type', '=', null)
+            //->where('activation_code_type', '=', null)
             ->whereBetween('created_at', [$param['start_date'], $param['end_date']])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -407,6 +438,86 @@ class CommissionSummaryReportController extends Controller
         return $data;
     }
     
+    public function get_matching_bonus($param){
+        $counter = 0;
+        $ids = null;
+        $data['left'] = 0;
+        $data['right'] = 0;
+        $position_str = null;
+        
+        $not_in = ['FS', 'CD'];
+        $start_date = strtotime($param['start_date']);
+        $end_date = strtotime($param['end_date']);
+        
+        $res = $this->fetcherEx_($param);
+        
+        if(count($res) == 2){
+            foreach($res as $value){
+                switch($value['attributes']['placement_position']){
+                    case 'L':
+                        $position_str = 'left';
+                        
+                        if(!in_array($value['attributes']['activation_code_type'], $not_in) && ($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
+                        
+                        $ids = $this->fetcherEx_(['id'=>$value->id]);
+                        
+                        break;
+
+                    case 'R':
+                        $position_str = 'right';
+                        
+                        if(!in_array($value['attributes']['activation_code_type'], $not_in) && ($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
+                        
+                        $ids = $this->fetcherEx_(['id'=>$value->id]);
+                        
+                        break;
+                }
+                
+                /*
+                while(!empty($ids)){
+                    $temp = null;
+                    $counter += count($ids);
+
+                    foreach($ids as $value){
+                        $res = $this->fetcherEx_(['id'=>$value]);
+
+                        if(!empty($res)) foreach($res as $val) $temp[] = $val;
+                    }
+
+                    $ids = $temp;
+                }
+                */
+                
+                while(!empty($ids)){
+                    $temp = null;
+
+                    foreach($ids as $value){
+                        $res = $this->fetcherEx_(['id'=>$value]);
+                        
+                        if(!empty($res)){
+                            foreach($res as $val){
+                                $temp[] = $val['attributes']['id'];
+
+                                if(!in_array($val['attributes']['activation_code_type'], $not_in)){
+                                    $ibo_date = strtotime($val['attributes']['created_at']);
+
+                                    if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
+                                }
+                            }
+                        }
+                    }
+
+                    $ids = $temp;
+                }
+
+                $data[$position_str] = $counter;
+            }
+        }
+        
+        return $data;
+    }
+    
+    /*
     public function get_matching_bonus($param){
         $counter = 0;
         $ids = null;
@@ -456,7 +567,7 @@ class CommissionSummaryReportController extends Controller
         $res = Ibo::where('placement_id', $param['id'])
             ->where('activation_code_type', '!=', 'FS')
             ->where('activation_code_type', '!=', 'CD')
-            ->where('activation_code_type', '=', null)
+            //->where('activation_code_type', '=', null)
             ->whereBetween('created_at', [$param['start_date'], $param['end_date']])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -465,6 +576,7 @@ class CommissionSummaryReportController extends Controller
         
         return $data;
     }
+    */
     
     public function get_ibos_total_purchase($param){
         $ibos = [];
