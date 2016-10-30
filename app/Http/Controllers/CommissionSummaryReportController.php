@@ -606,8 +606,9 @@ class CommissionSummaryReportController extends Controller
             $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
             $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
             
-            $left_ = $this->get_matching_bonus($param_)['left'];
-            $right_ = $this->get_matching_bonus($param_)['right'];
+            $matching = $this->get_matching_bonus($param_);
+            $left_ = $matching['left'];
+            $right_ = $matching['right'];
             
             $data['commission'][$i]['fifth_pairs'] = intval(min($left_, $right_) / 5) * Commission::where('name', 'Matching Bonus')->first()->amount;
             $data['commission'][$i]['matching'] = (min($left_, $right_) * Commission::where('name', 'Matching Bonus')->first()->amount) - $data['commission'][$i]['fifth_pairs'];
