@@ -458,60 +458,62 @@ class CommissionSummaryReportController extends Controller
         
         $res = $this->fetcherEx_($param);
         
-        foreach($res as $value){
-            $counter = 0;
-            
-            switch($value['attributes']['placement_position']){
-                case 'L':
-                    $position_str = 'left';
+        if(!empty($res)){
+            foreach($res as $value){
+                $counter = 0;
 
-                    if(!in_array($value['attributes']['activation_code_type'], $not_in)){
-                        $ibo_date = strtotime($value['attributes']['created_at']);
+                switch($value['attributes']['placement_position']){
+                    case 'L':
+                        $position_str = 'left';
 
-                        if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
-                    }
+                        if(!in_array($value['attributes']['activation_code_type'], $not_in)){
+                            $ibo_date = strtotime($value['attributes']['created_at']);
 
-                    $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
+                            if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
+                        }
 
-                    break;
+                        $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
 
-                case 'R':
-                    $position_str = 'right';
+                        break;
 
-                    if(!in_array($value['attributes']['activation_code_type'], $not_in)){
-                        $ibo_date = strtotime($value['attributes']['created_at']);
+                    case 'R':
+                        $position_str = 'right';
 
-                        if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
-                    }
+                        if(!in_array($value['attributes']['activation_code_type'], $not_in)){
+                            $ibo_date = strtotime($value['attributes']['created_at']);
 
-                    $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
+                            if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
+                        }
 
-                    break;
-            }
-            
-            while(!empty($ids)){
-                $temp = null;
-                
-                foreach($ids as $value_){
-                    if(!in_array($value_['attributes']['activation_code_type'], $not_in)){
-                        $ibo_date = strtotime($value_['attributes']['created_at']);
+                        $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
 
-                        if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
-                    }
+                        break;
+                }
 
-                    $res = $this->fetcherEx_(['id'=>$value_['attributes']['id']]);
-                    
-                    if(!empty($res)){
-                        foreach($res as $val){
-                            $temp[] = $val;
+                while(!empty($ids)){
+                    $temp = null;
+
+                    foreach($ids as $value_){
+                        if(!in_array($value_['attributes']['activation_code_type'], $not_in)){
+                            $ibo_date = strtotime($value_['attributes']['created_at']);
+
+                            if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
+                        }
+
+                        $res = $this->fetcherEx_(['id'=>$value_['attributes']['id']]);
+
+                        if(!empty($res)){
+                            foreach($res as $val){
+                                $temp[] = $val;
+                            }
                         }
                     }
+
+                    $ids = $temp;
                 }
-                
-                $ids = $temp;
+
+                $data[$position_str] = $counter;
             }
-            
-            $data[$position_str] = $counter;
         }
         
         return $data;
@@ -573,11 +575,12 @@ class CommissionSummaryReportController extends Controller
         $ibos = Ibo::all();
         
         $data['type'] = 'all';
+        $data['current_week_no'] = $date_->weekOfYear;
         
         if(!empty($search)){
             $pieces = explode('|', $search);
             
-            $date_->subWeek($date_->weekOfYear - ($pieces[0] - 1));
+            $date_->subWeek($date_->weekOfYear - ($pieces[0]));
             $date_->year($pieces[1]);
         }
         
@@ -616,8 +619,6 @@ class CommissionSummaryReportController extends Controller
             $data['commission'][$i]['tax'] = $data['commission'][$i]['gross'] * .1;
             $data['commission'][$i]['net_commission'] = $data['commission'][$i]['gross'] - $data['commission'][$i]['tax'];
         }
-        
-        $data['current_week_no'] = $date_->weekOfYear;
         
         return view('commissionsummaryreport.all', ['data'=>$data]);
     }
