@@ -66,7 +66,23 @@ class CommissionSummaryReportController extends Controller
         $data['type'] = $_GET['type'];
         
         switch($_GET['type']){
-            case 'weekly':        
+            case 'weekly':
+                /*
+                $date_->subWeek(1);
+                $date_->year(2016);
+                
+                $param_['id'] = $id;
+                $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
+                $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
+                
+                echo $param_['start_date'] . ' - ' . $param_['end_date'] . '<br>';
+                
+                $matching = $this->get_matching_bonus($param_);
+                
+                print_r($matching);
+                
+                die();
+                */
                 for($i = $date_->weekOfYear; $i >= 1; $i--){
                     $data['commission'][$i]['date_start'] = $date_->startOfWeek()->format('F j, Y');
                     $data['commission'][$i]['date_end'] = $date_->endOfWeek()->format('F j, Y');
@@ -88,8 +104,9 @@ class CommissionSummaryReportController extends Controller
                     $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
                     $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
                     
-                    $left_ = $this->get_matching_bonus($param_)['left'];
-                    $right_ = $this->get_matching_bonus($param_)['right'];
+                    $matching = $this->get_matching_bonus($param_);
+                    $left_ = $matching['left'];
+                    $right_ = $matching['right'];
                     
                     $data['commission'][$i]['fifth_pairs'] = intval(min($left_, $right_) / 5) * Commission::where('name', 'Matching Bonus')->first()->amount;
                     $data['commission'][$i]['matching'] = (min($left_, $right_) * Commission::where('name', 'Matching Bonus')->first()->amount) - $data['commission'][$i]['fifth_pairs'];
@@ -441,54 +458,60 @@ class CommissionSummaryReportController extends Controller
         
         $res = $this->fetcherEx_($param);
         
-        if(count($res) == 2){
-            foreach($res as $value){
-                $ibo_date = strtotime($value['attributes']['created_at']);
-                
-                switch($value['attributes']['placement_position']){
-                    case 'L':
-                        $position_str = 'left';
-                        
-                        if(!in_array($value['attributes']['activation_code_type'], $not_in) && ($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
-                        
-                        $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
-                        
-                        break;
+        foreach($res as $value){
+            $counter = 0;
+            
+            switch($value['attributes']['placement_position']){
+                case 'L':
+                    $position_str = 'left';
 
-                    case 'R':
-                        $position_str = 'right';
-                        
-                        if(!in_array($value['attributes']['activation_code_type'], $not_in) && ($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
-                        
-                        $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
-                        
-                        break;
-                }
-                
-                while(!empty($ids)){
-                    $temp = null;
+                    if(!in_array($value['attributes']['activation_code_type'], $not_in)){
+                        $ibo_date = strtotime($value['attributes']['created_at']);
 
-                    foreach($ids as $value_){
-                        $res = $this->fetcherEx_(['id'=>$value_['attributes']['id']]);
-                        
-                        if(!empty($res)){
-                            foreach($res as $val){
-                                $temp[] = $val['attributes']['id'];
-
-                                if(!in_array($val['attributes']['activation_code_type'], $not_in)){
-                                    $ibo_date = strtotime($val['attributes']['created_at']);
-
-                                    if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
-                                }
-                            }
-                        }
+                        if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
                     }
 
-                    $ids = $temp;
-                }
+                    $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
 
-                $data[$position_str] = $counter;
+                    break;
+
+                case 'R':
+                    $position_str = 'right';
+
+                    if(!in_array($value['attributes']['activation_code_type'], $not_in)){
+                        $ibo_date = strtotime($value['attributes']['created_at']);
+
+                        if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
+                    }
+
+                    $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
+
+                    break;
             }
+            
+            while(!empty($ids)){
+                $temp = null;
+                
+                foreach($ids as $value_){
+                    if(!in_array($value_['attributes']['activation_code_type'], $not_in)){
+                        $ibo_date = strtotime($value_['attributes']['created_at']);
+
+                        if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
+                    }
+
+                    $res = $this->fetcherEx_(['id'=>$value_['attributes']['id']]);
+                    
+                    if(!empty($res)){
+                        foreach($res as $val){
+                            $temp[] = $val;
+                        }
+                    }
+                }
+                
+                $ids = $temp;
+            }
+            
+            $data[$position_str] = $counter;
         }
         
         return $data;
