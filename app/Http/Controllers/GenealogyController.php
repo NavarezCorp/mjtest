@@ -24,6 +24,15 @@ class GenealogyController extends Controller
         //$data['right_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'R']);
         $data['counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id']]);
         
+        if($data['counter']['left'] > $data['counter']['right']){
+            $data['waiting']['left'] = $data['counter']['left'] - $data['counter']['right'];
+            $data['waiting']['right'] = 0;
+        }
+        else{
+            $data['waiting']['right'] = $data['counter']['right'] - $data['counter']['left'];
+            $data['waiting']['left'] = 0;
+        }
+        
         return view('genealogy.index', ['data'=>$data]);
     }
 
@@ -427,39 +436,6 @@ class GenealogyController extends Controller
             
             $data[$position_str] = $counter;
         }
-        
-        /*
-        switch($param['position']){
-            case 'L':
-                if(!empty($res) && !empty($res[0]) && ($res[0]->placement_position == 'L')){
-                    $counter = 1;
-                    $ids = $this->fetcher_(['id'=>$res[0]['id']]);
-                }
-                
-                break;
-                
-            case 'R':
-                if(!empty($res) && !empty($res[1]) && ($res[1]->placement_position == 'R')){
-                    $counter = 1;
-                    $ids = $this->fetcher_(['id'=>$res[1]['id']]);
-                }
-                
-                break;
-        }
-        
-        while(!empty($ids)){
-            $temp = null;
-            $counter += count($ids);
-
-            foreach($ids as $value){
-                $res = $this->fetcher_(['id'=>$value]);
-
-                if(!empty($res)) foreach($res as $val) $temp[] = $val;
-            }
-
-            $ids = $temp;
-        }
-        */
         
         return $data;
     }

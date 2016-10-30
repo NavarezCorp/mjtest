@@ -13,6 +13,10 @@
                         <span class="left-counter" style="margin-right:25%;">Left: <strong>{{ $data['counter']['left'] }}</strong></span>
                         <span class="right-counter">Right: <strong>{{ $data['counter']['right'] }}</strong></span>
                     </div>
+                    <div class="downline-container" style="text-align:center;">
+                        <span class="left-counter" style="margin-right:25%;">Waiting: <strong>{{ $data['waiting']['left'] }}</strong></span>
+                        <span class="right-counter">Waiting: <strong>{{ $data['waiting']['right'] }}</strong></span>
+                    </div>
                     <div id="chart-container"></div>
                 </div>
             </div>
