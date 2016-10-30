@@ -23,15 +23,9 @@ class GenealogyController extends Controller
         //$data['left_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'L']);
         //$data['right_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'R']);
         $data['counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id']]);
+        $data['waiting'] = $this->get_waiting(['id'=>$_GET['sponsor_id']]);
         
-        if($data['counter']['left'] > $data['counter']['right']){
-            $data['waiting']['left'] = $data['counter']['left'] - $data['counter']['right'];
-            $data['waiting']['right'] = 0;
-        }
-        else{
-            $data['waiting']['right'] = $data['counter']['right'] - $data['counter']['left'];
-            $data['waiting']['left'] = 0;
-        }
+        //print_r($data['waiting']); die();
         
         return view('genealogy.index', ['data'=>$data]);
     }
@@ -406,35 +400,92 @@ class GenealogyController extends Controller
         
         $res = Ibo::where('placement_id', $param['id'])->get();
         
-        foreach($res as $value){
-            switch($value->placement_position){
-                case 'L':
-                    $position_str = 'left';
-                    $counter = 1;
-                    $ids = $this->fetcher_(['id'=>$value->id]);
-                    break;
+        if(!empty($res)){
+            foreach($res as $value){
+                switch($value->placement_position){
+                    case 'L':
+                        $position_str = 'left';
+                        break;
 
-                case 'R':
-                    $position_str = 'right';
-                    $counter = 1;
-                    $ids = $this->fetcher_(['id'=>$value->id]);
-                    break;
-            }
-            
-            while(!empty($ids)){
-                $temp = null;
-                $counter += count($ids);
-
-                foreach($ids as $value){
-                    $res = $this->fetcher_(['id'=>$value]);
-
-                    if(!empty($res)) foreach($res as $val) $temp[] = $val;
+                    case 'R':
+                        $position_str = 'right';
+                        break;
                 }
 
-                $ids = $temp;
+                $counter = 1;
+                $ids = $this->fetcher_(['id'=>$value->id]);
+
+                while(!empty($ids)){
+                    $temp = null;
+                    $counter += count($ids);
+
+                    foreach($ids as $value_){
+                        $res = $this->fetcher_(['id'=>$value_]);
+
+                        if(!empty($res)) foreach($res as $val) $temp[] = $val;
+                    }
+
+                    $ids = $temp;
+                }
+
+                $data[$position_str] = $counter;
             }
-            
-            $data[$position_str] = $counter;
+        }
+        
+        return $data;
+    }
+    
+    public function get_waiting($param){
+        $counter = 0;
+        $ids = null;
+        $data['left'] = 0;
+        $data['right'] = 0;
+        $position_str = null;
+        $not_in = ['FS', 'CD'];
+        
+        $res = $this->fetcherEx_($param);
+        
+        if(!empty($res)){
+            foreach($res as $value){
+                switch($value['attributes']['placement_position']){
+                    case 'L':
+                        $position_str = 'left';
+                        break;
+
+                    case 'R':
+                        $position_str = 'right';
+                        break;
+                }
+                
+                if(!in_array($value['attributes']['activation_code_type'], $not_in)) $counter++;
+                
+                $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
+                
+                while(!empty($ids)){
+                    $temp = null;
+
+                    foreach($ids as $value_){
+                        $res = $this->fetcherEx_(['id'=>$value_['attributes']['id']]);
+                        
+                        if(!in_array($value_['attributes']['activation_code_type'], $not_in)) $counter++;
+
+                        if(!empty($res)) foreach($res as $val) $temp[] = $val;
+                    }
+
+                    $ids = $temp;
+                }
+                
+                $data[$position_str] = $counter;
+            }
+        }
+        
+        if($data['left'] > $data['right']){
+            $data['left'] = $data['left'] - $data['right'];
+            $data['right'] = 0;
+        }
+        else{
+            $data['right'] = $data['right'] - $data['left'];
+            $data['left'] = 0;
         }
         
         return $data;
@@ -446,6 +497,16 @@ class GenealogyController extends Controller
         $res = Ibo::where('placement_id', $param['id'])->get();
         
         foreach($res as $value) $data[] = $value->id;
+        
+        return $data;
+    }
+    
+    public function fetcherEx_($param){
+        $data = null;
+        
+        $res = Ibo::where('placement_id', $param['id'])->orderBy('created_at', 'desc')->get();
+        
+        foreach($res as $value) $data[] = $value;
         
         return $data;
     }

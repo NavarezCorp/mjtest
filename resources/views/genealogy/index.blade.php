@@ -17,6 +17,10 @@
                         <span class="left-counter" style="margin-right:25%;">Waiting: <strong>{{ $data['waiting']['left'] }}</strong></span>
                         <span class="right-counter">Waiting: <strong>{{ $data['waiting']['right'] }}</strong></span>
                     </div>
+                    <div class="downline-container" style="text-align:center;">
+                        <span class="left-counter" style="margin-right:25%;">New IBO for this week: <strong>0</strong></span>
+                        <span class="right-counter">New IBO for this week: <strong>0</strong></span>
+                    </div>
                     <div id="chart-container"></div>
                 </div>
             </div>

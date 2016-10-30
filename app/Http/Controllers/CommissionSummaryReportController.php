@@ -80,7 +80,6 @@ class CommissionSummaryReportController extends Controller
                     $res = Ibo::where('sponsor_id', $id)
                         ->where('activation_code_type', '!=', 'FS')
                         ->where('activation_code_type', '!=', 'CD')
-                        //->orWhere('activation_code_type', '=', null)
                         ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                         ->orderBy('created_at', 'desc')->get();
 
@@ -89,12 +88,6 @@ class CommissionSummaryReportController extends Controller
                     $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
                     $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
                     
-                    /*
-                    $param_['position'] = 'L';
-                    $left_ = $this->get_matching_bonus($param_);
-                    $param_['position'] = 'R';
-                    $right_ = $this->get_matching_bonus($param_);
-                    */
                     $left_ = $this->get_matching_bonus($param_)['left'];
                     $right_ = $this->get_matching_bonus($param_)['right'];
                     
@@ -251,8 +244,6 @@ class CommissionSummaryReportController extends Controller
                         }
                     }
                 }
-                
-                //echo json_encode($data); die();
                 
                 return view('commissionsummaryreport.rebate', ['data'=>$data]);
                 
@@ -428,7 +419,6 @@ class CommissionSummaryReportController extends Controller
         $res = Ibo::where('sponsor_id', $param['id'])
             ->where('activation_code_type', '!=', 'FS')
             ->where('activation_code_type', '!=', 'CD')
-            //->where('activation_code_type', '=', null)
             ->whereBetween('created_at', [$param['start_date'], $param['end_date']])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -461,7 +451,7 @@ class CommissionSummaryReportController extends Controller
                         
                         if(!in_array($value['attributes']['activation_code_type'], $not_in) && ($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
                         
-                        $ids = $this->fetcherEx_(['id'=>$value->id]);
+                        $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
                         
                         break;
 
@@ -470,31 +460,16 @@ class CommissionSummaryReportController extends Controller
                         
                         if(!in_array($value['attributes']['activation_code_type'], $not_in) && ($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
                         
-                        $ids = $this->fetcherEx_(['id'=>$value->id]);
+                        $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
                         
                         break;
                 }
                 
-                /*
-                while(!empty($ids)){
-                    $temp = null;
-                    $counter += count($ids);
-
-                    foreach($ids as $value){
-                        $res = $this->fetcherEx_(['id'=>$value]);
-
-                        if(!empty($res)) foreach($res as $val) $temp[] = $val;
-                    }
-
-                    $ids = $temp;
-                }
-                */
-                
                 while(!empty($ids)){
                     $temp = null;
 
-                    foreach($ids as $value){
-                        $res = $this->fetcherEx_(['id'=>$value]);
+                    foreach($ids as $value_){
+                        $res = $this->fetcherEx_(['id'=>$value_['attributes']['id']]);
                         
                         if(!empty($res)){
                             foreach($res as $val){
@@ -518,67 +493,6 @@ class CommissionSummaryReportController extends Controller
         
         return $data;
     }
-    
-    /*
-    public function get_matching_bonus($param){
-        $counter = 0;
-        $ids = null;
-        
-        $res = $this->fetcher__($param);
-        
-        switch($param['position']){
-            case 'L':
-                if(!empty($res[0])){
-                    $counter++;
-                    $param['id'] = $res[0];
-                    $ids = $this->fetcher__($param);
-                }
-                
-                break;
-                
-            case 'R':
-                if(!empty($res[1])){
-                    $counter++;
-                    $param['id'] = $res[1];
-                    $ids = $this->fetcher__($param);
-                }
-                
-                break;
-        }
-        
-        while(!empty($ids)){
-            $temp = null;
-            $counter += count($ids);
-            
-            foreach($ids as $value){
-                $param['id'] = $value;
-                $res = $this->fetcher__($param);
-                
-                if(!empty($res)) foreach($res as $val) $temp[] = $val;
-            }
-
-            $ids = $temp;
-        }
-        
-        return $counter;
-    }
-    
-    public function fetcher__($param){
-        $data = null;
-        
-        $res = Ibo::where('placement_id', $param['id'])
-            ->where('activation_code_type', '!=', 'FS')
-            ->where('activation_code_type', '!=', 'CD')
-            //->where('activation_code_type', '=', null)
-            ->whereBetween('created_at', [$param['start_date'], $param['end_date']])
-            ->orderBy('created_at', 'desc')
-            ->get();
-        
-        foreach($res as $value) $data[] = $value->id;
-        
-        return $data;
-    }
-    */
     
     public function get_ibos_total_purchase($param){
         $ibos = [];
@@ -654,7 +568,6 @@ class CommissionSummaryReportController extends Controller
             $res = Ibo::where('sponsor_id', $value->id)
                 ->where('activation_code_type', '!=', 'FS')
                 ->where('activation_code_type', '!=', 'CD')
-                //->where('activation_code_type', '!=', null)
                 ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                 ->orderBy('created_at', 'desc')->get();
 
@@ -663,12 +576,6 @@ class CommissionSummaryReportController extends Controller
             $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
             $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
             
-            /*
-            $param_['position'] = 'L';
-            $left_ = $this->get_matching_bonus($param_);
-            $param_['position'] = 'R';
-            $right_ = $this->get_matching_bonus($param_);
-            */
             $left_ = $this->get_matching_bonus($param_)['left'];
             $right_ = $this->get_matching_bonus($param_)['right'];
             
