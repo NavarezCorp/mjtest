@@ -1669,21 +1669,23 @@ body .ui-tooltip {
   padding: 0;
 }
 
-.orgchart td.top {
+.orgchart tr.lines td.topLine {
   border-top: 2px solid rgba(217, 83, 79, 0.8);
 }
 
-.orgchart td.right {
+.orgchart tr.lines td.rightLine {
   border-right: 1px solid rgba(217, 83, 79, 0.8);
   float: none;
+  border-radius: 0px;
 }
 
-.orgchart td.left {
+.orgchart tr.lines td.leftLine {
   border-left: 1px solid rgba(217, 83, 79, 0.8);
   float: none;
+  border-radius: 0px;
 }
 
-.orgchart td>.down {
+.orgchart tr.lines .downLine {
   background-color: rgba(217, 83, 79, 0.8);
   margin: 0px auto;
   height: 20px;
@@ -1725,6 +1727,17 @@ body .ui-tooltip {
 
 .orgchart .node.focused {
   background-color: rgba(238, 217, 54, 0.5);
+}
+
+.orgchart .ghost-node {
+  position: fixed;
+  left: -10000px;
+  top: -10000px;
+}
+
+.orgchart .ghost-node>* {
+  fill: #ffffff;
+  stroke: #bf0000;
 }
 
 .orgchart .node.allowedDrop {

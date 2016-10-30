@@ -540,7 +540,7 @@ class CommissionSummaryReportController extends Controller
         return $res->total_purchase;
     }
     
-    public function get_all(){
+    public function get_all($search = null){
         $data = null;
         $param_ = null;
         $date_ = Carbon::now('Asia/Manila');
@@ -551,6 +551,13 @@ class CommissionSummaryReportController extends Controller
         
         $data['type'] = 'all';
         
+        if(!empty($search)){
+            $pieces = explode('|', $search);
+            
+            $date_->subWeek($date_->weekOfYear - ($pieces[0] - 1));
+            $date_->year($pieces[1]);
+        }
+        
         foreach($ibos as $i => $value){
             $ibo = Ibo::find($value->id);
                 
@@ -558,7 +565,7 @@ class CommissionSummaryReportController extends Controller
             
             $data['date_start'] = $date_->startOfWeek()->format('F j, Y');
             $data['date_end'] = $date_->endOfWeek()->format('F j, Y');
-
+            
             $param_['id'] = $value->id;
             $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
             $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
@@ -585,6 +592,8 @@ class CommissionSummaryReportController extends Controller
             $data['commission'][$i]['tax'] = $data['commission'][$i]['gross'] * .1;
             $data['commission'][$i]['net_commission'] = $data['commission'][$i]['gross'] - $data['commission'][$i]['tax'];
         }
+        
+        $data['current_week_no'] = $date_->weekOfYear;
         
         return view('commissionsummaryreport.all', ['data'=>$data]);
     }

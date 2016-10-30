@@ -63,9 +63,19 @@ $("#activation_code").click(function(){
 });
 
 $('#code-tabs a').click(function(e){
-  e.preventDefault();
-  $(this).tab('show');
+    e.preventDefault();
+    $(this).tab('show');
 })
+
+$('#selectWeek').change(function(){
+    //console.log($(this).val());
+    window.location = '/commissionsummaryreport/all/' + $(this).val() + '|' + $('#selectYear').val();
+});
+
+$('#selectYear').change(function(){
+    //console.log($(this).val());
+    window.location = '/commissionsummaryreport/all/' + $('#selectWeek').val() + '|' + $(this).val();
+});
 var sponsor_id = 0;
 
 if(typeof $('#genealogy_sponsor_id').val() !== 'undefined') sponsor_id = $('#genealogy_sponsor_id').val();

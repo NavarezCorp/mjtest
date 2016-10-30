@@ -63,6 +63,16 @@ $("#activation_code").click(function(){
 });
 
 $('#code-tabs a').click(function(e){
-  e.preventDefault();
-  $(this).tab('show');
+    e.preventDefault();
+    $(this).tab('show');
 })
+
+$('#selectWeek').change(function(){
+    //console.log($(this).val());
+    window.location = '/commissionsummaryreport/all/' + $(this).val() + '|' + $('#selectYear').val();
+});
+
+$('#selectYear').change(function(){
+    //console.log($(this).val());
+    window.location = '/commissionsummaryreport/all/' + $('#selectWeek').val() + '|' + $(this).val();
+});

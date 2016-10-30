@@ -30,7 +30,7 @@ Route::resource('rankinglion', 'RankingLionController');
 Route::resource('rebate', 'RebateController');
 Route::resource('user', 'UserController');
 
-Route::get('commissionsummaryreport/all', 'CommissionSummaryReportController@get_all');
+Route::get('commissionsummaryreport/all/{search?}', 'CommissionSummaryReportController@get_all');
 Route::resource('commissionsummaryreport', 'CommissionSummaryReportController');
 
 Route::resource('activationtype', 'ActivationTypeController');
