@@ -576,12 +576,15 @@ class CommissionSummaryReportController extends Controller
         
         $data['type'] = 'all';
         $data['current_week_no'] = $date_->weekOfYear;
+        $data['selected_week'] = $date_->weekOfYear;
         
         if(!empty($search)){
             $pieces = explode('|', $search);
             
             $date_->subWeek($date_->weekOfYear - ($pieces[0]));
             $date_->year($pieces[1]);
+            
+            $data['selected_week'] = $pieces[0];
         }
         
         foreach($ibos as $i => $value){

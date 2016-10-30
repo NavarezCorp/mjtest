@@ -25,7 +25,7 @@
                             <span class="pull-left" style="margin-right: 5px; position: relative; top: 6px;">Week:</span>
                             <select id="selectWeek" style="width:auto;" class="form-control selectWidth pull-right">
                                 @for ($i = 1; $i <= $data['current_week_no']; $i++)
-                                    <option value="{{$i}}" {{ ($data['current_week_no'] == $i) ? 'selected' : '' }}>{{$i}}</option>
+                                    <option value="{{$i}}" {{ ($data['selected_week'] == $i) ? 'selected' : '' }}>{{$i}}</option>
                                 @endfor
                             </select>
                         </span>
