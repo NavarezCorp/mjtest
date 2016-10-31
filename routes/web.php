@@ -31,6 +31,7 @@ Route::resource('rebate', 'RebateController');
 Route::resource('user', 'UserController');
 
 Route::get('commissionsummaryreport/all/{search?}', 'CommissionSummaryReportController@get_all');
+Route::get('commission/manualcompute/{id}', 'CommissionSummaryReportController@manual_compute');
 Route::resource('commissionsummaryreport', 'CommissionSummaryReportController');
 
 Route::resource('activationtype', 'ActivationTypeController');

@@ -12,6 +12,8 @@ use App\ProductPurchase;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Rebate;
+use App\Helper;
+use App\CommissionRecord;
 
 class CommissionSummaryReportController extends Controller
 {
@@ -102,7 +104,14 @@ class CommissionSummaryReportController extends Controller
                     $direct_count = count($res);
                     
                     $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
-                    $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
+                    
+                    //$data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
+                    $indirect_ = CommissionRecord::where('sponsor_id', $id)
+                        ->where('commission_type_id', 2)
+                        ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                        ->orderBy('created_at', 'desc')->get();
+                    
+                    $data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
                     
                     $matching = $this->get_matching_bonus($param_);
                     $left_ = $matching['left'];
@@ -380,21 +389,31 @@ class CommissionSummaryReportController extends Controller
         
             while(!empty($ids)){
                 $temp = null;
+                $ctr = 1;
+                
+                if($ctr <= 8){
+                    foreach($ids as $value){
+                        $param['id'] = $value;
+                        $res = $this->fetcherEx_($param);
 
-                foreach($ids as $value){
-                    $param['id'] = $value;
-                    $res = $this->fetcherEx_($param);
+                        if(!empty($res)){
+                            foreach($res as $val){
+                                $temp[] = $val['attributes']['id'];
 
-                    if(!empty($res)){
-                        foreach($res as $val){
-                            $temp[] = $val['attributes']['id'];
-                            
-                            if(!in_array($val['attributes']['activation_code_type'], $not_in)){
-                                $ibo_date = strtotime($val['attributes']['created_at']);
-                                
-                                if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
+                                if(!in_array($val['attributes']['activation_code_type'], $not_in)){
+                                    $ibo_date = strtotime($val['attributes']['created_at']);
+
+                                    if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)){
+                                        $counter++;
+                                        
+                                        echo $ctr;
+                                        print_r($val['attributes']);
+                                    }
+                                }
                             }
                         }
+
+                        $ctr++;
                     }
                 }
                 
@@ -406,6 +425,16 @@ class CommissionSummaryReportController extends Controller
     }
     
     public function fetcherEx_($param){
+        $data = null;
+        
+        $res = Ibo::where('sponsor_id', $param['id'])->orderBy('created_at', 'desc')->get();
+        
+        foreach($res as $value) $data[] = $value;
+        
+        return $data;
+    }
+    
+    public function fetcherEx__($param){
         $data = null;
         
         $res = Ibo::where('placement_id', $param['id'])->orderBy('created_at', 'desc')->get();
@@ -441,7 +470,7 @@ class CommissionSummaryReportController extends Controller
         $start_date = strtotime($param['start_date']);
         $end_date = strtotime($param['end_date']);
         
-        $res = $this->fetcherEx_($param);
+        $res = $this->fetcherEx__($param);
         
         if(!empty($res)){
             foreach($res as $value){
@@ -457,7 +486,7 @@ class CommissionSummaryReportController extends Controller
                             if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
                         }
 
-                        $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
+                        $ids = $this->fetcherEx__(['id'=>$value['attributes']['id']]);
 
                         break;
 
@@ -470,7 +499,7 @@ class CommissionSummaryReportController extends Controller
                             if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
                         }
 
-                        $ids = $this->fetcherEx_(['id'=>$value['attributes']['id']]);
+                        $ids = $this->fetcherEx__(['id'=>$value['attributes']['id']]);
 
                         break;
                 }
@@ -485,7 +514,7 @@ class CommissionSummaryReportController extends Controller
                             if(($ibo_date >= $start_date) && ($ibo_date <= $end_date)) $counter++;
                         }
 
-                        $res = $this->fetcherEx_(['id'=>$value_['attributes']['id']]);
+                        $res = $this->fetcherEx__(['id'=>$value_['attributes']['id']]);
 
                         if(!empty($res)){
                             foreach($res as $val){
@@ -595,7 +624,14 @@ class CommissionSummaryReportController extends Controller
             $direct_count = count($res);
             
             $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
-            $data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
+            
+            //$data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
+            $indirect_ = CommissionRecord::where('sponsor_id', $value->id)
+                ->where('commission_type_id', 2)
+                ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                ->orderBy('created_at', 'desc')->get();
+
+            $data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
             
             $matching = $this->get_matching_bonus($param_);
             $left_ = $matching['left'];
@@ -609,5 +645,9 @@ class CommissionSummaryReportController extends Controller
         }
         
         return view('commissionsummaryreport.all', ['data'=>$data]);
+    }
+    
+    public function manual_compute($id){
+        Helper::process_commission($id);
     }
 }
