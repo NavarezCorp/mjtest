@@ -278,71 +278,56 @@ class CommissionSummaryReportController extends Controller
         }
     }
     
-    function addToRebatesArr($data, $indexData, $index, $ibo_id, $purchase_amount) {
-
+    function addToRebatesArr($data, $indexData, $index, $ibo_id, $purchase_amount){
 	//Get downline upline which ibo id is stored on placement_id
 	$placemeny_id = $indexData['placement_id'];
 
 	// Let's move this ibo up until found a 1,500 parent
-	for ($upline_cntr = $index-1; $upline_cntr >= 0; $upline_cntr--) {
-		if($upline_cntr == 0) {
-			if($purchase_amount >= 1500) { // Add current downline to rebates_arr but add 1 on index to place it under it because current downline has reached maintaining balance
-				$data['rebates_arr'][1][] = $ibo_id;
-			} else {
-				$data['rebates_arr'][0][] = $ibo_id;
-			}
-		} else {
-			foreach($data['ibos'][$index] as $childs) {
-				$upline_purchase_amount = $childs['total_purchase'];	// Get upline purchase amount
-				$upline_ibo_id = $childs['ibo_id'];
+	for($upline_cntr = $index-1; $upline_cntr >= 0; $upline_cntr--){
+            if($upline_cntr == 0){
+                // Add current downline to rebates_arr but add 1 on index to place it under it because current downline has reached maintaining balance
+                if($purchase_amount >= 1500) $data['rebates_arr'][1][] = $ibo_id;
+                else $data['rebates_arr'][0][] = $ibo_id;
+            }
+            else{
+                foreach($data['ibos'][$index] as $childs){
+                    $upline_purchase_amount = $childs['total_purchase'];	// Get upline purchase amount
+                    $upline_ibo_id = $childs['ibo_id'];
 
-				if($upline_ibo_id == $placemeny_id) {
+                    if($upline_ibo_id == $placemeny_id){
+                        // If upline has reached 1500 maintaining balance, let's look on rebates_arr on what index it was stored
+                        if($upline_purchase_amount >= 1500){
+                            // Check upline index stored on rebates_arr variable
+                            for($rebates_arr_cntr = count($data['rebates_arr']); $rebates_arr_cntr >= 0; $rebates_arr_cntr--){
+                                for($rebates_arr_cntr2 = count($data['rebates_arr'][$rebates_arr_cntr]); $rebates_arr_cntr2 >= 0; $rebates_arr_cntr2--){
+                                    $rebates_arr_ibo_id = $data['rebates_arr'][$rebates_arr_cntr][rebates_arr_cntr2];
 
-					// If upline has reached 1500 maintaining balance, let's look on rebates_arr on what index it was stored
-					if($upline_purchase_amount >= 1500) {
-
-						// Check upline index stored on rebates_arr variable
-						for ($rebates_arr_cntr = count($data['rebates_arr']); $rebates_arr_cntr >= 0; $rebates_arr_cntr--) {
-
-							for ($rebates_arr_cntr2 = count($data['rebates_arr'][$rebates_arr_cntr]); $rebates_arr_cntr2 >= 0; $rebates_arr_cntr2--) {
-
-								$rebates_arr_ibo_id = $data['rebates_arr'][$rebates_arr_cntr][rebates_arr_cntr2];
-
-								if($rebates_arr_ibo_id == $upline_ibo_id) {
-									
-									if($purchase_amount >= 1500) { // Add current downline to rebates_arr but add 1 on index to place it under it because current downline has reached maintaining balance
-										$data['rebates_arr'][$rebates_arr_cntr + 1][] = $ibo_id;
-									} else {
-										$data['rebates_arr'][$rebates_arr_cntr][] = $ibo_id;
-									}
-
-									break;
-								}
-
-							}
-
-						}
-
-
-					} else { // Meaning upline has not reached it's maintaining balance
-
-						// Check if reached index 0
-						if($upline_cntr == 0) {	// Meaning that all upline of downline has not reached maintaining balance
-							if($purchase_amount >= 1500) { // Add current downline to rebates_arr but add 1 on index to place it under it because current downline has reached maintaining balance
-								$data['rebates_arr'][1][] = $ibo_id;
-							} else {
-								$data['rebates_arr'][0][] = $ibo_id;
-							}
-						} else {
-							// Then we need to get upline's upline and check if it has reached 1500 maintaining balance
-							$placemeny_id = $childs['placement_id'];
-						}
-
-					}
-
-				}
-			}
-		}
+                                    if($rebates_arr_ibo_id == $upline_ibo_id){
+                                        // Add current downline to rebates_arr but add 1 on index to place it under it because current downline has reached maintaining balance
+                                        if($purchase_amount >= 1500) $data['rebates_arr'][$rebates_arr_cntr + 1][] = $ibo_id;
+                                        else $data['rebates_arr'][$rebates_arr_cntr][] = $ibo_id;
+                                        
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else{ // Meaning upline has not reached it's maintaining balance
+                            // Check if reached index 0
+                            // Meaning that all upline of downline has not reached maintaining balance
+                            if($upline_cntr == 0){
+                                // Add current downline to rebates_arr but add 1 on index to place it under it because current downline has reached maintaining balance
+                                if($purchase_amount >= 1500) $data['rebates_arr'][1][] = $ibo_id;
+                                else $data['rebates_arr'][0][] = $ibo_id;
+                            }
+                            else{
+                                // Then we need to get upline's upline and check if it has reached 1500 maintaining balance
+                                $placemeny_id = $childs['placement_id'];
+                            }
+                        }
+                    }
+                }
+            }
 	}	
     }
 

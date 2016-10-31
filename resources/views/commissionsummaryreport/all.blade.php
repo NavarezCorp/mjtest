@@ -41,14 +41,16 @@
                         </thead>
                         <tbody>
                             @foreach ($data['commission'] as $key => $value)
-                                <tr>
-                                    <td><strong>{{ $value['ibo_name'] }}</strong></td>
-                                    <td><strong>{{ $value['direct'] }}</strong></td>
-                                    <td><strong>{{ $value['indirect'] }}</strong></td>
-                                    <td><strong>{{ $value['matching'] }}</strong></td>
-                                    <td><strong>{{ $value['fifth_pairs'] }}</strong></td>
-                                    <td><strong>{{ $value['net_commission'] }}</strong></td>
-                                </tr>
+                                @if (($value['direct'] > 0) || ($value['indirect'] > 0) || ($value['matching'] > 0))
+                                    <tr>
+                                        <td><strong>{{ $value['ibo_name'] }}</strong></td>
+                                        <td><strong>{{ $value['direct'] }}</strong></td>
+                                        <td><strong>{{ $value['indirect'] }}</strong></td>
+                                        <td><strong>{{ $value['matching'] }}</strong></td>
+                                        <td><strong>{{ $value['fifth_pairs'] }}</strong></td>
+                                        <td><strong>{{ $value['net_commission'] }}</strong></td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
