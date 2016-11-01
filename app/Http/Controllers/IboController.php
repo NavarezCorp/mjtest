@@ -10,6 +10,7 @@ use Session;
 use App\User;
 use App\ActivationCode;
 use Illuminate\Validation\Rule;
+use App\Helper;
 
 class IboController extends Controller
 {
@@ -96,6 +97,8 @@ class IboController extends Controller
         $model->used_by_ibo_id = $new_id;
         $model->printed = true;
         $model->save();
+        
+        Helper::process_commission($new_id);
         
         Session::flash('message', 'IBO named "' . $request->firstname . ' ' . $request->middlename . ' ' . $request->lastname . '" was successfully created');
         return redirect('/ibo');
