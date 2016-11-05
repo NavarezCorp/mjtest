@@ -447,6 +447,8 @@ class GenealogyController extends Controller
         
         if(!empty($res)){
             foreach($res as $value){
+                $counter = 0;
+                
                 switch($value['attributes']['placement_position']){
                     case 'L':
                         $position_str = 'left';
@@ -468,7 +470,7 @@ class GenealogyController extends Controller
                         $res = $this->fetcherEx_(['id'=>$value_['attributes']['id']]);
                         
                         if(!in_array($value_['attributes']['activation_code_type'], $not_in)) $counter++;
-
+                        
                         if(!empty($res)) foreach($res as $val) $temp[] = $val;
                     }
 
