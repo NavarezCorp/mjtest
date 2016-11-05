@@ -25,6 +25,7 @@
                             <th>Middle</th>
                             <th>Lastname</th>
                             <th>Sponsor ID</th>
+                            <th>Placement ID</th>
                             <th>Placement Position</th>
                             <th>Type</th>
                             <th>Ranking Lion</th>
@@ -39,6 +40,7 @@
                                     <td>{{ $value->middlename }}</td>
                                     <td>{{ $value->lastname }}</td>
                                     <td>{{ sprintf('%09d', $value->sponsor_id) }}</td>
+                                    <td>{{ sprintf('%09d', $value->placement_id) }}</td>
                                     <td>{{ $value->placement_position }}</td>
                                     <td>{{ $value->activation_code_type }}</td>
                                     <td>{{ $value->ranking_lions_id }}</td>
