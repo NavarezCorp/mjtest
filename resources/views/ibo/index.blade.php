@@ -26,6 +26,7 @@
                             <th>Lastname</th>
                             <th>Sponsor ID</th>
                             <th>Placement Position</th>
+                            <th>Type</th>
                             <th>Ranking Lion</th>
                             <th></th>
                             <th></th>
@@ -39,6 +40,7 @@
                                     <td>{{ $value->lastname }}</td>
                                     <td>{{ sprintf('%09d', $value->sponsor_id) }}</td>
                                     <td>{{ $value->placement_position }}</td>
+                                    <td>{{ $value->activation_code_type }}</td>
                                     <td>{{ $value->ranking_lions_id }}</td>
                                     <td class="table-tools-column">
                                         <a href="{{ route('ibo.show', $value->id) }}">
