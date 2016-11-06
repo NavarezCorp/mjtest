@@ -14,6 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Rebate;
 use App\Helper;
 use App\CommissionRecord;
+use App\Logger;
 
 class CommissionSummaryReportController extends Controller
 {
@@ -649,5 +650,14 @@ class CommissionSummaryReportController extends Controller
     
     public function manual_compute($id){
         Helper::process_commission($id);
+    }
+    
+    public function process_waiting($id){
+        if($id == 'all'){
+            $ibos = DB::table('ibos')->select('id')->orderBy('created_at', 'asc')->get();
+            
+            foreach($ibos as $value) Helper::process_waiting($value->id);
+        }
+        else Helper::process_waiting($id);
     }
 }

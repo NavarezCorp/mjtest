@@ -34,6 +34,8 @@ Route::get('commissionsummaryreport/all/{search?}', 'CommissionSummaryReportCont
 Route::get('commission/manualcompute/{id}', 'CommissionSummaryReportController@manual_compute');
 Route::resource('commissionsummaryreport', 'CommissionSummaryReportController');
 
+Route::get('waiting/{id}', 'CommissionSummaryReportController@process_waiting');
+
 Route::resource('activationtype', 'ActivationTypeController');
 
 Route::get('activationcode/get_activation_code', 'ActivationCodeController@get_activation_code');
