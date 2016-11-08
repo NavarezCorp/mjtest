@@ -35,6 +35,8 @@ Route::get('commission/manualcompute/{id}', 'CommissionSummaryReportController@m
 Route::resource('commissionsummaryreport', 'CommissionSummaryReportController');
 
 Route::get('waiting/{id}', 'CommissionSummaryReportController@process_waiting');
+Route::get('matching/{id}', 'CommissionSummaryReportController@process_matching');
+Route::get('automatching/{id}', 'CommissionSummaryReportController@process_auto_matching');
 
 Route::resource('activationtype', 'ActivationTypeController');
 

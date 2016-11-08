@@ -8,6 +8,9 @@ use App\Commission;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Logger;
+use App\Waiting;
+use App\Matching;
+use DB;
 
 class Helper {
     const COMMISSION_DIRECT = 1;
@@ -19,14 +22,18 @@ class Helper {
     public static function process_commission($id){
         $not_in = ['FS', 'CD'];
         
+        // get ibo record
         $res = Ibo::find($id);
         
+        // check if ibo record already exist in commission record table
         $check = CommissionRecord::where('from_ibo_id', $id)
             ->where('created_at', $res->created_at)
             ->get();
         
+        // if ibo not exist in commission record table and not fs or cd
         if(!$check->count() && !in_array($res->activation_code_type, $not_in)){
             if(!empty($res)){
+                // save direct commission for upline
                 $model = new CommissionRecord;
                 $model->sponsor_id = $res->sponsor_id;
                 $model->commission_type_id = self::COMMISSION_DIRECT;
@@ -45,6 +52,7 @@ class Helper {
                         $res_ = Ibo::find($search_id);
 
                         if(!empty($res_)){
+                            // save indirect commission for indirect upline upto level 7
                             $model = new CommissionRecord;
                             $model->sponsor_id = $res_->sponsor_id;
                             $model->commission_type_id = self::COMMISSION_INDIRECT;
@@ -60,62 +68,14 @@ class Helper {
                 }
             }
         }
-    }
-    /*
-    public static function process_matching_bonus($id){
-        $param_ = null;
         
-        $res = Ibo::find($id);
+        self::process_auto_matching($id);
         
-        if(!empty($res)){
-            // get current year
-            $param_['current_year'] = Carbon::now()->year;
-            
-            // set current date to ibo registration date
-            $date_ = new Carbon($res->created_at, 'Asia/Manila');
-            $date_->setWeekStartsAt(Carbon::SATURDAY);
-            $date_->setWeekEndsAt(Carbon::FRIDAY);
-            
-            // set parameters
-            $param_['id'] = $id;
-            $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
-            $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
-            $param_['year'] = $date_->year;
-            
-            do{
-                
-            }while(1);
-            // loop from ibo year of registration to current year
-            for($i = $param_['year']; $i <= $param_['current_year']; $i++){
-                $date_->year = $i;
-                
-                // current year have different looping process
-                if($date_->year == $param_['current_year']){
-                    echo 'current year' . '<br>';
-                    print_r($param_);
-                    die();
-                    /*
-                    for($j = $date_->weekOfYear; $j >= 1; $j--){
-
-                    }
-                    
-                }
-                else{
-                    echo 'not current year' . '<br>';
-                    print_r($param_);
-                    die();
-                    /*
-                    for($j = $date_->weekOfYear; $j >= 1; $j++){
-                        
-                    }
-                    
-                }
-            }
-        }
+        Logger::log('Done processing direct and indirect commission');
     }
-    */
     
     public static function process_waiting($id){
+        // check if ibo already exist in the record
         $check = Waiting::where('ibo_id', $id)->get();
         
         if(!$check->count()){
@@ -124,13 +84,15 @@ class Helper {
             $data['right'] = null;
             $position_str = null;
             $not_in = ['FS', 'CD'];
-
+            
+            // get first level downline
             $res = Ibo::where('placement_id', $id)->get();
             
             if(!empty($res)){
                 foreach($res as $value){
                     $counter = null;
                     
+                    // check placement position
                     switch($value['attributes']['placement_position']){
                         case 'L':
                             $position_str = 'left';
@@ -141,28 +103,34 @@ class Helper {
                             break;
                     }
                     
+                    // if not fs or cd get downline ibo_id
                     if(!in_array($value['attributes']['activation_code_type'], $not_in)) $counter[] = $value['attributes']['id'];
-
+                    
+                    // get second level downline
                     $ids = Ibo::where('placement_id', $value['attributes']['id'])->get();
                     
                     while(!empty($ids)){
                         $temp = null;
 
                         foreach($ids as $value_){
+                            // get third level downline upto last level downline
                             $res = Ibo::where('placement_id', $value_['attributes']['id'])->get();
-
+                            
+                            // if not fs or cd get downline ibo_id
                             if(!in_array($value_['attributes']['activation_code_type'], $not_in)) $counter[] = $value_['attributes']['id'];
-
+                            
                             if(!empty($res)) foreach($res as $val) $temp[] = $val;
                         }
 
                         $ids = $temp;
                     }
 
+                    // store the ibo ids for left or right
                     $data[$position_str] = $counter;
                 }
             }
             
+            // rearrange all left by created_at from oldest to latest
             if(!empty($data['left'])){
                 $res_left = Ibo::whereIn('id', $data['left'])->orderBy('created_at', 'asc')->get();
                 
@@ -174,6 +142,7 @@ class Helper {
             }
             else $data['new_left'] = null;
             
+            // rearrange all right by created_at from oldest to latest
             if(!empty($data['right'])){
                 $res_right = Ibo::whereIn('id', $data['right'])->orderBy('created_at', 'asc')->get();
                 
@@ -185,13 +154,124 @@ class Helper {
             }
             else $data['new_right'] = null;
 
+            // save left and right
             $model = new Waiting;
             $model->ibo_id = $id;
             $model->left = !empty($data['new_left']) ? implode(',', $data['new_left']) : '';
             $model->right = !empty($data['new_right']) ? implode(',', $data['new_right']) : '';
             $model->save();
-
-            //Logger::log($data);
         }
+        
+        Logger::log('Done processing waiting');
+    }
+    
+    public static function process_matching($id){
+        $res = Waiting::where('ibo_id', $id)->first();
+        
+        // convert to array form
+        $data['left_'] = !empty($res->left) ? explode(',', $res->left) : null;
+        $data['right_'] = !empty($res->right) ? explode(',', $res->right) : null;
+        
+        // get counter for iteration
+        $data['ctr'] = min(count($data['left_']), count($data['right_']));
+        
+        // get record id for saving new left and right
+        $data['record_id'] = $res->id;
+        
+        for($i = 0; $i < $data['ctr']; $i++){
+            // get first items
+            $arr_[] = $data['left_'][0];
+            $arr_[] = $data['right_'][0];
+            
+            $res = Ibo::whereIn('id', $arr_)->orderBy('created_at', 'desc')->get();
+            
+            // get latest created_at between first items to be used for datetime_matched
+            $data['created_at_'] = $res[0]['created_at'];
+            
+            // save matched items
+            $model = new Matching;
+            $model->datetime_matched = $data['created_at_'];
+            $model->left = $data['left_'][0];
+            $model->right = $data['right_'][0];
+            $model->ibo_id = $id;
+            
+            // get latest counter value
+            $res = Matching::where('ibo_id', $id)->orderBy('counter', 'desc')->first();
+            $counter_ = !empty($res) ? $res->counter : 0;
+            $model->counter = $counter_ + 1;
+            
+            $model->save();
+            
+            // remove first items
+            array_splice($data['left_'], 0, 1);
+            array_splice($data['right_'], 0, 1);
+        }
+        
+        // save new left and right
+        $model = Waiting::find($data['record_id']);
+        $model->left = !empty($data['left_']) ? implode(',', $data['left_']) : '';
+        $model->right = !empty($data['right_']) ? implode(',', $data['right_']) : '';
+        $model->save();
+        
+        Logger::log('Done processing matching');
+    }
+    
+    public static function process_auto_matching($id){
+        $not_in = ['FS', 'CD'];
+        $search_id = $id;
+        
+        // save new ibo to waiting table
+        self::process_waiting($id);
+        
+        while($search_id){
+            // get record of new ibo
+            $ibo = Ibo::find($search_id);
+            
+            if(!empty($ibo)){
+                if(!empty($ibo->placement_id)){
+                    // get waiting record of upper level
+                    $res = Waiting::where('ibo_id', $ibo->placement_id)->first();
+                    
+                    // convert to array form
+                    $data['left'] = !empty($res->left) ? explode(',', $res->left) : null;
+                    $data['right'] = !empty($res->right) ? explode(',', $res->right) : null;
+
+                    // check ibo placement position
+                    switch($ibo->placement_position){
+                        case 'L':
+                            // if ibo not exist in left add it
+                            if(!empty($data['left'])){
+                                if(!in_array($ibo->id, $data['left'])) $data['left'][] = $id;
+                            }
+                            else $data['left'][] = $id;
+                            
+                            break;
+
+                        case 'R':
+                            // if ibo not exist in right add it
+                            if(!empty($data['right'])){
+                                if(!in_array($ibo->id, $data['right'])) $data['right'][] = $id;
+                            }
+                            else $data['right'][] = $id;
+                            
+                            break;
+                    }
+
+                    // save new left and right
+                    $model = Waiting::find($res->id);
+                    $model->left = !empty($data['left']) ? implode(',', $data['left']) : '';
+                    $model->right = !empty($data['right']) ? implode(',', $data['right']) : '';
+                    $model->save();
+                }
+            }
+            
+            $search_id = $ibo->placement_id;
+        }
+        
+        // process matching for all
+        $ibos = DB::table('waitings')->select('ibo_id')->orderBy('created_at', 'asc')->get();    
+        foreach($ibos as $value) self::process_matching($value->ibo_id);
+        
+        Logger::log('Done processing auto matching');
     }
 }
