@@ -1,6 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
+
+ini_set('max_execution_time', 180);
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -114,15 +115,15 @@ class CommissionSummaryReportController extends Controller
                         ->orderBy('created_at', 'desc')->get();
                     
                     $data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
-                    
                     $data['commission'][$i]['matching'] = $this->get_matching_bonus($param_);
+                    $data['commission'][$i]['fifth_pair'] = $this->get_fifth_pair($param_);
                     //$left_ = $matching['left'];
                     //$right_ = $matching['right'];
                     
                     //$data['commission'][$i]['fifth_pairs'] = intval(min($left_, $right_) / 5) * Commission::where('name', 'Matching Bonus')->first()->amount;
-                    $data['commission'][$i]['fifth_pairs'] = 0;
+                    $data['commission'][$i]['fifth_pairs'] = $data['commission'][$i]['fifth_pair'] * Commission::where('name', 'Matching Bonus')->first()->amount;
                     //$data['commission'][$i]['matching'] = (min($left_, $right_) * Commission::where('name', 'Matching Bonus')->first()->amount) - $data['commission'][$i]['fifth_pairs'];
-                    $data['commission'][$i]['matching'] = $data['commission'][$i]['matching'] * Commission::where('name', 'Matching Bonus')->first()->amount;
+                    $data['commission'][$i]['matching'] = $data['commission'][$i]['matching'] * Commission::where('name', 'Matching Bonus')->first()->amount - $data['commission'][$i]['fifth_pairs'];
                     $data['commission'][$i]['gross'] = ($data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching']);
                     $data['commission'][$i]['tax'] = $data['commission'][$i]['gross'] * .1;
                     $data['commission'][$i]['net_commission'] = $data['commission'][$i]['gross'] - $data['commission'][$i]['tax'];
@@ -471,6 +472,26 @@ class CommissionSummaryReportController extends Controller
         return count($res);
     }
     
+    public function get_fifth_pair($param){
+        $res = Matching::where('ibo_id', $param['id'])
+            ->whereBetween('datetime_matched', [$param['start_date'], $param['end_date']])
+            ->whereRaw('counter % 5 = 0')
+            ->get();
+        
+        /*
+        $res = DB::select('
+            select * 
+            from matchings 
+            where 
+                ibo_id = ' . $param['id'] . '
+                counter % 5 = 0
+        ');
+        */
+        //Logger::log($res);
+        return count($res);
+    }
+
+
     /*
     public function get_matching_bonus($param){
         $counter = 0;
