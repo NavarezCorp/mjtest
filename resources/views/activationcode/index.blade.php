@@ -44,18 +44,18 @@
                     </form>
                     <hr>
                     <ul class="nav nav-tabs" id="code-tabs" role="tablist" style="margin-bottom:20px;">
-                        <li role="presentation" class="active">
+                        <li role="presentation" class="{{ ($data['tab'] == 'not-yet-printed-codes') ? 'active' : '' }}">
                             <a href="#not-yet-printed-codes" id="not-yet-printed-codes-tab" role="tab" data-toggle="tab" aria-controls="not-yet-printed-codes" aria-expanded="true">Not yet printed</a>
                         </li>
-                        <li role="presentation" class="">
+                        <li role="presentation" class="{{ ($data['tab'] == 'all-codes') ? 'active' : '' }}">
                             <a href="#all-codes" role="tab" id="all-codes-tab" data-toggle="tab" aria-controls="all-codes" aria-expanded="false">All</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="codes-tab-content">
-                        <div id="not-yet-printed-codes" class="tab-pane fade active in" role="tabpanel" aria-labelledby="home-tab">
+                        <div id="not-yet-printed-codes" class="tab-pane fade {{ ($data['tab'] == 'not-yet-printed-codes') ? 'active in' : '' }}" role="tabpanel" aria-labelledby="home-tab">
                             <a class="btn btn-primary" href="/activationcode/print_code/nypc" role="button" target="_blank">Print Codes</a>
                             <hr>
-                            <div class="pull-right">{!! $data['not_yet_printed']->links() !!}</div>
+                            <div class="pull-right">{!! $data['not_yet_printed']->appends(['tab'=>'not-yet-printed-codes'])->links() !!}</div>
                             <table class="table table-striped table-hover table-condensed">
                                 <thead>
                                     <th>ID</th>
@@ -80,12 +80,12 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="pull-right">{!! $data['not_yet_printed']->links() !!}</div>
+                            <div class="pull-right">{!! $data['not_yet_printed']->appends(['tab'=>'not-yet-printed-codes'])->links() !!}</div>
                         </div>
-                        <div id="all-codes" class="tab-pane fade" role="tabpanel" aria-labelledby="profile-tab">
+                        <div id="all-codes" class="tab-pane fade {{ ($data['tab'] == 'all-codes') ? 'active in' : '' }}" role="tabpanel" aria-labelledby="profile-tab">
                             <a class="btn btn-primary" href="/activationcode/print_code/all" role="button" target="_blank">Print Codes</a>
                             <hr>
-                            <div class="pull-right">{!! $data['all']->links() !!}</div>
+                            <div class="pull-right">{!! $data['all']->appends(['tab'=>'all-codes'])->links() !!}</div>
                             <table class="table table-striped table-hover table-condensed">
                                 <thead>
                                     <th>ID</th>
@@ -110,7 +110,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="pull-right">{!! $data['all']->links() !!}</div>
+                            <div class="pull-right">{!! $data['all']->appends(['tab'=>'all-codes'])->links() !!}</div>
                         </div>
                     </div>
                 </div>

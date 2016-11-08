@@ -12,6 +12,7 @@ use Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade as PDF;
+use App\Logger;
 
 class ActivationCodeController extends Controller
 {
@@ -26,6 +27,8 @@ class ActivationCodeController extends Controller
         $data['all'] = DB::table('activation_codes')->orderBy('id', 'desc')->paginate(15);
         $data['not_yet_printed'] = DB::table('activation_codes')->where('printed', false)->orderBy('id', 'desc')->paginate(15);
         $data['activation_types'] = ActivationType::pluck('name', 'id');
+        $data['tab'] = !empty($_GET['tab']) ? $_GET['tab'] : 'not-yet-printed-codes';
+        
         return view('activationcode.index', ['data'=>$data]);
     }
 
