@@ -7,6 +7,8 @@ use App\Http\Requests;
 use App\Ibo;
 use Carbon\Carbon;
 use DB;
+use App\Waiting;
+use App\Logger;
 
 class GenealogyController extends Controller
 {
@@ -23,9 +25,9 @@ class GenealogyController extends Controller
         //$data['left_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'L']);
         //$data['right_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'R']);
         $data['counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id']]);
-        $data['waiting'] = $this->get_waiting(['id'=>$_GET['sponsor_id']]);
+        $data['waiting'] = $this->get_waiting($_GET['sponsor_id']);
         
-        //print_r($data['waiting']); die();
+        //Logger::log($data); die();
         
         return view('genealogy.index', ['data'=>$data]);
     }
@@ -435,6 +437,16 @@ class GenealogyController extends Controller
         return $data;
     }
     
+    public function get_waiting($id){
+        $data['res'] = Waiting::where('ibo_id', $id)->first();
+        
+        $data['left'] = !empty( $data['res']->left) ? count(explode(',',  $data['res']->left)) : 0;
+        $data['right'] = !empty( $data['res']->right) ? count(explode(',',  $data['res']->right)) : 0;
+        
+        return $data;
+    }
+    
+    /*
     public function get_waiting($param){
         $counter = 0;
         $ids = null;
@@ -492,6 +504,7 @@ class GenealogyController extends Controller
         
         return $data;
     }
+    */
     
     public function fetcher_($param){
         $data = null;
