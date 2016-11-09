@@ -221,51 +221,53 @@ class Helper {
         $search_id = $id;
         
         // save new ibo to waiting table
-        self::process_waiting($id);
+        self::process_waiting($search_id);
         
-        while($search_id){
-            // get record of new ibo
-            $ibo = Ibo::find($search_id);
-            
-            if(!empty($ibo)){
-                if(!empty($ibo->placement_id)){
-                    // get waiting record of upper level
-                    $res = Waiting::where('ibo_id', $ibo->placement_id)->first();
-                    
-                    // convert to array form
-                    $data['left'] = !empty($res->left) ? explode(',', $res->left) : null;
-                    $data['right'] = !empty($res->right) ? explode(',', $res->right) : null;
+        // get record of new ibo
+        $ibo = Ibo::find($search_id);
+        
+        if(!in_array($ibo->activation_code_type, $not_in)){
+            while($search_id){
+                if(!empty($ibo)){
+                    if(!empty($ibo->placement_id)){
+                        // get waiting record of upper level
+                        $res = Waiting::where('ibo_id', $ibo->placement_id)->first();
 
-                    // check ibo placement position
-                    switch($ibo->placement_position){
-                        case 'L':
-                            // if ibo not exist in left add it
-                            if(!empty($data['left'])){
-                                if(!in_array($ibo->id, $data['left'])) $data['left'][] = $id;
-                            }
-                            else $data['left'][] = $id;
-                            
-                            break;
+                        // convert to array form
+                        $data['left'] = !empty($res->left) ? explode(',', $res->left) : null;
+                        $data['right'] = !empty($res->right) ? explode(',', $res->right) : null;
 
-                        case 'R':
-                            // if ibo not exist in right add it
-                            if(!empty($data['right'])){
-                                if(!in_array($ibo->id, $data['right'])) $data['right'][] = $id;
-                            }
-                            else $data['right'][] = $id;
-                            
-                            break;
+                        // check ibo placement position
+                        switch($ibo->placement_position){
+                            case 'L':
+                                // if ibo not exist in left add it
+                                if(!empty($data['left'])){
+                                    if(!in_array($ibo->id, $data['left'])) $data['left'][] = $id;
+                                }
+                                else $data['left'][] = $id;
+
+                                break;
+
+                            case 'R':
+                                // if ibo not exist in right add it
+                                if(!empty($data['right'])){
+                                    if(!in_array($ibo->id, $data['right'])) $data['right'][] = $id;
+                                }
+                                else $data['right'][] = $id;
+
+                                break;
+                        }
+
+                        // save new left and right
+                        $model = Waiting::find($res->id);
+                        $model->left = !empty($data['left']) ? implode(',', $data['left']) : '';
+                        $model->right = !empty($data['right']) ? implode(',', $data['right']) : '';
+                        $model->save();
                     }
-
-                    // save new left and right
-                    $model = Waiting::find($res->id);
-                    $model->left = !empty($data['left']) ? implode(',', $data['left']) : '';
-                    $model->right = !empty($data['right']) ? implode(',', $data['right']) : '';
-                    $model->save();
                 }
+
+                $search_id = $ibo->placement_id;
             }
-            
-            $search_id = $ibo->placement_id;
         }
         
         // process matching for all
