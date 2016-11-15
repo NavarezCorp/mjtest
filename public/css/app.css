@@ -5772,5 +5772,10 @@ button.close {
 .summary-container {
   margin-bottom: 20px; }
 
+.link-disabled {
+  pointer-events: none;
+  color: grey;
+  cursor: not-allowed; }
+
 
 /*# sourceMappingURL=app.css.map */

@@ -47,3 +47,7 @@ Route::resource('activationcode', 'ActivationCodeController');
 
 Route::get('genealogy/get_genealogy', 'GenealogyController@get_genealogy');
 Route::resource('genealogy', 'GenealogyController');
+
+Route::get('productcode/get_product_code', 'ProductCodeController@get_product_code');
+Route::get('productcode/check_product_code', 'ProductCodeController@check_product_code');
+Route::resource('productcode', 'ProductCodeController');

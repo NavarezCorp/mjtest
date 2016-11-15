@@ -17,6 +17,7 @@ class CreateProductPurchasesTable extends Migration
             $table->increments('id');
             $table->integer('ibo_id')->index();
             $table->integer('product_id')->index();
+            $table->integer('product_code_id')->index();
             $table->decimal('purchase_amount', 9, 2);
             $table->timestamps();
         });

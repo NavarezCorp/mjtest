@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Manage Activation Types
+                    Manage Activation Codes
                     <!--<a class="pull-right" href="{{-- route('activationtype.create') --}}">Add</a>-->
                 </div>
 
@@ -17,7 +17,7 @@
                             {{ Session::get('message') }}
                         </div>
                     @endif
-                    <form class="form-horizontal" role="form" method="" action="" id="code-generator">
+                    <form class="form-horizontal" role="form" method="" action="" id="activation-code-generator">
                         <div class="form-group">
                             <label class="col-md-4 control-label">Activation Type</label>
                             <div class="col-md-6">
@@ -26,13 +26,13 @@
                         </div>
                         <div class="form-group">
                             <label class="col-md-4 control-label">How many character</label>
-                            <div class="col-md-6">
+                            <div class="col-md-1">
                                 <input type="text" class="form-control" name="howmanychar" value="8" readonly>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4 control-label">How many code</label>
-                            <div class="col-md-6">
+                            <div class="col-md-1">
                                 <input type="text" class="form-control" name="howmanycode">
                             </div>
                         </div>
