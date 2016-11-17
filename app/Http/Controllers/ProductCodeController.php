@@ -7,12 +7,13 @@ use App\Http\Requests;
 use App\Product;
 use App\ProductCode;
 use App\User;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Str;
 use App\Logger;
 use DB;
 use Carbon\Carbon;
+use App\Ibo;
 
 class ProductCodeController extends Controller
 {
@@ -24,7 +25,8 @@ class ProductCodeController extends Controller
     public function index()
     {
         //
-        $data['product_codes'] = DB::table('product_codes')->orderBy('created_at', 'desc')->paginate(15);
+        session()->forget('product_codes_to_be_printed');
+        
         $data['products'] = Product::pluck('name', 'id');
         
         return view('productcode.index', ['data'=>$data]);
@@ -97,6 +99,7 @@ class ProductCodeController extends Controller
     }
     
     public function get_product_code(){
+        $data = null;
         $howmanychar = 8;
         $howmanycode = $_GET['howmanyproducts'];
         
@@ -105,25 +108,40 @@ class ProductCodeController extends Controller
             $model->code = encrypt(Str::upper($this->sfi_get_code($howmanychar)));
             $model->product_id = $_GET['product_id'];
             $model->created_by = Auth::user()->ibo_id;
-            
-            switch($_GET['transfer_to']){
-                case 'pc':
-                    $model->assigned_to_pc_ibo_id = $_GET['ibo_id'];
-                    $model->datetime_assigned_to_pc = Carbon::now();
-                    $model->assigned_to_pc_creator = Auth::user()->ibo_id;
-                    break;
-
-                case 'ms':
-                    $model->assigned_to_ms_ibo_id = $_GET['ibo_id'];
-                    $model->datetime_assigned_to_ms = Carbon::now();
-                    $model->assigned_to_ms_creator = Auth::user()->ibo_id;
-                    break;
-            }
-            
+            $model->assigned_to_pc_ibo_id = $_GET['ibo_id'];
+            $model->datetime_assigned_to_pc = Carbon::now();
+            $model->assigned_to_pc_creator = Auth::user()->ibo_id;
             $model->save();
+            
+            $data['new_product_code'][$i]['id'] = $model->id;
+            $data['new_product_code'][$i]['code'] = decrypt($model->code);
+            $data['new_product_code'][$i]['product'] = Product::find($model->product_id)->name;
+            
+            $created_by = Ibo::find($model->created_by);
+            $data['new_product_code'][$i]['created_by'] = $created_by->firstname . ' ' . $created_by->middlename . ' ' . $created_by->lastname;
+            
+            $assigned_to_pc_ibo_id = Ibo::find($model->assigned_to_pc_ibo_id);
+            $user_type = User::where('ibo_id', $model->assigned_to_pc_ibo_id)->first();
+            $user_type_str = !empty($user_type->role) ? $user_type->role : 'Ordinary';
+            $data['new_product_code'][$i]['transfered_to'] = $assigned_to_pc_ibo_id->firstname . ' ' . $assigned_to_pc_ibo_id->middlename . ' ' . $assigned_to_pc_ibo_id->lastname . '<br>(' . sprintf('%09d', $model->assigned_to_pc_ibo_id) . ') ' . $user_type_str;
+            
+            $data['new_product_code'][$i]['datetime_transfered'] = Carbon::parse($model->created_at)->toDateTimeString();
+            
+            session()->push('product_codes_to_be_printed', $data['new_product_code'][$i]);
         }
         
-        return json_encode(ProductCode::get());
+        foreach(ProductCode::get() as $value){
+            $transfered_to = Ibo::find($value->assigned_to_pc_ibo_id);
+            $user_type = User::where('ibo_id', $value->assigned_to_pc_ibo_id)->first();
+            
+            $user_type_str = !empty($user_type->role) ? $user_type->role : 'Ordinary';
+            
+            $value->transfered_to = $transfered_to->firstname . ' ' . $transfered_to->middlename . ' ' . $transfered_to->lastname . '<br>(' . sprintf('%09d', $value->assigned_to_pc_ibo_id) . ') ' . $user_type_str;
+            
+            $data['all_product_code'][] = $value;
+        }
+        
+        return json_encode($data);
     }
     
     private function sfi_get_code($length){
@@ -150,23 +168,37 @@ class ProductCodeController extends Controller
         return json_encode($data);
     }
     
-    public function print_code($type){
-        $data = null;
-        
-        switch($type){
-            case 'nypc':
-                $data = ActivationCode::where('printed', false)->orderBy('id', 'desc')->get();
-                break;
+    public function print_product_codes(){
+        $pdf = PDF::loadView('productcode.print', ['data'=>session()->get('product_codes_to_be_printed')]);
+        $pdf->setPaper('a4', 'landscape');
+        return $pdf->stream();
+    }
+    
+    public function get_all_product_codes(){
+        $data['where']['assigned_to_pc_ibo_id'] = 0;
+        $data['where']['product_id'] = 0;
+                
+        if(!empty($_GET['transfered_to']) || !empty($_GET['product_id'])){
+            if(!empty($_GET['transfered_to'])){
+                $data['where']['assigned_to_pc_ibo_id'] = $_GET['transfered_to'];
+                $data_['where']['assigned_to_pc_ibo_id'] = $_GET['transfered_to'];
+            }
             
-            case 'all':
-                $data = ActivationCode::orderBy('id', 'desc')->get();
-                break;
+            if(!empty($_GET['product_id'])){
+                $data['where']['product_id'] = $_GET['product_id'];
+                $data_['where']['product_id'] = $_GET['product_id'];
+            }
+            
+            $data['product_codes'] = DB::table('product_codes')
+                ->where($data_['where'])
+                ->orderBy('id', 'desc')
+                ->paginate(15);
         }
+        else $data['product_codes'] = DB::table('product_codes')->orderBy('id', 'desc')->paginate(15);
         
-        if($data){
-            $pdf = PDF::loadView('productcode.print', ['data'=>$data]);
-            $pdf->setPaper('a4', 'landscape');
-            return $pdf->stream();
-        }
+        $data['products'] = Product::pluck('name', 'id');
+        $data['ibos'] = DB::table('ibos')->select('id')->orderBy('created_at', 'asc')->get();
+        
+        return view('productcode.all', ['data'=>$data]);
     }
 }

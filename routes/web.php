@@ -50,4 +50,6 @@ Route::resource('genealogy', 'GenealogyController');
 
 Route::get('productcode/get_product_code', 'ProductCodeController@get_product_code');
 Route::get('productcode/check_product_code', 'ProductCodeController@check_product_code');
+Route::get('productcode/all', 'ProductCodeController@get_all_product_codes');
+Route::get('productcode/print', 'ProductCodeController@print_product_codes');
 Route::resource('productcode', 'ProductCodeController');

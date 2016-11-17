@@ -65,10 +65,22 @@ $("#product-code-generator").submit(function(e){
             product_id:data['product_id'],
             howmanychar:data['howmanychar'], 
             howmanyproducts:data['howmanyproducts'],
-            transfer_to:data['transfer_to'],
         },
         function(data){
-            window.location = "/productcode";
+            //window.location = "/productcode";
+            
+            for(var i = 0; i < data.new_product_code.length; i++){
+                var html = '';
+                html += '<tr>';
+                html += '<td>' + data.new_product_code[i].id + '</td>';
+                html += '<td>' + data.new_product_code[i].product + '</td>';
+                html += '<td>' + data.new_product_code[i].code + '</td>';
+                html += '<td>' + data.new_product_code[i].transfered_to + '</td>';
+                html += '<td>' + data.new_product_code[i].datetime_transfered + '</td>';
+                html += '</tr>';
+
+                $('.new-product-code-table').append(html);
+            }
         }
     );
 });
@@ -165,6 +177,11 @@ $('#selectWeek').change(function(){
 $('#selectYear').change(function(){
     //console.log($(this).val());
     window.location = '/commissionsummaryreport/all/' + $('#selectWeek').val() + '|' + $(this).val();
+});
+
+$('.product-code-transfered-to, .product-code-product-id').change(function(){
+    var query_string = '?transfered_to=' + $('.product-code-transfered-to').val() + '&product_id=' + $('.product-code-product-id').val();
+    window.location = '/productcode/all' + query_string;
 });
 var sponsor_id = 0;
 
