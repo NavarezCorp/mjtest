@@ -5,7 +5,10 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Generate and Transfer Product Codes</div>
+                <div class="panel-heading">
+                    Generate and Transfer Product Codes
+                    <a class="pull-right" href="/productcode">New</a>
+                </div>
                 <div class="panel-body">
                     @if(Session::has('message'))
                         <div class="alert alert-success fade in">
@@ -47,7 +50,7 @@
                         </div>
                     </form>
                     <hr>
-                    <a class="btn btn-primary" href="/productcode/print" role="button" target="_blank">Print Codes</a>
+                    <a class="btn btn-primary print-product-codes link-disabled" href="/productcode/print/generated" role="button" target="_blank">Print Codes</a>
                     <a class="pull-right" href="/productcode/all" target="_blank">All Product Codes</a>
                     <hr>
                     <table class="table table-striped table-hover table-condensed">

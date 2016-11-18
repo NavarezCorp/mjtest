@@ -17,7 +17,7 @@ $('.add-product').click(function(){
     html += '<input type="hidden" name="pcid[]" id="pcid-' + id + '" value="">';
     html += '<label class="col-md-4 control-label"></label>';
     html += '<div class="col-md-6 product-dropdown">';
-    html += '<input id="product-code-text-' + id + '" type="text" class="form-control" name="product_code[]" style="width:400px; float:left; margin-right:10px;">';
+    html += '<input id="product-code-text-' + id + '" type="text" class="form-control product-purchase-code" name="product_code[]" style="width:400px; float:left; margin-right:10px;">';
     html += '<button type="button" class="btn btn-default product-code-search" id="product-code-button-' + id + '">';
     html += '<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>';
     html += '</button>';
@@ -81,6 +81,8 @@ $("#product-code-generator").submit(function(e){
 
                 $('.new-product-code-table').append(html);
             }
+            
+            $('.print-product-codes').removeClass('link-disabled');
         }
     );
 });
@@ -180,6 +182,13 @@ $('#selectYear').change(function(){
 });
 
 $('.product-code-transfered-to, .product-code-product-id').change(function(){
+    //if($('.product-code-transfered-to').val() || $('.product-code-product-id').val()) $('.print-all-product-codes').removeClass('link-disabled');
+    //else $('.print-all-product-codes').addClass('link-disabled');
+    
     var query_string = '?transfered_to=' + $('.product-code-transfered-to').val() + '&product_id=' + $('.product-code-product-id').val();
     window.location = '/productcode/all' + query_string;
+});
+
+$(document).on('click', '.product-purchase-code', function(){
+    $('.register-button').attr('disabled', true);
 });

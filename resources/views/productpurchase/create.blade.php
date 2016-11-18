@@ -30,7 +30,7 @@
                                 <input type="hidden" name="pcid[]" id="pcid-1" value="">
                                 <label class="col-md-4 control-label">Product Code</label>
                                 <div class="col-md-6 product-dropdown">
-                                    <input id="product-code-text-1" type="text" class="form-control" name="product_code[]" style="width:400px; float:left; margin-right:10px;">
+                                    <input id="product-code-text-1" type="text" class="form-control product-purchase-code" name="product_code[]" style="width:400px; float:left; margin-right:10px;">
                                     <button type="button" class="btn btn-default product-code-search" id="product-code-button-1">
                                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                     </button>

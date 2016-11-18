@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading text-capitalize">All Product Codes</div>
                 <div class="panel-body">
-                    <a class="btn btn-primary" href="" role="button" target="_blank">Print Codes</a>
+                    <a class="btn btn-primary print-all-product-codes {{ $data['disable_print'] }}" href="/productcode/print/all" role="button" target="_blank">Print Codes</a>
                     <hr>
                     <div class="pull-right">{!! $data['product_codes']->appends(['product_id'=>$data['where']['product_id'], 'transfered_to'=>$data['where']['assigned_to_pc_ibo_id']])->links() !!}</div>
                     <table class="table table-striped table-hover table-condensed">
@@ -26,6 +26,7 @@
                                     </select>
                                 </td>
                                 <td></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <th>ID</th>
@@ -33,6 +34,7 @@
                                 <th>Code</th>
                                 <th>Transfered to</th>
                                 <th>Datetime Transfered</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,8 +43,9 @@
                                     <td>{{ $value->id }}</td>
                                     <td>{{ App\Product::find($value->product_id)->name }}</td>
                                     <td>{{ decrypt($value->code) }}</td>
-                                    <td>{{ App\Ibo::find($value->assigned_to_pc_ibo_id)->firstname }} {{ App\Ibo::find($value->assigned_to_pc_ibo_id)->middlename }} {{ App\Ibo::find($value->assigned_to_pc_ibo_id)->lastname }}<br>({{ sprintf('%09d', $value->assigned_to_pc_ibo_id) }}) {{ isset(App\User::where('ibo_id', $value->assigned_to_pc_ibo_id)->first()->role) ? App\User::where('ibo_id', $value->assigned_to_pc_ibo_id)->first()->role : 'Ordinary' }}</td>
+                                    <td>{{ App\Ibo::find($value->assigned_to_pc_ibo_id)->firstname }} {{ App\Ibo::find($value->assigned_to_pc_ibo_id)->middlename }} {{ App\Ibo::find($value->assigned_to_pc_ibo_id)->lastname }}<br>({{ sprintf('%09d', $value->assigned_to_pc_ibo_id) }}) {{ isset(App\User::where('ibo_id', $value->assigned_to_pc_ibo_id)->first()->role) ? App\User::where('ibo_id', $value->assigned_to_pc_ibo_id)->first()->role : 'Dealer' }}</td>
                                     <td>{{ $value->created_at }}</td>
+                                    <td>{{ isset($value->assigned_to_dealer_ibo_id) ? 'used' : '' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -122,7 +122,7 @@ class ProductCodeController extends Controller
             
             $assigned_to_pc_ibo_id = Ibo::find($model->assigned_to_pc_ibo_id);
             $user_type = User::where('ibo_id', $model->assigned_to_pc_ibo_id)->first();
-            $user_type_str = !empty($user_type->role) ? $user_type->role : 'Ordinary';
+            $user_type_str = !empty($user_type->role) ? $user_type->role : 'Dealer';
             $data['new_product_code'][$i]['transfered_to'] = $assigned_to_pc_ibo_id->firstname . ' ' . $assigned_to_pc_ibo_id->middlename . ' ' . $assigned_to_pc_ibo_id->lastname . '<br>(' . sprintf('%09d', $model->assigned_to_pc_ibo_id) . ') ' . $user_type_str;
             
             $data['new_product_code'][$i]['datetime_transfered'] = Carbon::parse($model->created_at)->toDateTimeString();
@@ -168,16 +168,26 @@ class ProductCodeController extends Controller
         return json_encode($data);
     }
     
-    public function print_product_codes(){
-        $pdf = PDF::loadView('productcode.print', ['data'=>session()->get('product_codes_to_be_printed')]);
-        $pdf->setPaper('a4', 'landscape');
+    public function print_product_codes($type){
+        if($type == 'all'){
+            $pdf = PDF::loadView('productcode.print', ['data'=>session()->get('all_product_codes_to_be_printed')]);
+            $pdf->setPaper('a4', 'landscape');
+        }
+        else{
+            $pdf = PDF::loadView('productcode.print', ['data'=>session()->get('product_codes_to_be_printed')]);
+            $pdf->setPaper('a4', 'landscape');
+        }
+        
         return $pdf->stream();
     }
     
     public function get_all_product_codes(){
+        session()->forget('all_product_codes_to_be_printed');
+        
         $data['where']['assigned_to_pc_ibo_id'] = 0;
         $data['where']['product_id'] = 0;
-                
+        $data['disable_print'] = 'link-disabled';
+        
         if(!empty($_GET['transfered_to']) || !empty($_GET['product_id'])){
             if(!empty($_GET['transfered_to'])){
                 $data['where']['assigned_to_pc_ibo_id'] = $_GET['transfered_to'];
@@ -189,12 +199,44 @@ class ProductCodeController extends Controller
                 $data_['where']['product_id'] = $_GET['product_id'];
             }
             
+            $data['disable_print'] = '';
+            
             $data['product_codes'] = DB::table('product_codes')
                 ->where($data_['where'])
                 ->orderBy('id', 'desc')
                 ->paginate(15);
+            
+            $res = DB::table('product_codes')->where($data_['where'])->orderBy('id', 'desc')->get();
+            
+            foreach($res as $key => $value){
+                //$data['all_product_codes_to_be_printed'][] = (array)$value;
+                $data['all_product_codes_to_be_printed'][$key]['id'] = $value->id;
+                $data['all_product_codes_to_be_printed'][$key]['code'] = decrypt($value->code);
+                $data['all_product_codes_to_be_printed'][$key]['product'] = Product::find($value->product_id)->name;
+
+                $created_by = Ibo::find($value->created_by);
+                $data['all_product_codes_to_be_printed'][$key]['created_by'] = $created_by->firstname . ' ' . $created_by->middlename . ' ' . $created_by->lastname;
+
+                $assigned_to_pc_ibo_id = Ibo::find($value->assigned_to_pc_ibo_id);
+                $user_type = User::where('ibo_id', $value->assigned_to_pc_ibo_id)->first();
+                $user_type_str = !empty($user_type->role) ? $user_type->role : 'Dealer';
+                $data['all_product_codes_to_be_printed'][$key]['transfered_to'] = $assigned_to_pc_ibo_id->firstname . ' ' . $assigned_to_pc_ibo_id->middlename . ' ' . $assigned_to_pc_ibo_id->lastname . '<br>(' . sprintf('%09d', $value->assigned_to_pc_ibo_id) . ') ' . $user_type_str;
+
+                $data['all_product_codes_to_be_printed'][$key]['datetime_transfered'] = Carbon::parse($value->created_at)->toDateTimeString();
+                $data['all_product_codes_to_be_printed'][$key]['assigned_to_dealer_ibo_id'] = $value->assigned_to_dealer_ibo_id;
+                
+                //session()->put('all_product_codes_to_be_printed', $data['all_product_codes_to_be_printed']);
+                session()->push('all_product_codes_to_be_printed', $data['all_product_codes_to_be_printed'][$key]);
+            }
         }
-        else $data['product_codes'] = DB::table('product_codes')->orderBy('id', 'desc')->paginate(15);
+        else{
+            $data['product_codes'] = DB::table('product_codes')->orderBy('id', 'desc')->paginate(15);
+            /*
+            $res = DB::table('product_codes')->orderBy('id', 'desc')->get();
+            foreach($res as $value) $data['all_product_codes_to_be_printed'][] = (array)$value;
+            session()->put('all_product_codes_to_be_printed', DB::table('product_codes')->orderBy('id', 'desc')->get());
+            */
+        }
         
         $data['products'] = Product::pluck('name', 'id');
         $data['ibos'] = DB::table('ibos')->select('id')->orderBy('created_at', 'asc')->get();

@@ -88,6 +88,7 @@
                 <td>{{ $value['code'] }}</td>
                 <td>{{ str_replace('<br>', ' ', $value['transfered_to']) }}</td>
                 <td>{{ $value['datetime_transfered'] }}</td>
+                <td>{{ isset($value['assigned_to_dealer_ibo_id']) ? 'used' : '' }}</td>
             </tr>
         @endforeach
     </tbody>
