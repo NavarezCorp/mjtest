@@ -20,6 +20,8 @@ class Helper {
     const COMMISSION_INDIRECT_NAME = 'Indirect Sponsor Commission';
     
     public static function process_commission($id){
+        Logger::log('starting process direct and indirect commission');
+        
         $not_in = ['FS', 'CD'];
         
         // get ibo record
@@ -75,6 +77,8 @@ class Helper {
     }
     
     public static function process_waiting($id){
+        Logger::log('starting processing waiting');
+        
         // check if ibo already exist in the record
         $check = Waiting::where('ibo_id', $id)->get();
         
@@ -166,6 +170,8 @@ class Helper {
     }
     
     public static function process_matching($id){
+        Logger::log('starting processing matching');
+        
         $res = Waiting::where('ibo_id', $id)->first();
         
         // convert to array form
@@ -223,6 +229,8 @@ class Helper {
         // save new ibo to waiting table
         self::process_waiting($search_id);
         
+        Logger::log('starting auto matching');
+        
         // get record of new ibo
         $ibo = Ibo::find($search_id);
         
@@ -242,7 +250,8 @@ class Helper {
                             case 'L':
                                 // if ibo not exist in left add it
                                 if(!empty($data['left'])){
-                                    if(!in_array($ibo->id, $data['left'])) $data['left'][] = $id;
+                                    //if(!in_array($ibo->id, $data['left'])) $data['left'][] = $id;
+                                    if(!in_array($id, $data['left'])) $data['left'][] = $id;
                                 }
                                 else $data['left'][] = $id;
 
@@ -251,7 +260,8 @@ class Helper {
                             case 'R':
                                 // if ibo not exist in right add it
                                 if(!empty($data['right'])){
-                                    if(!in_array($ibo->id, $data['right'])) $data['right'][] = $id;
+                                    //if(!in_array($ibo->id, $data['right'])) $data['right'][] = $id;
+                                    if(!in_array($id, $data['right'])) $data['right'][] = $id;
                                 }
                                 else $data['right'][] = $id;
 
@@ -267,6 +277,8 @@ class Helper {
                 }
 
                 $search_id = $ibo->placement_id;
+                
+                $ibo = Ibo::find($search_id);
             }
         }
         

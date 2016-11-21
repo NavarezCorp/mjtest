@@ -1,6 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
+
+set_time_limit(0);
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -12,15 +13,13 @@ use App\ActivationCode;
 use Illuminate\Validation\Rule;
 use App\Helper;
 
-class IboController extends Controller
-{
+class IboController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         //
         $data = DB::table('ibos')->orderBy('id', 'asc')->paginate(15);
         return view('ibo.index', ['data'=>$data]);
@@ -31,8 +30,7 @@ class IboController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
         //
         $data['placement_id'] = !empty($_GET['placement_id']) ? $_GET['placement_id'] : '';
         $data['placement_position'] = !empty($_GET['placement_position']) ? $_GET['placement_position'] : '';
@@ -45,8 +43,7 @@ class IboController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         //
         /*
         $this->validate($request, [
@@ -100,8 +97,9 @@ class IboController extends Controller
         
         Helper::process_commission($new_id);
         
-        Session::flash('message', 'IBO named "' . $request->firstname . ' ' . $request->middlename . ' ' . $request->lastname . '" was successfully created');
+        Session::flash('message', 'IBO ' . sprintf('%09d', $new_id) . ' named "' . $request->firstname . ' ' . $request->middlename . ' ' . $request->lastname . '" was successfully created');
         return redirect('/ibo');
+        //return view('ibo.show');
     }
 
     /**
@@ -110,8 +108,7 @@ class IboController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         //
     }
 
@@ -121,8 +118,7 @@ class IboController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
         //
         $data = Ibo::find($id);
         return view('ibo.edit', ['data'=>$data]);
@@ -135,8 +131,7 @@ class IboController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         //
         $model = Ibo::find($id);
         $model->firstname = $request->firstname;
@@ -157,8 +152,7 @@ class IboController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         //
     }
 }

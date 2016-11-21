@@ -18,15 +18,13 @@ use App\CommissionRecord;
 use App\Logger;
 use App\Matching;
 
-class CommissionSummaryReportController extends Controller
-{
+class CommissionSummaryReportController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         //
     }
 
@@ -35,8 +33,7 @@ class CommissionSummaryReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
         //
     }
 
@@ -46,8 +43,7 @@ class CommissionSummaryReportController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         //
     }
 
@@ -57,8 +53,7 @@ class CommissionSummaryReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         //
         $data = null;
         $param_ = null;
@@ -330,8 +325,7 @@ class CommissionSummaryReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
         //
     }
 
@@ -342,8 +336,7 @@ class CommissionSummaryReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         //
     }
 
@@ -353,8 +346,7 @@ class CommissionSummaryReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         //
     }
     
@@ -469,7 +461,6 @@ class CommissionSummaryReportController extends Controller
         //Logger::log($res);
         return count($res);
     }
-
 
     /*
     public function get_matching_bonus($param){
