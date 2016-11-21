@@ -98,8 +98,8 @@ class IboController extends Controller {
         Helper::process_commission($new_id);
         
         Session::flash('message', 'IBO ' . sprintf('%09d', $new_id) . ' named "' . $request->firstname . ' ' . $request->middlename . ' ' . $request->lastname . '" was successfully created');
-        return redirect('/ibo');
-        //return view('ibo.show');
+        //return redirect('/ibo');
+        return view('ibo.show');
     }
 
     /**
