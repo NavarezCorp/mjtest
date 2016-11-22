@@ -75,24 +75,28 @@
                                     </li>
                                     <li>
                                         <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
-                                        <a href="{{ url('/user/' . Auth::user()->id . '/edit') }}">Profile</a>
-                                        <a href="{{ url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=weekly') }}">Weekly Summary Commission Report</a>
-                                        <a href="{{ url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=monthly') }}">Monthly Summary Commission Report</a>
+                                        <!-- <a href="{{-- url('/user/' . Auth::user()->id . '/edit') --}}">Profile</a> -->
+                                        <a href="{{ url('/ibo/create') }}">Register New IBO</a>
+                                        <a href="{{ url('/productpurchase/create') }}">Repeat Purchase</a>
                                     </li>
                                     @if (Auth::user()->role == 'admin')
-                                        <li><a href="{{ url('/ibo') }}">IBOs</a></li>
-                                        <li><a href="{{ url('/commission') }}">Commissions</a></li>
-                                        <li><a href="{{ url('/package') }}">Packages</a></li>
-                                        <li><a href="{{ url('/packagetype') }}">Package Types</a></li>
-                                        <li><a href="{{ url('/productamount') }}">Product Amounts</a></li>
-                                        <li><a href="{{ url('/product') }}">Products</a></li>
-                                        <li><a href="{{ url('/productpurchase') }}">Product Purchases</a></li>
-                                        <li><a href="{{ url('/rankinglion') }}">Ranking Lions</a></li>
-                                        <li><a href="{{ url('/rebate') }}">Rebates</a></li>
-                                        <li><a href="{{ url('/activationtype') }}">Activation Types</a></li>
-                                        <li><a href="{{ url('/activationcode') }}" target="_blank">Activation Codes</a></li>
-                                        <li><a href="{{ url('/productcode') }}" target="_blank">Product Codes</a></li>
-                                        <li><a href="{{ url('/commissionsummaryreport/all') }}">Weekly Summary Commission Report (All)</a></li>
+                                        <li>
+                                            <a href="{{ url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=weekly') }}">Weekly Summary Commission Report</a>
+                                            <a href="{{ url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=monthly') }}">Monthly Summary Commission Report</a>
+                                            <a href="{{ url('/ibo') }}">IBOs</a>
+                                            <a href="{{ url('/commission') }}">Commissions</a>
+                                            <a href="{{ url('/package') }}">Packages</a>
+                                            <a href="{{ url('/packagetype') }}">Package Types</a>
+                                            <a href="{{ url('/productamount') }}">Product Amounts</a>
+                                            <a href="{{ url('/product') }}">Products</a>
+                                            <a href="{{ url('/productpurchase') }}">Product Purchases</a>
+                                            <a href="{{ url('/rankinglion') }}">Ranking Lions</a>
+                                            <a href="{{ url('/rebate') }}">Rebates</a>
+                                            <a href="{{ url('/activationtype') }}">Activation Types</a>
+                                            <a href="{{ url('/activationcode') }}" target="_blank">Activation Codes</a>
+                                            <a href="{{ url('/productcode') }}" target="_blank">Product Codes</a>
+                                            <a href="{{ url('/commissionsummaryreport/all') }}">Weekly Summary Commission Report (All)</a>
+                                        </li>
                                     @endif
                                 </ul>
                             </li>

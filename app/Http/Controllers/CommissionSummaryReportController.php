@@ -675,4 +675,8 @@ class CommissionSummaryReportController extends Controller {
     public function process_auto_matching($id){
         Helper::process_auto_matching($id);
     }
+    
+    public function get_ibo_commission($id){
+        
+    }
 }

@@ -5,14 +5,14 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Add Product Purchase</div>
+                <div class="panel-heading">Repeat Purchase</div>
 
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/productpurchase') }}">
                         {!! csrf_field() !!}
                         
                         <div class="form-group{{ $errors->has('ibo_id') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">IBO ID</label>
+                            <label class="col-md-4 control-label">IBO ID (Buyer)</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="ibo_id" required>
