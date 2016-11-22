@@ -78,6 +78,7 @@
                                         <!-- <a href="{{-- url('/user/' . Auth::user()->id . '/edit') --}}">Profile</a> -->
                                         <a href="{{ url('/ibo/create') }}">Register New IBO</a>
                                         <a href="{{ url('/productpurchase/create') }}">Repeat Purchase</a>
+                                        <a href="{{ url('/ibocommission/' . Auth::user()->ibo_id) }}">Weekly Summary Commission Report</a>
                                     </li>
                                     @if (Auth::user()->role == 'admin')
                                         <li>
