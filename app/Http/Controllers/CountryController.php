@@ -48,7 +48,7 @@ class CountryController extends Controller
         $model->save();
         
         Session::flash('message', 'Country named "' . $request->name . '" was successfully created');
-        return redirect('/bank');
+        return redirect('/country');
     }
 
     /**
