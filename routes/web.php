@@ -54,3 +54,10 @@ Route::get('productcode/check_product_code', 'ProductCodeController@check_produc
 Route::get('productcode/all', 'ProductCodeController@get_all_product_codes');
 Route::get('productcode/print/{type}', 'ProductCodeController@print_product_codes');
 Route::resource('productcode', 'ProductCodeController');
+
+Route::resource('bank', 'BankController');
+Route::resource('maritalstatus', 'MaritalStatusController');
+Route::resource('gender', 'GenderController');
+Route::resource('country', 'CountryController');
+Route::resource('city', 'CityController');
+Route::resource('pickupcenter', 'PickupCenterController');

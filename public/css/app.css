@@ -5777,5 +5777,10 @@ button.close {
   color: grey;
   cursor: not-allowed; }
 
+.form-group.required .control-label:after {
+  content: " *";
+  color: red;
+  font-size: 18px; }
+
 
 /*# sourceMappingURL=app.css.map */

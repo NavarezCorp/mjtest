@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading text-capitalize">
-                    Commission Summary Report
+                    My Weekly Commission Summary Report
                 </div>
                 <div class="panel-body">
                     <table class="table table-striped table-hover table-condensed">

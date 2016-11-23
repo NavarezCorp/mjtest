@@ -12,6 +12,11 @@ use App\User;
 use App\ActivationCode;
 use Illuminate\Validation\Rule;
 use App\Helper;
+use App\Bank;
+use App\PickupCenter;
+use App\Country;
+use App\City;
+use App\Logger;
 
 class IboController extends Controller {
     /**
@@ -34,6 +39,18 @@ class IboController extends Controller {
         //
         $data['placement_id'] = !empty($_GET['placement_id']) ? $_GET['placement_id'] : '';
         $data['placement_position'] = !empty($_GET['placement_position']) ? $_GET['placement_position'] : '';
+        $data['banks'] = Bank::pluck('name', 'id');
+        $data['marital_status'] = Bank::pluck('name', 'id');
+        $data['genders'] = Bank::pluck('name', 'id');
+        
+        $countries = Country::get();
+        
+        foreach($countries as $value){
+            $city = City::where('country_id', $value->id)->get();
+            
+            foreach($city as $value_) $data['pickup_centers'][$value->name][$value_->id] = $value_->name;
+        }
+                
         return view('ibo.create', ['data'=>$data]);
     }
 
@@ -79,6 +96,19 @@ class IboController extends Controller {
         $model->is_admin = $request->has('is_admin');
         $model->activation_code = $request->activation_code;
         $model->activation_code_type = $request->activation_code_type;
+        $model->email = $request->email;
+        $model->gender_id = $request->gender_id;
+        $model->birth_date = $request->birth_date;
+        $model->marital_status_id = $request->marital_status_id;
+        $model->tin = $request->tin;
+        $model->sss = $request->sss;
+        $model->address = $request->address;
+        $model->city = $request->city;
+        $model->province = $request->province;
+        $model->contact_no = $request->contact_no;
+        $model->pickup_center_id = $request->pickup_center_id;
+        $model->bank_id = $request->bank_id;
+        $model->account_no = $request->account_no;
         $model->save();
         
         $model = new User;

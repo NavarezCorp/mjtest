@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
-use App\ActivationType;
+use App\Bank;
 use Session;
 
-class ActivationTypeController extends Controller {
+class BankController extends Controller {
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +16,8 @@ class ActivationTypeController extends Controller {
      */
     public function index(){
         //
-        $data = DB::table('activation_types')->orderBy('id', 'desc')->paginate(15);
-        return view('activationtype.index', ['data'=>$data]);
+        $data = DB::table('banks')->orderBy('id', 'desc')->paginate(15);
+        return view('bank.index', ['data'=>$data]);
     }
 
     /**
@@ -27,7 +27,7 @@ class ActivationTypeController extends Controller {
      */
     public function create(){
         //
-        return view('activationtype.create');
+        return view('bank.create');
     }
 
     /**
@@ -38,13 +38,13 @@ class ActivationTypeController extends Controller {
      */
     public function store(Request $request){
         //
-        $model = new ActivationType;
+        $model = new Bank;
         $model->name = $request->name;
         $model->description = $request->description;
         $model->save();
         
-        Session::flash('message', 'Activation Type named "' . $request->name . '" was successfully created');
-        return redirect('/activationtype');
+        Session::flash('message', 'Bank named "' . $request->name . '" was successfully created');
+        return redirect('/bank');
     }
 
     /**
@@ -65,8 +65,8 @@ class ActivationTypeController extends Controller {
      */
     public function edit($id){
         //
-        $data = ActivationType::find($id);
-        return view('activationtype.edit', ['data'=>$data]);
+        $data = Bank::find($id);
+        return view('bank.edit', ['data'=>$data]);
     }
 
     /**
@@ -78,13 +78,13 @@ class ActivationTypeController extends Controller {
      */
     public function update(Request $request, $id){
         //
-        $model = ActivationType::find($id);
+        $model = Bank::find($id);
         $model->name = $request->name;
         $model->description = $request->description;
         $model->save();
         
-        Session::flash('message', 'Activation Type ' . $request->name . ' was successfully updated');
-        return redirect('/activationtype');
+        Session::flash('message', 'Bank ' . $request->name . ' was successfully updated');
+        return redirect('/bank');
     }
 
     /**

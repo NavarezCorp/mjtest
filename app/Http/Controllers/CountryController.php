@@ -5,19 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use DB;
-use App\ActivationType;
+use App\Country;
 use Session;
 
-class ActivationTypeController extends Controller {
+class CountryController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
+    public function index()
+    {
         //
-        $data = DB::table('activation_types')->orderBy('id', 'desc')->paginate(15);
-        return view('activationtype.index', ['data'=>$data]);
+        $data = DB::table('countries')->orderBy('id', 'desc')->paginate(15);
+        return view('country.index', ['data'=>$data]);
     }
 
     /**
@@ -25,9 +27,10 @@ class ActivationTypeController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(){
+    public function create()
+    {
         //
-        return view('activationtype.create');
+        return view('country.create');
     }
 
     /**
@@ -36,15 +39,16 @@ class ActivationTypeController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         //
-        $model = new ActivationType;
+        $model = new Country;
         $model->name = $request->name;
         $model->description = $request->description;
         $model->save();
         
-        Session::flash('message', 'Activation Type named "' . $request->name . '" was successfully created');
-        return redirect('/activationtype');
+        Session::flash('message', 'Country named "' . $request->name . '" was successfully created');
+        return redirect('/bank');
     }
 
     /**
@@ -53,7 +57,8 @@ class ActivationTypeController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id){
+    public function show($id)
+    {
         //
     }
 
@@ -63,10 +68,11 @@ class ActivationTypeController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id){
+    public function edit($id)
+    {
         //
-        $data = ActivationType::find($id);
-        return view('activationtype.edit', ['data'=>$data]);
+        $data = Country::find($id);
+        return view('country.edit', ['data'=>$data]);
     }
 
     /**
@@ -76,15 +82,16 @@ class ActivationTypeController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         //
-        $model = ActivationType::find($id);
+        $model = Country::find($id);
         $model->name = $request->name;
         $model->description = $request->description;
         $model->save();
         
-        Session::flash('message', 'Activation Type ' . $request->name . ' was successfully updated');
-        return redirect('/activationtype');
+        Session::flash('message', 'Country ' . $request->name . ' was successfully updated');
+        return redirect('/country');
     }
 
     /**
@@ -93,7 +100,8 @@ class ActivationTypeController extends Controller {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id){
+    public function destroy($id)
+    {
         //
     }
 }
