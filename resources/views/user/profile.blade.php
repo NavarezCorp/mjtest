@@ -6,7 +6,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">New member account information</div>
-                <form class="form-horizontal" role="form" method="POST" action="{{ url('/user/' . Auth::user()->id) }}">
+                <form class="form-horizontal" role="form" method="POST" action="{{ url('/user/' . Auth::user()->ibo_id) }}">
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
                     <div class="panel-body">
