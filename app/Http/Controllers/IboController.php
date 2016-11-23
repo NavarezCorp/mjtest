@@ -153,7 +153,22 @@ class IboController extends Controller {
      */
     public function edit($id){
         //
-        $data = Ibo::find($id);
+        //$data = Ibo::find($id);
+        
+        $data['ibo'] = Ibo::find($id);
+        $data['banks'] = Bank::pluck('name', 'id');
+        $data['marital_status'] = MaritalStatus::pluck('name', 'id');
+        $data['genders'] = Gender::pluck('name', 'id');
+        
+        $pickup_centers = PickupCenter::get();
+        
+        foreach($pickup_centers as $value){
+            $country = Country::find($value->country_id)->name;
+            $city = City::find($value->city_id)->name;
+            
+            $data['pickup_centers'][$country][$value->id] = $city . ' (' . $value->branch . ')';
+        }
+        
         return view('ibo.edit', ['data'=>$data]);
     }
 
