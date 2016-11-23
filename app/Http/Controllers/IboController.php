@@ -45,14 +45,15 @@ class IboController extends Controller {
         $data['marital_status'] = MaritalStatus::pluck('name', 'id');
         $data['genders'] = Gender::pluck('name', 'id');
         
-        $countries = Country::get();
+        $pickup_centers = PickupCenter::get();
         
-        foreach($countries as $value){
-            $city = City::where('country_id', $value->id)->get();
+        foreach($pickup_centers as $value){
+            $country = Country::find($value->country_id)->name;
+            $city = City::find($value->city_id)->name;
             
-            foreach($city as $value_) $data['pickup_centers'][$value->name][$value_->id] = $value_->name;
+            $data['pickup_centers'][$country][$value->id] = $city . ' (' . $value->branch . ')';
         }
-                
+        
         return view('ibo.create', ['data'=>$data]);
     }
 
