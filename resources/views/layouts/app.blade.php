@@ -75,7 +75,7 @@
                                     </li>
                                     <li>
                                         <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
-                                        <a href="{{ url('/user/' . Auth::user()->id . '/edit') }}">Profile</a>
+                                        <a href="{{ url('/user/' . Auth::user()->ibo_id . '/edit') }}">Profile</a>
                                         <a href="{{ url('/ibo/create') }}">Register New IBO</a>
                                         <a href="{{ url('/productpurchase/create') }}">Repeat Purchase</a>
                                         <a href="{{ url('/ibocommission/' . Auth::user()->ibo_id) }}">My Weekly Commission Summary Report</a>
