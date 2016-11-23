@@ -17,6 +17,8 @@ use App\PickupCenter;
 use App\Country;
 use App\City;
 use App\Logger;
+use App\MaritalStatus;
+use App\Gender;
 
 class IboController extends Controller {
     /**
@@ -40,8 +42,8 @@ class IboController extends Controller {
         $data['placement_id'] = !empty($_GET['placement_id']) ? $_GET['placement_id'] : '';
         $data['placement_position'] = !empty($_GET['placement_position']) ? $_GET['placement_position'] : '';
         $data['banks'] = Bank::pluck('name', 'id');
-        $data['marital_status'] = Bank::pluck('name', 'id');
-        $data['genders'] = Bank::pluck('name', 'id');
+        $data['marital_status'] = MaritalStatus::pluck('name', 'id');
+        $data['genders'] = Gender::pluck('name', 'id');
         
         $countries = Country::get();
         
