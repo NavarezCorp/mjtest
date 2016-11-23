@@ -97,13 +97,21 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $model = User::find($id);
-        $model->name = $request->name;
+        //$model = User::find($id);
+        $model = Ibo::find($id);
         $model->email = $request->email;
-        
-        if($request->password) $model->password = bcrypt($request->password);
-        
-        $model->ibo_id = $request->ibo_id;
+        $model->gender_id = $request->gender_id;
+        $model->birth_date = $request->birth_date;
+        $model->marital_status_id = $request->marital_status_id;
+        $model->tin = $request->tin;
+        $model->sss = $request->sss;
+        $model->address = $request->address;
+        $model->city = $request->city;
+        $model->province = $request->province;
+        $model->contact_no = $request->contact_no;
+        $model->pickup_center_id = $request->pickup_center_id;
+        $model->bank_id = $request->bank_id;
+        $model->account_no = $request->account_no;
         $model->save();
         
         Session::flash('message', 'Your profile was successfully updated');

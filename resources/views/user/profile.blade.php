@@ -6,7 +6,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">New member account information</div>
-                <form class="form-horizontal" role="form" method="POST" action="{{ url('/ibo') }}">
+                <form class="form-horizontal" role="form" method="POST" action="{{ url('/user/' . Auth::user()->id) }}">
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
                     <div class="panel-body">
@@ -231,10 +231,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-6 col-md-offset-4">
-                            <button type="submit" class="btn btn-primary register-button" disabled>
-                                Register
-                            </button>
+                        <div class="col-md-6 col-md-offset-3">
+                            <button type="submit" class="btn btn-primary register-button">Update</button>
                         </div>
                     </div>
                 </form>
