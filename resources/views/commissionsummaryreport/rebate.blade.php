@@ -23,7 +23,11 @@
                         <tbody>
                             <tr>
                                 <td><strong>User</strong></td>
-                                <td><strong>{{ $data['ibos'][0][$data['user_ibo_id']]['ibo_id'] }}</strong></td>
+                                <td>
+                                    <strong>
+                                        {{ App\Ibo::find($data['ibos'][0][$data['user_ibo_id']]['ibo_id'])->firstname }} {{ App\Ibo::find($data['ibos'][0][$data['user_ibo_id']]['ibo_id'])->lastname }}<br>({{ sprintf('%09d', $data['ibos'][0][$data['user_ibo_id']]['ibo_id']) }})
+                                    </strong>
+                                </td>
                                 <td><strong></strong></td>
                                 <td><strong>{{ $data['ibos'][0][$data['user_ibo_id']]['total_purchase'] }}</strong></td>
                             </tr>
@@ -32,8 +36,16 @@
                                 @foreach ($value as $key_ => $value_)
                                     <tr>
                                         <td><strong>{{ $index }}</strong></td>
-                                        <td><strong>{{ sprintf('%09d', $value_['ibo_id']) }}</strong></td>
-                                        <td><strong>{{ sprintf('%09d', $value_['placement_id']) }}</strong></td>
+                                        <td>
+                                            <strong>
+                                                {{ App\Ibo::find($value_['ibo_id'])->firstname }} {{ App\Ibo::find($value_['ibo_id'])->lastname }}<br>({{ sprintf('%09d', $value_['ibo_id']) }})
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <strong>
+                                                {{ App\Ibo::find($value_['placement_id'])->firstname }} {{ App\Ibo::find($value_['placement_id'])->lastname }}<br>({{ sprintf('%09d', $value_['placement_id']) }})
+                                            </strong>
+                                        </td>
                                         <td><strong>{{ $value_['total_purchase'] }}</strong></td>
                                     </tr>
                                     

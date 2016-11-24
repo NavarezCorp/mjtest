@@ -10,6 +10,9 @@
                     {{ Session::get('message') }}
                 </div>
             @endif
+            <div>
+                <img src="/images/sfi.jpg" style="width:750px; margin-bottom:20px;">
+            </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Dashboard</div>
                 <div class="panel-body">

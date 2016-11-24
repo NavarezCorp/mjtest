@@ -75,7 +75,10 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    {{ config('app.name', 'Laravel') }}
+                    {{-- config('app.name', 'Laravel') --}}
+                    <div>
+                        <img src="/images/sfi.jpg" style="width:750px; margin-bottom:20px;">
+                    </div>
                 </div>
                 <!--
                 <div class="links">
