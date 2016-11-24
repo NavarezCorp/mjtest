@@ -19,6 +19,10 @@ use App\Logger;
 use App\Matching;
 
 class CommissionSummaryReportController extends Controller {
+    public function __construct(){
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *

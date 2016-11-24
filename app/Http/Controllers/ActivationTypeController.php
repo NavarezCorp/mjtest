@@ -9,6 +9,10 @@ use App\ActivationType;
 use Session;
 
 class ActivationTypeController extends Controller {
+    public function __construct(){
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *

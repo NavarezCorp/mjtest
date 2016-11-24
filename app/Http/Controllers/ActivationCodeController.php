@@ -16,6 +16,10 @@ use App\Logger;
 
 class ActivationCodeController extends Controller
 {
+    public function __construct(){
+        $a = $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *

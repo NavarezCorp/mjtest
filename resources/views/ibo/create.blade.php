@@ -61,8 +61,13 @@
                                 <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }} required">
                                     <label for="gender" class="col-md-3 control-label">Gender</label>
                                     <div class="col-md-2">
-                                        {{ Form::select('gender_id', $data['genders'], null, ['class'=>'form-control', 'placeholder'=>'']) }}
+                                        {{ Form::select('gender', $data['genders'], null, ['class'=>'form-control', 'placeholder'=>'']) }}
                                     </div>
+                                    @if ($errors->has('gender'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('gender') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                                 <div class="form-group{{ $errors->has('birth_date') ? ' has-error' : '' }} required">
                                     <label for="birth_date" class="col-md-3 control-label">Birth Date</label>
@@ -78,7 +83,7 @@
                                 <div class="form-group{{ $errors->has('marital_status') ? ' has-error' : '' }}">
                                     <label for="marital_status" class="col-md-3 control-label">Marital Status</label>
                                     <div class="col-md-4">
-                                        {{ Form::select('marital_status_id', $data['marital_status'], null, ['class'=>'form-control', 'placeholder'=>'']) }}
+                                        {{ Form::select('marital_status', $data['marital_status'], null, ['class'=>'form-control', 'placeholder'=>'']) }}
                                     </div>
                                 </div>
                                 <div class="form-group{{ $errors->has('tin') ? ' has-error' : '' }}">
@@ -203,7 +208,12 @@
                                 <div class="form-group{{ $errors->has('pickup_center') ? ' has-error' : '' }} required">
                                     <label for="pickup_center" class="col-md-3 control-label">Pickup center</label>
                                     <div class="col-md-6">
-                                        {{ Form::select('pickup_center_id', $data['pickup_centers'], null, ['class'=>'form-control', 'placeholder'=>'']) }}
+                                        {{ Form::select('pickup_center', $data['pickup_centers'], null, ['class'=>'form-control', 'placeholder'=>'']) }}
+                                        @if ($errors->has('pickup_center'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('pickup_center') }}</strong>
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

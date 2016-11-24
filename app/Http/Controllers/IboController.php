@@ -21,6 +21,10 @@ use App\MaritalStatus;
 use App\Gender;
 
 class IboController extends Controller {
+    public function __construct(){
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -65,11 +69,11 @@ class IboController extends Controller {
      */
     public function store(Request $request){
         //
-        /*
         $this->validate($request, [
-            'activation_code'=>'exists:activation_codes,code',
+            'gender'=>'required',
+            'pickup_center'=>'required',
         ]);
-        */
+        
         /*
         Validator::make($request, [
             'activation_code' => [
@@ -80,6 +84,7 @@ class IboController extends Controller {
             ],
         ]);
         */
+        
         $last_ibo_id = Ibo::where('is_part_company', false)->orderBy('id', 'desc')->first();
         
         if($last_ibo_id === NULL) $new_id = 1;
@@ -100,17 +105,17 @@ class IboController extends Controller {
         $model->activation_code = $request->activation_code;
         $model->activation_code_type = $request->activation_code_type;
         $model->email = $request->email;
-        $model->gender_id = $request->gender_id;
+        $model->gender_id = $request->gender;
         $model->birth_date = $request->birth_date;
-        $model->marital_status_id = $request->marital_status_id;
+        $model->marital_status_id = !empty($request->marital_status) ? $request->marital_status : null;
         $model->tin = $request->tin;
         $model->sss = $request->sss;
         $model->address = $request->address;
         $model->city = $request->city;
         $model->province = $request->province;
         $model->contact_no = $request->contact_no;
-        $model->pickup_center_id = $request->pickup_center_id;
-        $model->bank_id = $request->bank_id;
+        $model->pickup_center_id = $request->pickup_center;
+        $model->bank_id = !empty($request->bank_id) ? $request->bank_id : null;
         $model->account_no = $request->account_no;
         $model->save();
         
