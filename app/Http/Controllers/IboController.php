@@ -190,9 +190,28 @@ class IboController extends Controller {
         $model->firstname = $request->firstname;
         $model->middlename = $request->middlename;
         $model->lastname = $request->lastname;
+        $model->is_part_company = $request->has('is_part_company');
         $model->sponsor_id = $request->sponsor_id;
         $model->placement_id = $request->placement_id;
         $model->placement_position = $request->placement_position;
+        $model->total_purchase_amount = $request->total_purchase_amount;
+        $model->ranking_lions_id = $request->ranking_lions_id;
+        $model->is_admin = $request->has('is_admin');
+        $model->activation_code = $request->activation_code;
+        $model->activation_code_type = $request->activation_code_type;
+        $model->email = $request->email;
+        $model->gender_id = $request->gender;
+        $model->birth_date = $request->birth_date;
+        $model->marital_status_id = !empty($request->marital_status) ? $request->marital_status : null;
+        $model->tin = $request->tin;
+        $model->sss = $request->sss;
+        $model->address = $request->address;
+        $model->city = $request->city;
+        $model->province = $request->province;
+        $model->contact_no = $request->contact_no;
+        $model->pickup_center_id = $request->pickup_center;
+        $model->bank_id = !empty($request->bank_id) ? $request->bank_id : null;
+        $model->account_no = $request->account_no;
         $model->save();
         
         Session::flash('message', 'IBO ' . $request->firstname . ' ' . $request->middlename . ' ' . $request->lastname . ' was successfully updated');

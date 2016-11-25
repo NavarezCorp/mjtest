@@ -6,7 +6,7 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">New member account information</div>
-                <form class="form-horizontal" role="form" method="POST" action="{{ url('/user/' . Auth::user()->ibo_id) }}">
+                <form class="form-horizontal" role="form" method="POST" action="{{ url('/ibo/' . $data['ibo']['id']) }}">
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
                     <div class="panel-body">
@@ -60,7 +60,7 @@
                                 <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }} required">
                                     <label for="gender" class="col-md-3 control-label">Gender</label>
                                     <div class="col-md-2">
-                                        {{ Form::select('gender_id', $data['genders'], $data['ibo']['gender_id'], ['class'=>'form-control', 'placeholder'=>'']) }}
+                                        {{ Form::select('gender', $data['genders'], $data['ibo']['gender_id'], ['class'=>'form-control', 'placeholder'=>'']) }}
                                     </div>
                                 </div>
                                 <div class="form-group{{ $errors->has('birth_date') ? ' has-error' : '' }} required">
@@ -77,7 +77,7 @@
                                 <div class="form-group{{ $errors->has('marital_status') ? ' has-error' : '' }}">
                                     <label for="marital_status" class="col-md-3 control-label">Marital Status</label>
                                     <div class="col-md-4">
-                                        {{ Form::select('marital_status_id', $data['marital_status'], $data['ibo']['marital_status_id'], ['class'=>'form-control', 'placeholder'=>'']) }}
+                                        {{ Form::select('marital_status', $data['marital_status'], $data['ibo']['marital_status_id'], ['class'=>'form-control', 'placeholder'=>'']) }}
                                     </div>
                                 </div>
                                 <div class="form-group{{ $errors->has('tin') ? ' has-error' : '' }}">
@@ -154,7 +154,7 @@
                                 <div class="form-group{{ $errors->has('sponsor_id') ? ' has-error' : '' }}">
                                     <label for="sponsor_id" class="col-md-3 control-label">Sponsor ID</label>
                                     <div class="col-md-6">
-                                        <input id="sponsor_id" type="text" class="form-control" name="sponsor_id" value="{{ $data['ibo']['sponsor_id'] }}" disabled>
+                                        <input id="sponsor_id" type="text" class="form-control" name="sponsor_id" value="{{ $data['ibo']['sponsor_id'] ? sprintf('%09d', $data['ibo']['sponsor_id']) : '' }}" readonly>
                                         @if ($errors->has('sponsor_id'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('sponsor_id') }}</strong>
@@ -165,7 +165,7 @@
                                 <div class="form-group{{ $errors->has('placement_id') ? ' has-error' : '' }}">
                                     <label for="placement_id" class="col-md-3 control-label">Placement ID</label>
                                     <div class="col-md-6">
-                                        <input id="placement_id" type="text" class="form-control" name="placement_id" value="{{ $data['ibo']['placement_id'] ? sprintf('%09d', $data['ibo']['placement_id']) : '' }}" disabled>
+                                        <input id="placement_id" type="text" class="form-control" name="placement_id" value="{{ $data['ibo']['placement_id'] ? sprintf('%09d', $data['ibo']['placement_id']) : '' }}" readonly>
                                         @if ($errors->has('placement_id'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('placement_id') }}</strong>
@@ -176,7 +176,7 @@
                                 <div class="form-group{{ $errors->has('placement_position') ? ' has-error' : '' }}">
                                     <label for="placement_position" class="col-md-3 control-label">Placement position</label>
                                     <div class="col-md-6">
-                                        <input id="placement_position" type="text" class="form-control" name="placement_position" value="{{ $data['ibo']['placement_position'] ? $data['ibo']['placement_position'] : '' }}" disabled>
+                                        <input id="placement_position" type="text" class="form-control" name="placement_position" value="{{ $data['ibo']['placement_position'] ? $data['ibo']['placement_position'] : '' }}" readonly>
                                         @if ($errors->has('placement_position'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('placement_position') }}</strong>
@@ -187,7 +187,7 @@
                                 <div class="form-group{{ $errors->has('activation_code') ? ' has-error' : '' }}">
                                     <label for="placement_id" class="col-md-3 control-label">Activation Code</label>
                                     <div class="col-md-5">
-                                        <input id="activation_code" type="text" class="form-control" name="activation_code" value="{{ $data['ibo']['activation_code'] }}" style="text-transform:uppercase" disabled>
+                                        <input id="activation_code" type="text" class="form-control" name="activation_code" value="{{ $data['ibo']['activation_code'] }}" style="text-transform:uppercase" readonly>
                                         @if ($errors->has('activation_code'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('activation_code') }}</strong>
@@ -202,7 +202,7 @@
                                 <div class="form-group{{ $errors->has('pickup_center') ? ' has-error' : '' }} required">
                                     <label for="pickup_center" class="col-md-3 control-label">Pickup center</label>
                                     <div class="col-md-6">
-                                        {{ Form::select('pickup_center_id', $data['pickup_centers'], $data['ibo']['pickup_center_id'], ['class'=>'form-control', 'placeholder'=>'']) }}
+                                        {{ Form::select('pickup_center', $data['pickup_centers'], $data['ibo']['pickup_center_id'], ['class'=>'form-control', 'placeholder'=>'']) }}
                                     </div>
                                 </div>
                             </div>
