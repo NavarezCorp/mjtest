@@ -10,8 +10,8 @@
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">IBO ID</label>
+                        <div class="form-group{{ $errors->has('ibo_id') ? ' has-error' : '' }}">
+                            <label for="ibo_id" class="col-md-4 control-label">IBO ID</label>
 
                             <div class="col-md-6">
                                 <input id="ibo_id" type="text" class="form-control" name="ibo_id" value="{{ old('ibo_id') }}" required autofocus>

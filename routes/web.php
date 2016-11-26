@@ -33,6 +33,7 @@ Route::resource('user', 'UserController');
 Route::get('commissionsummaryreport/all/{search?}', 'CommissionSummaryReportController@get_all');
 Route::get('commission/manualcompute/{id}', 'CommissionSummaryReportController@manual_compute');
 Route::get('ibocommission/{id}', 'CommissionSummaryReportController@get_ibo_commission');
+Route::get('iboindirect/{id}', 'CommissionSummaryReportController@get_ibo_indirect');
 Route::resource('commissionsummaryreport', 'CommissionSummaryReportController');
 
 Route::get('waiting/{id}', 'CommissionSummaryReportController@process_waiting');

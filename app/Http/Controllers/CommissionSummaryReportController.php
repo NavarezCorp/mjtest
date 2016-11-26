@@ -734,4 +734,36 @@ class CommissionSummaryReportController extends Controller {
 
         return view('ibo.commission', ['data'=>$data]);
     }
+
+    public function get_ibo_indirect($id){
+        $data = null;
+        $param_ = null;
+        $date_ = Carbon::now('Asia/Manila');
+        $date_->setWeekStartsAt(Carbon::SATURDAY);
+        $date_->setWeekEndsAt(Carbon::FRIDAY);
+
+        $user = Ibo::find($id);
+
+        $date_->subWeek();
+
+        for($i = $date_->weekOfYear; $i >= 1; $i--){
+            $data['commission'][$i]['date_start'] = $date_->startOfWeek()->format('F j, Y');
+            $data['commission'][$i]['date_end'] = $date_->endOfWeek()->format('F j, Y');
+
+            $param_['id'] = $id;
+            $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
+            $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
+
+            $indirect_ = CommissionRecord::where('sponsor_id', $id)
+                ->where('commission_type_id', 2)
+                ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                ->orderBy('created_at', 'desc')->get();
+
+            $data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+
+            $date_->subWeek();
+        }
+
+        return view('ibo.indirect', ['data'=>$data]);
+    }
 }
