@@ -649,7 +649,7 @@ class CommissionSummaryReportController extends Controller {
             $data['commission'][$i]['fifth_pairs'] = $data['commission'][$i]['fifth_pair'] * Commission::where('name', 'Matching Bonus')->first()->amount;
             $data['commission'][$i]['matching'] = $data['commission'][$i]['matching'] * Commission::where('name', 'Matching Bonus')->first()->amount - $data['commission'][$i]['fifth_pairs'];
             $data['commission'][$i]['gross'] = ($data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching']);
-            $data['commission'][$i]['tax'] = $data['commission'][$i]['gross'] * .1;
+            $data['commission'][$i]['tax'] = $data['commission'][$i]['matching'] * .1;
             $data['commission'][$i]['net_commission'] = $data['commission'][$i]['gross'] - $data['commission'][$i]['tax'];
         }
         
@@ -726,7 +726,7 @@ class CommissionSummaryReportController extends Controller {
             $data['commission'][$i]['fifth_pairs'] = $data['commission'][$i]['fifth_pair'] * Commission::where('name', 'Matching Bonus')->first()->amount;
             $data['commission'][$i]['matching'] = $data['commission'][$i]['matching'] * Commission::where('name', 'Matching Bonus')->first()->amount - $data['commission'][$i]['fifth_pairs'];
             $data['commission'][$i]['gross'] = ($data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching']);
-            $data['commission'][$i]['tax'] = $data['commission'][$i]['gross'] * .1;
+            $data['commission'][$i]['tax'] = $data['commission'][$i]['matching'] * .1;
             $data['commission'][$i]['net_commission'] = $data['commission'][$i]['gross'] - $data['commission'][$i]['tax'];
 
             $date_->subWeek();
