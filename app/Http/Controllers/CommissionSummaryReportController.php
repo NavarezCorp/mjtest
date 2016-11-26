@@ -96,7 +96,8 @@ class CommissionSummaryReportController extends Controller {
                         ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                         ->orderBy('created_at', 'desc')->get();
                     
-                    $data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+                    //$data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+                    $data['commission'][$i]['indirect'] = 0;
                     $data['commission'][$i]['matching'] = $this->get_matching_bonus($param_);
                     $data['commission'][$i]['fifth_pair'] = $this->get_fifth_pair($param_);
                     
@@ -164,11 +165,11 @@ class CommissionSummaryReportController extends Controller {
                                 for($upline_cntr = $index-1; $upline_cntr >= 0; $upline_cntr--){
                                     if($upline_cntr == 0){
                                         // Add current downline to rebates_arr but add 1 on index to place it under it because current downline has reached maintaining balance
-					if($purchase_amount >= 1500) $data['rebates_arr'][1][] = $ibo_id;
-					else $data['rebates_arr'][0][] = $ibo_id;
+					                    if($purchase_amount >= 1500) $data['rebates_arr'][1][] = $ibo_id;
+					                    else $data['rebates_arr'][0][] = $ibo_id;
                                     }
                                     else{
-					foreach($data['ibos'][$upline_cntr] as $childs){
+					                    foreach($data['ibos'][$upline_cntr] as $childs){
                                             // Get upline purchase amount
                                             $upline_purchase_amount = $childs['total_purchase'];
                                             $upline_ibo_id = $childs['ibo_id'];
@@ -178,7 +179,7 @@ class CommissionSummaryReportController extends Controller {
                                                 if($upline_purchase_amount >= 1500){
                                                     // Check upline index stored on rebates_arr variable
                                                     for($rebates_arr_cntr = count($data['rebates_arr']) - 1; $rebates_arr_cntr >= 0; $rebates_arr_cntr--){
-							foreach($data['rebates_arr'][$rebates_arr_cntr] as $rebates_arr_ibo_id){
+							                            foreach($data['rebates_arr'][$rebates_arr_cntr] as $rebates_arr_ibo_id){
                                                             if($rebates_arr_ibo_id == $upline_ibo_id){
                                                                 // Add current downline to rebates_arr but add 1 on index to place it under it because current downline has reached maintaining balance
                                                                 if($purchase_amount >= 1500) $data['rebates_arr'][$rebates_arr_cntr + 1][] = $ibo_id;
@@ -188,11 +189,11 @@ class CommissionSummaryReportController extends Controller {
                                                                 
                                                                 break;
                                                             }
-							}
+							                            }
                                                         
                                                         if($hasAdded == true) break;
                                                     }
-						}
+						                        }
                                                 else{ // Meaning upline has not reached it's maintaining balance
                                                     // Check if reached index 0
                                                     // Meaning that all upline of downline has not reached maintaining balance
@@ -207,15 +208,15 @@ class CommissionSummaryReportController extends Controller {
                                                         // Then we need to get upline's upline and check if it has reached 1500 maintaining balance
                                                         $placemeny_id = $childs['placement_id'];
                                                     }
-						}
+						                        }
                                             }
 						
                                             if($hasAdded == true) break;
-					}
+					                    }
                                     }
                                     
                                     if($hasAdded == true) break;
-				}
+				                }
                             }
                         }
                     }
@@ -640,7 +641,8 @@ class CommissionSummaryReportController extends Controller {
                 ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                 ->orderBy('created_at', 'desc')->get();
 
-            $data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+            //$data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+            $data['commission'][$i]['indirect'] = 0;
             $data['commission'][$i]['matching'] = $this->get_matching_bonus($param_);
             $data['commission'][$i]['fifth_pair'] = $this->get_fifth_pair($param_);
 
@@ -716,7 +718,8 @@ class CommissionSummaryReportController extends Controller {
                 ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                 ->orderBy('created_at', 'desc')->get();
 
-            $data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+            //$data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+            $data['commission'][$i]['indirect'] = 0;
             $data['commission'][$i]['matching'] = $this->get_matching_bonus($param_);
             $data['commission'][$i]['fifth_pair'] = $this->get_fifth_pair($param_);
 

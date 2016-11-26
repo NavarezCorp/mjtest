@@ -14,7 +14,7 @@
                             <th>Date Start</th>
                             <th>Date End</th>
                             <th>Direct Sponsor</th>
-                            <th>Indirect Sponsor</th>
+                            <!--<th>Indirect Sponsor</th>-->
                             <th>Matching Bonus</th>
                             <th>Fifth Pairs</th>
                             <th>Net Commission</th>
@@ -25,7 +25,7 @@
                                     <td><strong>{{ $value['date_start'] }}</strong></td>
                                     <td><strong>{{ $value['date_end'] }}</strong></td>
                                     <td><strong>{{ $value['direct'] }}</strong></td>
-                                    <td><strong>{{ $value['indirect'] }}</strong></td>
+                                    <!--<td><strong>{{-- $value['indirect'] --}}</strong></td>-->
                                     <td><strong>{{ $value['matching'] }}</strong></td>
                                     <td><strong>{{ $value['fifth_pairs'] }}</strong></td>
                                     <td><strong>{{ $value['net_commission'] }}</strong></td>
