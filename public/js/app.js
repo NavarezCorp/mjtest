@@ -191,6 +191,16 @@ $('#indirect-year').change(function(){
     window.location = '/indirectcommission500up/' + $('#indirect-week').val() + '|' + $(this).val();
 });
 
+$('#all-indirect-week').change(function(){
+    console.log('all indirect commission week changed');
+    window.location = '/allindirectcommission/' + $(this).val() + '|' + $('#all-indirect-year').val();
+});
+
+$('#all-indirect-year').change(function(){
+    console.log('all indirect commission year changed');
+    window.location = '/allindirectcommission/' + $('#all-indirect-week').val() + '|' + $(this).val();
+});
+
 $('.product-code-transfered-to, .product-code-product-id').change(function(){
     //if($('.product-code-transfered-to').val() || $('.product-code-product-id').val()) $('.print-all-product-codes').removeClass('link-disabled');
     //else $('.print-all-product-codes').addClass('link-disabled');
