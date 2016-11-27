@@ -34,6 +34,8 @@ Route::get('commissionsummaryreport/all/{search?}', 'CommissionSummaryReportCont
 Route::get('commission/manualcompute/{id}', 'CommissionSummaryReportController@manual_compute');
 Route::get('ibocommission/{id}', 'CommissionSummaryReportController@get_ibo_commission');
 Route::get('iboindirect/{id}', 'CommissionSummaryReportController@get_ibo_indirect');
+Route::get('indirectcommission500up/{search?}', 'CommissionSummaryReportController@get_indirect_500_up');
+Route::get('allindirectcommission', 'CommissionSummaryReportController@get_all_indirect');
 Route::resource('commissionsummaryreport', 'CommissionSummaryReportController');
 
 Route::get('waiting/{id}', 'CommissionSummaryReportController@process_waiting');
