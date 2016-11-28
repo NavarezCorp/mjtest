@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 ini_set('max_execution_time', 180);
 
+use App\RankingLion;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Ibo;
@@ -131,7 +132,15 @@ class CommissionSummaryReportController extends Controller {
                 ];
                 
                 $param_['id'] = $id;
-                $param_['level'] = 9;
+
+                $level = 4;
+
+                if($rlid = Ibo::find($id)->ranking_lions_id){
+                    $level = Rebate::find(RankingLion::find($rlid)->rebates_id)->level;
+                }
+
+                $param_['level'] = $level;
+
                 $param_['start_date'] = $date_->parse('first day of ' . $months[$date_->month] . ' ' . $date_->year)->toDateString() . ' 00:00:00';
                 $param_['end_date'] = $date_->parse('last day of ' . $months[$date_->month] . ' ' . $date_->year)->toDateString() . ' 23:59:59';
                 $data['ibos'] = $this->get_ibos_total_purchase($param_);
