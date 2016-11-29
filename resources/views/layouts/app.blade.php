@@ -80,6 +80,7 @@
                                         <a href="{{ url('/productpurchase/create') }}">Repeat Purchase</a>
                                         <a href="{{ url('/ibocommission/' . Auth::user()->ibo_id) }}">My Weekly Commission Summary Report</a>
                                         <a href="{{ url('/iboindirect/' . Auth::user()->ibo_id) }}">My Indirect Commission</a>
+                                        <!--<a href="{{-- url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=monthly') --}}">My Rebates</a>-->
                                     </li>
                                     @if (Auth::user()->role == 'admin')
                                         <li role="separator" class="divider"></li>

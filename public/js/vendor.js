@@ -83,6 +83,8 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
         return showSiblings.apply(this, Array.prototype.splice.call(arguments, 1));
       case 'getNodeState':
         return getNodeState.apply(this, Array.prototype.splice.call(arguments, 1));
+      case 'getRelatedNodes':
+        return getRelatedNodes.apply(this, Array.prototype.splice.call(arguments, 1));
       default: // initiation time
         var opts = $.extend(defaultOptions, options);
     }
@@ -343,19 +345,30 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
   function getNodeState($node, relation) {
     var $target = {};
     if (relation === 'parent') {
-      $target = $node.closest('table').closest('tr').siblings(':first').find('.node');
+      $target = $node.closest('.nodes').siblings(':first');
     } else if (relation === 'children') {
       $target = $node.closest('tr').siblings();
-    } else {
+    } else if (relation === 'siblings') {
       $target = $node.closest('table').parent().siblings();
     }
     if ($target.length) {
       if ($target.is(':visible')) {
-        return { 'exist': true, 'visible': true, 'nodes': $target };
+        return { 'exist': true, 'visible': true };
       }
-      return { 'exist': true, 'visible': false, 'nodes': $target };
+      return { 'exist': true, 'visible': false };
     }
-    return { 'exist': false, 'visible': false, 'nodes': $target };
+    return { 'exist': false, 'visible': false };
+  }
+
+  // find the related nodes
+  function getRelatedNodes($node, relation) {
+    if (relation === 'parent') {
+      return $node.closest('.nodes').parent().children(':first').find('.node');
+    } else if (relation === 'children') {
+      return $node.closest('table').children(':last').children().find('.node:first');
+    } else if (relation === 'siblings') {
+      return $node.closest('table').parent().siblings().find('.node:first');
+    }
   }
 
   // recursively hide the ancestor node and sibling nodes of the specified node
@@ -590,7 +603,7 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
   function createNode(nodeData, level, opts) {
     $.each(nodeData.children, function (index, child) {
       child.parentId = nodeData.id;
-    })
+    });
     var dtd = $.Deferred();
     // construct the content of node
     var $nodeDiv = $('<div' + (opts.draggable ? ' draggable="true"' : '') + (nodeData[opts.nodeId] ? ' id="' + nodeData[opts.nodeId] + '"' : '') + (nodeData.parentId ? ' data-parent="' + nodeData.parentId + '"' : '') + '>')
@@ -601,7 +614,8 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
     var flags = nodeData.relationship || '';
     if (opts.verticalDepth && (level + 2) > opts.verticalDepth) {
       if ((level + 1) >= opts.verticalDepth && Number(flags.substr(2,1))) {
-        $nodeDiv.append('<i class="toggleBtn fa fa-minus-square"></i>');
+        var icon = level + 1  >= opts.depth ? 'plus' : 'minus';
+        $nodeDiv.append('<i class="toggleBtn fa fa-' + icon + '-square"></i>');
       }
     } else {
       if (Number(flags.substr(0,1))) {
@@ -742,7 +756,8 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
           $descendants.removeClass('slide');
           // $descWrapper.addClass('hidden');
           $descendants.closest('ul').addClass('hidden');
-        }).find('.toggleBtn').removeClass('fa-minus-square').addClass('fa-plus-square');
+        });
+        $descendants.find('.toggleBtn').removeClass('fa-minus-square').addClass('fa-plus-square');
       }
     });
 
@@ -874,11 +889,7 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
       })
       .on('dragover', function(event) {
         event.preventDefault();
-        var $dropZone = $(this);
-        var $dragged = $dropZone.closest('.orgchart').data('dragged');
-        var $dragZone = $dragged.closest('.nodes').siblings().eq(0).find('.node:first');
-        if ($dragged.closest('table').find('.node').index($dropZone) > -1 ||
-          (opts.dropCriteria && !opts.dropCriteria($dragged, $dragZone, $dropZone))) {
+        if (!$(this).is('.allowedDrop')) {
           event.originalEvent.dataTransfer.dropEffect = 'none';
         }
       })
@@ -986,8 +997,11 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
       var $nodeLayer;
       if (isVerticalLayer) {
         $nodeLayer = $('<ul>');
+        if (isHidden) {
+          $nodeLayer.addClass(isHidden);
+        }
         if (level + 2 === opts.verticalDepth) {
-          $nodeWrapper.append('<tr class="verticalNodes"><td></td></tr>')
+          $nodeWrapper.append('<tr class="verticalNodes' + isHidden + '"><td></td></tr>')
             .find('.verticalNodes').children().append($nodeLayer);
         } else {
           $nodeWrapper.append($nodeLayer);

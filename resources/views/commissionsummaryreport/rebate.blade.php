@@ -10,6 +10,7 @@
                 </div>
                 <div class="panel-body">
                     <div>
+                        <strong>Rank: {{ $data['ranking_lions'] }} (Level {{ $data['level'] }})</strong><br>
                         <strong>Total Rebates: {{ $data['rebates_total'] }}</strong>
                     </div>
                     <hr>

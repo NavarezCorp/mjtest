@@ -133,14 +133,19 @@ class CommissionSummaryReportController extends Controller {
                 
                 $param_['id'] = $id;
 
-                $level = 4;
+                $data['level'] = 4;
+                $data['ranking_lions'] = 'None';
+                $data['percentage'] = 2;
 
                 if($rlid = Ibo::find($id)->ranking_lions_id){
-                    $level = Rebate::find(RankingLion::find($rlid)->rebates_id)->level;
+                    $rl = RankingLion::find($rlid);
+                    $data['ranking_lions'] = $rl->name;
+                    $r = Rebate::find($rl->rebates_id);
+                    $data['percentage'] = $r->percentage;
+                    $data['level'] = $r->level;
                 }
 
-                $param_['level'] = $level;
-
+                $param_['level'] = 9;
                 $param_['start_date'] = $date_->parse('first day of ' . $months[$date_->month] . ' ' . $date_->year)->toDateString() . ' 00:00:00';
                 $param_['end_date'] = $date_->parse('last day of ' . $months[$date_->month] . ' ' . $date_->year)->toDateString() . ' 23:59:59';
                 $data['ibos'] = $this->get_ibos_total_purchase($param_);
@@ -174,11 +179,11 @@ class CommissionSummaryReportController extends Controller {
                                 for($upline_cntr = $index-1; $upline_cntr >= 0; $upline_cntr--){
                                     if($upline_cntr == 0){
                                         // Add current downline to rebates_arr but add 1 on index to place it under it because current downline has reached maintaining balance
-					                    if($purchase_amount >= 1500) $data['rebates_arr'][1][] = $ibo_id;
-					                    else $data['rebates_arr'][0][] = $ibo_id;
+                                        if($purchase_amount >= 1500) $data['rebates_arr'][1][] = $ibo_id;
+                                        else $data['rebates_arr'][0][] = $ibo_id;
                                     }
                                     else{
-					                    foreach($data['ibos'][$upline_cntr] as $childs){
+                                        foreach($data['ibos'][$upline_cntr] as $childs){
                                             // Get upline purchase amount
                                             $upline_purchase_amount = $childs['total_purchase'];
                                             $upline_ibo_id = $childs['ibo_id'];
@@ -188,7 +193,7 @@ class CommissionSummaryReportController extends Controller {
                                                 if($upline_purchase_amount >= 1500){
                                                     // Check upline index stored on rebates_arr variable
                                                     for($rebates_arr_cntr = count($data['rebates_arr']) - 1; $rebates_arr_cntr >= 0; $rebates_arr_cntr--){
-							                            foreach($data['rebates_arr'][$rebates_arr_cntr] as $rebates_arr_ibo_id){
+                                                        foreach($data['rebates_arr'][$rebates_arr_cntr] as $rebates_arr_ibo_id){
                                                             if($rebates_arr_ibo_id == $upline_ibo_id){
                                                                 // Add current downline to rebates_arr but add 1 on index to place it under it because current downline has reached maintaining balance
                                                                 if($purchase_amount >= 1500) $data['rebates_arr'][$rebates_arr_cntr + 1][] = $ibo_id;
@@ -198,11 +203,11 @@ class CommissionSummaryReportController extends Controller {
                                                                 
                                                                 break;
                                                             }
-							                            }
+                                                        }
                                                         
                                                         if($hasAdded == true) break;
                                                     }
-						                        }
+                                                }
                                                 else{ // Meaning upline has not reached it's maintaining balance
                                                     // Check if reached index 0
                                                     // Meaning that all upline of downline has not reached maintaining balance
@@ -217,15 +222,15 @@ class CommissionSummaryReportController extends Controller {
                                                         // Then we need to get upline's upline and check if it has reached 1500 maintaining balance
                                                         $placemeny_id = $childs['placement_id'];
                                                     }
-						                        }
+                                                }
                                             }
 						
                                             if($hasAdded == true) break;
-					                    }
+                                        }
                                     }
                                     
                                     if($hasAdded == true) break;
-				                }
+                                }
                             }
                         }
                     }
@@ -251,14 +256,16 @@ class CommissionSummaryReportController extends Controller {
                     foreach($data['rebates_arr'] as $key => $value){
                         if($key == 0) continue;
                         else{
-                            if(!empty($value)){
-                                $purchases = 0;
+                            if($key < ($data['level'] + 1)){
+                                if(!empty($value)){
+                                    $purchases = 0;
 
-                                foreach($value as $value_) $purchases += $data['ibos_total_purchases'][$value_]['total_purchase'];
+                                    foreach($value as $value_) $purchases += $data['ibos_total_purchases'][$value_]['total_purchase'];
 
-                                $data['rebates']['level_' . $key]['total'] = $purchases;
-                                $data['rebates']['level_' . $key]['percented'] = $purchases * (!empty(Rebate::where('level', $key)->first()->percentage) ? Rebate::where('level', $key)->first()->percentage : 0) / 100;
-                                $data['rebates_total'] += $data['rebates']['level_' . $key]['percented'];
+                                    $data['rebates']['level_' . $key]['total'] = $purchases;
+                                    $data['rebates']['level_' . $key]['percented'] = $purchases * (!empty(Rebate::where('level', $key)->first()->percentage) ? Rebate::where('level', $key)->first()->percentage : 0) / 100;
+                                    $data['rebates_total'] += $data['rebates']['level_' . $key]['percented'];
+                                }
                             }
                         }
                     }
