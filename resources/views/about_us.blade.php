@@ -14,15 +14,15 @@
         <style>
             html, body {
                 background-color: #fff;
-                color: #636b6f;
+                /*color: #636b6f;*/
                 font-family: 'Raleway';
-                font-weight: 100;
+                /*font-weight: 100;*/
                 height: 100vh;
                 margin: 0;
             }
 
             .full-height {
-                height: 100vh;
+                height: 70vh;
             }
 
             .flex-center {
@@ -42,7 +42,7 @@
             }
 
             .content {
-                text-align: center;
+                width: 900px;
             }
 
             .title {
@@ -68,28 +68,27 @@
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
-                    <a href="{{ url('/aboutus') }}">About Us</a>
+                    <a href="{{ url('/about') }}">About Us</a>
                     <a href="{{ url('/login') }}">Login</a>
                     <a href="{{ url('/register') }}">Register</a>
                 </div>
             @endif
-
             <div class="content">
-                <div class="title m-b-md">
-                    {{-- config('app.name', 'Laravel') --}}
-                    <div>
-                        <img src="/images/sfi.jpg" style="width:750px; margin-bottom:20px;">
-                    </div>
+                <div>
+                    <h3>COMPANY FROFILE</h3>
+                    Success Formula Marketing (SFM) is a company established through the expertise and passion of the CEO/President Mr. Michael Siega Javier for over a decades.
+                    SFM company provides high Quality Filipino Products that individually can market it in A very easy and profitable way. This company also provides powerful marketing plan that every (IBO) Independent Business Owner can enjoy all the monetary commissions using the company system.
+                    <br>
+                    <br>
+                    <br>
+                    <h3>OUR VISION</h3>
+                    To be One of the Successful Network Marketing in the Philippines, also in Global.
+                    <br>
+                    <br>
+                    <br>
+                    <h3>OUR MISSION</h3>
+                    To provide high Qualify Products and services to organize profitable and stable business to our leaders. And the bottom line, to produce more Successful Entrepreneurs.
                 </div>
-                <!--
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-                -->
             </div>
         </div>
     </body>
