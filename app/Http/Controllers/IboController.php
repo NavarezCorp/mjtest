@@ -98,7 +98,7 @@ class IboController extends Controller {
         $model->is_part_company = $request->has('is_part_company');
         $model->sponsor_id = ltrim($request->sponsor_id, '0');
         $model->placement_id = $request->placement_id;
-        $model->placement_position = $request->placement_position;
+        $model->placement_position = strtoupper($request->placement_position);
         $model->total_purchase_amount = $request->total_purchase_amount;
         $model->ranking_lions_id = $request->ranking_lions_id;
         $model->is_admin = $request->has('is_admin');
@@ -193,7 +193,7 @@ class IboController extends Controller {
         $model->is_part_company = $request->has('is_part_company');
         $model->sponsor_id = $request->sponsor_id;
         $model->placement_id = $request->placement_id;
-        $model->placement_position = $request->placement_position;
+        $model->placement_position = strtoupper($request->placement_position);
         $model->total_purchase_amount = $request->total_purchase_amount;
         $model->ranking_lions_id = $request->ranking_lions_id;
         $model->is_admin = $request->has('is_admin');
