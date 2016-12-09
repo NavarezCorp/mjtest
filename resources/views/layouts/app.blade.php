@@ -76,13 +76,19 @@
                                         </form>
                                     </li>
                                     <li>
-                                        <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
-                                        <a href="{{ url('/user/' . Auth::user()->ibo_id . '/edit') }}">Profile</a>
-                                        <a href="{{ url('/ibo/create') }}">Register New IBO</a>
-                                        <a href="{{ url('/productpurchase/create') }}">Repeat Purchase</a>
-                                        <a href="{{ url('/ibocommission/' . Auth::user()->ibo_id) }}">My Weekly Commission Summary Report</a>
-                                        <a href="{{ url('/iboindirect/' . Auth::user()->ibo_id) }}">My Indirect Commission</a>
-                                        <!--<a href="{{-- url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=monthly') --}}">My Rebates</a>-->
+                                        @if (Auth::user()->role == 'staff-1')
+                                            <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
+                                            <a href="{{ url('/productcode') }}" target="_blank">Product Codes</a>
+                                            <a href="{{ url('/activationcode') }}" target="_blank">Activation Codes</a>
+                                        @else
+                                            <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
+                                            <a href="{{ url('/user/' . Auth::user()->ibo_id . '/edit') }}">Profile</a>
+                                            <a href="{{ url('/ibo/create') }}">Register New IBO</a>
+                                            <a href="{{ url('/productpurchase/create') }}">Repeat Purchase</a>
+                                            <a href="{{ url('/ibocommission/' . Auth::user()->ibo_id) }}">My Weekly Commission Summary Report</a>
+                                            <a href="{{ url('/iboindirect/' . Auth::user()->ibo_id) }}">My Indirect Commission</a>
+                                            <!--<a href="{{-- url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=monthly') --}}">My Rebates</a>-->
+                                        @endif
                                     </li>
                                     @if (Auth::user()->role == 'admin')
                                         <li role="separator" class="divider"></li>
