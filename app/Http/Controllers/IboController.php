@@ -214,6 +214,10 @@ class IboController extends Controller {
         $model->account_no = $request->account_no;
         $model->save();
         
+        $model = User::where('ibo_id', $id)->first();
+        $model->name = $request->firstname . ' ' . $request->lastname;
+        $model->save();
+        
         Session::flash('message', 'IBO ' . $request->firstname . ' ' . $request->middlename . ' ' . $request->lastname . ' was successfully updated');
         return redirect('/ibo');
     }
