@@ -55,6 +55,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{ url('/aboutus') }}">About Us</a></li>
+                        <li><a href="{{ url('/contactus') }}">Contact Us</a></li>
                         
                         <!-- Authentication Links -->
                         @if (Auth::guest())
@@ -80,6 +81,7 @@
                                             <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
                                             <a href="{{ url('/productcode') }}" target="_blank">Product Codes</a>
                                             <a href="{{ url('/activationcode') }}" target="_blank">Activation Codes</a>
+                                            <a href="{{ url('/ibosearch') }}" target="_blank">IBO Search</a>
                                         @else
                                             <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
                                             <a href="{{ url('/user/' . Auth::user()->ibo_id . '/edit') }}">Profile</a>
@@ -100,6 +102,7 @@
                                             <a href="{{ url('/indirectcommission500up') }}">Indirect Commissions (500 up)</a>
                                             <a href="{{ url('/allindirectcommission') }}">Indirect Commissions (All)</a>
                                             <a href="{{ url('/ibo') }}">IBOs</a>
+                                            <a href="{{ url('/ibosearch') }}" target="_blank">IBO Search</a>
                                             <a href="{{ url('/commission') }}">Commissions</a>
                                             <a href="{{ url('/package') }}">Packages</a>
                                             <a href="{{ url('/packagetype') }}">Package Types</a>

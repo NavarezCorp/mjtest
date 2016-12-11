@@ -227,4 +227,8 @@ class IboController extends Controller {
     public function destroy($id){
         //
     }
+    
+    public function ibo_search(){
+        return view('ibo.search');
+    }
 }

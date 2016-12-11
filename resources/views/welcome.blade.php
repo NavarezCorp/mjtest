@@ -69,6 +69,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     <a href="{{ url('/aboutus') }}">About Us</a>
+                    <a href="{{ url('/contactus') }}">Contact Us</a>
                     <a href="{{ url('/login') }}">Login</a>
                     <a href="{{ url('/register') }}">Register</a>
                 </div>

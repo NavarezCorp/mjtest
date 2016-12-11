@@ -19,12 +19,19 @@ Route::get('/aboutus', function(){
     return view('about_us');
 });
 
+Route::get('/contactus', function(){
+    return view('contact_us');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
 Route::resource('commission', 'CommissionController');
+
+Route::get('/ibosearch', 'IboController@ibo_search');
 Route::resource('ibo', 'IboController');
+
 Route::resource('package', 'PackageController');
 Route::resource('packagetype', 'PackageTypeController');
 Route::resource('productamount', 'ProductAmountController');
