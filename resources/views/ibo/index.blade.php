@@ -39,8 +39,16 @@
                                     <td>{{ $value->firstname }}</td>
                                     <!--<td>{{-- $value->middlename --}}</td>-->
                                     <td>{{ $value->lastname }}</td>
-                                    <td>{{ App\Ibo::find($value->sponsor_id)->firstname }} {{ App\Ibo::find($value->sponsor_id)->lastname }}<br>({{ sprintf('%09d', $value->sponsor_id) }})</td>
-                                    <td>{{ App\Ibo::find($value->placement_id)->firstname }} {{ App\Ibo::find($value->placement_id)->lastname }}<br>({{ sprintf('%09d', $value->placement_id) }})</td>
+                                    <td>
+                                        {{ isset(App\Ibo::find($value->sponsor_id)->firstname) ? App\Ibo::find($value->sponsor_id)->firstname : '' }} 
+                                        {{ isset(App\Ibo::find($value->sponsor_id)->lastname) ? App\Ibo::find($value->sponsor_id)->lastname : '' }}<br>
+                                        ({{ sprintf('%09d', $value->sponsor_id) }})
+                                    </td>
+                                    <td>
+                                        {{ isset(App\Ibo::find($value->placement_id)->firstname) ? App\Ibo::find($value->placement_id)->firstname : '' }} 
+                                        {{ isset(App\Ibo::find($value->placement_id)->lastname) ? App\Ibo::find($value->placement_id)->lastname : '' }}<br>
+                                        ({{ sprintf('%09d', $value->placement_id) }})
+                                    </td>
                                     <td>{{ $value->placement_position }}</td>
                                     <td>{{ $value->activation_code_type }}</td>
                                     <td>{{ $value->ranking_lions_id }}</td>
