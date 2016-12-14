@@ -66,7 +66,7 @@ class CommissionSummaryReportController extends Controller {
         $date_->setWeekStartsAt(Carbon::SATURDAY);
         $date_->setWeekEndsAt(Carbon::FRIDAY);
         
-        $user = Ibo::find($id);
+        //$user = Ibo::find($id);
         
         $data['type'] = $_GET['type'];
         

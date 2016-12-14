@@ -212,3 +212,47 @@ $('.product-code-transfered-to, .product-code-product-id').change(function(){
 $(document).on('click', '.product-purchase-code', function(){
     $('.register-button').attr('disabled', true);
 });
+
+$('.ibo-search-button').click(function(e){
+    e.preventDefault();
+    
+    $('.ibo-search-loading').show();
+    
+    $.getJSON('/ibo/search', {ibo_id:$('#ibo_id').val(), name:$('#name').val()}, function(data){
+        if(data){
+            var html = '';
+            
+            html += '<div class="panel panel-default">';
+            html += '<div class="panel-heading">IBO Profile</div>';
+            html += '<div class="panel-body">';
+            html += '<table class="table">';
+            html += '<tbody>';
+            html += '<tr><td class="ibo-search-table-left">Name</td><td class="ibo-search-table-right">' + data.ibo.info.firstname + ' ' + data.ibo.info.middlename + ' ' + data.ibo.info.lastname + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Email</td><td class="ibo-search-table-right">' + data.ibo.info.email + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Gender</td><td class="ibo-search-table-right">' + data.ibo.info.gender_id + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Birthdate</td><td class="ibo-search-table-right">' + data.ibo.info.birth_date + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Marital Status</td><td class="ibo-search-table-right">' + data.ibo.info.marital_status_id + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">TIN</td><td class="ibo-search-table-right">' + data.ibo.info.tin + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">SSS</td><td class="ibo-search-table-right">' + data.ibo.info.sss + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Address</td><td class="ibo-search-table-right">' + data.ibo.info.address + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">City</td><td class="ibo-search-table-right">' + data.ibo.info.city + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Province</td><td class="ibo-search-table-right">' + data.ibo.info.province + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Contact #</td><td class="ibo-search-table-right">' + data.ibo.info.contact_no + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Sponsor</td><td class="ibo-search-table-right">' + data.ibo.info.sponsor_id + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Placement</td><td class="ibo-search-table-right">' + data.ibo.info.placement_id + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Placement Position</td><td class="ibo-search-table-right">' + data.ibo.info.placement_position + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Activation code</td><td class="ibo-search-table-right">' + data.ibo.info.activation_code + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Pickup center</td><td class="ibo-search-table-right">' + data.ibo.info.pickup_center_id + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Bank</td><td class="ibo-search-table-right">' + data.ibo.info.bank_id + '</td></tr>';
+            html += '<tr><td class="ibo-search-table-left">Account #</td><td class="ibo-search-table-right">' + data.ibo.info.account_no + '</td></tr>';
+            html += '</tbody>';
+            html += '</table>';
+            html += '</div>';
+            html += '</div>';
+            
+            $('.ibo-search-display').html(html);
+            
+            $('.ibo-search-loading').hide();
+        }
+    });
+});
