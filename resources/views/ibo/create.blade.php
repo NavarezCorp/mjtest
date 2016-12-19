@@ -181,8 +181,8 @@
                                 </div>
                                 <div class="form-group{{ $errors->has('placement_position') ? ' has-error' : '' }} required">
                                     <label for="placement_position" class="col-md-3 control-label">Placement position</label>
-                                    <div class="col-md-6">
-                                        <input id="placement_position" type="text" class="form-control" name="placement_position" value="{{ $data['placement_position'] ? $data['placement_position'] : '' }}" required>
+                                    <div class="col-md-2">
+                                        {{ Form::select('placement_position', ['L'=>'Left', 'R' => 'Right'], $data['placement_position'], ['class'=>'form-control', 'placeholder'=>'', 'required']) }}
                                         @if ($errors->has('placement_position'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('placement_position') }}</strong>

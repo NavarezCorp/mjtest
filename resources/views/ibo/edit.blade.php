@@ -175,8 +175,8 @@
                                 </div>
                                 <div class="form-group{{ $errors->has('placement_position') ? ' has-error' : '' }}">
                                     <label for="placement_position" class="col-md-3 control-label">Placement position</label>
-                                    <div class="col-md-6">
-                                        <input id="placement_position" type="text" class="form-control" name="placement_position" value="{{ $data['ibo']['placement_position'] ? $data['ibo']['placement_position'] : '' }}" readonly>
+                                    <div class="col-md-2">
+                                        {{ Form::select('placement_position', ['L'=>'Left', 'R' => 'Right'], $data['ibo']['placement_position'], ['class'=>'form-control', 'placeholder'=>'', 'readonly']) }}
                                         @if ($errors->has('placement_position'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('placement_position') }}</strong>
