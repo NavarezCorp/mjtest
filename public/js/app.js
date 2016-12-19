@@ -256,6 +256,16 @@ $('.ibo-search-button').click(function(e){
         }
     });
 });
+
+$('#rebates-week').change(function(){
+    console.log('all rebates commission week changed');
+    window.location = '/commissionsummaryreport/0?type=monthly&month=' + $(this).val() + '&year=' + $('#rebates-year').val();
+});
+
+$('#rebates-year').change(function(){
+    console.log('all rebates commission year changed');
+    window.location = '/commissionsummaryreport/0?type=monthly&month=' + $('#rebates-week').val() + '&year=' + $(this).val();
+});
 var sponsor_id = 0;
 
 if(typeof $('#genealogy_sponsor_id').val() !== 'undefined') sponsor_id = $('#genealogy_sponsor_id').val();
