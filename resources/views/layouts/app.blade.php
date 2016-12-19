@@ -98,7 +98,7 @@
                                         <li>
                                             <a href="{{ url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=weekly') }}">Weekly Commission Summary Report (Admin view)</a>
                                             <a href="{{ url('/commissionsummaryreport/all') }}">Weekly Commission Summary Report (All)</a>
-                                            <a href="{{ url('/commissionsummaryreport/0?type=monthly') }}">Monthly Commission Summary Report (Rebate)</a>
+                                            <a href="{{ url('/commissionsummaryreport/0?type=monthly') }}">Monthly Commission Summary Report (all Rebates)</a>
                                             <a href="{{ url('/indirectcommission500up') }}">Indirect Commissions (500 up)</a>
                                             <a href="{{ url('/allindirectcommission') }}">Indirect Commissions (All)</a>
                                             <a href="{{ url('/ibo') }}">IBOs</a>
