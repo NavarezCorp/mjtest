@@ -11,7 +11,7 @@
                 <div class="panel-body">
                     <div>
                         <strong>Rank: {{ $data['ranking_lions'] }} (Level {{ $data['level'] }})</strong><br>
-                        <strong>Total Rebates: {{ $data['rebates_total'] }}</strong>
+                        <strong>Total Rebates: {{ $data['rebate']['rebates_total'] }}</strong>
                     </div>
                     <hr>
                     <table class="table table-striped table-hover table-condensed">
@@ -26,13 +26,13 @@
                                 <td><strong>User</strong></td>
                                 <td>
                                     <strong>
-                                        {{ App\Ibo::find($data['ibos'][0][$data['user_ibo_id']]['ibo_id'])->firstname }} {{ App\Ibo::find($data['ibos'][0][$data['user_ibo_id']]['ibo_id'])->lastname }}<br>({{ sprintf('%09d', $data['ibos'][0][$data['user_ibo_id']]['ibo_id']) }})
+                                        {{ App\Ibo::find($data['rebate']['ibos'][0][$data['rebate']['user_ibo_id']]['ibo_id'])->firstname }} {{ App\Ibo::find($data['rebate']['ibos'][0][$data['rebate']['user_ibo_id']]['ibo_id'])->lastname }}<br>({{ sprintf('%09d', $data['rebate']['ibos'][0][$data['rebate']['user_ibo_id']]['ibo_id']) }})
                                     </strong>
                                 </td>
                                 <td><strong></strong></td>
-                                <td><strong>{{ $data['ibos'][0][$data['user_ibo_id']]['total_purchase'] }}</strong></td>
+                                <td><strong>{{ $data['rebate']['ibos'][0][$data['rebate']['user_ibo_id']]['total_purchase'] }}</strong></td>
                             </tr>
-                            @foreach ($data['ibos_levels'] as $key => $value)
+                            @foreach ($data['rebate']['ibos_levels'] as $key => $value)
                                 <?php $index = $key + 1 ?>
                                 @foreach ($value as $key_ => $value_)
                                     <tr>

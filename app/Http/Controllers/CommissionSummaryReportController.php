@@ -150,8 +150,21 @@ class CommissionSummaryReportController extends Controller {
                     $data['rebate'][$i]['level'] = $res['level'];
                 }
                 
-                //return view('commissionsummaryreport.rebate', ['data'=>$data]);
                 return view('commissionsummaryreport.allrebate', ['data'=>$data]);
+                
+                break;
+            
+            case 'myrebate':
+                $param_['id'] = $id;
+                $param_['month'] = $_GET['month'];
+                $param_['year'] = $_GET['year'];
+                
+                $data['level'] = 4;
+                $data['ranking_lions'] = 'None';
+
+                $data['rebate'] = Helper::process_rebates($param_);
+                
+                return view('commissionsummaryreport.rebate', ['data'=>$data]);
                 
                 break;
         }
