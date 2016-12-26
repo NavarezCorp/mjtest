@@ -18,6 +18,9 @@ use App\Helper;
 use App\CommissionRecord;
 use App\Logger;
 use App\Matching;
+use App\PickupCenter;
+use App\Country;
+use App\City;
 
 class CommissionSummaryReportController extends Controller {
     public function __construct(){
@@ -505,8 +508,6 @@ class CommissionSummaryReportController extends Controller {
         $date_->setWeekStartsAt(Carbon::SATURDAY);
         $date_->setWeekEndsAt(Carbon::FRIDAY);
         
-        $ibos = Ibo::all();
-        
         $data['type'] = 'all';
         $data['current_week_no'] = $date_->weekOfYear;
         $data['selected_week'] = $date_->weekOfYear;
@@ -520,46 +521,57 @@ class CommissionSummaryReportController extends Controller {
             $data['selected_week'] = $pieces[0];
         }
         
-        foreach($ibos as $i => $value){
-            $ibo = Ibo::find($value->id);
+        $data['date_start'] = $date_->startOfWeek()->format('F j, Y');
+        $data['date_end'] = $date_->endOfWeek()->format('F j, Y');
+        
+        $pickup_centers = PickupCenter::orderBy('id', 'asc')->get();
+        $pcs[] = 0;
+        foreach($pickup_centers as $value) $pcs[] = $value->id;
+        
+        foreach($pcs as $pc){
+            //$ibos = Ibo::all();
+            $ibos = Ibo::where('pickup_center_id', $pc)->get();
+            
+            foreach($ibos as $i => $value){
+                $ibo = Ibo::find($value->id);
+
+                $data['commission'][$pc][$i]['pickup_center'] = $pc;
+                $data['commission'][$pc][$i]['ibo_name'] = $value->firstname . ' ' . $value->middlename . ' ' . $value->lastname . ' (' . sprintf('%09d', $value->id) . ')';
                 
-            $data['commission'][$i]['ibo_name'] = $value->firstname . ' ' . $value->middlename . ' ' . $value->lastname . ' (' . sprintf('%09d', $value->id) . ')';
-            
-            $data['date_start'] = $date_->startOfWeek()->format('F j, Y');
-            $data['date_end'] = $date_->endOfWeek()->format('F j, Y');
-            
-            $param_['id'] = $value->id;
-            $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
-            $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
+                $param_['id'] = $value->id;
+                $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
+                $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
 
-            $direct_count = 0;
-            
-            $res = Ibo::where('sponsor_id', $value->id)
-                ->where('activation_code_type', '!=', 'FS')
-                ->where('activation_code_type', '!=', 'CD')
-                ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
-                ->orderBy('created_at', 'desc')->get();
+                $direct_count = 0;
 
-            $direct_count = count($res);
-            
-            $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
-            
-            //$data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
-            $indirect_ = CommissionRecord::where('sponsor_id', $value->id)
-                ->where('commission_type_id', 2)
-                ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
-                ->orderBy('created_at', 'desc')->get();
+                $res = Ibo::where('sponsor_id', $value->id)
+                    ->where('activation_code_type', '!=', 'FS')
+                    ->where('activation_code_type', '!=', 'CD')
+                    ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
 
-            //$data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
-            $data['commission'][$i]['indirect'] = 0;
-            $data['commission'][$i]['matching'] = $this->get_matching_bonus($param_);
-            $data['commission'][$i]['fifth_pair'] = $this->get_fifth_pair($param_);
+                $direct_count = count($res);
 
-            $data['commission'][$i]['fifth_pairs'] = $data['commission'][$i]['fifth_pair'] * Commission::where('name', 'Matching Bonus')->first()->amount;
-            $data['commission'][$i]['matching'] = $data['commission'][$i]['matching'] * Commission::where('name', 'Matching Bonus')->first()->amount - $data['commission'][$i]['fifth_pairs'];
-            $data['commission'][$i]['gross'] = ($data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching']);
-            $data['commission'][$i]['tax'] = $data['commission'][$i]['matching'] * .1;
-            $data['commission'][$i]['net_commission'] = $data['commission'][$i]['gross'] - $data['commission'][$i]['tax'];
+                $data['commission'][$pc][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
+
+                //$data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
+                $indirect_ = CommissionRecord::where('sponsor_id', $value->id)
+                    ->where('commission_type_id', 2)
+                    ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                    ->orderBy('created_at', 'desc')->get();
+
+                //$data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+                $data['commission'][$pc][$i]['indirect'] = 0;
+                $data['commission'][$pc][$i]['matching'] = $this->get_matching_bonus($param_);
+                $data['commission'][$pc][$i]['fifth_pair'] = $this->get_fifth_pair($param_);
+
+                $data['commission'][$pc][$i]['fifth_pairs'] = $data['commission'][$pc][$i]['fifth_pair'] * Commission::where('name', 'Matching Bonus')->first()->amount;
+                $data['commission'][$pc][$i]['matching'] = $data['commission'][$pc][$i]['matching'] * Commission::where('name', 'Matching Bonus')->first()->amount - $data['commission'][$pc][$i]['fifth_pairs'];
+                $data['commission'][$pc][$i]['gross'] = ($data['commission'][$pc][$i]['direct'] + $data['commission'][$pc][$i]['indirect'] + $data['commission'][$pc][$i]['matching']);
+                $data['commission'][$pc][$i]['tax'] = $data['commission'][$pc][$i]['matching'] * .1;
+                $data['commission'][$pc][$i]['net_commission'] = $data['commission'][$pc][$i]['gross'] - $data['commission'][$pc][$i]['tax'];
+            }
         }
         
         return view('commissionsummaryreport.all', ['data'=>$data]);

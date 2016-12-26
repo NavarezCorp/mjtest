@@ -41,15 +41,22 @@
                         </thead>
                         <tbody>
                             @foreach ($data['commission'] as $key => $value)
-                                @if (($value['direct'] > 0) || ($value['indirect'] > 0) || ($value['matching'] > 0))
-                                    <tr>
-                                        <td><strong>{{ $value['ibo_name'] }}</strong></td>
-                                        <td><strong>{{ $value['direct'] }}</strong></td>
-                                        <!--<td><strong>{{-- $value['indirect'] --}}</strong></td>-->
-                                        <td><strong>{{ $value['matching'] }}</strong></td>
-                                        <td><strong>{{ $value['fifth_pairs'] }}</strong></td>
-                                        <td><strong>{{ $value['net_commission'] }}</strong></td>
+                                @if (isset($value))
+                                    <tr style="background-color:green; color: white; font-weight: bold;">
+                                        <td colspan="5">{{ isset(App\PickupCenter::find($key)->branch) ? App\PickupCenter::find($key)->branch : 'Davao City' }}</td>
                                     </tr>
+                                    @foreach ($value as $val)
+                                        @if (($val['direct'] > 0) || ($val['indirect'] > 0) || ($val['matching'] > 0))
+                                            <tr>
+                                                <td><strong>{{ $val['ibo_name'] }}</strong></td>
+                                                <td><strong>{{ $val['direct'] }}</strong></td>
+                                                <td><strong>{{ $val['matching'] }}</strong></td>
+                                                <td><strong>{{ $val['fifth_pairs'] }}</strong></td>
+                                                <td><strong>{{ $val['net_commission'] }}</strong></td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                    <tr><td colspan="5"></td></tr>
                                 @endif
                             @endforeach
                         </tbody>
