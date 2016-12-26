@@ -727,9 +727,7 @@ class CommissionSummaryReportController extends Controller {
         $date_ = Carbon::now('Asia/Manila');
         $date_->setWeekStartsAt(Carbon::SATURDAY);
         $date_->setWeekEndsAt(Carbon::FRIDAY);
-
-        $ibos = Ibo::all();
-
+        
         $data['type'] = 'All';
         $data['current_week_no'] = $date_->weekOfYear;
         $data['selected_week'] = $date_->weekOfYear;
@@ -740,22 +738,34 @@ class CommissionSummaryReportController extends Controller {
             $date_->year($pieces[1]);
             $data['selected_week'] = $pieces[0];
         }
+        
+        $data['date_start'] = $date_->startOfWeek()->format('F j, Y');
+        $data['date_end'] = $date_->endOfWeek()->format('F j, Y');
+        
+        $pickup_centers = PickupCenter::orderBy('id', 'asc')->get();
+        $pcs[] = 0;
+        foreach($pickup_centers as $value) $pcs[] = $value->id;
+        
+        foreach($pcs as $pc){
+            $ibos = Ibo::where('pickup_center_id', $pc)->get();
+            
+            foreach($ibos as $i => $value){
+                $ibo = Ibo::find($value->id);
+                
+                $data['commission'][$pc][$i]['pickup_center'] = $pc;
+                $data['commission'][$pc][$i]['ibo_name'] = $value->firstname . ' ' . $value->middlename . ' ' . $value->lastname . ' (' . sprintf('%09d', $value->id) . ')';
+                
 
-        foreach($ibos as $i => $value){
-            $ibo = Ibo::find($value->id);
+                $indirect_ = CommissionRecord::where('sponsor_id', $value->id)
+                    ->where('commission_type_id', 2)
+                    ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                    ->orderBy('created_at', 'desc')
+                    ->get();
 
-            $data['commission'][$i]['ibo_name'] = $value->firstname . ' ' . $value->middlename . ' ' . $value->lastname . ' (' . sprintf('%09d', $value->id) . ')';
-            $data['date_start'] = $date_->startOfWeek()->format('F j, Y');
-            $data['date_end'] = $date_->endOfWeek()->format('F j, Y');
-
-            $indirect_ = CommissionRecord::where('sponsor_id', $value->id)
-                ->where('commission_type_id', 2)
-                ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
-                ->orderBy('created_at', 'desc')->get();
-
-            $data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+                $data['commission'][$pc][$i]['indirect'] = $indirect_->sum('commission_amount');
+            }
         }
-
+        
         return view('commissionsummaryreport.allindirect', ['data'=>$data]);
     }
 }

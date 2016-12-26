@@ -37,11 +37,18 @@
                         </thead>
                         <tbody>
                             @foreach ($data['commission'] as $key => $value)
-                                @if ($value['indirect'] > 0)
-                                    <tr>
-                                        <td><strong>{{ $value['ibo_name'] }}</strong></td>
-                                        <td><strong>{{ $value['indirect'] }}</strong></td>
+                                @if (isset($value))
+                                    <tr style="background-color:green; color: white; font-weight: bold;">
+                                        <td colspan="5">{{ isset(App\PickupCenter::find($key)->branch) ? App\PickupCenter::find($key)->branch : 'Davao City' }}</td>
                                     </tr>
+                                    @foreach ($value as $val)
+                                        @if ($val['indirect'] > 0)
+                                            <tr>
+                                                <td><strong>{{ $val['ibo_name'] }}</strong></td>
+                                                <td><strong>{{ $val['indirect'] }}</strong></td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
                                 @endif
                             @endforeach
                         </tbody>
