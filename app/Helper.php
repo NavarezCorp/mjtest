@@ -503,4 +503,13 @@ class Helper {
         
         return $res->total_purchase;
     }
+    
+    public static function get_total_weeks_of_year($year){
+        $date_ = Carbon::now('Asia/Manila');
+        $date_->setWeekStartsAt(Carbon::SATURDAY);
+        $date_->setWeekEndsAt(Carbon::FRIDAY);
+        $weeks = $date_->parse('last day of december ' . $year)->weekOfYear;
+        
+        return $weeks;
+    }
 }
