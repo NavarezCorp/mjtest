@@ -11,8 +11,22 @@
                     {{ method_field('PUT') }}
                     <div class="panel-body">
                         <div class="panel panel-default">
-                            <div class="panel-heading" style="background-color:#e7e7e7;">Personal information</div>
+                            <div class="panel-heading" style="background-color:#e7e7e7;">
+                                Personal information
+                                <a class="pull-right change-password" style="cursor:pointer;" data-toggle="modal" data-target="#modal-change-password">Change password</a>
+                            </div>
                             <div class="panel-body">
+                                <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }}">
+                                    <label for="id" class="col-md-3 control-label">IBO ID</label>
+                                    <div class="col-md-6">
+                                        <input id="id" type="text" class="form-control" name="id" value="{{ sprintf('%09d', $data['ibo']['id']) }}" disabled>
+                                        @if ($errors->has('id'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('id') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
                                 <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
                                     <label for="firstname" class="col-md-3 control-label">Firstname</label>
                                     <div class="col-md-6">
@@ -236,6 +250,32 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-change-password" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Change password</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>Old password</label><br>
+                    <input id="old-password" type="password" class="form-control" name="old-password">
+                    <span class="help-block"><strong></strong></span>
+                </div>
+                <div>
+                    <label>New password</label><br>
+                    <input id="new-password" type="password" class="form-control" name="new-password">
+                    <span class="help-block"><strong></strong></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary change-password-button">Change</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
