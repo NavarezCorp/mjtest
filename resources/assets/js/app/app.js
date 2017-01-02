@@ -172,13 +172,11 @@ $('input[name="transfer_to"]').click(function(e){
 })
 
 $('#selectWeek').change(function(){
-    //console.log($(this).val());
     window.location = '/commissionsummaryreport/all/' + $(this).val() + '|' + $('#selectYear').val();
 });
 
 $('#selectYear').change(function(){
-    //console.log($(this).val());
-    window.location = '/commissionsummaryreport/all/' + $('#selectWeek').val() + '|' + $(this).val();
+    window.location = '/commissionsummaryreport/all/1|' + $(this).val();
 });
 
 $('#indirect-week').change(function(){
@@ -265,4 +263,16 @@ $('#rebates-week').change(function(){
 $('#rebates-year').change(function(){
     console.log('all rebates commission year changed');
     window.location = '/commissionsummaryreport/0?type=monthly&month=' + $('#rebates-week').val() + '&year=' + $(this).val();
+});
+
+$('.change-password').click(function(e){
+    console.log('change password');
+});
+
+$('.change-password-button').click(function(e){
+    console.log('change password button');
+    
+    $.getJSON('/user/changepassword', {old_password:$('#old-password').val(), new_password:$('#new-password').val()}, function(data){
+        if(data) console.log(data);
+    });
 });

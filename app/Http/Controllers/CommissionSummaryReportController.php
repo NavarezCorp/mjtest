@@ -517,15 +517,15 @@ class CommissionSummaryReportController extends Controller {
         if(!empty($search)){
             $pieces = explode('|', $search);
             
-            $date_->subWeek($date_->weekOfYear - ($pieces[0]));
-            $date_->year($pieces[1]);
-            
             $data['selected_week'] = $pieces[0];
             $data['selected_year'] = $pieces[1];
             
-            if((int)$data['selected_year'] != $data['current_year']) $data['current_week_no'] = Helper::get_total_weeks_of_year($pieces[1]);
+            if((int)$data['selected_year'] != $data['current_year']) $data['current_week_no'] = Helper::get_total_weeks_of_year($data['selected_year']);
+            
+            $date_->subWeek($date_->weekOfYear - $data['selected_week']);
+            $date_->year($data['selected_year']);
         }
-        Logger::log($data);
+        
         $data['date_start'] = $date_->startOfWeek()->format('F j, Y');
         $data['date_end'] = $date_->endOfWeek()->format('F j, Y');
         
