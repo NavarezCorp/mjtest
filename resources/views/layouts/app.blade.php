@@ -82,6 +82,7 @@
                                             <a href="{{ url('/productcode') }}" target="_blank">Product Codes</a>
                                             <a href="{{ url('/activationcode') }}" target="_blank">Activation Codes</a>
                                             <a href="{{ url('/ibosearch') }}" target="_blank">IBO Search</a>
+                                            <a href="{{ url('/productpurchase') }}">Product Purchases</a>
                                         @else
                                             <a href="{{ url('/genealogy?sponsor_id=' . Auth::user()->ibo_id . '&placement_id=' . Auth::user()->placement_id) }}">Genealogy</a>
                                             <a href="{{ url('/user/' . Auth::user()->ibo_id . '/edit') }}">Profile</a>
