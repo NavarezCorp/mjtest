@@ -137,6 +137,7 @@ class CommissionSummaryReportController extends Controller {
                 ];
                 
                 $data['current_month'] = $date_->month;
+                $data['current_year'] = $date_->year;
                 $data['selected_month'] = isset($_GET['month']) ? $_GET['month'] : $date_->month;
                 $data['selected_year'] = isset($_GET['year']) ? $_GET['year'] : $date_->year;
                 
