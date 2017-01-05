@@ -24,7 +24,11 @@
                             @foreach ($data as $key => $value)
                                 <tr>
                                     <td>{{ $value->id }}</td>
-                                    <td>{{ sprintf('%09d', $value->ibo_id) }}</td>
+                                    <td>
+                                        {{ isset(App\Ibo::find($value->ibo_id)->firstname) ? App\Ibo::find($value->ibo_id)->firstname : '' }} 
+                                        {{ isset(App\Ibo::find($value->ibo_id)->lastname) ? App\Ibo::find($value->ibo_id)->lastname : '' }}<br>
+                                        {{ sprintf('%09d', $value->ibo_id) }}
+                                    </td>
                                     <td>{{ App\Product::find($value->product_id)->name }}</td>
                                     <td>{{ $value->purchase_amount }}</td>
                                     <td>{{ $value->created_at }}</td>
