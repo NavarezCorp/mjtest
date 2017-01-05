@@ -106,7 +106,7 @@ class UserController extends Controller
         $model->email = $request->email;
         $model->gender_id = $request->gender_id;
         $model->birth_date = $request->birth_date;
-        $model->marital_status_id = $request->marital_status_id;
+        $model->marital_status_id = !empty($request->marital_status) ? $request->marital_status : null;
         $model->tin = $request->tin;
         $model->sss = $request->sss;
         $model->address = $request->address;
@@ -114,7 +114,7 @@ class UserController extends Controller
         $model->province = $request->province;
         $model->contact_no = $request->contact_no;
         $model->pickup_center_id = $request->pickup_center_id;
-        $model->bank_id = $request->bank_id;
+        $model->bank_id = !empty($request->bank_id) ? $request->bank_id : null;
         $model->account_no = $request->account_no;
         $model->save();
         

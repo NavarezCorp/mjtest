@@ -60,7 +60,7 @@
                                 <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }} required">
                                     <label for="gender" class="col-md-3 control-label">Gender</label>
                                     <div class="col-md-2">
-                                        {{ Form::select('gender', $data['genders'], $data['ibo']['gender_id'], ['class'=>'form-control', 'placeholder'=>'']) }}
+                                        {{ Form::select('gender', $data['genders'], $data['ibo']['gender_id'], ['class'=>'form-control', 'placeholder'=>'', 'required']) }}
                                     </div>
                                 </div>
                                 <div class="form-group{{ $errors->has('birth_date') ? ' has-error' : '' }} required">
@@ -202,7 +202,7 @@
                                 <div class="form-group{{ $errors->has('pickup_center') ? ' has-error' : '' }} required">
                                     <label for="pickup_center" class="col-md-3 control-label">Pickup center</label>
                                     <div class="col-md-6">
-                                        {{ Form::select('pickup_center', $data['pickup_centers'], $data['ibo']['pickup_center_id'], ['class'=>'form-control', 'placeholder'=>'']) }}
+                                        {{ Form::select('pickup_center', $data['pickup_centers'], $data['ibo']['pickup_center_id'], ['class'=>'form-control', 'placeholder'=>'', 'required']) }}
                                     </div>
                                 </div>
                             </div>
