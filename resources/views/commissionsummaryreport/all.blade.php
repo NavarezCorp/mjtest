@@ -46,7 +46,7 @@
                                         <td colspan="5">{{ isset(App\PickupCenter::find($key)->branch) ? App\PickupCenter::find($key)->branch : 'Davao City' }}</td>
                                     </tr>
                                     @foreach ($value as $val)
-                                        @if (($val['direct'] > 0) || ($val['indirect'] > 0) || ($val['matching'] > 0))
+                                        @if (($val['direct'] > 0) || ($val['fifth_pair'] > 0) || ($val['matching'] > 0))
                                             <tr>
                                                 <td><strong>{{ $val['ibo_name'] }}</strong></td>
                                                 <td><strong>{{ $val['direct'] }}</strong></td>
