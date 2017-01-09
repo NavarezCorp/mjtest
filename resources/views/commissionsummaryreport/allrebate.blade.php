@@ -33,22 +33,30 @@
                             <th>Ranking Lion</th>
                             <th>Level</th>
                             <th>Rebate</th>
+                            <th></th>
                         </thead>
                         <tbody>
-                            @foreach ($data['rebate'] as $key => $value)
-                                @if ($value['rebate'] > 0)
-                                    <tr>
-                                        <td>
-                                            <strong>
-                                                {{ App\Ibo::find($value['ibo_id'])->firstname }} {{ App\Ibo::find($value['ibo_id'])->lastname }}<br>({{ sprintf('%09d', $value['ibo_id']) }})
-                                            </strong>
-                                        </td>
-                                        <td><strong>{{ $value['ranking_lions'] }}</strong></td>
-                                        <td><strong>{{ $value['level'] }}</strong></td>
-                                        <td><strong>{{ $value['rebate'] }}</strong></td>
-                                    </tr>
-                                @endif
-                            @endforeach
+                            @if (isset($data['rebate']))
+                                @foreach ($data['rebate'] as $key => $value)
+                                    @if ($value['rebate'] > 0)
+                                        <tr>
+                                            <td>
+                                                <strong>
+                                                    {{ App\Ibo::find($value['ibo_id'])->firstname }} {{ App\Ibo::find($value['ibo_id'])->lastname }}<br>({{ sprintf('%09d', $value['ibo_id']) }})
+                                                </strong>
+                                            </td>
+                                            <td><strong>{{ $value['ranking_lions'] }}</strong></td>
+                                            <td><strong>{{ $value['level'] }}</strong></td>
+                                            <td><strong>{{ $value['rebate'] }}</strong></td>
+                                            <td style="width:70px; text-align: center;">
+                                                <strong>
+                                                    <a href="{{ $value['ibo_id'] }}?type=myrebate&month={{ $data['selected_month'] }}&year={{ $data['selected_year']}}" target="_blank">details</a>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>

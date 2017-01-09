@@ -119,8 +119,6 @@ class CommissionSummaryReportController extends Controller {
                 break;
                 
             case 'monthly':
-                $ibos = Ibo::all();
-                
                 $data['months'] = [
                     1=>'January',
                     2=>'February',
@@ -141,17 +139,34 @@ class CommissionSummaryReportController extends Controller {
                 $data['selected_month'] = isset($_GET['month']) ? $_GET['month'] : $date_->month;
                 $data['selected_year'] = isset($_GET['year']) ? $_GET['year'] : $date_->year;
                 
-                foreach($ibos as $i => $value){
+                // get all ibos where total purchase is > 1500
+                $res = Ibo::all();
+                $param_['start_date'] = $date_->parse('first day of ' . $data['months'][$data['selected_month']] . ' ' . $data['selected_year'])->toDateString();
+                $param_['end_date'] = $date_->parse('last day of ' . $data['months'][$data['selected_month']] . ' ' . $data['selected_year'])->toDateString();
+                $ibos = null;
+                
+                foreach($res as $value){
                     $param_['id'] = $value->id;
-                    $param_['month'] = $data['selected_month'];
-                    $param_['year'] = $data['selected_year'];
                     
-                    $res = Helper::process_rebates($param_);
-                    
-                    $data['rebate'][$i]['ibo_id'] = $value->id;
-                    $data['rebate'][$i]['rebate'] = $res['rebates_total'];
-                    $data['rebate'][$i]['ranking_lions'] = $res['ranking_lions'];
-                    $data['rebate'][$i]['level'] = $res['level'];
+                    if(Helper::get_total_purchase($param_) >= 1500) $ibos[] = $value->id;
+                }
+                // get all ibos where total purchase is > 1500
+                
+                $data['rebate'] = null;
+                
+                if($ibos){
+                    foreach($ibos as $i => $value){
+                        $param_['id'] = $value;
+                        $param_['month'] = $data['selected_month'];
+                        $param_['year'] = $data['selected_year'];
+
+                        $res = Helper::process_rebates($param_);
+
+                        $data['rebate'][$i]['ibo_id'] = $value;
+                        $data['rebate'][$i]['rebate'] = $res['rebates_total'];
+                        $data['rebate'][$i]['ranking_lions'] = $res['ranking_lions'];
+                        $data['rebate'][$i]['level'] = $res['level'];
+                    }
                 }
                 
                 return view('commissionsummaryreport.allrebate', ['data'=>$data]);

@@ -467,8 +467,10 @@ class Helper {
         $buff['duration_start'] = $param['start_date'];
         $buff['duration_end'] = $param['end_date'];
         $ibos[0][$param['id']] = $buff;
+        $i = 1;
         
-        for($i = 1; $i <= $param['level']; $i++){
+        //for($i = 1; $i <= $param['level']; $i++){
+        while($temp){
             $data = null;
             $buff = null;
             
@@ -489,6 +491,8 @@ class Helper {
                 $temp = $data;
                 $ibos[$i] = $buff;
             }
+            
+            $i++;
         }
         
         return $ibos;
