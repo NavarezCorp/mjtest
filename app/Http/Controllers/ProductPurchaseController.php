@@ -12,6 +12,7 @@ use Session;
 use Auth;
 use App\ProductCode;
 use App\Logger;
+use App\Ibo;
 
 class ProductPurchaseController extends Controller
 {
@@ -74,8 +75,8 @@ class ProductPurchaseController extends Controller
             }
         }
         
-        Session::flash('message', 'Product purchase of "' . $request->ibo_id . '" was successfully saved');
-        return redirect('/productpurchase');
+        Session::flash('message', 'Product purchase of "' . Ibo::find($request->ibo_id)->firstname . ' ' . Ibo::find($request->ibo_id)->lastname . '" was successfully saved');
+        return redirect('/productpurchase/' . Auth::user()->ibo_id);
     }
 
     /**
@@ -87,6 +88,8 @@ class ProductPurchaseController extends Controller
     public function show($id)
     {
         //
+        $data = DB::table('product_purchases')->where('ibo_id', $id)->orderBy('id', 'desc')->paginate(15);
+        return view('productpurchase.index', ['data'=>$data]);
     }
 
     /**
