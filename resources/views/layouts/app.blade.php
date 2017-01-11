@@ -91,7 +91,7 @@
                                             <a href="{{ url('/ibocommission/' . Auth::user()->ibo_id) }}">My Weekly Commission Summary Report</a>
                                             <a href="{{ url('/iboindirect/' . Auth::user()->ibo_id) }}">My Indirect Commission</a>
                                             <a href="{{ url('/commissionsummaryreport/' . Auth::user()->ibo_id . '?type=myrebate&month=' . date("m") . '&year=' . date("Y")) }}">My Rebates</a>
-                                            <a href="{{ url('/productpurchase' . Auth::user()->ibo_id) }}">My Purchases</a>
+                                            <a href="{{ url('/productpurchase/' . Auth::user()->ibo_id) }}">My Purchases</a>
                                         @endif
                                     </li>
                                     @if (Auth::user()->role == 'admin')
