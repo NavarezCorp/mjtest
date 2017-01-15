@@ -10,6 +10,13 @@
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
                     <div class="panel-body">
+                        @if(Session::has('message'))
+                            <div class="alert alert-success fade in">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                                {{ Session::get('message') }}
+                            </div>
+                        @endif
+                        <div class="change-password-message-main"></div>
                         <div class="panel panel-default">
                             <div class="panel-heading" style="background-color:#e7e7e7;">
                                 Personal information
@@ -260,6 +267,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Change password</h4>
+                <div class="change-password-message"></div>
             </div>
             <div class="modal-body">
                 <div>
@@ -274,8 +282,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary change-password-button">Change</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary change-password-button" disabled>Change</button>
+                <button type="button" class="btn btn-default close-password-button" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

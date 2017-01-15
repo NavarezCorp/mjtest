@@ -40,6 +40,8 @@ Route::resource('product', 'ProductController');
 Route::resource('productpurchase', 'ProductPurchaseController');
 Route::resource('rankinglion', 'RankingLionController');
 Route::resource('rebate', 'RebateController');
+
+Route::get('user/changepassword', 'UserController@change_password');
 Route::resource('user', 'UserController');
 
 Route::get('commissionsummaryreport/all/{search?}', 'CommissionSummaryReportController@get_all');

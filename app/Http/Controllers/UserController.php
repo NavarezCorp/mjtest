@@ -13,6 +13,7 @@ use App\Country;
 use App\City;
 use App\Ibo;
 use App\PickupCenter;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -131,5 +132,24 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function change_password(){
+        $model = User::find(Auth::user()->id);
+        
+        if(Auth::attempt(['ibo_id'=>$model->ibo_id, 'password'=>$_GET['old_password']])){
+            $data['authenticated'] = true;
+            
+            $model->password = bcrypt($_GET['new_password']);
+            $model->save();
+            
+            $data['message'] = 'New password was saved';
+        }
+        else{
+            $data['authenticated'] = false;
+            $data['message'] = 'Old password not valid';
+        }
+        
+        echo json_encode($data);
     }
 }

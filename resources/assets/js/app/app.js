@@ -267,12 +267,36 @@ $('#rebates-year').change(function(){
 
 $('.change-password').click(function(e){
     console.log('change password');
+    
+    $('.change-password-message-main, .change-password-message').html('');
+});
+
+$('#old-password, #new-password').keyup(function(e){
+    if($('#old-password').val() && $('#new-password').val()) $('.change-password-button').attr('disabled', false);
+    else $('.change-password-button').attr('disabled', true);
 });
 
 $('.change-password-button').click(function(e){
     console.log('change password button');
     
     $.getJSON('/user/changepassword', {old_password:$('#old-password').val(), new_password:$('#new-password').val()}, function(data){
-        if(data) console.log(data);
+        if(data){
+            console.log(data);
+            
+            if(!data.authenticated){
+                $('.change-password-message').html('<div class="alert alert-success fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>' + data.message + '</div>');
+            }
+            else{
+                $('.change-password-message-main').html('<div class="alert alert-success fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>' + data.message + '</div>');
+                $('#old-password, #new-password').val('');
+                $(this).attr('disabled', true);
+                $('#modal-change-password').modal('hide');
+            }
+        }
     });
+});
+
+$('.close-password-button').click(function(e){
+    $('#old-password, #new-password').val('');
+    $('.change-password-button').attr('disabled', true);
 });
