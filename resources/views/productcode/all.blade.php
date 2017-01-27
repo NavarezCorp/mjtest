@@ -44,7 +44,7 @@
                                     <td>{{ App\Product::find($value->product_id)->name }}</td>
                                     <td>{{ decrypt($value->code) }}</td>
                                     <td>{{ App\Ibo::find($value->assigned_to_pc_ibo_id)->firstname }} {{ App\Ibo::find($value->assigned_to_pc_ibo_id)->middlename }} {{ App\Ibo::find($value->assigned_to_pc_ibo_id)->lastname }}<br>({{ sprintf('%09d', $value->assigned_to_pc_ibo_id) }}) {{ isset(App\User::where('ibo_id', $value->assigned_to_pc_ibo_id)->first()->role) ? App\User::where('ibo_id', $value->assigned_to_pc_ibo_id)->first()->role : 'Dealer' }}</td>
-                                    <td>{{ $value->created_at }}</td>
+                                    <td>{{ date($value->created_at, "Y-m-d H:i:s Z") }}</td>
                                     <td>{{ isset($value->assigned_to_dealer_ibo_id) ? 'used' : '' }}</td>
                                 </tr>
                             @endforeach
