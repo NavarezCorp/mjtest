@@ -37,7 +37,7 @@
                                     </td>
                                     <td>{{ App\Product::find($value->product_id)->name }}</td>
                                     <td>{{ $value->purchase_amount }}</td>
-                                    <td>{{ $value->created_at }}</td>
+                                    <td>{{ Carbon\Carbon::parse($value->created_at)->setTimezone('Asia/Manila')->format('Y-m-d g:i:s A') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

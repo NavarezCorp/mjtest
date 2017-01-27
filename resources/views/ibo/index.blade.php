@@ -37,7 +37,7 @@
                             @foreach ($data as $key => $value)
                                 <tr>
                                     <td>{{ sprintf('%09d', $value->id) }}</td>
-                                    <td>{{ $value->created_at }}</td>
+                                    <td>{{ Carbon\Carbon::parse($value->created_at)->setTimezone('Asia/Manila')->format('Y-m-d g:i:s A') }}</td>
                                     <td>{{ $value->firstname }}</td>
                                     <!--<td>{{-- $value->middlename --}}</td>-->
                                     <td>{{ $value->lastname }}</td>
