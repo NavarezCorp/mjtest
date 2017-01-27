@@ -21,6 +21,7 @@
                     <table class="table table-striped table-hover table-condensed">
                         <thead>
                             <th>ID</th>
+                            <th>Date Encoded</th>
                             <th>Firstname</th>
                             <!--<th>Middle</th>-->
                             <th>Lastname</th>
@@ -36,6 +37,7 @@
                             @foreach ($data as $key => $value)
                                 <tr>
                                     <td>{{ sprintf('%09d', $value->id) }}</td>
+                                    <td>{{ $value->created_at }}</td>
                                     <td>{{ $value->firstname }}</td>
                                     <!--<td>{{-- $value->middlename --}}</td>-->
                                     <td>{{ $value->lastname }}</td>
