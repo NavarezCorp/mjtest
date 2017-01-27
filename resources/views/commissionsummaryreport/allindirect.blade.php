@@ -16,8 +16,8 @@
                         <span class="pull-right" style="position:relative; top:-7px;">
                             <span class="pull-left" style="margin-right: 5px; position: relative; top: 6px;">Year:</span>
                             <select id="all-indirect-year" style="width:auto;" class="form-control selectWidth pull-right">
-                                @for ($i = 2016; $i <= date("Y"); $i++)
-                                    <option value="{{$i}}" {{ (date("Y") == $i) ? 'selected' : '' }}>{{$i}}</option>
+                                @for ($i = 2016; $i <= $data['current_year']; $i++)
+                                    <option value="{{$i}}" {{ ($data['selected_year'] == $i) ? 'selected' : '' }}>{{$i}}</option>
                                 @endfor
                             </select>
                         </span>
