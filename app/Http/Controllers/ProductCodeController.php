@@ -206,7 +206,6 @@ class ProductCodeController extends Controller
             $data['disable_print'] = '';
             
             $data['product_codes'] = DB::table('product_codes')
-                ->select('DATE_FORMAT(CONVERT_TZ(created_at,\'+00:00\',\'+08:00\'), \'%Y-%m-%d %r\')')
                 ->where($data_['where'])
                 ->orderBy('id', 'desc')
                 ->paginate(15);
@@ -235,10 +234,7 @@ class ProductCodeController extends Controller
             }
         }
         else{
-            $data['product_codes'] = DB::table('product_codes')
-                ->select('DATE_FORMAT(CONVERT_TZ(created_at,\'+00:00\',\'+08:00\'), \'%Y-%m-%d %r\')')
-                ->orderBy('id', 'desc')
-                ->paginate(15);
+            $data['product_codes'] = DB::table('product_codes')->orderBy('id', 'desc')->paginate(15);
             /*
             $res = DB::table('product_codes')->orderBy('id', 'desc')->get();
             foreach($res as $value) $data['all_product_codes_to_be_printed'][] = (array)$value;
