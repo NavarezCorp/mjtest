@@ -7,6 +7,8 @@ $('.add-product').click(function(){
     html += '</div></div>';
     */
     $('.add-product').addClass('link-disabled');
+    $('.product-purchase-code').prop('readonly', true);
+    $('.product-code-search').attr('disabled', true);
     
     var str = $('.product-container').attr('id');
     var arr = str.split('-');
@@ -121,10 +123,10 @@ $(document).on("click", '.product-code-search', function(){
     var id = arr[arr.length - 1];
     var orig_code = $('#product-code-text-' + id).val();
     var code_ = $('#product-code-text-' + id).val().toUpperCase();
+    var used = false;
     
     $.getJSON('/productcode/check_product_code', {code:code_}, function(data){
         if(data){
-            console.log(data);
             $('#pcid-' + id).val(data.id);
             
             var color = 'green';
@@ -140,10 +142,23 @@ $(document).on("click", '.product-code-search', function(){
                 $('#product-code-text-' + id).val('');
             }
             else{
-                html += ' (not yet used)';
-                
-                $('.register-button').removeAttr('disabled');
-                $('.add-product').removeClass('link-disabled');
+                /*
+                $('input[name^="product_code"]').each(function() {
+                    console.log($(this).val());
+                });
+                */
+                for(var i = 1; i < id; i++) if($('#product-code-text-' + i).val() == code_) used = true;
+
+                if(!used){
+                    html += ' (not yet used)';
+
+                    $('.register-button').removeAttr('disabled');
+                    $('.add-product').removeClass('link-disabled');
+                }
+                else{
+                    html += ' (currently used)';
+                    color = 'red';
+                }
             }
             
             $('.code-help-block-' + id).css('color', color).html(html).show();
