@@ -21,6 +21,7 @@ use App\Matching;
 use App\PickupCenter;
 use App\Country;
 use App\City;
+use Illuminate\Support\Facades\Auth;
 
 class CommissionSummaryReportController extends Controller {
     public function __construct(){
@@ -182,6 +183,9 @@ class CommissionSummaryReportController extends Controller {
                 $data['ranking_lions'] = 'None';
 
                 $data['rebate'] = Helper::process_rebates($param_);
+
+                $model = Ibo::find(Auth::user()->ibo_id);
+                $data['app'] = $model->app;
                 
                 return view('commissionsummaryreport.rebate', ['data'=>$data]);
                 

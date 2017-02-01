@@ -29,7 +29,7 @@ class HomeController extends Controller
     {
         $model = Ibo::find(Auth::user()->ibo_id);
         $data['app'] = $model->app;
-        Logger::log($data);
+
         return view('home', ['data'=>$data]);
     }
 }
