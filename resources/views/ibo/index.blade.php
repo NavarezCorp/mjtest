@@ -55,7 +55,7 @@
                                     <td>
                                         {{ isset(App\Ibo::find($value->registered_by)->firstname) ? App\Ibo::find($value->registered_by)->firstname : '' }}
                                         {{ isset(App\Ibo::find($value->registered_by)->lastname) ? App\Ibo::find($value->registered_by)->lastname : '' }}<br>
-                                        {{ isset($value->registered_by) ? '(' . sprintf('%09d', $value->registered_by) . ')' : '' }}
+                                        {{ !empty($value->registered_by) ? '(' . sprintf('%09d', $value->registered_by) . ')' : '' }}
                                     </td>
                                     <td>{{ $value->placement_position }}</td>
                                     <td>{{ $value->activation_code_type }}</td>
