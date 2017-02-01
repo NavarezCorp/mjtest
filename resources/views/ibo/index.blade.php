@@ -45,12 +45,12 @@
                                     <td>
                                         {{ isset(App\Ibo::find($value->sponsor_id)->firstname) ? App\Ibo::find($value->sponsor_id)->firstname : '' }} 
                                         {{ isset(App\Ibo::find($value->sponsor_id)->lastname) ? App\Ibo::find($value->sponsor_id)->lastname : '' }}<br>
-                                        {{ isset($value->sponsor_id) ? '(' . sprintf('%09d', $value->sponsor_id) . ')' : '' }}
+                                        {{ !empty($value->sponsor_id) ? '(' . sprintf('%09d', $value->sponsor_id) . ')' : '' }}
                                     </td>
                                     <td>
                                         {{ isset(App\Ibo::find($value->placement_id)->firstname) ? App\Ibo::find($value->placement_id)->firstname : '' }} 
                                         {{ isset(App\Ibo::find($value->placement_id)->lastname) ? App\Ibo::find($value->placement_id)->lastname : '' }}<br>
-                                        {{ isset($value->placement_id) ? '(' . sprintf('%09d', $value->placement_id) . ')' : '' }}
+                                        {{ !empty($value->placement_id) ? '(' . sprintf('%09d', $value->placement_id) . ')' : '' }}
                                     </td>
                                     <td>
                                         {{ isset(App\Ibo::find($value->registered_by)->firstname) ? App\Ibo::find($value->registered_by)->firstname : '' }}
