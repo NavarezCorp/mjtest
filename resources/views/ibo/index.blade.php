@@ -20,16 +20,17 @@
                     <div class="pull-right">{!! $data->links() !!}</div>
                     <table class="table table-striped table-hover table-condensed">
                         <thead>
-                            <th>ID</th>
+                            <th>IBO ID</th>
                             <th>Date Encoded</th>
                             <th>Firstname</th>
                             <!--<th>Middle</th>-->
                             <th>Lastname</th>
-                            <th>Sponsor ID</th>
-                            <th>Placement ID</th>
-                            <th>Placement Position</th>
+                            <th>S. ID</th>
+                            <th>P. ID</th>
+                            <th>R. By</th>
+                            <th>P.P.</th>
                             <th>Type</th>
-                            <th>Ranking Lion</th>
+                            <th>R.L.</th>
                             <th></th>
                             <th></th>
                         </thead>
@@ -51,6 +52,7 @@
                                         {{ isset(App\Ibo::find($value->placement_id)->lastname) ? App\Ibo::find($value->placement_id)->lastname : '' }}<br>
                                         ({{ sprintf('%09d', $value->placement_id) }})
                                     </td>
+                                    <td> - </td>
                                     <td>{{ $value->placement_position }}</td>
                                     <td>{{ $value->activation_code_type }}</td>
                                     <td>{{ $value->ranking_lions_id }}</td>
