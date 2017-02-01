@@ -101,7 +101,7 @@ $('.code-search').click(function(){
             html += 'Code Type: <strong>' + data.activation_code_type + '</strong>';
             
             if(data.datetime_used){
-                html += '<br/>(used: ' + data.datetime_used + ')';
+                html += '<br/>(already used to ' + data.used_by_ibo + ' (' + data.used_by_ibo_id + ') ' + ' at ' + data.datetime_used + ')';
                 color = 'red';
             }
             else{
