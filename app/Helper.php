@@ -507,6 +507,15 @@ class Helper {
         
         return $res->total_purchase;
     }
+
+    public static function get_app($id){
+        $res = DB::table('product_purchases')
+            ->select(DB::raw('sum(purchase_amount) as app'))
+            ->where('ibo_id', $id)
+            ->first();
+
+        return $res->app;
+    }
     
     public static function get_total_weeks_of_year($year){
         $date_ = Carbon::now('Asia/Manila');

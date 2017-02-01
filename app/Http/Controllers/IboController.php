@@ -305,4 +305,21 @@ class IboController extends Controller {
         
         return count($res);
     }
+
+    public function process_app($id){
+        if($id == 'all'){
+            $ibos = DB::table('ibos')->select('id')->orderBy('created_at', 'asc')->get();
+
+            foreach($ibos as $value){
+                $model = Ibo::find($value->id);
+                $model->app = Helper::get_app($value->id);
+                $model->save();
+            }
+        }
+        else{
+            $model = Ibo::find($id);
+            $model->app = Helper::get_app($id);
+            $model->save();
+        }
+    }
 }

@@ -31,6 +31,7 @@ Route::resource('commission', 'CommissionController');
 
 Route::get('/ibosearch', 'IboController@ibo_search');
 Route::get('/ibo/search', 'IboController@search');
+Route::get('/app/{id}', 'IboController@process_app');
 Route::resource('ibo', 'IboController');
 
 Route::resource('package', 'PackageController');

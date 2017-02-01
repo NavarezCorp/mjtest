@@ -40,6 +40,8 @@ class CreateIbosTable extends Migration
             $table->integer('pickup_center_id')->index();
             $table->integer('bank_id')->index()->nullable();
             $table->string('account_no', 255)->nullable();
+            $table->decimal('app', 9, 2)->nullable();
+            $table->decimal('agp', 9, 2)->nullable();
             $table->timestamps();
         });
     }

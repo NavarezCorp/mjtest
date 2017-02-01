@@ -59,18 +59,24 @@ class ProductPurchaseController extends Controller
         foreach($request->product_code as $key => $value){
             if(!empty($value)){
                 $res = ProductCode::find($request->pcid[$key]);
-                
+
+                $purchase_amount = ProductAmount::where('product_id', $res['product_id'])->where('is_active', true)->first()->amount;
+
                 $model = new ProductPurchase;
                 $model->ibo_id = $request->ibo_id;
                 $model->product_id = $res['product_id'];
                 $model->product_code_id = $res['id'];
-                $model->purchase_amount = ProductAmount::where('product_id', $res['product_id'])->where('is_active', true)->first()->amount;
+                $model->purchase_amount = $purchase_amount;
                 $model->save();
                 
                 $model = ProductCode::find($res['id']);
                 $model->assigned_to_dealer_ibo_id = $request->ibo_id;
                 $model->datetime_assigned_to_dealer = date('Y-m-d H:i');
                 $model->assigned_to_dealer_creator = Auth::user()->ibo_id;
+                $model->save();
+
+                $model = Ibo::find($request->ibo_id);
+                $model->app = $model->app + $purchase_amount;
                 $model->save();
             }
         }
