@@ -23,6 +23,7 @@ use Carbon\Carbon;
 use App\CommissionRecord;
 use App\Commission;
 use App\Matching;
+use Illuminate\Support\Facades\Auth;
 
 class IboController extends Controller {
     public function __construct(){
@@ -105,6 +106,7 @@ class IboController extends Controller {
         $model->pickup_center_id = $request->pickup_center;
         $model->bank_id = !empty($request->bank_id) ? $request->bank_id : null;
         $model->account_no = $request->account_no;
+        $model->registered_by = Auth::user()->ibo_id;
         $model->save();
         
         $model = new User;

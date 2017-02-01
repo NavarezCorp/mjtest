@@ -45,14 +45,18 @@
                                     <td>
                                         {{ isset(App\Ibo::find($value->sponsor_id)->firstname) ? App\Ibo::find($value->sponsor_id)->firstname : '' }} 
                                         {{ isset(App\Ibo::find($value->sponsor_id)->lastname) ? App\Ibo::find($value->sponsor_id)->lastname : '' }}<br>
-                                        ({{ sprintf('%09d', $value->sponsor_id) }})
+                                        {{ isset($value->sponsor_id) ? '(' . sprintf('%09d', $value->sponsor_id) . ')' : '' }}
                                     </td>
                                     <td>
                                         {{ isset(App\Ibo::find($value->placement_id)->firstname) ? App\Ibo::find($value->placement_id)->firstname : '' }} 
                                         {{ isset(App\Ibo::find($value->placement_id)->lastname) ? App\Ibo::find($value->placement_id)->lastname : '' }}<br>
-                                        ({{ sprintf('%09d', $value->placement_id) }})
+                                        {{ isset($value->placement_id) ? '(' . sprintf('%09d', $value->placement_id) . ')' : '' }}
                                     </td>
-                                    <td> - </td>
+                                    <td>
+                                        {{ isset(App\Ibo::find($value->registered_by)->firstname) ? App\Ibo::find($value->registered_by)->firstname : '' }}
+                                        {{ isset(App\Ibo::find($value->registered_by)->lastname) ? App\Ibo::find($value->registered_by)->lastname : '' }}<br>
+                                        {{ isset($value->registered_by) ? '(' . sprintf('%09d', $value->registered_by) . ')' : '' }}
+                                    </td>
                                     <td>{{ $value->placement_position }}</td>
                                     <td>{{ $value->activation_code_type }}</td>
                                     <td>{{ $value->ranking_lions_id }}</td>

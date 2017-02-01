@@ -42,6 +42,7 @@ class CreateIbosTable extends Migration
             $table->string('account_no', 255)->nullable();
             $table->decimal('app', 9, 2)->nullable();
             $table->decimal('agp', 9, 2)->nullable();
+            $table->integer('registered_by')->index();
             $table->timestamps();
         });
     }
