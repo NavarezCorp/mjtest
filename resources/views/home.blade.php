@@ -11,7 +11,7 @@
                 </div>
             @endif
             <div>
-                <img src="/images/sfi.jpg" style="width:750px; margin-bottom:20px;">
+                <img src="/images/sfi-promo-1.jpg" style="width:750px; margin-bottom:20px;">
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Dashboard</div>
