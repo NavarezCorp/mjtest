@@ -25,7 +25,7 @@ class CreateIbosTable extends Migration
             $table->decimal('total_purchase_amount', 9, 2)->nullable();
             $table->integer('ranking_lions_id')->nullable()->index();
             $table->boolean('is_admin')->default(false);
-            $table->string('activation_code', 255)->nullable();
+            $table->string('activation_code', 255)->nullable()->unique();
             $table->string('activation_code_type', 255)->nullable();
             $table->string('email', 255)->nullable();
             $table->integer('gender_id')->index();
