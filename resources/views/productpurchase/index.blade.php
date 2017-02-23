@@ -23,6 +23,7 @@
                             <th>ID</th>
                             <th>IBO ID</th>
                             <th>Product</th>
+                            <th>Product Code</th>
                             <th>Purchase Amount</th>
                             <th>Date Added</th>
                         </thead>
@@ -36,6 +37,7 @@
                                         {{ sprintf('%09d', $value->ibo_id) }}
                                     </td>
                                     <td>{{ App\Product::find($value->product_id)->name }}</td>
+                                    <td>{{ decrypt(App\ProductCode::find($value->product_code_id)->code) }}</td>
                                     <td>{{ $value->purchase_amount }}</td>
                                     <td>{{ Carbon\Carbon::parse($value->created_at)->setTimezone('Asia/Manila')->format('Y-m-d g:i:s A') }}</td>
                                 </tr>
