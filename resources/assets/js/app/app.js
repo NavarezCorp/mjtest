@@ -315,3 +315,16 @@ $('.close-password-button').click(function(e){
     $('#old-password, #new-password').val('');
     $('.change-password-button').attr('disabled', true);
 });
+
+$('.ibo-info-search').click(function(){
+    var id_ = $(this).attr('data-id');
+    var ibo_id_ = $('#' + id_).val();
+
+    $.getJSON('/ibo/search', {ibo_id:ibo_id_}, function(data){
+        var html = 'IBO not registered';
+
+        if(data) html = 'IBO Name: ' + data.ibo.info.firstname + ' ' + data.ibo.info.middlename + ' ' + data.ibo.info.lastname;
+
+        $('.' + id_ + '-help-block').css('color', 'green').html(html).show();
+    });
+});

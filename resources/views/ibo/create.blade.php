@@ -166,7 +166,11 @@
                                                 <strong>{{ $errors->first('sponsor_id') }}</strong>
                                             </span>
                                         @endif
+                                        <span class="help-block sponsor_id-help-block" style="display:none;"></span>
                                     </div>
+                                    <button type="button" class="btn btn-default ibo-info-search" data-id="sponsor_id">
+                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                    </button>
                                 </div>
                                 <div class="form-group{{ $errors->has('placement_id') ? ' has-error' : '' }} required">
                                     <label for="placement_id" class="col-md-3 control-label">Placement ID</label>
@@ -177,7 +181,11 @@
                                                 <strong>{{ $errors->first('placement_id') }}</strong>
                                             </span>
                                         @endif
+                                        <span class="help-block placement_id-help-block" style="display:none;"></span>
                                     </div>
+                                    <button type="button" class="btn btn-default ibo-info-search" data-id="placement_id">
+                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                    </button>
                                 </div>
                                 <div class="form-group{{ $errors->has('placement_position') ? ' has-error' : '' }} required">
                                     <label for="placement_position" class="col-md-3 control-label">Placement position</label>
