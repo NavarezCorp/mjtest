@@ -24,6 +24,12 @@
                                 {{ Form::select('activation_type_id', $data['activation_types'], null, ['class'=>'form-control']) }}
                             </div>
                         </div>
+                        <div class="form-group{{ $errors->has('ibo_id') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Released to (IBO ID)</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="ibo_id" required>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-md-4 control-label">How many character</label>
                             <div class="col-md-1">
@@ -60,11 +66,12 @@
                                 <thead>
                                     <th>ID</th>
                                     <th>Code</th>
-                                    <th>Activation Type</th>
-                                    <th>DateTime Created</th>
+                                    <th>A. Type</th>
+                                    <th>Created At</th>
                                     <th>Created By</th>
+                                    <th>Released To</th>
                                     <th>Used By</th>
-                                    <th>DateTime Used</th>
+                                    <th>Used At</th>
                                 </thead>
                                 <tbody>
                                     @foreach ($data['not_yet_printed'] as $key => $value)
@@ -74,6 +81,7 @@
                                             <td>{{ App\ActivationType::find($value->activation_type_id)->name }}</td>
                                             <td>{{ $value->created_at }}</td>
                                             <td>{{ App\User::find($value->created_by)->name }}</td>
+                                            <td> - </td>
                                             <td>{{ $value->used_by_ibo_id ? App\User::where('ibo_id', $value->used_by_ibo_id)->first()->name : '' }}</td>
                                             <td>{{ $value->datetime_used }}</td>
                                         </tr>
