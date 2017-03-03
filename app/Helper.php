@@ -330,8 +330,8 @@ class Helper {
         }
 
         $param_['level'] = 9;
-        $param_['start_date'] = $date_->parse('first day of ' . $months[$param['month']] . ' ' . $param['year'])->toDateString() . ' 00:00:00';
-        $param_['end_date'] = $date_->parse('last day of ' . $months[$param['month']] . ' ' . $param['year'])->toDateString() . ' 23:59:59';
+        $param_['start_date'] = $date_->parse('first day of ' . $months[$param['month']] . ' ' . $param['year'])->toDateString();
+        $param_['end_date'] = $date_->parse('last day of ' . $months[$param['month']] . ' ' . $param['year'])->toDateString();
         $data['ibos'] = self::get_ibos_total_purchase($param_);
 
         $data['rebates_arr'] = null;
@@ -502,7 +502,7 @@ class Helper {
         $res = DB::table('product_purchases')
             ->select(DB::raw('sum(purchase_amount) as total_purchase'))
             ->where('ibo_id', $param['id'])
-            ->whereBetween('created_at', [$param['start_date'], $param['end_date']])
+            ->whereBetween('created_at', [$param['start_date'] . ' 00:00:00', $param['end_date'] . ' 23:59:59'])
             ->first();
         
         return $res->total_purchase;
