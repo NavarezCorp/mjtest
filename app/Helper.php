@@ -356,7 +356,7 @@ class Helper {
                         $ibo_id = $indexData['ibo_id'];
 
                         //Get downline upline which ibo id is stored on placement_id
-                        $placemeny_id = $indexData['placement_id'];
+                        $sponsor_id = $indexData['sponsor_id'];
                         $hasAdded = false;
 
                         // Let's move this ibo up until found a 1,500 parent
@@ -372,7 +372,7 @@ class Helper {
                                     $upline_purchase_amount = $childs['total_purchase'];
                                     $upline_ibo_id = $childs['ibo_id'];
 
-                                    if($upline_ibo_id == $placemeny_id){
+                                    if($upline_ibo_id == $sponsor_id){
                                         // If upline has reached 1500 maintaining balance, let's look on rebates_arr on what index it was stored
                                         if($upline_purchase_amount >= 1500){
                                             // Check upline index stored on rebates_arr variable
@@ -404,7 +404,7 @@ class Helper {
                                             }
                                             else{
                                                 // Then we need to get upline's upline and check if it has reached 1500 maintaining balance
-                                                $placemeny_id = $childs['placement_id'];
+                                                $sponsor_id = $childs['sponsor_id'];
                                             }
                                         }
                                     }
@@ -474,7 +474,7 @@ class Helper {
             $data = null;
             $buff = null;
             
-            if(!empty($temp)) $res = Ibo::whereIn('placement_id', $temp)->get();
+            if(!empty($temp)) $res = Ibo::whereIn('sponsor_id', $temp)->get();
             
             if(!empty($res)){
                 foreach($res as $key => $value){
@@ -482,6 +482,7 @@ class Helper {
                     $param['id'] = $value->id;
                     
                     $buff[$param['id']]['ibo_id'] = $value->id;
+                    $buff[$param['id']]['sponsor_id'] = $value->sponsor_id;
                     $buff[$param['id']]['placement_id'] = $value->placement_id;
                     $buff[$param['id']]['total_purchase'] = self::get_total_purchase($param) ?: 0;
                     $buff[$param['id']]['duration_start'] = $param['start_date'];

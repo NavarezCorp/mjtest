@@ -20,6 +20,7 @@
                         <thead>
                             <th>Level</th>
                             <th>IBO ID</th>
+                            <th>Sponsor ID</th>
                             <th>Placement ID</th>
                             <th>Total Purchase</th>
                         </thead>
@@ -32,6 +33,7 @@
                                     </strong>
                                 </td>
                                 <td><strong></strong></td>
+                                <td><strong></strong></td>
                                 <td><strong>{{ $data['rebate']['ibos'][0][$data['rebate']['user_ibo_id']]['total_purchase'] }}</strong></td>
                             </tr>
                             @foreach ($data['rebate']['ibos_levels'] as $key => $value)
@@ -42,6 +44,11 @@
                                         <td>
                                             <strong>
                                                 {{ App\Ibo::find($value_['ibo_id'])->firstname }} {{ App\Ibo::find($value_['ibo_id'])->lastname }}<br>({{ sprintf('%09d', $value_['ibo_id']) }})
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <strong>
+                                                {{ App\Ibo::find($value_['sponsor_id'])->firstname }} {{ App\Ibo::find($value_['sponsor_id'])->lastname }}<br>({{ sprintf('%09d', $value_['sponsor_id']) }})
                                             </strong>
                                         </td>
                                         <td>
