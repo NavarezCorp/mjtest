@@ -235,33 +235,48 @@ $('.ibo-search-button').click(function(e){
         if(data){
             var html = '';
             
-            html += '<div class="panel panel-default">';
-            html += '<div class="panel-heading">IBO Profile</div>';
-            html += '<div class="panel-body">';
-            html += '<table class="table">';
-            html += '<tbody>';
-            html += '<tr><td class="ibo-search-table-left">Name</td><td class="ibo-search-table-right">' + data.ibo.info.firstname + ' ' + data.ibo.info.middlename + ' ' + data.ibo.info.lastname + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Email</td><td class="ibo-search-table-right">' + data.ibo.info.email + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Gender</td><td class="ibo-search-table-right">' + data.ibo.info.gender_id + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Birthdate</td><td class="ibo-search-table-right">' + data.ibo.info.birth_date + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Marital Status</td><td class="ibo-search-table-right">' + data.ibo.info.marital_status_id + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">TIN</td><td class="ibo-search-table-right">' + data.ibo.info.tin + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">SSS</td><td class="ibo-search-table-right">' + data.ibo.info.sss + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Address</td><td class="ibo-search-table-right">' + data.ibo.info.address + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">City</td><td class="ibo-search-table-right">' + data.ibo.info.city + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Province</td><td class="ibo-search-table-right">' + data.ibo.info.province + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Contact #</td><td class="ibo-search-table-right">' + data.ibo.info.contact_no + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Sponsor</td><td class="ibo-search-table-right">' + data.ibo.info.sponsor_id + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Placement</td><td class="ibo-search-table-right">' + data.ibo.info.placement_id + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Placement Position</td><td class="ibo-search-table-right">' + data.ibo.info.placement_position + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Activation code</td><td class="ibo-search-table-right">' + data.ibo.info.activation_code + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Pickup center</td><td class="ibo-search-table-right">' + data.ibo.info.pickup_center_id + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Bank</td><td class="ibo-search-table-right">' + data.ibo.info.bank_id + '</td></tr>';
-            html += '<tr><td class="ibo-search-table-left">Account #</td><td class="ibo-search-table-right">' + data.ibo.info.account_no + '</td></tr>';
-            html += '</tbody>';
-            html += '</table>';
-            html += '</div>';
-            html += '</div>';
+            for(var key in data.ibo.info){
+                var info = data.ibo.info[key];
+                
+                html += '<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+                html += '    <div class="panel panel-default">';
+                html += '        <div class="panel-heading" role="tab" id="headingOne">';
+                html += '            <h4 class="panel-title">';
+                html += '                    ' + info.firstname + ' ' + info.middlename + ' ' + info.lastname + ' (' + info.ibo_id + ')';
+                html += '                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse' + info.id + '" aria-expanded="false" aria-controls="collapse' + info.id + '">';
+                html += '                   <span class="pull-right">View</span>'
+                html += '                </a>';
+                html += '            </h4>';
+                html += '        </div>';
+                html += '        <div id="collapse' + info.id + '" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading' + info.id + '">';
+                html += '            <div class="panel-body">';
+                html += '               <table class="table">';
+                html += '                   <tbody>';
+                html += '                       <tr><td class="ibo-search-table-left">Name</td><td class="ibo-search-table-right">' + info.firstname + ' ' + info.middlename + ' ' + info.lastname + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Email</td><td class="ibo-search-table-right">' + info.email + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Gender</td><td class="ibo-search-table-right">' + info.gender_id + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Birthdate</td><td class="ibo-search-table-right">' + info.birth_date + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Marital Status</td><td class="ibo-search-table-right">' + info.marital_status_id + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">TIN</td><td class="ibo-search-table-right">' + info.tin + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">SSS</td><td class="ibo-search-table-right">' + info.sss + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Address</td><td class="ibo-search-table-right">' + info.address + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">City</td><td class="ibo-search-table-right">' + info.city + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Province</td><td class="ibo-search-table-right">' + info.province + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Contact #</td><td class="ibo-search-table-right">' + info.contact_no + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Sponsor</td><td class="ibo-search-table-right">' + info.sponsor_id + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Placement</td><td class="ibo-search-table-right">' + info.placement_id + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Placement Position</td><td class="ibo-search-table-right">' + info.placement_position + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Activation code</td><td class="ibo-search-table-right">' + info.activation_code + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Pickup center</td><td class="ibo-search-table-right">' + info.pickup_center_id + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Bank</td><td class="ibo-search-table-right">' + info.bank_id + '</td></tr>';
+                html += '                       <tr><td class="ibo-search-table-left">Account #</td><td class="ibo-search-table-right">' + info.account_no + '</td></tr>';
+                html += '                   </tbody>';
+                html += '               </table>';
+                html += '            </div>';
+                html += '        </div>';
+                html += '    </div>';
+                html += '</div>';
+            }
             
             $('.ibo-search-display').html(html);
             
@@ -352,4 +367,3 @@ $('#chart-container').orgchart({
         //window.open('/genealogy?sponsor_id=' + $(this).find('.title').text() + '&placement_id=' + $(this).attr('id'), '_blank');
     }
 });
-//# sourceMappingURL=app.js.map
