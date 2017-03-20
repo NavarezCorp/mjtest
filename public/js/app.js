@@ -226,6 +226,14 @@ $(document).on('click', '.product-purchase-code', function(){
     $('.register-button').attr('disabled', true);
 });
 
+$("#ibo_id").click(function(){
+    $("#name").val('');
+});
+
+$("#name").click(function(){
+    $("#ibo_id").val('');
+});
+
 $('.ibo-search-button').click(function(e){
     e.preventDefault();
     
