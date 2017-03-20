@@ -134,7 +134,7 @@ class ActivationCodeController extends Controller
                 //$data['code'] = $value->code;
                 $data['activation_code_type'] = ActivationType::find($value->activation_type_id)->name;
                 $data['created_by'] = User::find($value->created_by)->name;
-                $data['used_by_ibo'] = !empty($value->used_by_ibo_id) ? ucwords(User::find($value->used_by_ibo_id)->name) : null;
+                $data['used_by_ibo'] = !empty($value->used_by_ibo_id) ? ucwords(User::where('ibo_id', $value->used_by_ibo_id)->first()->name) : null;
                 $data['used_by_ibo_id'] = !empty($value->used_by_ibo_id) ? sprintf('%09d', $value->used_by_ibo_id) : null;
                 $data['datetime_used'] = !empty($value->datetime_used) ? $value->datetime_used : null;
                 $data['created_at'] = $value->created_at;
