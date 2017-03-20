@@ -235,6 +235,13 @@ class IboController extends Controller {
         }
         else if(!empty($_GET['name'])){
             $search_key = 'name';
+            
+            $res = User::where('name', 'like', '%' . $_GET['name'] . '%')->get();
+            
+            foreach($res as $key => $val){
+                $data['ibo']['info'][$key] = Ibo::find($val->ibo_id);
+                $data['ibo']['info'][$key]['ibo_id'] = sprintf('%09d', $val->ibo_id);
+            }
         }
         else{
             $search_key = 'no key';

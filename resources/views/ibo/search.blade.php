@@ -14,7 +14,7 @@
                         </div>
                         <div class="form-group">
                             <label for="name" class="col-md-3 control-label">Name</label>
-                            <div class="col-md-6"><input id="name" type="text" class="form-control" name="name" readonly></div>
+                            <div class="col-md-6"><input id="name" type="text" class="form-control" name="name"></div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-3">
