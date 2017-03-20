@@ -233,7 +233,7 @@ $('.ibo-search-button').click(function(e){
     
     $.getJSON('/ibo/search', {ibo_id:$('#ibo_id').val(), name:$('#name').val()}, function(data){
         if(data){
-            var html = '';
+            var html = '<hr>';
             
             for(var key in data.ibo.info){
                 var info = data.ibo.info[key];
