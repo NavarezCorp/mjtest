@@ -303,6 +303,16 @@ $('#rebates-year').change(function(){
     window.location = '/commissionsummaryreport/0?type=monthly&month=' + $('#rebates-week').val() + '&year=' + $(this).val();
 });
 
+$('#myrebates-week').change(function(){
+    console.log('all rebates commission week changed');
+    window.location = '/commissionsummaryreport/' + $('#myrebates-ibo-id').val() + '?type=myrebate&month=' + $(this).val() + '&year=' + $('#myrebates-year').val();
+});
+
+$('#myrebates-year').change(function(){
+    console.log('all rebates commission year changed');
+    window.location = '/commissionsummaryreport/' + $('#myrebates-ibo-id').val() + '?type=myrebate&month=' + $('#myrebates-week').val() + '&year=' + $(this).val();
+});
+
 $('.change-password').click(function(e){
     console.log('change password');
     

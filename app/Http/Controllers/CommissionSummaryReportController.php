@@ -74,6 +74,21 @@ class CommissionSummaryReportController extends Controller {
         
         $data['type'] = $_GET['type'];
         
+        $data['months'] = [
+            1=>'January',
+            2=>'February',
+            3=>'March',
+            4=>'April',
+            5=>'May',
+            6=>'June',
+            7=>'July',
+            8=>'August',
+            9=>'September',
+            10=>'October',
+            11=>'November',
+            12=>'December'
+        ];
+        
         switch($_GET['type']){
             case 'weekly':
                 for($i = $date_->weekOfYear; $i >= 1; $i--){
@@ -120,21 +135,6 @@ class CommissionSummaryReportController extends Controller {
                 break;
                 
             case 'monthly':
-                $data['months'] = [
-                    1=>'January',
-                    2=>'February',
-                    3=>'March',
-                    4=>'April',
-                    5=>'May',
-                    6=>'June',
-                    7=>'July',
-                    8=>'August',
-                    9=>'September',
-                    10=>'October',
-                    11=>'November',
-                    12=>'December'
-                ];
-                
                 $data['current_month'] = $date_->month;
                 $data['current_year'] = $date_->year;
                 $data['selected_month'] = isset($_GET['month']) ? $_GET['month'] : $date_->month;
@@ -175,6 +175,12 @@ class CommissionSummaryReportController extends Controller {
                 break;
             
             case 'myrebate':
+                $data['current_month'] = $date_->month;
+                $data['current_year'] = $date_->year;
+                $data['selected_month'] = $_GET['month'];
+                $data['selected_year'] = $_GET['year'];
+                $data['ibo_id'] = $id;
+                
                 $param_['id'] = $id;
                 $param_['month'] = $_GET['month'];
                 $param_['year'] = $_GET['year'];

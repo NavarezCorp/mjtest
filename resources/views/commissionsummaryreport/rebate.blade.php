@@ -7,6 +7,25 @@
             <div class="panel panel-default">
                 <div class="panel-heading text-capitalize">
                     Commission Summary Report ({{ $data['type'] }})
+                    <div class="pull-right" style="margin-bottom:40px;">
+                        <input type="hidden" id="myrebates-ibo-id" value="{{$data['ibo_id']}}">
+                        <span class="pull-right" style="position:relative; top:-7px;">
+                            <span class="pull-left" style="margin-right: 5px; position: relative; top: 6px;">Year:</span>
+                            <select id="myrebates-year" style="width:auto;" class="form-control selectWidth pull-right">
+                                @for ($i = 2016; $i <= $data['current_year']; $i++)
+                                    <option value="{{$i}}" {{ ($data['selected_year'] == $i) ? 'selected' : '' }}>{{$i}}</option>
+                                @endfor
+                            </select>
+                        </span>
+                        <span class="pull-right" style="margin-right:20px; position:relative; top:-7px;">
+                            <span class="pull-left" style="margin-right: 5px; position: relative; top: 6px;">Month:</span>
+                            <select id="myrebates-week" style="width:auto;" class="form-control selectWidth pull-right">
+                                @for ($i = 1; $i <= 12; $i++)
+                                    <option value="{{$i}}" {{ ($data['selected_month'] == $i) ? 'selected' : '' }}>{{ $data['months'][$i]}}</option>
+                                @endfor
+                            </select>
+                        </span>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div>
