@@ -71,7 +71,7 @@
                     <a href="{{ url('/aboutus') }}">About Us</a>
                     <a href="{{ url('/contactus') }}">Contact Us</a>
                     <a href="{{ url('/login') }}">Login</a>
-                    <a href="{{ url('/register') }}">Register</a>
+                    <!--<a href="{{ url('/register') }}">Register</a>-->
                 </div>
             @endif
 
