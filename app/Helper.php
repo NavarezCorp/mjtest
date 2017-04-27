@@ -537,8 +537,6 @@ class Helper {
 
         if(!empty($res)){
             foreach($res as $value){
-                //$counter = null;
-                
                 $data['ids'][] = $value['attributes']['id'];
 
                 // get second level downline
@@ -558,19 +556,16 @@ class Helper {
 
                     $ids = $temp;
                 }
-                
-                //$data[] = $counter;
             }
             
             if($data['ids']){
                 foreach($data['ids'] as $key => $value){
+                    $model = Ibo::find($value);
+                    
                     $data['app'][$key]['id'] = $value;
-
-                    $total_purchase = self::get_app($value);
-
-                    $data['app'][$key]['total_purchase'] = $total_purchase;
-
-                    $agp += $total_purchase;
+                    $data['app'][$key]['total_purchase'] = $model->app;
+                    
+                    $agp += $model->app;
                 }
             }
         }

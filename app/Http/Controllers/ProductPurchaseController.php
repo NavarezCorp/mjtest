@@ -13,6 +13,7 @@ use Auth;
 use App\ProductCode;
 use App\Logger;
 use App\Ibo;
+use App\Helper;
 
 class ProductPurchaseController extends Controller
 {
@@ -77,6 +78,7 @@ class ProductPurchaseController extends Controller
 
                 $model = Ibo::find($request->ibo_id);
                 $model->app = $model->app + $purchase_amount;
+                $model->agp = Helper::get_agp($request->ibo_id);
                 $model->save();
             }
         }
