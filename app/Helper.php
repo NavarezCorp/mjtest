@@ -533,21 +533,21 @@ class Helper {
         $ids = null;
         
         // get first level downline
-        $res = Ibo::where('placement_id', $id)->get();
+        $res = Ibo::where('sponsor_id', $id)->get();
 
         if(!empty($res)){
             foreach($res as $value){
                 $data['ids'][] = $value['attributes']['id'];
 
                 // get second level downline
-                $ids = Ibo::where('placement_id', $value['attributes']['id'])->get();
+                $ids = Ibo::where('sponsor_id', $value['attributes']['id'])->get();
 
                 while(!empty($ids)){
                     $temp = null;
 
                     foreach($ids as $value_){
                         // get third level downline upto last level downline
-                        $res = Ibo::where('placement_id', $value_['attributes']['id'])->get();
+                        $res = Ibo::where('sponsor_id', $value_['attributes']['id'])->get();
 
                         $data['ids'][] = $value_['attributes']['id'];
 
