@@ -32,7 +32,7 @@
                         <strong>Rank: {{ $data['ranking_lions'] }} (Level {{ $data['level'] }})</strong><br>
                         <strong>Total Rebates: {{ $data['rebate']['rebates_total'] }}</strong><br>
                         <strong>Accumulated Personal Purchase (APP): Php {{ number_format($data['app'], 2) }}</strong><br>
-                        <strong>Accumulated Group Purchase (AGP): Php 0.00</strong><br>
+                        <strong>Accumulated Group Purchase (AGP): Php {{ number_format($data['agp'], 2) }}</strong><br>
                     </div>
                     <hr>
                     <table class="table table-striped table-hover table-condensed">

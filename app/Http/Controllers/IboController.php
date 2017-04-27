@@ -332,4 +332,21 @@ class IboController extends Controller {
             $model->save();
         }
     }
+    
+    public function process_agp($id){
+        if($id == 'all'){
+            $ibos = DB::table('ibos')->select('id')->orderBy('created_at', 'asc')->get();
+
+            foreach($ibos as $value){
+                $model = Ibo::find($value->id);
+                $model->agp = Helper::get_agp($value->id);
+                $model->save();
+            }
+        }
+        else{
+            $model = Ibo::find($id);
+            $model->agp = Helper::get_agp($id);
+            $model->save();
+        }
+    }
 }

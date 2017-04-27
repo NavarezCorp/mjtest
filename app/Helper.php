@@ -526,4 +526,55 @@ class Helper {
         
         return $weeks;
     }
+    
+    public static function get_agp($id){
+        $data = null;
+        $agp = 0;
+        $ids = null;
+        
+        // get first level downline
+        $res = Ibo::where('placement_id', $id)->get();
+
+        if(!empty($res)){
+            foreach($res as $value){
+                //$counter = null;
+                
+                $data['ids'][] = $value['attributes']['id'];
+
+                // get second level downline
+                $ids = Ibo::where('placement_id', $value['attributes']['id'])->get();
+
+                while(!empty($ids)){
+                    $temp = null;
+
+                    foreach($ids as $value_){
+                        // get third level downline upto last level downline
+                        $res = Ibo::where('placement_id', $value_['attributes']['id'])->get();
+
+                        $data['ids'][] = $value_['attributes']['id'];
+
+                        if(!empty($res)) foreach($res as $val) $temp[] = $val;
+                    }
+
+                    $ids = $temp;
+                }
+                
+                //$data[] = $counter;
+            }
+            
+            if($data['ids']){
+                foreach($data['ids'] as $key => $value){
+                    $data['app'][$key]['id'] = $value;
+
+                    $total_purchase = self::get_app($value);
+
+                    $data['app'][$key]['total_purchase'] = $total_purchase;
+
+                    $agp += $total_purchase;
+                }
+            }
+        }
+        
+        return $agp;
+    }
 }

@@ -23,7 +23,7 @@
                 <div class="panel-heading"><strong>{{ Auth::user()->name }}</strong></div>
                 <div class="panel-body">
                     Accumulated Personal Purchase (APP): <span class="user-total-earnings"><strong>Php {{ number_format($data['app'], 2) }}</strong></span><br>
-                    Accumulated Group Purchase (AGP): <span class="user-total-earnings"><strong>Php 0.00</strong></span>
+                    Accumulated Group Purchase (AGP): <span class="user-total-earnings"><strong>Php {{ number_format($data['agp'], 2) }}</strong></span>
                 </div>
             </div>
         </div>
