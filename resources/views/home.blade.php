@@ -11,20 +11,32 @@
                 </div>
             @endif
             <div>
-                <img src="/images/sfi-promo-1.jpg" style="width:750px; margin-bottom:20px;">
+                <img src="/images/mic1.jpg" style="width:750px; margin-bottom:20px;">
+            </div>
+            <div>
+                <img src="/images/mic2.jpg" style="width:750px; margin-bottom:20px;">
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Dashboard</div>
                 <div class="panel-body">
-                    You are logged in!
+                    You are logged in! <strong>{{ Auth::user()->name }}</strong>
+                    <br>
+                    <br>
+                    Accumulated Personal Purchase (APP): <span class="user-total-earnings"><strong>Php {{ number_format($data['app'], 2) }}</strong></span><br>
+                    Accumulated Group Purchase (AGP): <span class="user-total-earnings"><strong>Php {{ number_format($data['agp'], 2) }}</strong></span>
                 </div>
             </div>
+            <!--
             <div class="panel panel-default">
                 <div class="panel-heading"><strong>{{ Auth::user()->name }}</strong></div>
                 <div class="panel-body">
                     Accumulated Personal Purchase (APP): <span class="user-total-earnings"><strong>Php {{ number_format($data['app'], 2) }}</strong></span><br>
                     Accumulated Group Purchase (AGP): <span class="user-total-earnings"><strong>Php {{ number_format($data['agp'], 2) }}</strong></span>
                 </div>
+            </div>
+            -->
+            <div>
+                <img src="/images/sfi-promo-1.jpg" style="width:750px; margin-bottom:20px;">
             </div>
         </div>
     </div>

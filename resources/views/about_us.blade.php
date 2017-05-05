@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">About Us</div>
                 <div class="panel-body">
-                    <h3>COMPANY FROFILE</h3>
+                    <h3>COMPANY PROFILE</h3>
                     Success Formula Marketing (SFM) is a company established through the expertise and passion of the CEO/President Mr. Michael Siega Javier for over a decades.
                     SFM company provides high Quality Filipino Products that individually can market it in A very easy and profitable way. This company also provides powerful marketing plan that every (IBO) Independent Business Owner can enjoy all the monetary commissions using the company system.
                     <br>
