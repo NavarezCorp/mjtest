@@ -24,7 +24,7 @@
                     <br>
                     Accumulated Personal Purchase (APP): <span class="user-total-earnings"><strong>Php {{ number_format($data['app'], 2) }}</strong></span><br>
                     Accumulated Group Purchase (AGP): <span class="user-total-earnings"><strong>Php {{ number_format($data['agp'], 2) }}</strong></span><br>
-                    Accumulated Direct Sponsor Commission (ADSC): <span class="user-total-earnings"><strong>Php {{ number_format(0, 2) }}</strong></span><br>
+                    Accumulated Direct Sponsor Commission (ADSC): <span class="user-total-earnings"><strong>Php {{ number_format($data['adsc'], 2) }}</strong></span><br>
                     Accumulated Indirect Sponsor Commission (AISC): <span class="user-total-earnings"><strong>Php {{ number_format(0, 2) }}</strong></span><br>
                     Accumulated Matching Bonus (AMB): <span class="user-total-earnings"><strong>Php {{ number_format(0, 2) }}</strong></span><br>
                 </div>

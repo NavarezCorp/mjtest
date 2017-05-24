@@ -30,6 +30,7 @@ class HomeController extends Controller
         $model = Ibo::find(Auth::user()->ibo_id);
         $data['app'] = $model->app;
         $data['agp'] = $model->agp;
+        $data['adsc'] = Helper::get_adsc(Auth::user()->ibo_id);
 
         return view('home', ['data'=>$data]);
     }

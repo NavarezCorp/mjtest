@@ -572,4 +572,25 @@ class Helper {
         
         return $agp;
     }
+    
+    // Accumulated Direct Sponsor Commission (ADSC)
+    public static function get_adsc($id){
+        $res = Ibo::where('sponsor_id', $id)
+            ->where('activation_code_type', '!=', 'FS')
+            ->where('activation_code_type', '!=', 'CD')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        return (count($res) * Commission::find(1)->first()->amount);
+    }
+    
+    // Accumulated Indirect Sponsor Commission (AISC)
+    public static function get_aisc($id){
+        return 0;
+    }
+    
+    // Accumulated Matching Bonus (AMB)
+    public static function get_amb($id){
+        return 0;
+    }
 }
