@@ -33,6 +33,9 @@
                         <strong>Total Rebates: {{ $data['rebate']['rebates_total'] }}</strong><br>
                         <strong>Accumulated Personal Purchase (APP): Php {{ number_format($data['app'], 2) }}</strong><br>
                         <strong>Accumulated Group Purchase (AGP): Php {{ number_format($data['agp'], 2) }}</strong><br>
+                        <strong>Accumulated Direct Sponsor Commission (ADSC): Php {{ number_format(0, 2) }}</strong><br>
+                        <strong>Accumulated Indirect Sponsor Commission (AISC): Php {{ number_format(0, 2) }}</strong><br>
+                        <strong>Accumulated Matching Bonus (AMB): Php {{ number_format(0, 2) }}</strong><br>
                     </div>
                     <hr>
                     <table class="table table-striped table-hover table-condensed">
