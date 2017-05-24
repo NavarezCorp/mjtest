@@ -575,22 +575,31 @@ class Helper {
     
     // Accumulated Direct Sponsor Commission (ADSC)
     public static function get_adsc($id){
-        $res = Ibo::where('sponsor_id', $id)
-            ->where('activation_code_type', '!=', 'FS')
-            ->where('activation_code_type', '!=', 'CD')
-            ->orderBy('created_at', 'desc')
-            ->get();
-        
-        return (count($res) * Commission::find(1)->first()->amount);
+        $indirect_ = CommissionRecord::where('sponsor_id', $id)
+            ->where('commission_type_id', 1)
+            ->orderBy('created_at', 'desc')->get();
+
+        return $indirect_->sum('commission_amount');
     }
     
     // Accumulated Indirect Sponsor Commission (AISC)
     public static function get_aisc($id){
-        return 0;
+        $indirect_ = CommissionRecord::where('sponsor_id', $id)
+            ->where('commission_type_id', 2)
+            ->orderBy('created_at', 'desc')->get();
+
+        return $indirect_->sum('commission_amount');
     }
     
     // Accumulated Matching Bonus (AMB)
     public static function get_amb($id){
+        /*
+        $res = Matching::where('ibo_id', $param['id'])
+            ->whereBetween('datetime_matched', [$param['start_date'], $param['end_date']])
+            ->get();
+        
+        return (count($res) * Commission::find(3)->first()->amount);
+        */
         return 0;
     }
 }

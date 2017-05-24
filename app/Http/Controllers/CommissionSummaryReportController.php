@@ -194,6 +194,7 @@ class CommissionSummaryReportController extends Controller {
                 $data['app'] = $model->app;
                 $data['agp'] = $model->agp;
                 $data['adsc'] = Helper::get_adsc(Auth::user()->ibo_id);
+                $data['aisc'] = Helper::get_aisc(Auth::user()->ibo_id);
                 
                 return view('commissionsummaryreport.rebate', ['data'=>$data]);
                 
