@@ -593,13 +593,6 @@ class Helper {
     
     // Accumulated Matching Bonus (AMB)
     public static function get_amb($id){
-        /*
-        $res = Matching::where('ibo_id', $param['id'])
-            ->whereBetween('datetime_matched', [$param['start_date'], $param['end_date']])
-            ->get();
-        
-        return (count($res) * Commission::find(3)->first()->amount);
-        */
-        return 0;
+        return (count(Matching::where('ibo_id', $id)->get()) * Commission::find(3)->first()->amount);
     }
 }

@@ -35,7 +35,7 @@
                         <strong>Accumulated Group Purchase (AGP): Php {{ number_format($data['agp'], 2) }}</strong><br>
                         <strong>Accumulated Direct Sponsor Commission (ADSC): Php {{ number_format($data['adsc'], 2) }}</strong><br>
                         <strong>Accumulated Indirect Sponsor Commission (AISC): Php {{ number_format($data['aisc'], 2) }}</strong><br>
-                        <strong>Accumulated Matching Bonus (AMB): Php {{ number_format(0, 2) }}</strong><br>
+                        <strong>Accumulated Matching Bonus (AMB): Php {{ number_format($data['amb'], 2) }}</strong><br>
                     </div>
                     <hr>
                     <table class="table table-striped table-hover table-condensed">
