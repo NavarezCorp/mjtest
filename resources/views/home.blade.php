@@ -4,20 +4,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            @if(Session::has('message'))
-                <div class="alert alert-success fade in">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
-                    {{ Session::get('message') }}
-                </div>
-            @endif
-            <div>
-                <img src="/images/mic1.jpg" style="width:750px; margin-bottom:20px;">
-            </div>
-            <div>
-                <img src="/images/mic2.jpg" style="width:750px; margin-bottom:20px;">
-            </div>
+            <img class="img-responsive home-images" src="images/mic1.jpg" width="750">
+            <img class="img-responsive home-images" src="images/mic2.jpg" width="750">
             <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
+                <div class="panel-heading"><h3 class="panel-title">Dashboard</h3></div>
                 <div class="panel-body">
                     You are logged in! <strong>{{ Auth::user()->name }}</strong>
                     <br>
@@ -29,18 +19,7 @@
                     Accumulated Matching Bonus (AMB): <span class="user-total-earnings"><strong>Php {{ number_format($data['amb'], 2) }}</strong></span><br>
                 </div>
             </div>
-            <!--
-            <div class="panel panel-default">
-                <div class="panel-heading"><strong>{{ Auth::user()->name }}</strong></div>
-                <div class="panel-body">
-                    Accumulated Personal Purchase (APP): <span class="user-total-earnings"><strong>Php {{ number_format($data['app'], 2) }}</strong></span><br>
-                    Accumulated Group Purchase (AGP): <span class="user-total-earnings"><strong>Php {{ number_format($data['agp'], 2) }}</strong></span>
-                </div>
-            </div>
-            -->
-            <div>
-                <img src="/images/sfi-promo-1.jpg" style="width:750px; margin-bottom:20px;">
-            </div>
+            <img class="img-responsive home-images promo" src="images/sfi-promo-1.jpg" width="750">
         </div>
     </div>
 </div>
