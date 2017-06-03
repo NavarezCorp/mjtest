@@ -36,12 +36,12 @@
                     <!-- Branding Image -->
                     @if (Auth::guest())
                         <a class="navbar-brand" href="{{ url('/') }}">
-                            <img src="images/sfi.jpg" width="50">
+                            <img src="/images/sfi.jpg" width="50">
                             {{-- config('app.name', 'Laravel') --}}
                         </a>
                     @else
                         <a class="navbar-brand" href="{{ url('/home') }}">
-                            <img src="images/sfi.jpg" width="50">
+                            <img src="/images/sfi.jpg" width="50">
                             {{-- config('app.name', 'Laravel') --}}
                         </a>
                     @endif

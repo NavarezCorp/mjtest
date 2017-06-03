@@ -11,7 +11,7 @@
         <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand navbar-link" href="/"> <img src="images/sfi.jpg" width="50"></a>
+                    <a class="navbar-brand navbar-link" href="/"> <img src="/images/sfi.jpg" width="50"></a>
                     <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
@@ -29,7 +29,7 @@
             </div>
         </nav>
         <div class="container">
-            <div id="logo"><img class="img-responsive" src="images/sfi.jpg"></div>
+            <div id="logo"><img class="img-responsive" src="/images/sfi.jpg"></div>
         </div>
         <script src="/js/vendor.js"></script>
         <script src="/js/app.js"></script>
