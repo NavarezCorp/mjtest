@@ -571,7 +571,7 @@ class CommissionSummaryReportController extends Controller {
                 $ibo = Ibo::find($value->id);
 
                 $data['commission'][$pc][$i]['pickup_center'] = $pc;
-                $data['commission'][$pc][$i]['ibo_name'] = $value->firstname . ' ' . $value->middlename . ' ' . $value->lastname . ' (' . sprintf('%09d', $value->id) . ')';
+                $data['commission'][$pc][$i]['ibo_name'] = title_case($value->firstname . ' ' . $value->middlename . ' ' . $value->lastname) . ' (' . sprintf('%09d', $value->id) . ')';
                 
                 $param_['id'] = $value->id;
                 $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
@@ -607,6 +607,10 @@ class CommissionSummaryReportController extends Controller {
                 $data['commission'][$pc][$i]['tax'] = $data['commission'][$pc][$i]['matching'] * .1;
                 $data['commission'][$pc][$i]['net_commission'] = $data['commission'][$pc][$i]['gross'] - $data['commission'][$pc][$i]['tax'];
             }
+            
+            $data['commission'][$pc] = array_values(array_sort($data['commission'][$pc], function($value){
+                return $value['ibo_name'];
+            }));
         }
         
         return view('commissionsummaryreport.all', ['data'=>$data]);
