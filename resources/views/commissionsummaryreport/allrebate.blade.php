@@ -9,6 +9,9 @@
                     Commission Summary Report ({{ $data['type'] }})
                 </div>
                 <div class="panel-body">
+                    <div class="pull-left" style="font-weight:bold;">
+                        Month total sales: <span class="month-total-sales">{{ number_format($data['month_total_sales'], 2) }}</span>
+                    </div>
                     <div class="pull-right" style="margin-bottom:40px;">
                         <span class="pull-right" style="position:relative; top:-7px;">
                             <span class="pull-left" style="margin-right: 5px; position: relative; top: 6px;">Year:</span>
@@ -32,7 +35,7 @@
                             <th>IBO</th>
                             <th>Ranking Lion</th>
                             <th>Level</th>
-                            <th>Rebate</th>
+                            <th style="text-align:right;">Rebate</th>
                             <th></th>
                         </thead>
                         <tbody>
@@ -47,7 +50,7 @@
                                             </td>
                                             <td><strong>{{ $value['ranking_lions'] }}</strong></td>
                                             <td><strong>{{ $value['level'] }}</strong></td>
-                                            <td><strong>{{ $value['rebate'] }}</strong></td>
+                                            <td style="text-align:right;"><strong>{{ number_format($value['rebate'], 2) }}</strong></td>
                                             <td style="width:70px; text-align: center;">
                                                 <strong>
                                                     <a href="{{ $value['ibo_id'] }}?type=myrebate&month={{ $data['selected_month'] }}&year={{ $data['selected_year']}}" target="_blank">details</a>

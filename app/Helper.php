@@ -13,6 +13,7 @@ use App\RankingLion;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\ProductPurchase;
 
 class Helper {
     const COMMISSION_DIRECT = 1;
@@ -594,5 +595,17 @@ class Helper {
     // Accumulated Matching Bonus (AMB)
     public static function get_amb($id){
         return (count(Matching::where('ibo_id', $id)->get()) * Commission::find(3)->first()->amount);
+    }
+    
+    public static function get_month_total_sales($param){
+        $res = ProductPurchase::whereBetween(
+            'created_at',
+            [
+                $param['start_date'] . ' 00:00:00',
+                $param['end_date'] . ' 23:59:59'
+            ]
+        )->get();
+        
+        return $res->sum('purchase_amount');
     }
 }

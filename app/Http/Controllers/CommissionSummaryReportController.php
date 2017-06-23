@@ -170,6 +170,8 @@ class CommissionSummaryReportController extends Controller {
                     }
                 }
                 
+                $data['month_total_sales'] = Helper::get_month_total_sales($param_);
+                
                 return view('commissionsummaryreport.allrebate', ['data'=>$data]);
                 
                 break;
