@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
+            <img class="img-responsive home-images" src="/images/sfm-memo-6.25.2017.png" width="750">
             <img class="img-responsive home-images" src="/images/mic1.jpg" width="750">
             <img class="img-responsive home-images" src="/images/mic2.jpg" width="750">
             <div class="panel panel-default">
