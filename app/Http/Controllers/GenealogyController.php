@@ -26,12 +26,9 @@ class GenealogyController extends Controller
         //
         $data['sponsor_id'] = $_GET['sponsor_id'];
         $data['placement_id'] = $_GET['placement_id'];
-        //$data['left_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'L']);
-        //$data['right_counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id'], 'position'=>'R']);
         $data['counter'] = $this->get_downlines(['id'=>$_GET['sponsor_id']]);
         $data['waiting'] = $this->get_waiting($_GET['sponsor_id']);
-        
-        //Logger::log($data); die();
+        $data['new_ibo_this_week'] = $this->get_new_ibo_this_week();
         
         return view('genealogy.index', ['data'=>$data]);
     }
@@ -442,10 +439,44 @@ class GenealogyController extends Controller
     }
     
     public function get_waiting($id){
+        // original code
+        /*
         $data['res'] = Waiting::where('ibo_id', $id)->first();
         
         $data['left'] = !empty( $data['res']->left) ? count(explode(',',  $data['res']->left)) : 0;
         $data['right'] = !empty( $data['res']->right) ? count(explode(',',  $data['res']->right)) : 0;
+        
+        return $data;
+        */
+        
+        
+        // new code
+        $data['res'] = Waiting::where('ibo_id', $id)->first();
+        
+        $data['old_left_count'] = 0;
+        $data['old_right_count'] = 0;
+        $data['new_left_count'] = 0;
+        $data['new_right_count'] = 0;
+        
+        // separate old and new left waitings
+        $data['left_'] = !empty( $data['res']->left) ? explode(',',  $data['res']->left) : 0;
+        
+        if($data['left_']){
+            foreach($data['left_'] as $val){
+                if(strpos($val, '[') !== false) $data['old_left_count'] += count(explode('~', $val));
+                else $data['new_left_count']++;
+            }
+        }
+        
+        // separate old and new left waitings
+        $data['right_'] = !empty( $data['res']->right) ? explode(',',  $data['res']->right) : 0;
+        
+        if($data['right_']){
+            foreach($data['right_'] as $val){
+                if(strpos($val, '[') !== false) $data['old_right_count'] += count(explode('~', $val));
+                else $data['new_right_count']++;
+            }
+        }    
         
         return $data;
     }
@@ -526,6 +557,43 @@ class GenealogyController extends Controller
         $res = Ibo::where('placement_id', $param['id'])->orderBy('created_at', 'desc')->get();
         
         foreach($res as $value) $data[] = $value;
+        
+        return $data;
+    }
+    
+    public function get_new_ibo_this_week(){
+        $date_ = Carbon::now('Asia/Manila');
+        $date_->setWeekStartsAt(Carbon::SATURDAY);
+        $date_->setWeekEndsAt(Carbon::FRIDAY);
+        $data['left'] = 0;
+        $data['right'] = 0;
+        $not_in = ['FS', 'CD'];
+        $position_str = null;
+        
+        $data['start_of_week'] = $date_->startOfWeek()->toDateTimeString();
+        $data['end_of_week'] = $date_->endOfWeek()->toDateTimeString();
+        
+        $res = Ibo::whereBetween('created_at', [$data['start_of_week'], $data['end_of_week']])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        if(!empty($res)){
+            foreach($res as $value){
+                if(!in_array($value['attributes']['activation_code_type'], $not_in)){
+                    switch($value['attributes']['placement_position']){
+                        case 'L':
+                            $position_str = 'left';
+                            break;
+
+                        case 'R':
+                            $position_str = 'right';
+                            break;
+                    }
+                    
+                    $data[$position_str]++;
+                }
+            }
+        }
         
         return $data;
     }

@@ -55,6 +55,7 @@ Route::get('allindirectcommission/{search?}', 'CommissionSummaryReportController
 Route::resource('commissionsummaryreport', 'CommissionSummaryReportController');
 
 Route::get('waiting/{id}', 'CommissionSummaryReportController@process_waiting');
+Route::get('oldwaitings/{id}', 'CommissionSummaryReportController@process_old_waitings');
 Route::get('matching/{id}', 'CommissionSummaryReportController@process_matching');
 Route::get('automatching/{id}', 'CommissionSummaryReportController@process_auto_matching');
 

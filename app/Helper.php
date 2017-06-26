@@ -80,7 +80,7 @@ class Helper {
     }
     
     public static function process_waiting($id){
-        Logger::log('starting processing waiting');
+        Logger::log('Starting processing waiting');
         
         // check if ibo already exist in the record
         $check = Waiting::where('ibo_id', $id)->get();
@@ -607,5 +607,73 @@ class Helper {
         )->get();
         
         return $res->sum('purchase_amount');
+    }
+    
+    public static function process_old_waitings($id){
+        Logger::log('Starting processing old waitings of ' . $id);
+        
+        // fetch ibo waiting record
+        $res = Waiting::where('ibo_id', $id)->first();
+        
+        // if record found
+        if($res){
+            // get record id for saving new left and right
+            $data['record_id'] = $res->id;
+            
+            // convert to array form
+            $data['left_'] = !empty($res->left) ? explode(',', $res->left) : null;
+            $data['right_'] = !empty($res->right) ? explode(',', $res->right) : null;
+            
+            // if there are waitings in left
+            if($data['left_']){
+                if(strpos($data['left_'][0], '[') === false){
+                    $key_ = -1;
+
+                    // convert to two-dimentional array
+                    foreach($data['left_'] as $key =>$val){
+                        if(!($key % 2)) $key_++;
+                        $data['left__'][$key_][] = $val;
+                    }
+
+                    // convert to new format
+                    $data['new_left'] = '[';
+                    $data['new_left'] .= implode("],[", array_map(function($a){
+                        return implode("~", $a);
+                    }, $data['left__']));
+                    $data['new_left'] .= ']';
+                }
+            }
+            
+            // if there are waitings in right
+            if($data['right_']){
+                if(strpos($data['right_'][0], '[') === false){
+                    $key_ = -1;
+
+                    // convert to two-dimentional array
+                    foreach($data['right_'] as $key =>$val){
+                        if(!($key % 2)) $key_++;
+                        $data['right__'][$key_][] = $val;
+                    }
+
+                    // convert to new format
+                    $data['new_right'] = '[';
+                    $data['new_right'] .= implode("],[", array_map(function($a){
+                        return implode("~", $a);
+                    }, $data['right__']));
+                    $data['new_right'] .= ']';
+                }
+            }
+            
+            // save new left and right
+            $model = Waiting::find($data['record_id']);
+            
+            if(!empty($data['new_left'])) $model->left = $data['new_left'];
+            
+            if(!empty($data['new_right'])) $model->right = $data['new_right'];
+            
+            $model->save();
+        }
+        
+        Logger::log('Done processing old waitings of ' . $id);
     }
 }

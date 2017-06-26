@@ -816,4 +816,15 @@ class CommissionSummaryReportController extends Controller {
         
         return view('commissionsummaryreport.allindirect', ['data'=>$data]);
     }
+    
+    public function process_old_waitings($id){
+        if($id == 'all'){
+            $ibos = DB::table('ibos')->select('id')->orderBy('created_at', 'asc')->get();
+            
+            foreach($ibos as $value) Helper::process_old_waitings($value->id);
+        }
+        else Helper::process_old_waitings($id);
+        
+        Logger::log('Done...');
+    }
 }
