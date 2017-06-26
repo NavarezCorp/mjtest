@@ -198,10 +198,13 @@ class Helper {
             $data['created_at_'] = $res[0]['created_at'];
             
             // save matched items
+            $search_ = ['[', '~', ']'];
+            $replace_ = ['', 010, ''];
+            
             $model = new Matching;
             $model->datetime_matched = $data['created_at_'];
-            $model->left = $data['left_'][0];
-            $model->right = $data['right_'][0];
+            $model->left = str_replace($search_, $replace_, $data['left_'][0]);
+            $model->right = str_replace($search_, $replace_, $data['right_'][0]);
             $model->ibo_id = $id;
             
             // get latest counter value

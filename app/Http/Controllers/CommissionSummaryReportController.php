@@ -670,7 +670,7 @@ class CommissionSummaryReportController extends Controller {
                 ->where('activation_code_type', '!=', 'CD')
                 ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                 ->orderBy('created_at', 'desc')->get();
-
+            
             $direct_count = count($res);
 
             $data['commission'][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
