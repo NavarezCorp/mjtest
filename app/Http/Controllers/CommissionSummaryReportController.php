@@ -565,6 +565,8 @@ class CommissionSummaryReportController extends Controller {
         $pcs[] = 0;
         foreach($pickup_centers as $value) $pcs[] = $value->id;
         
+        $matching_bonus_amount = (($data['selected_week'] <= 26) && ($data['selected_year'] <= 2017)) ? 200.00 : Commission::where('name', 'Matching Bonus')->first()->amount;
+        
         foreach($pcs as $pc){
             //$ibos = Ibo::all();
             $ibos = Ibo::where('pickup_center_id', $pc)->get();
@@ -613,8 +615,8 @@ class CommissionSummaryReportController extends Controller {
                 $data['commission'][$pc][$i]['matching'] = $this->get_matching_bonus($param_);
                 $data['commission'][$pc][$i]['fifth_pair'] = $this->get_fifth_pair($param_);
 
-                $data['commission'][$pc][$i]['fifth_pairs'] = $data['commission'][$pc][$i]['fifth_pair'] * Commission::where('name', 'Matching Bonus')->first()->amount;
-                $data['commission'][$pc][$i]['matching'] = $data['commission'][$pc][$i]['matching'] * Commission::where('name', 'Matching Bonus')->first()->amount - $data['commission'][$pc][$i]['fifth_pairs'];
+                $data['commission'][$pc][$i]['fifth_pairs'] = $data['commission'][$pc][$i]['fifth_pair'] * $matching_bonus_amount;
+                $data['commission'][$pc][$i]['matching'] = $data['commission'][$pc][$i]['matching'] * $matching_bonus_amount - $data['commission'][$pc][$i]['fifth_pairs'];
                 $data['commission'][$pc][$i]['gross'] = ($data['commission'][$pc][$i]['direct'] + $data['commission'][$pc][$i]['indirect'] + $data['commission'][$pc][$i]['matching']);
                 $data['commission'][$pc][$i]['tax'] = $data['commission'][$pc][$i]['matching'] * .1;
                 $data['commission'][$pc][$i]['net_commission'] = $data['commission'][$pc][$i]['gross'] - $data['commission'][$pc][$i]['tax'];
