@@ -578,7 +578,8 @@ class CommissionSummaryReportController extends Controller {
                 $param_['id'] = $value->id;
                 $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
                 $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
-
+                
+                /*
                 $direct_count = 0;
 
                 $res = Ibo::where('sponsor_id', $value->id)
@@ -591,14 +592,23 @@ class CommissionSummaryReportController extends Controller {
                 $direct_count = count($res);
 
                 $data['commission'][$pc][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
-
+                */
+                
                 //$data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
+                /*
                 $indirect_ = CommissionRecord::where('sponsor_id', $value->id)
                     ->where('commission_type_id', 2)
                     ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                     ->orderBy('created_at', 'desc')->get();
-
+                */
                 //$data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+                
+                $direct_ = CommissionRecord::where('sponsor_id', $value->id)
+                    ->where('commission_type_id', 1)
+                    ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                    ->orderBy('created_at', 'desc')->get();
+                
+                $data['commission'][$pc][$i]['direct'] = $direct_->sum('commission_amount');
                 $data['commission'][$pc][$i]['indirect'] = 0;
                 $data['commission'][$pc][$i]['matching'] = $this->get_matching_bonus($param_);
                 $data['commission'][$pc][$i]['fifth_pair'] = $this->get_fifth_pair($param_);
