@@ -597,7 +597,33 @@ class Helper {
     
     // Accumulated Matching Bonus (AMB)
     public static function get_amb($id){
-        return (count(Matching::where('ibo_id', $id)->get()) * Commission::find(3)->first()->amount);
+        $date_ = Carbon::now('Asia/Manila');
+        $date_->setWeekStartsAt(Carbon::SATURDAY);
+        $date_->setWeekEndsAt(Carbon::FRIDAY);
+        
+        /*
+        $matching_bonus_amount = (($date_->weekOfYear <= 26) && ($date_->year <= 2017)) ? 200.00 : Commission::where('name', 'Matching Bonus')->first()->amount;
+        
+        $res = Matching::where('ibo_id', $param['id'])
+            ->whereBetween('datetime_matched', [$param['start_date'], $param['end_date']])
+            ->get();
+        */
+        
+        $matching_bonus_old_ = 0;
+        $matching_bonus_new_ = 0;
+        
+        $res = Matching::where('ibo_id', $id)->get();
+        
+        foreach($res as $value){
+            if($value->created_at <= '2017-06-28 23:59:59') $matching_bonus_old_++;
+            else $matching_bonus_new_++;
+        }
+        
+        $accumulated_matching_bonus = ($matching_bonus_old_ * 200) + ($matching_bonus_new_ * Commission::find(3)->first()->amount);
+        
+        //return (count(Matching::where('ibo_id', $id)->get()) * Commission::find(3)->first()->amount);
+        
+        return $accumulated_matching_bonus;
     }
     
     public static function get_month_total_sales($param){
