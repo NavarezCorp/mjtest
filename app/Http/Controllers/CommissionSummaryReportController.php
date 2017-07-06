@@ -665,6 +665,8 @@ class CommissionSummaryReportController extends Controller {
         
         $user = Ibo::find($id);
         
+        $matching_bonus_amount = (($data['selected_week'] <= 26) && ($data['selected_year'] <= 2017)) ? 200.00 : Commission::where('name', 'Matching Bonus')->first()->amount;
+        
         $date_->subWeek();
         
         for($i = $date_->weekOfYear; $i >= 1; $i--){
@@ -674,7 +676,7 @@ class CommissionSummaryReportController extends Controller {
             $param_['id'] = $id;
             $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
             $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
-
+            /*
             $direct_count = 0;
 
             $res = Ibo::where('sponsor_id', $id)
@@ -691,14 +693,21 @@ class CommissionSummaryReportController extends Controller {
                 ->where('commission_type_id', 2)
                 ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
                 ->orderBy('created_at', 'desc')->get();
-
+            */
             //$data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
+            
+            $direct_ = CommissionRecord::where('sponsor_id', $id)
+                ->where('commission_type_id', 1)
+                ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
+                ->orderBy('created_at', 'desc')->get();
+
+            $data['commission'][$i]['direct'] = $direct_->sum('commission_amount');
             $data['commission'][$i]['indirect'] = 0;
             $data['commission'][$i]['matching'] = $this->get_matching_bonus($param_);
             $data['commission'][$i]['fifth_pair'] = $this->get_fifth_pair($param_);
 
-            $data['commission'][$i]['fifth_pairs'] = $data['commission'][$i]['fifth_pair'] * Commission::where('name', 'Matching Bonus')->first()->amount;
-            $data['commission'][$i]['matching'] = $data['commission'][$i]['matching'] * Commission::where('name', 'Matching Bonus')->first()->amount - $data['commission'][$i]['fifth_pairs'];
+            $data['commission'][$i]['fifth_pairs'] = $data['commission'][$i]['fifth_pair'] * $matching_bonus_amount;
+            $data['commission'][$i]['matching'] = $data['commission'][$i]['matching'] * $matching_bonus_amount - $data['commission'][$i]['fifth_pairs'];
             $data['commission'][$i]['gross'] = ($data['commission'][$i]['direct'] + $data['commission'][$i]['indirect'] + $data['commission'][$i]['matching']);
             $data['commission'][$i]['tax'] = $data['commission'][$i]['matching'] * .1;
             $data['commission'][$i]['net_commission'] = $data['commission'][$i]['gross'] - $data['commission'][$i]['tax'];
