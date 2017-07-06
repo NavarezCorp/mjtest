@@ -665,8 +665,6 @@ class CommissionSummaryReportController extends Controller {
         
         $user = Ibo::find($id);
         
-        $matching_bonus_amount = (($data['selected_week'] <= 26) && ($data['selected_year'] <= 2017)) ? 200.00 : Commission::where('name', 'Matching Bonus')->first()->amount;
-        
         $date_->subWeek();
         
         for($i = $date_->weekOfYear; $i >= 1; $i--){
@@ -676,6 +674,9 @@ class CommissionSummaryReportController extends Controller {
             $param_['id'] = $id;
             $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
             $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
+            
+            $matching_bonus_amount = (($date_->weekOfYear <= 26) && ($date_->year <= 2017)) ? 200.00 : Commission::where('name', 'Matching Bonus')->first()->amount;
+            
             /*
             $direct_count = 0;
 
