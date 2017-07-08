@@ -81,3 +81,4 @@ Route::resource('gender', 'GenderController');
 Route::resource('country', 'CountryController');
 Route::resource('city', 'CityController');
 Route::resource('pickupcenter', 'PickupCenterController');
+Route::resource('flushout', 'FlushoutController');

@@ -361,3 +361,8 @@ $('.ibo-info-search').click(function(){
         $('.' + id_ + '-help-block').css('color', 'green').html(html).show();
     });
 });
+
+$('.flushout-fetch').click(function(){
+    console.log('flushout');
+    window.location = '/flushout?date=' + $('.flushout-date').val();
+});
