@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Matching;
+use Illuminate\Support\Facades\DB;
+use App\Commission;
 
 class FlushoutController extends Controller
 {
@@ -23,7 +25,15 @@ class FlushoutController extends Controller
         
         $data['selected_date'] = !empty($_GET['date']) ? date('Y-m-d', strtotime($_GET['date'])) : $date_->format('Y-m-d');
         
-        $data['matchings'] = Matching::whereRaw("DATE(datetime_matched) = DATE('" . $data['selected_date'] ."')")->orderBy('ibo_id', 'asc')->get();
+        $selected_date = new Carbon($data['selected_date']);
+        
+        $data['matching_bonus_amount'] = ($selected_date->toDateString() <= '2017-06-28') ? 200.00 : Commission::where('name', 'Matching Bonus')->first()->amount;
+        
+        $data['matchings'] = Matching::
+            select(DB::raw('ibo_id, count(ibo_id) as matched_count'))
+            ->whereRaw("DATE(datetime_matched) = DATE('" . $data['selected_date'] ."')")
+            ->groupBy('ibo_id')
+            ->get();
         
         return view('flushout.index', ['data'=>$data]);
     }

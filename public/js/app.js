@@ -1,5 +1,3 @@
-$('#datetimepicker').datetimepicker();
-
 $('.add-product').click(function(){
     /*
     var html = '<div class="form-group"><label class="col-md-4 control-label"></label><div class="col-md-6">';
@@ -361,6 +359,12 @@ $('.ibo-info-search').click(function(){
         $('.' + id_ + '-help-block').css('color', 'green').html(html).show();
     });
 });
+
+$('.flushout-fetch').click(function(){
+    console.log('flushout');
+    window.location = '/flushout?date=' + $('.flushout-date').val();
+});
+
 var sponsor_id = 0;
 
 if(typeof $('#genealogy_sponsor_id').val() !== 'undefined') sponsor_id = $('#genealogy_sponsor_id').val();
@@ -385,3 +389,4 @@ $('#chart-container').orgchart({
         //window.open('/genealogy?sponsor_id=' + $(this).find('.title').text() + '&placement_id=' + $(this).attr('id'), '_blank');
     }
 });
+//# sourceMappingURL=app.js.map
