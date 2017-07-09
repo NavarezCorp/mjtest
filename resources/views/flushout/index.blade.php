@@ -44,7 +44,7 @@
                                     </td>
                                     <td>{{ ($value->matched_count >= 12) ? 'Yes' : 'No' }}</td>
                                     <td>{{ ($value->matched_count >= 12) ? 12 : $value->matched_count }}</td>
-                                    <td>{{ ($value->matched_count * $data["matching_bonus_amount"]) }}</td>
+                                    <td>{{ ($value->matched_count >= 12) ? (12 * $data["matching_bonus_amount"]) : ($value->matched_count * $data["matching_bonus_amount"]) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
