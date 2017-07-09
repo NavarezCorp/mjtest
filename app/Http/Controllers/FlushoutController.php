@@ -69,10 +69,21 @@ class FlushoutController extends Controller
     {
         //
         $data = null;
+        $date_ = Carbon::now('Asia/Manila');
         
-        dd($id);
+        $data['ibo_id'] = $id;
+        $data['date'] = $_GET['date'];
+        $data['selected_date'] = date('Y-m-d', strtotime($_GET['date']));
         
-        return view('flushout.index', ['data'=>$data]);
+        $selected_date = new Carbon($data['selected_date']);
+        $data['matching_bonus_amount'] = ($selected_date->toDateString() <= '2017-06-28') ? 200.00 : Commission::where('name', 'Matching Bonus')->first()->amount;
+        
+        $data['matchings'] = Matching::
+            whereRaw("ibo_id = " . $id . " and DATE(datetime_matched) = DATE('" . $data['selected_date'] ."')")
+            ->orderBy('datetime_matched', 'asc')
+            ->get();
+        
+        return view('flushout.details', ['data'=>$data]);
     }
 
     /**

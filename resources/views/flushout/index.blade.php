@@ -35,7 +35,7 @@
                             @foreach ($data['matchings'] as $key => $value)
                                 <tr>
                                     <!--<td>{{ Carbon\Carbon::parse($data['selected_date'])->setTimezone('Asia/Manila')->format('Y-m-d g:i:s A') }}</td>-->
-                                    <td><a href="#">Details</a></td>
+                                    <td><a target="_blank" href="/flushout/{{ $value->ibo_id }}?date={{ $data['date'] }}">Details</a></td>
                                     <td>
                                         <strong>{{ sprintf('%09d', $value->ibo_id) }}</strong><br/>
                                         {{ isset(App\Ibo::find($value->ibo_id)->firstname) ? App\Ibo::find($value->ibo_id)->firstname : '' }} 
