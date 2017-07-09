@@ -173,7 +173,7 @@ class Helper {
     }
     
     public static function process_matching($id){
-        Logger::log('starting processing matching');
+        Logger::log('Start matching process');
         
         $res = Waiting::where('ibo_id', $id)->first();
         
@@ -206,12 +206,12 @@ class Helper {
             $model->left = str_replace($search_, $replace_, $data['left_'][0]);
             $model->right = str_replace($search_, $replace_, $data['right_'][0]);
             $model->ibo_id = $id;
+            $model->amount = Commission::where('name', 'Matching Bonus')->first()->amount;
             
             // get latest counter value
             $res = Matching::where('ibo_id', $id)->orderBy('counter', 'desc')->first();
             $counter_ = !empty($res) ? $res->counter : 0;
             $model->counter = $counter_ + 1;
-            
             $model->save();
             
             // remove first items
@@ -225,7 +225,9 @@ class Helper {
         $model->right = !empty($data['right_']) ? implode(',', $data['right_']) : '';
         $model->save();
         
-        Logger::log('Done processing matching');
+        Logger::log('Matching process done');
+        
+        self::process_flushout($id);
     }
     
     public static function process_auto_matching($id){
@@ -704,5 +706,46 @@ class Helper {
         }
         
         Logger::log('Done processing old waitings of ' . $id);
+    }
+    
+    public static function process_flushout($id, $date = null){
+        $date_ = Carbon::now('Asia/Manila');
+        
+        $data['date_matched'] = isset($date) ? $date : $date_->toDateString();
+        
+        Logger::log('Start flushedout process for IBO: ' . $id . ' Dated: ' . $data['date_matched']);
+        
+        $data['matchings'] = Matching::
+            select(DB::raw('ibo_id, count(ibo_id) as matched_count'))
+            ->whereRaw("ibo_id = " . $id . " and DATE(datetime_matched) = DATE('" . $data['date_matched'] ."')")
+            ->groupBy('ibo_id')
+            ->first();
+        
+        $data['matched_count'] = isset($data['matchings']->matched_count) ? $data['matchings']->matched_count : 0;
+        
+        if($data['matched_count'] >= 12){
+            // check if ibo already exist in the record
+            $res = Waiting::where('ibo_id', $id)->first();
+        
+            // convert to array form
+            $data['left_'] = !empty($res->left) ? explode(',', $res->left) : null;
+            $data['right_'] = !empty($res->right) ? explode(',', $res->right) : null;
+            
+            if(empty($res->left) && empty($res->right)) return;
+            
+            // transfer left and right waitings to flushedout waiting table
+            $model = new FlushedoutWaiting;
+            $model->ibo_id = $id;
+            $model->waitings_left = !empty($data['left_']) ? implode(',', $data['left_']) : '';
+            $model->waitings_right = !empty($data['right_']) ? implode(',', $data['right_']) : '';
+            $model->save();
+            
+            $model = Waiting::where('ibo_id', $id)->first();
+            $model->left = '';
+            $model->right = '';
+            $model->save();
+        }
+        
+        Logger::log('Flushedout process done for IBO: ' . $id . ' Dated: ' . $data['date_matched']);
     }
 }

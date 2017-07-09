@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMatchingsTable extends Migration
+class CreateFlushedoutWaitingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateMatchingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('matchings', function (Blueprint $table) {
+        Schema::create('flushedout_waitings', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('datetime_matched');
-            $table->integer('left');
-            $table->integer('right');
             $table->integer('ibo_id')->index();
-            $table->integer('counter');
-            $table->decimal('amount', 9, 2);
+            $table->text('waitings_left');
+            $table->text('waitings_right');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateMatchingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('matchings');
+        Schema::dropIfExists('flushedout_waitings');
     }
 }

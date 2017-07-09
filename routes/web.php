@@ -81,4 +81,6 @@ Route::resource('gender', 'GenderController');
 Route::resource('country', 'CountryController');
 Route::resource('city', 'CityController');
 Route::resource('pickupcenter', 'PickupCenterController');
+
+Route::get('flushout/process/{id}/{date?}', 'FlushoutController@process_flushout');
 Route::resource('flushout', 'FlushoutController');

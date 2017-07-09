@@ -7,6 +7,10 @@ use Carbon\Carbon;
 use App\Matching;
 use Illuminate\Support\Facades\DB;
 use App\Commission;
+use App\Helper;
+use App\Waiting;
+use App\FlushedoutWaiting;
+use App\Logger;
 
 class FlushoutController extends Controller
 {
@@ -118,5 +122,9 @@ class FlushoutController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function process_flushout($id, $date = null){
+        Helper::process_flushout($id, $date);
     }
 }

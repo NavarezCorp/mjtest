@@ -14,7 +14,7 @@
                     <table class="table table-striped table-hover table-condensed">
                         <thead>
                             <th></th>
-                            <<th>Matched Date</th>
+                            <th>Matched Date</th>
                             <th>IBO</th>
                             <th>Left IBO</th>
                             <th>Right IBO</th>
