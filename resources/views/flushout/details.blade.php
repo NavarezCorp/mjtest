@@ -31,8 +31,18 @@
                                         {{ isset(App\Ibo::find($value->ibo_id)->middlename) ? App\Ibo::find($value->ibo_id)->middlename : '' }} 
                                         {{ isset(App\Ibo::find($value->ibo_id)->lastname) ? App\Ibo::find($value->ibo_id)->lastname : '' }}
                                     </td>
-                                    <td>{{ $value->left}}</td>
-                                    <td>{{ $value->right }}</td>
+                                    <td>
+                                        <strong>{{ sprintf('%09d', $value->left) }}</strong><br/>
+                                        {{ isset(App\Ibo::find($value->left)->firstname) ? App\Ibo::find($value->left)->firstname : '' }} 
+                                        {{ isset(App\Ibo::find($value->left)->middlename) ? App\Ibo::find($value->left)->middlename : '' }} 
+                                        {{ isset(App\Ibo::find($value->left)->lastname) ? App\Ibo::find($value->left)->lastname : '' }}
+                                    </td>
+                                    <td>
+                                        <strong>{{ sprintf('%09d', $value->right) }}</strong><br/>
+                                        {{ isset(App\Ibo::find($value->right)->firstname) ? App\Ibo::find($value->right)->firstname : '' }} 
+                                        {{ isset(App\Ibo::find($value->right)->middlename) ? App\Ibo::find($value->right)->middlename : '' }} 
+                                        {{ isset(App\Ibo::find($value->right)->lastname) ? App\Ibo::find($value->right)->lastname : '' }}
+                                    </td>
                                     <td>{{ ($key <= 11) ? $data['matching_bonus_amount'] : 0.00 }}</td>
                                 </tr>
                             @endforeach
