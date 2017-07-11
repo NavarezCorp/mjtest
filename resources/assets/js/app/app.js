@@ -1,4 +1,4 @@
-$(".flushout-date").datepicker({
+$(".flushout-date, .particular-from-date, .particular-to-date").datepicker({
     dateFormat: 'MM d, yy'
 });
 

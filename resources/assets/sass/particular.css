@@ -1,0 +1,42 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 07 11, 17, 7:38:43 PM
+    Author     : developer
+*/
+
+.particular-table thead th {
+    text-align: center;
+}
+
+.particular-table {
+    thead {
+        th.no-border-tl {
+            border-top: 1px solid transparent !important;
+            border-left: 1px solid transparent !important;
+        }
+        
+        th.no-border-tr {
+            border-top: 1px solid transparent !important;
+            border-right: 1px solid transparent !important;
+        }
+    }
+    
+    tbody {
+        tr {
+            td {
+                text-align: center;
+            }
+        }
+    }
+}
+
+button.particular-btn {
+    /*
+    position: relative;
+    top: 27px;
+    */
+}

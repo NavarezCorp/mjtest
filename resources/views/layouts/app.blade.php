@@ -124,7 +124,8 @@
                                             <a href="{{ url('/country') }}">Countries</a>
                                             <a href="{{ url('/city') }}">Cities</a>
                                             <a href="{{ url('/pickupcenter') }}">Pickup Centers</a>
-                                            <a href="{{ url('/flushout') }}">Flushout</a>
+                                            <a href="{{ url('/flushout') }}">Flushouts</a>
+                                            <a href="{{ url('/particular') }}">Particulars</a>
                                         </li>
                                     @endif
                                 </ul>
