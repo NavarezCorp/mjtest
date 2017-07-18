@@ -233,6 +233,7 @@ class IboController extends Controller {
             $data['ibo']['info'][0] = Ibo::find($_GET['ibo_id']);
             $data['ibo']['info'][0]['ibo_id'] = sprintf('%09d', $_GET['ibo_id']);
             $data['ibo']['commissions'] = $this->ibo_commissions($_GET['ibo_id']);
+            $data['ibo']['placement'] = Helper::check_placement($_GET['ibo_id']);
         }
         else if(!empty($_GET['name'])){
             $search_key = 'name';

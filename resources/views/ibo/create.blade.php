@@ -190,7 +190,7 @@
                                 <div class="form-group{{ $errors->has('placement_position') ? ' has-error' : '' }} required">
                                     <label for="placement_position" class="col-md-3 control-label">Placement position</label>
                                     <div class="col-md-2">
-                                        {{ Form::select('placement_position', ['L'=>'Left', 'R' => 'Right'], $data['placement_position'], ['class'=>'form-control', 'placeholder'=>'', 'required']) }}
+                                        {{ Form::select('placement_position', ['L'=>'Left', 'R' => 'Right'], $data['placement_position'], ['class'=>'form-control placement_position', 'placeholder'=>'', 'required']) }}
                                         @if ($errors->has('placement_position'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('placement_position') }}</strong>

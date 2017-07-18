@@ -748,4 +748,25 @@ class Helper {
         
         Logger::log('Flushedout process done for IBO: ' . $id . ' Dated: ' . $data['date_matched']);
     }
+
+    public static function check_placement($ibo_id){
+        $data['left'] = 'Free';
+        $data['right'] = 'Free';
+
+        $res = Ibo::where('placement_id', $ibo_id)->get();
+
+        foreach($res as $value){
+            switch($value['attributes']['placement_position']){
+                case 'L':
+                    $data['left'] = 'Taken';
+                    break;
+                
+                case 'R':
+                    $data['right'] = 'Taken';
+                    break;
+            }
+        }
+
+        return $data;
+    }
 }
