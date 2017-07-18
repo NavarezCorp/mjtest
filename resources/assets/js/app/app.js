@@ -115,7 +115,7 @@ $('.code-search').click(function() {
 
                 if (valid_placement) $('.register-button').removeAttr('disabled');
             }
-            console.log('activation code:' + valid_activation_code);
+
             $('.code-help-block').css('color', color).html(html).show();
         } else $('.code-help-block').css('color', 'red').html('<strong>Code does not exist</strong>').show();
     });
@@ -381,7 +381,7 @@ $('.ibo-info-search').click(function() {
 
             html = 'IBO not registered';
         }
-        console.log('placement:' + valid_placement);
+
         $('.' + id_ + '-help-block').css('color', 'green').html(html).show();
     });
 });
