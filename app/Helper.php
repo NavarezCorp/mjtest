@@ -769,4 +769,13 @@ class Helper {
 
         return $data;
     }
+    
+    public static function get_matched($param){
+        return Matching::select(DB::raw('sum(amount) as amount, Date(datetime_matched) as date'))
+            ->where('ibo_id', $param['id'])
+            ->whereBetween('datetime_matched', [$param['from'], $param['to']])
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+    }
 }

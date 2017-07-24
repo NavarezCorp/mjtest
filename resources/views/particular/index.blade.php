@@ -21,7 +21,7 @@
                             </div>
                             <div class="col-xs-1">
                                 <div class="row">
-                                    <button class="btn btn-primary particular-btn" type="button"><strong>Fetch</strong></button>
+                                    <button class="btn btn-primary particular-fetch" type="button"><strong>Fetch</strong></button>
                                 </div>
                             </div>
                         </div>
@@ -42,26 +42,28 @@
                                 <th>NW</th>
                                 <th>NE</th>
                                 <th>NE</th>
-                                <th>OW</th>
                                 <th>NW</th>
+                                <th>OW</th>
                                 <th>Match</th>
                                 <th>Fifth</th>
                                 <th>Amount</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td style="text-align:left;">2017-07-31</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td style="text-align:right;">0.00</td>
-                                <td style="text-align:right;">0.00</td>
-                                <td style="text-align:right;">0.00</td>
-                            </tr>
+                            @foreach ($data as $value)
+                                <tr>
+                                    <td style="text-align:left;">{{ $value['date'] }}</td>
+                                    <td>{{ $value['left']['ow'] }}</td>
+                                    <td>{{ $value['left']['nw'] }}</td>
+                                    <td>{{ $value['left']['ne'] }}</td>
+                                    <td>{{ $value['right']['ne'] }}</td>
+                                    <td>{{ $value['right']['nw'] }}</td>
+                                    <td>{{ $value['right']['ow'] }}</td>
+                                    <td>{{ $value['match'] }}</td>
+                                    <td>{{ $value['fifth'] }}</td>
+                                    <td>{{ $value['match'] + $value['fifth'] }}</td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

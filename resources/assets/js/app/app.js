@@ -393,8 +393,14 @@ $('.flushout-fetch').click(function() {
 
 $('.particular-fetch').click(function() {
     var id = $('.particular-ibo-id').val();
-    var from = $('.particular-from-date').val();
-    var to = $('.particular-to-date').val();
-
-    console.log('ibo id: ' + id + ' from date: ' + from + ' to date: ' + to);
+    var from = convertDate($('.particular-from-date').val());
+    var to = convertDate($('.particular-to-date').val());
+    
+    window.location = '/particular?id=' + id + '&from=' + from + '&to=' + to;
 });
+
+function convertDate(param){
+    var date = new Date(param);
+    
+    return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+}
