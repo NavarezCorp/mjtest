@@ -781,11 +781,12 @@ class Helper {
     }
     
     public static function get_fifth_pair($param){
-        return Matching::where('ibo_id', $param['id'])
+        return Matching::select(DB::raw('amount'))
+            ->where('ibo_id', $param['id'])
             //->whereBetween('datetime_matched', [$param['from'], $param['to']])
             ->whereRaw('Date(datetime_matched) between ? and ?', [$param['from'], $param['to']])
             ->whereRaw('counter % 5 = 0')
-            ->count();
+            ->sum('amount');
     }
     
     public static function get_ibo_name($id){

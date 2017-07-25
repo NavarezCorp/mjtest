@@ -31,6 +31,8 @@ class ParticularController extends Controller
             $data['to'] =  $_GET['to'];
             
             foreach($res as $key => $val){
+                $fifth_amount = Helper::get_fifth_pair(['id'=>$_GET['id'], 'from'=>$val->date, 'to'=>$val->date]);
+                
                 $data['particulars'][$key]['date'] = $val->date;
                 $data['particulars'][$key]['left']['ow'] = 0;
                 $data['particulars'][$key]['left']['nw'] = 0;
@@ -38,8 +40,12 @@ class ParticularController extends Controller
                 $data['particulars'][$key]['right']['ow'] = 0;
                 $data['particulars'][$key]['right']['nw'] = 0;
                 $data['particulars'][$key]['right']['ne'] = 0;
-                $data['particulars'][$key]['match'] = $val->amount;
-                $data['particulars'][$key]['fifth'] = Helper::get_fifth_pair(['id'=>$_GET['id'], 'from'=>$val->date, 'to'=>$val->date]);
+                $data['particulars'][$key]['match'] = $val->amount - $fifth_amount;
+                $data['particulars'][$key]['fifth'] = $fifth_amount;
+                
+                $tax = $data['particulars'][$key]['match'] * .1;
+                
+                $data['particulars'][$key]['amount'] = $data['particulars'][$key]['match'] - $tax;
             }
         }
         //dd($data);

@@ -65,7 +65,7 @@
                                         <td>{{ $value['right']['ow'] }}</td>
                                         <td>{{ $value['match'] }}</td>
                                         <td>{{ $value['fifth'] }}</td>
-                                        <td>{{ $value['match'] + $value['fifth'] }}</td>
+                                        <td>{{ $value['amount'] }}</td>
                                     </tr>
                                 @endforeach
                             @endif
