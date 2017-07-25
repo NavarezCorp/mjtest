@@ -393,8 +393,10 @@ $('.flushout-fetch').click(function() {
 
 $('.particular-fetch').click(function() {
     var id = $('.particular-ibo-id').val();
-    var from = convertDate($('.particular-from-date').val());
-    var to = convertDate($('.particular-to-date').val());
+    //var from = convertDate($('.particular-from-date').val());
+    //var to = convertDate($('.particular-to-date').val());
+    var from = $('.particular-from-date').val();
+    var to = $('.particular-to-date').val();
     
     window.location = '/particular?id=' + id + '&from=' + from + '&to=' + to;
 });

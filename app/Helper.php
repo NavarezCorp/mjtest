@@ -773,9 +773,26 @@ class Helper {
     public static function get_matched($param){
         return Matching::select(DB::raw('sum(amount) as amount, Date(datetime_matched) as date'))
             ->where('ibo_id', $param['id'])
-            ->whereBetween('datetime_matched', [$param['from'], $param['to']])
+            //->whereBetween('datetime_matched', [$param['from'], $param['to']])
+            ->whereRaw('Date(datetime_matched) between ? and ?', [$param['from'], $param['to']])
             ->groupBy('date')
             ->orderBy('date')
             ->get();
+    }
+    
+    public static function get_fifth_pair($param){
+        return Matching::where('ibo_id', $param['id'])
+            //->whereBetween('datetime_matched', [$param['from'], $param['to']])
+            ->whereRaw('Date(datetime_matched) between ? and ?', [$param['from'], $param['to']])
+            ->whereRaw('counter % 5 = 0')
+            ->count();
+    }
+    
+    public static function get_ibo_name($id){
+        $firstname = isset(Ibo::find($id)->firstname) ? Ibo::find($id)->firstname : '';
+        $middlename = isset(Ibo::find($id)->middlename) ? Ibo::find($id)->middlename : '';
+        $lastname = isset(Ibo::find($id)->lastname) ? Ibo::find($id)->lastname : '';
+        
+        return $firstname . ' ' . $middlename . ' ' . $lastname;
     }
 }
