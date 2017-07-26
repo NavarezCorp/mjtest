@@ -31,15 +31,22 @@ class ParticularController extends Controller
             $data['to'] =  $_GET['to'];
             
             foreach($res as $key => $val){
-                $fifth_amount = Helper::get_fifth_pair(['id'=>$_GET['id'], 'from'=>$val->date, 'to'=>$val->date]);
+                $param = [
+                    'id'=>$_GET['id'],
+                    'from'=>$val->date,
+                    'to'=>$val->date
+                ];
+                
+                $fifth_amount = Helper::get_fifth_pair($param);
+                $new_entry = Helper::get_new_entry($param);
                 
                 $data['particulars'][$key]['date'] = $val->date;
                 $data['particulars'][$key]['left']['ow'] = 0;
                 $data['particulars'][$key]['left']['nw'] = 0;
-                $data['particulars'][$key]['left']['ne'] = 0;
+                $data['particulars'][$key]['left']['ne'] = count($new_entry['new_left']);
                 $data['particulars'][$key]['right']['ow'] = 0;
                 $data['particulars'][$key]['right']['nw'] = 0;
-                $data['particulars'][$key]['right']['ne'] = 0;
+                $data['particulars'][$key]['right']['ne'] = count($new_entry['new_right']);;
                 $data['particulars'][$key]['match'] = $val->amount - $fifth_amount;
                 $data['particulars'][$key]['fifth'] = $fifth_amount;
                 

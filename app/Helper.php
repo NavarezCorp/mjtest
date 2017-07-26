@@ -715,8 +715,7 @@ class Helper {
         
         Logger::log('Start flushedout process for IBO: ' . $id . ' Dated: ' . $data['date_matched']);
         
-        $data['matchings'] = Matching::
-            select(DB::raw('ibo_id, count(ibo_id) as matched_count'))
+        $data['matchings'] = Matching::select(DB::raw('ibo_id, count(ibo_id) as matched_count'))
             ->whereRaw("ibo_id = " . $id . " and DATE(datetime_matched) = DATE('" . $data['date_matched'] ."')")
             ->groupBy('ibo_id')
             ->first();
@@ -795,5 +794,94 @@ class Helper {
         $lastname = isset(Ibo::find($id)->lastname) ? Ibo::find($id)->lastname : '';
         
         return $firstname . ' ' . $middlename . ' ' . $lastname;
+    }
+    
+    public static function get_new_entry($param){
+        $ids = null;
+        $data['left'] = null;
+        $data['right'] = null;
+        $position_str = null;
+        $not_in = ['FS', 'CD'];
+
+        // get first level downline
+        $res = Ibo::where('placement_id', $param['id'])->get();
+
+        if(!empty($res)){
+            foreach($res as $value){
+                $counter = null;
+
+                // check placement position
+                switch($value['attributes']['placement_position']){
+                    case 'L':
+                        $position_str = 'left';
+                        break;
+
+                    case 'R':
+                        $position_str = 'right';
+                        break;
+                }
+
+                // if not fs or cd get downline ibo_id
+                if(!in_array($value['attributes']['activation_code_type'], $not_in)) $counter[] = $value['attributes']['id'];
+
+                // get second level downline
+                $ids = Ibo::where('placement_id', $value['attributes']['id'])->get();
+
+                while(!empty($ids)){
+                    $temp = null;
+
+                    foreach($ids as $value_){
+                        // get third level downline upto last level downline
+                        $res = Ibo::where('placement_id', $value_['attributes']['id'])->get();
+
+                        // if not fs or cd get downline ibo_id
+                        if(!in_array($value_['attributes']['activation_code_type'], $not_in)) $counter[] = $value_['attributes']['id'];
+
+                        if(!empty($res)) foreach($res as $val) $temp[] = $val;
+                    }
+
+                    $ids = $temp;
+                }
+
+                // store the ibo ids for left or right
+                $data[$position_str] = $counter;
+            }
+        }
+
+        // rearrange all left by created_at from oldest to latest
+        if(!empty($data['left'])){
+            $res_left = Ibo::whereIn('id', $data['left'])
+                ->whereRaw('Date(created_at) between ? and ?', [$param['from'], $param['to']])
+                ->orderBy('created_at', 'asc')
+                ->get();
+            /*
+            foreach($res_left as $key => $value){
+                $data['new_left'][$key]['id'] = $value['attributes']['id'];
+                $data['new_left'][$key]['created_at'] = $value['attributes']['created_at'];
+            }
+            */
+            
+            $data['new_left'] = $res_left;
+        }
+        else $data['new_left'] = null;
+
+        // rearrange all right by created_at from oldest to latest
+        if(!empty($data['right'])){
+            $res_right = Ibo::whereIn('id', $data['right'])
+                ->whereRaw('Date(created_at) between ? and ?', [$param['from'], $param['to']])
+                ->orderBy('created_at', 'asc')
+                ->get();
+            /*
+            foreach($res_right as $key => $value){
+                $data['new_right'][$key]['id'] = $value['attributes']['id'];
+                $data['new_right'][$key]['created_at'] = $value['attributes']['created_at'];
+            }
+            */
+            
+            $data['new_right'] = $res_right;
+        }
+        else $data['new_right'] = null;
+        
+        return $data;
     }
 }
