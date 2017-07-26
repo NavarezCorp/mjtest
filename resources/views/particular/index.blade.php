@@ -63,23 +63,23 @@
                                         <td>{{ $value['right']['ne'] }}</td>
                                         <td>{{ $value['right']['nw'] }}</td>
                                         <td>{{ $value['right']['ow'] }}</td>
-                                        <td>{{ $value['match'] }}</td>
-                                        <td>{{ $value['fifth'] }}</td>
-                                        <td>{{ $value['amount'] }}</td>
+                                        <td style="text-align:right;">{{ number_format($value['match'], 2) }}</td>
+                                        <td style="text-align:right;">{{ number_format($value['fifth'], 2) }}</td>
+                                        <td style="text-align:right;">{{ number_format($value['amount'], 2) }}</td>
                                     </tr>
                                 @endforeach
                             @endif
-                            <tr>
-                                <td></td>
+                            <tr style="font-weight:bold; color:green;">
+                                <td>Total</td>
                                 <td>{{ $data['total_left_ow'] }}</td>
                                 <td>{{ $data['total_left_nw'] }}</td>
                                 <td>{{ $data['total_left_ne'] }}</td>
                                 <td>{{ $data['total_right_ne'] }}</td>
                                 <td>{{ $data['total_right_nw'] }}</td>
                                 <td>{{ $data['total_right_ow'] }}</td>
-                                <td>{{ $data['total_match'] }}</td>
-                                <td>{{ $data['total_fifth'] }}</td>
-                                <td>{{ $data['total_amount'] }}</td>
+                                <td style="text-align:right;">{{ number_format($data['total_match'], 2) }}</td>
+                                <td style="text-align:right;">{{ number_format($data['total_fifth'], 2) }}</td>
+                                <td style="text-align:right;">{{ number_format($data['total_amount'], 2) }}</td>
                             </tr>
                         </tbody>
                     </table>

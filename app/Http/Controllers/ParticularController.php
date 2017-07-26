@@ -36,9 +36,9 @@ class ParticularController extends Controller
             $data['total_right_ow'] = 0;
             $data['total_right_nw'] = 0;
             $data['total_right_ne'] = 0;
-            $data['total_match'] = 0;
-            $data['total_fifth'] = 0;
-            $data['total_amount'] = 0;
+            $data['total_match'] = 0.00;
+            $data['total_fifth'] = 0.00;
+            $data['total_amount'] = 0.00;
             
             foreach($res as $key => $val){
                 $param = [
