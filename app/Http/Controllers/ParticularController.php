@@ -30,6 +30,16 @@ class ParticularController extends Controller
             $data['from'] = $_GET['from'];
             $data['to'] =  $_GET['to'];
             
+            $data['total_left_ow'] = 0;
+            $data['total_left_nw'] = 0;
+            $data['total_left_ne'] = 0;
+            $data['total_right_ow'] = 0;
+            $data['total_right_nw'] = 0;
+            $data['total_right_ne'] = 0;
+            $data['total_match'] = 0;
+            $data['total_fifth'] = 0;
+            $data['total_amount'] = 0;
+            
             foreach($res as $key => $val){
                 $param = [
                     'id'=>$_GET['id'],
@@ -53,9 +63,19 @@ class ParticularController extends Controller
                 $tax = $data['particulars'][$key]['match'] * .1;
                 
                 $data['particulars'][$key]['amount'] = $data['particulars'][$key]['match'] - $tax;
+                
+                $data['total_left_ow'] += $data['particulars'][$key]['left']['ow'];
+                $data['total_left_nw'] += $data['particulars'][$key]['left']['nw'];
+                $data['total_left_ne'] += $data['particulars'][$key]['left']['ne'];
+                $data['total_right_ow'] += $data['particulars'][$key]['right']['ow'];
+                $data['total_right_nw'] += $data['particulars'][$key]['right']['nw'];
+                $data['total_right_ne'] += $data['particulars'][$key]['right']['ne'];
+                $data['total_match'] += $data['particulars'][$key]['match'];
+                $data['total_fifth'] += $data['particulars'][$key]['fifth'];
+                $data['total_amount'] += $data['particulars'][$key]['amount'];
             }
         }
-        //dd($data);
+        
         return view('particular.index', ['data'=>$data]);
     }
 

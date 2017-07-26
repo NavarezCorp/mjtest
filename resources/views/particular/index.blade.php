@@ -69,6 +69,18 @@
                                     </tr>
                                 @endforeach
                             @endif
+                            <tr>
+                                <td></td>
+                                <td>{{ $data['total_left_ow'] }}</td>
+                                <td>{{ $data['total_left_nw'] }}</td>
+                                <td>{{ $data['total_left_ne'] }}</td>
+                                <td>{{ $data['total_right_ne'] }}</td>
+                                <td>{{ $data['total_right_nw'] }}</td>
+                                <td>{{ $data['total_right_ow'] }}</td>
+                                <td>{{ $data['total_match'] }}</td>
+                                <td>{{ $data['total_fifth'] }}</td>
+                                <td>{{ $data['total_amount'] }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
