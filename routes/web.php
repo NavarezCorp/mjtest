@@ -34,6 +34,7 @@ Route::get('/ibo/search', 'IboController@search');
 Route::get('/app/{id}', 'IboController@process_app');
 Route::get('/agp/{id}', 'IboController@process_agp');
 Route::get('/appagp', 'IboController@app_agp');
+Route::get('/appagp-search', 'IboController@appagp_search');
 Route::resource('ibo', 'IboController');
 
 Route::resource('package', 'PackageController');

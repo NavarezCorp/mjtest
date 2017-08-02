@@ -356,11 +356,28 @@ class IboController extends Controller {
     }
     
     public function app_agp(){
-        $data = DB::table('ibos')
+        $data['list'] = DB::table('ibos')
             ->orderBy('firstname', 'asc')
             ->orderBy('middlename', 'asc')
             ->orderBy('lastname', 'asc')
             ->paginate(15);
+        
+        return view('ibo.appagp', compact('data'));
+    }
+    
+    public function appagp_search(){
+        $data = null;
+        
+        $data = $_GET;
+        
+        if(!empty($_GET['ibo_id'])) $data['list'] = Ibo::where('id', intval($_GET['ibo_id']))->get();
+        else if(!empty($_GET['name'])){
+            $res = User::whereRaw('name like "%' . $_GET['name'] . '%"')
+                ->orderBy('name', 'asc')
+                ->get();
+            
+            foreach($res as $key => $val) $data['list'][] = Ibo::find($val->ibo_id);
+        }
         
         return view('ibo.appagp', compact('data'));
     }

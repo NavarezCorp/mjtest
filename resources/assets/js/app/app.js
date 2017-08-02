@@ -424,3 +424,13 @@ $('.update-app-agp').click(function() {
         }
     });
 });
+
+$('.appagp-search-ibo').click(function() {
+    console.log('app agp search ibo');
+    
+    window.location = '/appagp-search?ibo_id=' + $('#ibo_id').val() + '&name=' + $('#ibo_name').val();
+});
+
+$('#ibo_id, #ibo_name').focusin(function(){
+    $('#ibo_id, #ibo_name').val('');
+});

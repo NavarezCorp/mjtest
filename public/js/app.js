@@ -424,6 +424,16 @@ $('.update-app-agp').click(function() {
         }
     });
 });
+
+$('.appagp-search-ibo').click(function() {
+    console.log('app agp search ibo');
+    
+    window.location = '/appagp-search?ibo_id=' + $('#ibo_id').val() + '&name=' + $('#ibo_name').val();
+});
+
+$('#ibo_id, #ibo_name').focusin(function(){
+    $('#ibo_id, #ibo_name').val('');
+});
 var sponsor_id = 0;
 
 if(typeof $('#genealogy_sponsor_id').val() !== 'undefined') sponsor_id = $('#genealogy_sponsor_id').val();

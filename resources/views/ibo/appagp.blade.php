@@ -23,17 +23,26 @@
                         </div>
                     @endif
                     <div class="row">
-                        <div class="col-md-3 pull-left text-left">
-                            <div class="input-group" style="margin:22px 0;">
-                                <input type="text" class="form-control" placeholder="Search IBO by Lastname">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button">
+                        <div class="col-md-6 pull-left text-left">
+                            <div class="form-group row" style="margin:22px 0;">
+                                <div class="col-md-4" style="padding-left:0;">
+                                    <input id="ibo_id" type="text" class="form-control" placeholder="Search IBO ID" value="{{ isset($data['ibo_id']) ? $data['ibo_id'] : '' }}">
+                                </div>
+                                <div class="col-md-5" style="padding-left:0;">
+                                    <input id="ibo_name" type="text" class="form-control" placeholder="Search IBO Name" value="{{ isset($data['name']) ? $data['name'] : '' }}">
+                                </div>
+                                <div class="col-md-2" style="padding-left:0;">
+                                    <button class="btn btn-primary appagp-search-ibo" type="button">
                                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                     </button>
-                                </span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-9 pull-right text-right">{!! $data->links() !!}</div>
+                        <div class="col-md-6 pull-right text-right">
+                            @if($data['list'] instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                                {!! $data['list']->links() !!}
+                            @endif
+                        </div>
                     </div>
                     <table class="table table-striped table-hover table-condensed">
                         <thead>
@@ -42,7 +51,7 @@
                             <th style="text-align:right;">AGP</th>
                         </thead>
                         <tbody>
-                            @foreach ($data as $key => $value)
+                            @foreach($data['list'] as $key => $value)
                                 <tr>
                                     <td>
                                         <strong>{{ !empty($value->id) ? '(' . sprintf('%09d', $value->id) . ')' : '' }}</strong><br>
@@ -56,7 +65,11 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="pull-right">{!! $data->links() !!}</div>
+                    <div class="pull-right">
+                        @if($data['list'] instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                            {!! $data['list']->links() !!}
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
