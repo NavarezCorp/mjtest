@@ -126,6 +126,7 @@
                                             <a href="{{ url('/pickupcenter') }}">Pickup Centers</a>
                                             <a href="{{ url('/flushout') }}">Flushouts</a>
                                             <a href="{{ url('/particular') }}">Particulars</a>
+                                            <a href="{{ url('/appagp') }}">APP / AGP</a>
                                         </li>
                                     @endif
                                 </ul>

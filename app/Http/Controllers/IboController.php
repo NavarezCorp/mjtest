@@ -350,4 +350,10 @@ class IboController extends Controller {
             $model->save();
         }
     }
+    
+    public function app_agp(){
+        $data = DB::table('ibos')->orderBy('id', 'asc')->paginate(15);
+        
+        return view('ibo.appagp', compact('data'));
+    }
 }
