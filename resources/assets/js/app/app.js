@@ -410,6 +410,8 @@ function convertDate(param){
 $('.update-app-agp').click(function() {
     console.log('update app agp');
     
+    $('.ibo-search-loading').show();
+    
     $.getJSON('/app/all', function(data){
         console.log(data);
         

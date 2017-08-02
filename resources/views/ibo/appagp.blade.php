@@ -9,6 +9,7 @@
                     <div class="row">
                         <div class="col-md-6 pull-left" style="margin:7px 0;">Accumulated Personal Purchase (APP) / Accumulated Group Purchase (AGP)</div>
                         <div class="col-md-6 pull-right text-right">
+                            <img class="ibo-search-loading" src="/images/loading.gif">
                             <button class="btn btn-primary update-app-agp" type="button">Update</button>
                         </div>
                     </div>
