@@ -332,6 +332,8 @@ class IboController extends Controller {
             $model->app = Helper::get_app($id);
             $model->save();
         }
+        
+        echo json_encode('app done');
     }
     
     public function process_agp($id){
@@ -349,10 +351,16 @@ class IboController extends Controller {
             $model->agp = Helper::get_agp($id);
             $model->save();
         }
+        
+        echo json_encode('agp done');
     }
     
     public function app_agp(){
-        $data = DB::table('ibos')->orderBy('id', 'asc')->paginate(15);
+        $data = DB::table('ibos')
+            ->orderBy('firstname', 'asc')
+            ->orderBy('middlename', 'asc')
+            ->orderBy('lastname', 'asc')
+            ->paginate(15);
         
         return view('ibo.appagp', compact('data'));
     }

@@ -6,7 +6,12 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Accumulated Personal Purchase (APP) / Accumulated Group Purchase (AGP)
+                    <div class="row">
+                        <div class="col-md-6 pull-left" style="margin:7px 0;">Accumulated Personal Purchase (APP) / Accumulated Group Purchase (AGP)</div>
+                        <div class="col-md-6 pull-right text-right">
+                            <button class="btn btn-primary update-app-agp" type="button">Update</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="panel-body">
@@ -16,7 +21,19 @@
                             {{ Session::get('message') }}
                         </div>
                     @endif
-                    <div class="pull-right">{!! $data->links() !!}</div>
+                    <div class="row">
+                        <div class="col-md-3 pull-left text-left">
+                            <div class="input-group" style="margin:22px 0;">
+                                <input type="text" class="form-control" placeholder="Search IBO by Lastname">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button">
+                                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-9 pull-right text-right">{!! $data->links() !!}</div>
+                    </div>
                     <table class="table table-striped table-hover table-condensed">
                         <thead>
                             <th>IBO ID</th>
@@ -27,10 +44,10 @@
                             @foreach ($data as $key => $value)
                                 <tr>
                                     <td>
-                                        {{ isset(App\Ibo::find($value->id)->firstname) ? App\Ibo::find($value->id)->firstname : '' }}
-                                        {{ isset(App\Ibo::find($value->id)->middlename) ? App\Ibo::find($value->id)->middlename : '' }}
-                                        {{ isset(App\Ibo::find($value->id)->lastname) ? App\Ibo::find($value->id)->lastname : '' }}<br>
-                                        {{ !empty($value->id) ? '(' . sprintf('%09d', $value->id) . ')' : '' }}
+                                        <strong>{{ !empty($value->id) ? '(' . sprintf('%09d', $value->id) . ')' : '' }}</strong><br>
+                                        {{ isset(App\Ibo::find($value->id)->firstname) ? ucwords(strtolower(App\Ibo::find($value->id)->firstname)) : '' }}
+                                        {{ isset(App\Ibo::find($value->id)->middlename) ? ucwords(strtolower(App\Ibo::find($value->id)->middlename)) : '' }}
+                                        {{ isset(App\Ibo::find($value->id)->lastname) ? ucwords(strtolower(App\Ibo::find($value->id)->lastname)) : '' }}
                                     </td>
                                     <td style="text-align:right;">{{ number_format($value->app, 2) }}</td>
                                     <td style="text-align:right;">{{ number_format($value->agp, 2) }}</td>

@@ -406,6 +406,22 @@ function convertDate(param){
     
     return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
 }
+
+$('.update-app-agp').click(function() {
+    console.log('update app agp');
+    
+    $.getJSON('/app/all', function(data){
+        console.log(data);
+        
+        if(data == 'app done'){
+            $.getJSON('/agp/all', function(data){
+                console.log(data);
+                
+                if(data == 'agp done') window.location = '/appagp';
+            });
+        }
+    });
+});
 var sponsor_id = 0;
 
 if(typeof $('#genealogy_sponsor_id').val() !== 'undefined') sponsor_id = $('#genealogy_sponsor_id').val();
