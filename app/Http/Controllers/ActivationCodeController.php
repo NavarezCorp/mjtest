@@ -17,7 +17,7 @@ use App\Logger;
 class ActivationCodeController extends Controller
 {
     public function __construct(){
-        $a = $this->middleware('auth');
+        $this->middleware('role:admin,staff');
     }
     
     /**

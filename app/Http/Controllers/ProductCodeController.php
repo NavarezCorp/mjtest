@@ -18,7 +18,7 @@ use App\Ibo;
 class ProductCodeController extends Controller
 {
     public function __construct(){
-        $this->middleware('auth');
+        $this->middleware('role:admin,staff');
     }
     
     /**

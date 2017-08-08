@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Auth;
 class IboController extends Controller {
     public function __construct(){
         $this->middleware('auth');
+        $this->middleware('role:admin,staff', ['only'=>['ibo_search']]);
     }
     
     /**
