@@ -17,7 +17,8 @@ use App\Logger;
 class ActivationCodeController extends Controller
 {
     public function __construct(){
-        $this->middleware('role:admin,staff-1');
+        $this->middleware('auth');
+        $this->middleware('role:admin,staff-1', ['except'=>['check_activation_code']]);
     }
     
     /**
