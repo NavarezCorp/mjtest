@@ -18,7 +18,8 @@ use App\Ibo;
 class ProductCodeController extends Controller
 {
     public function __construct(){
-        $this->middleware('role:admin,staff-1');
+        $this->middleware('auth');
+        $this->middleware('role:admin,staff-1', ['except'=>['check_product_code']]);
     }
     
     /**
