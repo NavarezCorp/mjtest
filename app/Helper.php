@@ -884,4 +884,57 @@ class Helper {
         
         return $data;
     }
+
+    public static function clean_old_waiting($id){
+        $data = null;
+        $data['ibo']['id'] = $id;
+
+        // get waiting record
+        $res = Waiting::where('ibo_id', $id)->first();
+
+        // get record id for saving new left and right
+        $data['record_id'] = $res->id;
+
+        // convert to array form
+        $data['left_'] = !empty($res->left) ? explode(',', $res->left) : null;
+        $data['right_'] = !empty($res->right) ? explode(',', $res->right) : null;
+
+        if($data['left_']){
+            foreach ($data['left_'] as $key => $val) {
+                if (strpos($val, '[') !== false) {
+                    if (strpos($val, '~') !== false) {
+                        continue;
+                    }
+                    else{
+                        $data['ibo']['removed']['left'][] = $val;
+                        array_splice($data['left_'], $key, 1);
+                    }
+                }
+                else continue;
+            }
+        }
+
+        if($data['right_']) {
+            foreach ($data['right_'] as $key => $val) {
+                if (strpos($val, '[') !== false) {
+                    if (strpos($val, '~') !== false) {
+                        continue;
+                    }
+                    else{
+                        $data['ibo']['removed']['right'][] = $val;
+                        array_splice($data['right_'], $key, 1);
+                    }
+                }
+                else continue;
+            }
+        }
+
+        // save new left and right
+        $model = Waiting::find($data['record_id']);
+        $model->left = !empty($data['left_']) ? implode(',', $data['left_']) : '';
+        $model->right = !empty($data['right_']) ? implode(',', $data['right_']) : '';
+        $model->save();
+
+        return $data;
+    }
 }

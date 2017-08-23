@@ -382,4 +382,17 @@ class IboController extends Controller {
         
         return view('ibo.appagp', compact('data'));
     }
+
+    public function clean_old_waiting($id){
+        $res = null;
+
+        if($id == 'all'){
+            $ibos = DB::table('ibos')->select('id')->orderBy('created_at', 'asc')->get();
+
+            foreach($ibos as $value) $res = Helper::clean_old_waiting($value->id);
+        }
+        else $res = Helper::clean_old_waiting($id);
+
+        echo json_encode('cleaning old waiting done');
+    }
 }
