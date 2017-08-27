@@ -186,15 +186,17 @@ class CommissionSummaryReportController extends Controller {
                 $param_['id'] = $id;
                 $param_['month'] = $_GET['month'];
                 $param_['year'] = $_GET['year'];
-                
-                $data['level'] = 4;
-                $data['ranking_lions'] = 'None';
 
                 $data['rebate'] = Helper::process_rebates($param_);
 
                 $model = Ibo::find(Auth::user()->ibo_id);
                 $data['app'] = $model->app;
                 $data['agp'] = $model->agp;
+
+                $data['ibo_rank'] = Helper::get_rank(Auth::user()->ibo_id);
+                $data['level'] = $data['ibo_rank']['ranking_lions_level'];
+                $data['ranking_lions'] = $data['ibo_rank']['ranking_lions_rank'];
+
                 $data['adsc'] = Helper::get_adsc(Auth::user()->ibo_id);
                 $data['aisc'] = Helper::get_aisc(Auth::user()->ibo_id);
                 $data['amb'] = Helper::get_amb(Auth::user()->ibo_id);

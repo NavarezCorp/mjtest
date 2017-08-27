@@ -321,9 +321,15 @@ class Helper {
 
         $param_['id'] = $param['id'];
 
+        /*
         $data['level'] = 4;
         $data['ranking_lions'] = 'None';
         $data['percentage'] = 2;
+        */
+        $data['ibo_rank'] = Helper::get_rank(Auth::user()->ibo_id);
+        $data['level'] = $data['ibo_rank']['ranking_lions_level'];
+        $data['ranking_lions'] = $data['ibo_rank']['ranking_lions_rank'];
+        $data['percentage'] = $data['ibo_rank']['ranking_lions_percentage'];
         
         $rlid = Ibo::find($param['id'])->ranking_lions_id;
         
@@ -934,6 +940,48 @@ class Helper {
         $model->left = !empty($data['left_']) ? implode(',', $data['left_']) : '';
         $model->right = !empty($data['right_']) ? implode(',', $data['right_']) : '';
         $model->save();
+
+        return $data;
+    }
+
+    public static function get_rank($id){
+        $data = null;
+
+        $data['ibo'] = $id;
+        $data['app'] = floatval(self::get_app($id));
+        $data['agp'] = floatval(self::get_agp($id));
+
+        if(($data['app'] >= 30000) && ($data['agp'] >= 300000)){
+            $data['ranking_lions_rank'] = 'Jade Lion';
+            $data['ranking_lions_level'] = 5;
+            $data['ranking_lions_percentage'] = 2;
+
+        }
+        elseif(($data['app'] >= 60000) && ($data['agp'] >= 600000)){
+            $data['ranking_lions_rank'] = 'Sapphire Lion';
+            $data['ranking_lions_level'] = 6;
+            $data['ranking_lions_percentage'] = 2;
+        }
+        elseif(($data['app'] >= 90000) && ($data['agp'] >= 900000)){
+            $data['ranking_lions_rank'] = 'Emerald Lion';
+            $data['ranking_lions_level'] = 7;
+            $data['ranking_lions_percentage'] = 1;
+        }
+        elseif(($data['app'] >= 120000) && ($data['agp'] >= 1200000)){
+            $data['ranking_lions_rank'] = 'Ruby Lion';
+            $data['ranking_lions_level'] = 8;
+            $data['ranking_lions_percentage'] = 1;
+        }
+        elseif(($data['app'] >= 150000) && ($data['agp'] >= 1500000)){
+            $data['ranking_lions_rank'] = 'Diamond Lion';
+            $data['ranking_lions_level'] = 9;
+            $data['ranking_lions_percentage'] = 1;
+        }
+        else{
+            $data['ranking_lions_rank'] = 'none';
+            $data['ranking_lions_level'] = 4;
+            $data['ranking_lions_percentage'] = 2;
+        }
 
         return $data;
     }
