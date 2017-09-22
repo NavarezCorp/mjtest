@@ -1,68 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        <!-- CSRF Token -->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-
         <title>{{ config('app.name', 'Laravel') }}</title>
-
-        <!-- Styles -->
         <link href="/css/all.css" rel="stylesheet">
         <link href="/css/app.css" rel="stylesheet">
-
-        <!-- Scripts -->
-        <script>
-            window.Laravel = <?php echo json_encode([
-                'csrfToken' => csrf_token(),
-            ]); ?>
-        </script>
     </head>
     <body>
-        <nav class="navbar navbar-default navbar-static-top">
+        <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-header">
-                    
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
+                    <a class="navbar-brand navbar-link" href="/"> <img src="/images/sfi.jpg" width="50"></a>
+                    <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1">
+                        <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-
-                    <!-- Branding Image -->
-                    @if (Auth::guest())
-                        <a class="navbar-brand" href="{{ url('/') }}">
-                            <img src="/images/sfi.jpg" width="50">
-                            {{-- config('app.name', 'Laravel') --}}
-                        </a>
-                    @else
-                        <a class="navbar-brand" href="{{ url('/home') }}">
-                            <img src="/images/sfi.jpg" width="50">
-                            {{-- config('app.name', 'Laravel') --}}
-                        </a>
-                    @endif
                 </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
+                <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{ url('/products') }}">Products</a></li>
-                        <li><a href="{{ url('/aboutus') }}">About Us</a></li>
-                        <li><a href="{{ url('/contactus') }}">Contact Us</a></li>
-                        
-                        <!-- Authentication Links -->
+                        <li role="presentation"><a href="{{ url('/products') }}">Products</a></li>
+                        <li role="presentation"><a href="{{ url('/aboutus') }}">About Us</a></li>
+                        <li role="presentation"><a href="{{ url('/contactus') }}">Contact Us</a></li>
                         @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Login</a></li>
-                            <!--<li><a href="{{ url('/register') }}">Register</a></li>-->
+                            <li role="presentation"><a href="{{ url('/login') }}">Login</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -137,10 +100,44 @@
                 </div>
             </div>
         </nav>
-
-        @yield('content')
-
-        <!-- Scripts -->
+        <div class="container">
+            <div id="products-carousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    @foreach ($data['products'] as $key => $product)
+                        @if ($key == 0)
+                            <li data-target="#products-carousel" data-slide-to="{{ $key }}" class="active"></li>
+                        @else
+                            <li data-target="#products-carousel" data-slide-to="{{ $key }}"></li>
+                        @endif
+                    @endforeach
+                </ol>
+                <div class="carousel-inner">
+                    @foreach ($data['products'] as $key => $product)
+                        @if ($key == 0)
+                            <div class="row carousel item active">
+                                <div class="col-md-12" style="max-height: 900px; overflow: hidden;">
+                                    <img class="d-block w-100 img-responsive" src="/images/products/{{ $product }}" alt="{{ $product }}" style="max-height: 900px; margin: 0 auto;">
+                                </div>
+                            </div>
+                        @else
+                            <div class="row carousel item">
+                                <div class="col-md-12" style="max-height: 900px; overflow: hidden;">
+                                    <img class="d-block w-100 img-responsive" src="/images/products/{{ $product }}" alt="{{ $product }}" style="max-height: 900px; margin: 0 auto;">
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                <a class="carousel-control-prev" href="#products-carousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#products-carousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
         <script src="/js/vendor.js"></script>
         <script src="/js/app.js"></script>
     </body>

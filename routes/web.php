@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //return view('welcome');
+    return redirect('/products');
 });
 
 Route::get('/aboutus', function(){
@@ -21,6 +22,18 @@ Route::get('/aboutus', function(){
 
 Route::get('/contactus', function(){
     return view('contact_us');
+});
+
+Route::get('/products', function(){
+    $data = null;
+
+    $iterator = new DirectoryIterator('../public/images/products');
+
+    foreach($iterator as $fileinfo){
+        if($fileinfo->isFile()) $data['products'][] = $fileinfo->getFilename();
+    }
+
+    return view('products', compact('data'));
 });
 
 Auth::routes();

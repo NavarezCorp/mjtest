@@ -434,3 +434,5 @@ $('.appagp-search-ibo').click(function() {
 $('#ibo_id, #ibo_name').focusin(function(){
     $('#ibo_id, #ibo_name').val('');
 });
+
+/*$('#carouselExampleIndicators').carousel();*/
