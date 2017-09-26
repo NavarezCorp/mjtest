@@ -15,3 +15,18 @@ and open the template in the editor.
 .home-images {
     margin-bottom: 20px;
 }
+
+.navbar-default {
+    .navbar-toggle {
+        border-color: transparent;
+    }
+}
+
+.navbar-default {
+    .navbar-toggle {
+        .icon-bar {
+            background-color: #00652e;
+            height: 3px;
+        }
+    }
+}
