@@ -326,7 +326,8 @@ class Helper {
         $data['ranking_lions'] = 'None';
         $data['percentage'] = 2;
         */
-        $data['ibo_rank'] = Helper::get_rank(Auth::user()->ibo_id);
+        //$data['ibo_rank'] = Helper::get_rank(Auth::user()->ibo_id);
+        $data['ibo_rank'] = Helper::get_rank($param_['id']);
         $data['level'] = $data['ibo_rank']['ranking_lions_level'];
         $data['ranking_lions'] = $data['ibo_rank']['ranking_lions_rank'];
         $data['percentage'] = $data['ibo_rank']['ranking_lions_percentage'];
