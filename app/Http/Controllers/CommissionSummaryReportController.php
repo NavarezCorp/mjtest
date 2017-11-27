@@ -583,30 +583,6 @@ class CommissionSummaryReportController extends Controller {
                 $param_['start_date'] = $date_->startOfWeek()->toDateTimeString();
                 $param_['end_date'] = $date_->endOfWeek()->toDateTimeString();
                 
-                /*
-                $direct_count = 0;
-
-                $res = Ibo::where('sponsor_id', $value->id)
-                    ->where('activation_code_type', '!=', 'FS')
-                    ->where('activation_code_type', '!=', 'CD')
-                    ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-
-                $direct_count = count($res);
-
-                $data['commission'][$pc][$i]['direct'] = $direct_count * Commission::where('name', 'Direct Sponsor Commission')->first()->amount;
-                */
-                
-                //$data['commission'][$i]['indirect'] = $this->get_indirect($param_) * Commission::where('name', 'Indirect Sponsor Commission')->first()->amount;
-                /*
-                $indirect_ = CommissionRecord::where('sponsor_id', $value->id)
-                    ->where('commission_type_id', 2)
-                    ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
-                    ->orderBy('created_at', 'desc')->get();
-                */
-                //$data['commission'][$i]['indirect'] = $indirect_->sum('commission_amount');
-                
                 $direct_ = CommissionRecord::where('sponsor_id', $value->id)
                     ->where('commission_type_id', 1)
                     ->whereBetween('created_at', [$date_->startOfWeek()->toDateTimeString(), $date_->endOfWeek()->toDateTimeString()])
@@ -623,10 +599,21 @@ class CommissionSummaryReportController extends Controller {
                 $data['commission'][$pc][$i]['tax'] = $data['commission'][$pc][$i]['matching'] * .1;
                 $data['commission'][$pc][$i]['net_commission'] = $data['commission'][$pc][$i]['gross'] - $data['commission'][$pc][$i]['tax'];
             }
-            
-            $data['commission'][$pc] = array_values(array_sort($data['commission'][$pc], function($value){
-                return $value['ibo_name'];
-            }));
+	
+	        /*try {
+		        $data['commission'][$pc] = array_values(array_sort($data['commission'][$pc], function($value){
+			        return $value['ibo_name'];
+		        }));
+	        }
+	        catch (\Exception $e) {
+		        return $data['commission'];
+	        }*/
+	
+	        if(!empty($data['commission'][$pc])){
+		        $data['commission'][$pc] = array_values(array_sort($data['commission'][$pc], function($value){
+			        return $value['ibo_name'];
+		        }));
+	        }
         }
         
         return view('commissionsummaryreport.all', ['data'=>$data]);
