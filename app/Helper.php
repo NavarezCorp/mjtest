@@ -952,23 +952,23 @@ class Helper {
         $data['app'] = floatval(self::get_app($id));
         $data['agp'] = floatval(self::get_agp($id));
 
-        if(($data['app'] >= 30000) && ($data['agp'] >= 300000)){
+        if((($data['app'] >= 30000) && ($data['app'] < 60000)) && (($data['agp'] >= 300000) && ($data['agp'] < 600000))){
             $data['ranking_lions_rank'] = 'Jade Lion';
             $data['ranking_lions_level'] = 5;
             $data['ranking_lions_percentage'] = 2;
 
         }
-        elseif(($data['app'] >= 60000) && ($data['agp'] >= 600000)){
+        elseif((($data['app'] >= 60000) && ($data['app'] < 90000)) && (($data['agp'] >= 600000) && ($data['agp'] < 900000))){
             $data['ranking_lions_rank'] = 'Sapphire Lion';
             $data['ranking_lions_level'] = 6;
             $data['ranking_lions_percentage'] = 2;
         }
-        elseif(($data['app'] >= 90000) && ($data['agp'] >= 900000)){
+        elseif((($data['app'] >= 90000 && $data['app'] < 120000)) && (($data['agp'] >= 900000 && $data['agp'] < 1200000))){
             $data['ranking_lions_rank'] = 'Emerald Lion';
             $data['ranking_lions_level'] = 7;
             $data['ranking_lions_percentage'] = 1;
         }
-        elseif(($data['app'] >= 120000) && ($data['agp'] >= 1200000)){
+        elseif((($data['app'] >= 120000 && $data['app'] < 150000)) && (($data['agp'] >= 1200000 && $data['agp'] < 1500000))){
             $data['ranking_lions_rank'] = 'Ruby Lion';
             $data['ranking_lions_level'] = 8;
             $data['ranking_lions_percentage'] = 1;
@@ -983,7 +983,7 @@ class Helper {
             $data['ranking_lions_level'] = 4;
             $data['ranking_lions_percentage'] = 2;
         }
-
+	    
         return $data;
     }
 }
