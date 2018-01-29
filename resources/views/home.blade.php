@@ -5,8 +5,8 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <!--<img class="img-responsive home-images" src="/images/sfm-memo-6.25.2017.png" width="750">-->
-            <img class="img-responsive home-images" src="/images/mic1.jpg" width="750">
-            <img class="img-responsive home-images" src="/images/mic2.jpg" width="750">
+            <img class="img-responsive home-images" src="/images/javier-newyear.jpg" width="750">
+            {{--  <img class="img-responsive home-images" src="/images/mic2.jpg" width="750">  --}}
             <div class="panel panel-default">
                 <div class="panel-heading"><h3 class="panel-title">Dashboard</h3></div>
                 <div class="panel-body">
