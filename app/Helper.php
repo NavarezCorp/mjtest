@@ -952,32 +952,27 @@ class Helper {
         $data['app'] = floatval(self::get_app($id));
         $data['agp'] = floatval(self::get_agp($id));
 
-        /*if((($data['app'] >= 30000) && ($data['app'] < 60000)) && (($data['agp'] >= 300000) && ($data['agp'] < 600000))){*/
-        if((($data['app'] >= 30000) && ($data['app'] < 60000)) && ($data['agp'] > 300000)){
+        /*if((($data['app'] >= 30000) && ($data['app'] < 60000)) && ($data['agp'] > 300000)){
             $data['ranking_lions_rank'] = 'Jade Lion';
             $data['ranking_lions_level'] = 5;
             $data['ranking_lions_percentage'] = 2;
 
         }
-        /*elseif((($data['app'] >= 60000) && ($data['app'] < 90000)) && (($data['agp'] >= 600000) && ($data['agp'] < 900000))){*/
         elseif((($data['app'] >= 60000) && ($data['app'] < 90000)) && ($data['agp'] > 600000)){
             $data['ranking_lions_rank'] = 'Sapphire Lion';
             $data['ranking_lions_level'] = 6;
             $data['ranking_lions_percentage'] = 2;
         }
-        /*elseif((($data['app'] >= 90000 && $data['app'] < 120000)) && (($data['agp'] >= 900000 && $data['agp'] < 1200000))){*/
         elseif((($data['app'] >= 90000 && $data['app'] < 120000)) && ($data['agp'] > 900000)){
             $data['ranking_lions_rank'] = 'Emerald Lion';
             $data['ranking_lions_level'] = 7;
             $data['ranking_lions_percentage'] = 1;
         }
-        /*elseif((($data['app'] >= 120000 && $data['app'] < 150000)) && (($data['agp'] >= 1200000 && $data['agp'] < 1500000))){*/
         elseif((($data['app'] >= 120000 && $data['app'] < 150000)) && ($data['agp'] >= 1200000)){
             $data['ranking_lions_rank'] = 'Ruby Lion';
             $data['ranking_lions_level'] = 8;
             $data['ranking_lions_percentage'] = 1;
         }
-        /*elseif(($data['app'] >= 150000) && ($data['agp'] >= 1500000)){*/
         elseif(($data['app'] >= 150000) && ($data['agp'] > 1500000)){
             $data['ranking_lions_rank'] = 'Diamond Lion';
             $data['ranking_lions_level'] = 9;
@@ -987,7 +982,105 @@ class Helper {
             $data['ranking_lions_rank'] = 'none';
             $data['ranking_lions_level'] = 4;
             $data['ranking_lions_percentage'] = 2;
+        }*/
+
+        $rank = [
+            4 => [
+                'rank' => 'none',
+                'level' => 4,
+                'percentage' => 2
+            ],
+            5 => [
+                'rank' => 'Jade Lion',
+                'level' => 5,
+                'percentage' => 2
+            ],
+            6 => [
+                'rank' => 'Sapphire Lion',
+                'level' => 6,
+                'percentage' => 2
+            ],
+            7 => [
+                'rank' => 'Emerald Lion',
+                'level' => 7,
+                'percentage' => 1
+            ],
+            8 => [
+                'rank' => 'Ruby Lion',
+                'level' => 8,
+                'percentage' => 1
+            ],
+            9 => [
+                'rank' => 'Diamond Lion',
+                'level' => 9,
+                'percentage' => 1
+            ]
+        ];
+
+        $rank_index = 4;
+
+        /*if((($data['app'] >= 30000) && ($data['app'] < 60000)) && ($data['agp'] > 300000)){
+            $rank_index = 5;
         }
+        elseif((($data['app'] >= 60000) && ($data['app'] < 90000)) && ($data['agp'] > 600000)){
+            $rank_index = 6;
+        }
+        elseif((($data['app'] >= 90000 && $data['app'] < 120000)) && ($data['agp'] > 900000)){
+            $rank_index = 7;
+        }
+        elseif((($data['app'] >= 120000 && $data['app'] < 150000)) && ($data['agp'] >= 1200000)){
+            $rank_index = 8;
+        }
+        elseif(($data['app'] >= 150000) && ($data['agp'] > 1500000)){
+            $rank_index = 9;
+        }
+        else{
+            $rank_index = 4;
+        }*/
+
+        if (($data['app'] >= 30000) && ($data['app'] < 60000)) {
+            $rank_index = 4;
+
+            if ($data['agp'] > 300000) {
+                $rank_index = 5;
+            }
+        }
+
+        if (($data['app'] >= 60000) && ($data['app'] < 90000)) {
+            $rank_index = 5;
+
+            if ($data['agp'] > 600000) {
+                $rank_index = 6;
+            }
+        }
+
+        if (($data['app'] >= 90000) && ($data['app'] < 120000)) {
+            $rank_index = 6;
+
+            if ($data['agp'] > 900000) {
+                $rank_index = 7;
+            }
+        }
+
+        if (($data['app'] >= 120000) && ($data['app'] < 150000)) {
+            $rank_index = 7;
+
+            if ($data['agp'] > 1200000) {
+                $rank_index = 8;
+            }
+        }
+
+        if (($data['app'] >= 150000) && ($data['app'] < 150000)) {
+            $rank_index = 8;
+
+            if ($data['agp'] > 1500000) {
+                $rank_index = 9;
+            }
+        }
+
+        $data['ranking_lions_rank'] = $rank[$rank_index]['rank'];
+        $data['ranking_lions_level'] = $rank[$rank_index]['level'];
+        $data['ranking_lions_percentage'] = $rank[$rank_index]['percentage'];
 
         return $data;
     }
